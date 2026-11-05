@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P&amp;PX</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { color-scheme: dark; --bg: #14161b; --card: #1b1e25; --line: #2f343e; --text: #e8eaef; --muted: #aab0bc; --red: #d40000; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 'Segoe UI', system-ui, sans-serif; }
+    main { max-width: 860px; margin: 0 auto; padding: 32px 16px 80px; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0 0 22px; }
+    h2 { font-size: 15px; font-weight: 600; margin: 32px 0 10px; }
+    p { margin: 0 0 10px; color: var(--muted); }
+    a { color: #8ab4ff; }
+    [hidden] { display: none !important; }
+    .apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .app { display: block; padding: 18px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--red);
+      border-radius: 8px; color: inherit; text-decoration: none; }
+    .app:hover, .app:focus-visible { border-color: #5a606d; border-top-color: #ff0000; }
+    .app strong { display: block; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .app span { color: var(--muted); font-size: 13px; }
+    .links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; }
+    .links a { color: var(--muted); }
+    .panel { padding: 16px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    button { font: inherit; color: var(--text); background: #2b3039; border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; cursor: pointer; }
+    button:hover { background: #363c47; }
+    button.primary { background: var(--red); border-color: var(--red); color: #fff; font-weight: 600; }
+    button.primary:hover { background: #ff0000; }
+    ol { margin: 0 0 14px; padding-left: 20px; color: var(--muted); }
+    li { margin-bottom: 6px; }
+    label { display: block; margin: 10px 0 4px; font-size: 13px; color: var(--muted); }
+    input[type=text], input[type=password] { width: 100%; font: inherit; color: var(--text); background: #14161b; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+    .result { margin-top: 12px; white-space: pre-wrap; color: var(--text); font-size: 13px; }
+    .result.err { color: #ff8585; }
+    #empty { border-color: #6b5620; margin-bottom: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>P&amp;PX</h1>
+
+    <div id="work" hidden>
+      <div class="panel" id="empty" hidden>
+        <strong>Veritabanı boş</strong>
+        <p>Mevcut projeleri, makine kayıtlarını ve kod listesini almak için aşağıdaki "Klasörden aktar" düğmesini kullanın ve P&amp;PX klasörünü seçin; iki program da bulunur.</p>
+      </div>
+
+      <div class="apps">
+        <a class="app" href="P-IDX/P%26ID/codes/cizim.html"><strong>P&amp;ID</strong><span id="pidInfo">ISO 10628 · ISA-5.1</span></a>
+        <a class="app" href="PNOMATIKX/PNOMATIK/codes/cizim.html"><strong>Pnömatik</strong><span id="pnxInfo">ISO 1219-1 · ISO 1219-2</span></a>
+      </div>
+      <div class="links">
+        <a href="P-IDX/P%26ID/codes/index.html">Doküman Editörü</a>
+        <a href="P-IDX/CAD/index.html">CAD</a>
+      </div>
+
+      <h2>Veritabanı</h2>
+      <div class="panel">
+        <p id="dbInfo">Bağlanıyor…</p>
+        <div class="actions">
+          <button type="button" id="syncNow" hidden>Şimdi eşitle</button>
+          <button type="button" id="importFolder">Klasörden aktar</button>
+          <button type="button" id="backup">Yedek indir</button>
+          <button type="button" id="restore">Yedekten yükle</button>
+          <button type="button" id="showConnect">GitHub deposuna bağla</button>
+          <button type="button" id="disconnect" hidden>Bağlantıyı kaldır</button>
+          <input type="file" id="restoreFile" accept=".json" hidden>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="connect" hidden>
+      <h2 style="margin-top:0">Verileriniz nerede dursun?</h2>
+      <p>Özel bir GitHub deposu veritabanı olur: ücretsizdir, her kayıt geçmişte durur, her bilgisayardan erişilir.</p>
+      <ol>
+        <li><a href="https://github.com/new?name=ppx-veri&amp;visibility=private" target="_blank" rel="noopener">Özel depo oluşturun</a>. Ad ve görünürlük hazır gelir, "Create repository" deyin.</li>
+        <li><a href="https://github.com/settings/personal-access-tokens/new?name=P%26PX%20veri&amp;description=P%26PX%20veri%20deposu&amp;contents=write&amp;expires_in=365" target="_blank" rel="noopener">Erişim anahtarı oluşturun</a>. "Only select repositories" altında yalnız <strong>ppx-veri</strong> deposunu seçin, "Generate token" deyin.</li>
+        <li>Anahtarı aşağıya yapıştırın. Yalnız bu tarayıcıda saklanır.</li>
+      </ol>
+      <form id="connectForm">
+        <label for="repo">Depo (kullanıcı/depo)</label>
+        <input type="text" id="repo" value="TheVanerr/ppx-veri" autocomplete="off" spellcheck="false">
+        <label for="token">Erişim anahtarı</label>
+        <input type="password" id="token" autocomplete="off" spellcheck="false">
+        <div class="actions">
+          <button type="submit" class="primary">Bağlan</button>
+          <button type="button" id="localOnly">Şimdilik yalnız bu bilgisayarda kullan</button>
+        </div>
+      </form>
+      <div class="result" id="connectResult" role="status"></div>
+    </div>
+  </main>
+
+  <script>window.PPX_LAUNCHER = true;</script>
+  <script src="ortak/ppx-db.js"></script>
+  <script src="ortak/ppx-fs.js"></script>
+  <script src="ortak/ppx-github.js"></script>
+  <script src="ortak/ppx-boot.js"></script>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const say = (el, text, isError) => {
+        el.textContent = text;
+        el.className = isError ? 'result err' : 'result';
+      };
+
+      /* ── Kurulum ── */
+
+      $('connectForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const repo = $('repo').value.trim();
+        const token = $('token').value.trim();
+        if (!repo || !token) {
+          say($('connectResult'), 'Depo adı ve erişim anahtarı gerekli.', true);
+          return;
+        }
+        say($('connectResult'), 'Deneniyor…');
+        try {
+          await PpxBoot.connectGitHub(repo, token);
+          location.reload();
+        } catch (err) {
+          say($('connectResult'), err.message, true);
+        }
+      });
+      $('localOnly').addEventListener('click', () => {
+        PpxBoot.useLocal();
+        location.reload();
+      });
+
+      const settings = PpxBoot.settings();
+      if (!settings.mode) {
+        $('connect').hidden = false;
+        return;
+      }
+
+      /* ── Çalışma ekranı ── */
+
+      $('work').hidden = false;
+      $('showConnect').addEventListener('click', () => {
+        $('connect').hidden = !$('connect').hidden;
+        if (!$('connect').hidden) $('connect').scrollIntoView();
+      });
+      const github = settings.mode === 'github';
+      $('syncNow').hidden = !github;
+      $('disconnect').hidden = !github;
+      $('showConnect').textContent = github ? 'Depoyu ya da anahtarı değiştir' : 'GitHub deposuna bağla';
+      $('localOnly').hidden = github;
+      if (github) $('repo').value = settings.repo;
+      $('disconnect').addEventListener('click', () => {
+        PpxBoot.disconnect();
+        location.reload();
+      });
+
+      (async () => {
+        const result = $('result');
+        await PpxBoot.ready();
+        const db = PpxBoot.db();
+
+        async function refresh() {
+          const rows = await db.list();
+          const projects = (root) => new Set(rows.filter((r) => r.path.startsWith(root)).map((r) => r.path.slice(root.length).split('/')[0]).filter(Boolean)).size;
+          const machines = rows.filter((r) => /^ML\/kayitlar\/[^/]+\.json$/.test(r.path) && !r.path.endsWith('/kodlar.json')).length;
+          const size = rows.reduce((n, r) => n + (r.bytes ? r.bytes.length : 0), 0);
+          $('empty').hidden = PpxFs.hasProgramData(rows);
+          $('pidInfo').textContent = `${projects('P&ID/projects/')} proje · ${machines} makine kaydı`;
+          $('pnxInfo').textContent = `${projects('PNOMATIK/projects/')} proje`;
+          const s = db.status();
+          const where = github ? `GitHub deposu: ${settings.repo}` : 'Yerel mod: veriler yalnız bu tarayıcıda';
+          const state = s.error ? ` · ${s.error}` : s.pending ? ` · ${s.pending} dosya gönderilecek` : '';
+          $('dbInfo').textContent = `${where} · ${rows.length} kayıt · ${(size / 1024).toFixed(0)} KB${state}`;
+        }
+
+        db.onStatus(refresh);
+        await refresh();
+
+        $('syncNow').addEventListener('click', async () => {
+          const s = await db.sync();
+          say(result, s.error || 'Eşitlendi.', !!s.error);
+        });
+
+        $('importFolder').addEventListener('click', async () => {
+          try {
+            const dir = await window.showDirectoryPicker({ id: 'ppx-import', mode: 'read' });
+            say(result, 'Aktarılıyor…');
+            const res = await PpxFs.importFolder(db, dir, (p) => say(result, `Aktarılıyor… ${p.written} dosya`));
+            if (!res.ok) {
+              say(result, res.error, true);
+              return;
+            }
+            const lines = [`${res.sources.join(', ')}: ${res.written} dosya aktarıldı, ${res.kept} dosya veritabanında zaten vardı ve korundu.`];
+            if (res.skipped.length) lines.push(`Aktarılmayan büyük dosyalar (bilgisayarda kalır):\n${res.skipped.join('\n')}`);
+            say(result, lines.join('\n'));
+            await refresh();
+            db.sync();
+          } catch (e) {
+            if (e.name !== 'AbortError') say(result, e.message, true);
+          }
+        });
+
+        $('backup').addEventListener('click', async () => {
+          const blob = new Blob([JSON.stringify(await db.exportBackup())], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `ppx-yedek-${new Date().toISOString().slice(0, 10)}.json`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
+          say(result, 'Yedek indirildi.');
+        });
+
+        $('restore').addEventListener('click', () => $('restoreFile').click());
+        $('restoreFile').addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          e.target.value = '';
+          if (!file) return;
+          try {
+            const res = await db.importBackup(JSON.parse(await file.text()));
+            say(result, `${res.written} dosya yüklendi, ${res.kept} dosya zaten vardı ve korundu.`);
+            await refresh();
+          } catch (err) {
+            say(result, err.message, true);
+          }
+        });
+      })().catch((e) => {
+        $('dbInfo').textContent = `Bağlanılamadı: ${e.message}`;
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+{
+ "schema": 1,
+ "sheets": [
+  {
+   "id": "smw0d3ix41fz0",
+   "title": "P&ID Şeması",
+   "size": "A3",
+   "items": [
+    {
+     "id": "nmw0d52afabzf",
+     "type": "symbol",
+     "symbol": "p.centrifugal",
+     "x": 87.5,
+     "y": 77.5,
+     "rot": 0,
+     "flip": false,
+     "tag": "PE02",
+     "optional": false
+    },
+    {
+     "id": "nmw0d55itcsfg",
+     "type": "symbol",
+     "symbol": "p.centrifugal",
+     "x": 135,
+     "y": 77.5,
+     "rot": 0,
+     "flip": false,
+     "tag": "PE04",
+     "optional": false
+    },
+    {
+     "id": "lmw0d5bj1du26",
+     "type": "line",
+     "kind": "process",
+     "from": {
+      "node": "nmw0d52afabzf",
+      "port": "R"
+     },
+     "to": {
+      "node": "nmw0d55itcsfg",
+      "port": "L"
+     },
+     "optional": false,
+     "label": "",
+     "arrow": "mid",
+     "manual": false,
+     "path": [
+      [
+       93.5,
+       77.5
+      ],
+      [
+       129,
+       77.5
+      ]
+     ]
+    },
+    {
+     "id": "nmw0d9xcue5hs",
+     "type": "symbol",
+     "symbol": "h.resistance",
+     "x": 95,
+     "y": 105,
+     "rot": 0,
+     "flip": false,
+     "tag": "R05",
+     "optional": false
+    },
+    {
+     "id": "nmw0d9z2cfhyr",
+     "type": "symbol",
+     "symbol": "h.resistance",
+     "x": 97.5,
+     "y": 130,
+     "rot": 0,
+     "flip": false,
+     "tag": "R07",
+     "optional": false
+    },
+    {
+     "id": "nmw0da0ltg5o0",
+     "type": "symbol",
+     "symbol": "h.resistance",
+     "x": 95,
+     "y": 155,
+     "rot": 0,
+     "flip": false,
+     "tag": "R06",
+     "optional": false
+    },
+    {
+     "id": "nmw0da21hhvsh",
+     "type": "symbol",
+     "symbol": "h.resistance",
+     "x": 110,
+     "y": 170,
+     "rot": 0,
+     "flip": false,
+     "tag": "R08",
+     "optional": false
+    },
+    {
+     "id": "nmw0dacs0iolu",
+     "type": "symbol",
+     "symbol": "i.lsl",
+     "x": 145,
+     "y": 105,
+     "rot": 0,
+     "flip": false,
+     "tag": "LS01",
+     "optional": false,
+     "func": "LSL"
+    },
+    {
+     "id": "lmw0daekxjcgw",
+     "type": "line",
+     "kind": "process",
+     "from": {
+      "node": "nmw0dacs0iolu",
+      "port": "L"
+     },
+     "to": {
+      "node": "nmw0d9xcue5hs",
+      "port": "R"
+     },
+     "optional": false,
+     "label": "",
+     "arrow": "mid",
+     "manual": false,
+     "path": [
+      [
+       138.5,
+       105
+      ],
+      [
+       106,
+       105
+      ]
+     ]
+    },
+    {
+     "id": "lmw0dajfykf9g",
+     "type": "line",
+     "kind": "process",
+     "from": {
+      "node": "nmw0dacs0iolu",
+      "port": "R"
+     },
+     "to": {
+      "node": "nmw0d9z2cfhyr",
+      "port": "R"
+     },
+     "optional": false,
+     "label": "",
+     "arrow": "mid",
+     "manual": false,
+     "path": [
+      [
+       151.5,
+       105
+      ],
+      [
+       156.5,
+       105
+      ],
+      [
+       156.5,
+       130
+      ],
+      [
+       108.5,
+       130
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

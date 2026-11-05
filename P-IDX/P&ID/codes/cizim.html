@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dolfin P&amp;ID Çizim Motoru</title>
+  <link rel="stylesheet" href="letterhead.css">
+  <link rel="stylesheet" href="engine/engine.css">
+  <link rel="stylesheet" href="engine/covers.css">
+  <link rel="stylesheet" href="engine/report.css">
+</head>
+<body>
+  <section id="home" class="home">
+    <div class="home-bar">
+      <img src="../assets/logos/dolfin.png" alt="Dolfin" class="home-logo">
+      <div class="home-title">
+        <h1>P&amp;ID Çizim Motoru</h1>
+        <p>ISO 10628 · ISA-5.1</p>
+      </div>
+      <div class="home-actions">
+        <button type="button" class="btn" id="btnSample">Örnek Çizimi Aç</button>
+        <button type="button" class="btn btn-primary" id="btnNewProject">+ Yeni Proje</button>
+      </div>
+    </div>
+    <nav class="home-nav">
+      <button type="button" class="home-tab active" data-home-tab="projects">Projeler</button>
+      <button type="button" class="home-tab" data-home-tab="machines">Makineler <span id="machineCount" class="home-count"></span></button>
+      <button type="button" class="home-tab" data-home-tab="codes">Kod Listesi <span id="codeCount" class="home-count"></span></button>
+      <div class="tb-spacer"></div>
+      <a class="home-link" href="index.html" target="pidx-dokuman">Doküman Editörü</a>
+      <a class="home-link" href="../../CAD/index.html" target="pidx-cad">CAD</a>
+      <button type="button" class="home-link home-folder" id="btnFolder" title="Bağlı klasörü değiştir"></button>
+    </nav>
+    <div id="legacyBanner" class="legacy-banner hidden"></div>
+
+    <div id="homeProjects" class="home-page">
+      <div id="projectList" class="project-list"></div>
+    </div>
+
+    <div id="homeMachines" class="home-page hidden">
+      <div class="ml-split">
+        <aside class="ml-sidebar">
+          <div class="ml-sidebar-head">
+            <h2>Kayıtlı Makineler</h2>
+            <button type="button" class="btn btn-sm btn-primary" id="mlNew">+ Yeni</button>
+          </div>
+          <input type="search" id="mlMachineSearch" class="search" placeholder="Seri no, firma veya model ara…">
+          <ul id="mlMachineList" class="ml-list"></ul>
+        </aside>
+        <div class="ml-content">
+          <form id="mlMachineForm" class="ml-card ml-machine-form hidden">
+            <div class="ml-card-head">
+              <h2 id="mlFormTitle">Yeni Makine</h2>
+              <div class="ml-card-actions">
+                <button type="button" class="btn btn-sm" id="mlProject" hidden>Proje Oluştur</button>
+                <button type="button" class="btn btn-sm" id="mlDownload" hidden>JSON İndir</button>
+                <button type="button" class="btn btn-sm" id="mlDelete" hidden>Sil</button>
+              </div>
+            </div>
+            <div class="ml-form-grid">
+              <div class="field"><label for="mlSeri">Seri No</label><input id="mlSeri" class="field-input" required placeholder="0626051" autocomplete="off"></div>
+              <div class="field"><label for="mlFirma">Firma</label><input id="mlFirma" class="field-input" required placeholder="DÜNYA" autocomplete="off"></div>
+              <div class="field"><label for="mlModel">Makine Modeli</label><input id="mlModel" class="field-input" required placeholder="ULT M200 3B" autocomplete="off"></div>
+            </div>
+            <div class="ml-codes-head">
+              <h3>Component Kodları</h3>
+              <span id="mlSelectedCount" class="ml-badge">0 seçili</span>
+            </div>
+            <div class="ml-filters">
+              <div class="field"><label for="mlFilterSeri">Kod / Seri</label><input type="search" id="mlFilterSeri" class="search" placeholder="PE → yalnız PE01, PE02…"></div>
+              <div class="field"><label for="mlFilterText">Açıklama</label><input type="search" id="mlFilterText" class="search" placeholder="pompa, fan, vana…"></div>
+            </div>
+            <div id="mlSeriesChips" class="ml-chips"></div>
+            <div class="ml-filter-row">
+              <span id="mlFilterResult" class="ml-result"></span>
+              <div class="ml-card-actions">
+                <button type="button" class="btn btn-sm" id="mlFilterClear">Filtreyi Temizle</button>
+                <button type="button" class="btn btn-sm" id="mlSelectVisible">Görünenleri Seç</button>
+                <button type="button" class="btn btn-sm" id="mlSelectNone">Seçimi Temizle</button>
+              </div>
+            </div>
+            <div id="mlCodeChecks" class="ml-checks"></div>
+            <div class="ml-form-actions">
+              <button type="button" class="btn" id="mlCancel">İptal</button>
+              <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+          </form>
+          <div id="mlEmpty" class="ml-empty">
+            <p>Soldan bir makine seçin veya yeni kayıt oluşturun.</p>
+            <p class="ml-note">Kayıtlar <strong>ML/kayitlar</strong> klasöründe tutulur. Aynı seri nolu proje açıldığında kodları çizime gelir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="homeCodes" class="home-page hidden">
+      <div class="ml-codes-page">
+        <form id="mlCodeForm" class="ml-card ml-code-form">
+          <div class="field ml-code-kod"><label for="mlCodeInput">Kod</label><input id="mlCodeInput" class="field-input" required maxlength="20" placeholder="PE01" autocomplete="off"></div>
+          <div class="field ml-code-text"><label for="mlCodeText">Açıklama</label><input id="mlCodeText" class="field-input" required placeholder="Ön Yıkama Pompa Motoru" autocomplete="off"></div>
+          <button type="button" class="btn" id="mlCodeCancel" hidden>İptal</button>
+          <button type="submit" class="btn btn-primary" id="mlCodeSubmit">Ekle</button>
+        </form>
+        <div class="ml-card ml-code-card">
+          <div class="ml-card-head">
+            <h2>Tüm Kodlar</h2>
+            <div class="ml-card-actions">
+              <button type="button" class="btn btn-sm" id="mlCsvImport">CSV Yükle</button>
+              <button type="button" class="btn btn-sm" id="mlCsvExport">CSV Dışa Aktar</button>
+              <input type="file" id="mlCsvInput" accept=".csv,text/csv,text/plain" hidden>
+            </div>
+          </div>
+          <div class="ml-filters">
+            <div class="field"><label for="mlListSeri">Kod / Seri</label><input type="search" id="mlListSeri" class="search" placeholder="PE, FE, SWB…"></div>
+            <div class="field"><label for="mlListText">Açıklama</label><input type="search" id="mlListText" class="search" placeholder="pompa, motor, vana…"></div>
+          </div>
+          <div id="mlListChips" class="ml-chips"></div>
+          <div class="ml-filter-row">
+            <span id="mlListResult" class="ml-result"></span>
+            <button type="button" class="btn btn-sm" id="mlListClear">Filtreyi Temizle</button>
+          </div>
+          <div class="ml-table-wrap">
+            <table class="ml-table">
+              <thead><tr><th>Kod</th><th>Açıklama</th><th class="ml-td-actions">İşlem</th></tr></thead>
+              <tbody id="mlCodeBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <button type="button" class="tb-logo" id="btnHome" title="Projelere dön">
+        <img src="../assets/logos/dolfin.png" alt="Dolfin">
+      </button>
+      <div class="tb-project">
+        <strong id="projName"></strong>
+        <span id="saveState" class="save-state"></span>
+      </div>
+
+      <div class="tb-group tb-tools" role="toolbar" aria-label="Araçlar">
+        <button type="button" class="tool" data-tool="select" title="Seç ve taşı (V)">
+          <svg viewBox="0 0 20 20"><path d="M4 2l11 8.5-5 .6 3 5.6-2.4 1.2-2.8-5.6L4 16z"/></svg>
+        </button>
+        <button type="button" class="tool" data-tool="line" title="Hat çiz (L)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M3 16V8h14V3"/><circle cx="3" cy="16" r="2"/><circle cx="17" cy="3" r="2"/></svg>
+        </button>
+        <button type="button" class="tool" data-tool="text" title="Metin ekle (T)">
+          <svg viewBox="0 0 20 20"><path d="M3 3h14v3.5h-1.6L15 5H11v10.4l2 .4V17H7v-1.2l2-.4V5H5l-.4 1.5H3z"/></svg>
+        </button>
+        <select id="lineKind" class="tb-select" title="Hat tipi"></select>
+      </div>
+
+      <div class="tb-group">
+        <button type="button" class="icon-btn" id="btnUndo" title="Geri al (Ctrl+Z)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M7 4L3 8l4 4M3 8h9a5 5 0 010 10H8"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnRedo" title="Yinele (Ctrl+Y)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M13 4l4 4-4 4M17 8H8a5 5 0 000 10h4"/></svg>
+        </button>
+      </div>
+
+      <div class="tb-group">
+        <button type="button" class="icon-btn" id="btnRotate" title="90° döndür (R)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M16 10a6 6 0 11-2-4.5M16 2v4h-4"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnFlip" title="Aynala (X)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M10 2v16"/><path d="M8 5v10L2 15zM12 5v10l6 0z"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnDelete" title="Sil (Delete)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M3 5h14M8 5V3h4v2M5 5l1 12h8l1-12M8.5 8v6M11.5 8v6"/></svg>
+        </button>
+      </div>
+
+      <div class="tb-group tb-zoom">
+        <button type="button" class="icon-btn" id="btnZoomOut" title="Uzaklaş">−</button>
+        <button type="button" class="zoom-value" id="zoomValue" title="Sayfaya sığdır (F)">100%</button>
+        <button type="button" class="icon-btn" id="btnZoomIn" title="Yakınlaş">+</button>
+      </div>
+
+      <div class="tb-spacer"></div>
+
+      <div class="tb-group">
+        <button type="button" class="btn btn-sm" id="btnSave" title="Projeyi kaydet (Ctrl+S)">Kaydet</button>
+        <button type="button" class="btn btn-sm" id="btnCover">Kapak</button>
+        <button type="button" class="btn btn-sm" id="btnReport" title="Bileşen listesi, bağlantı mantığı ve güvenlik fonksiyonlarını A3 sayfa olarak gösterir">Açıklama</button>
+        <button type="button" class="btn btn-sm" id="btnLabels" title="Çizimdeki kodlarla MAKİNE ETİKETLEME.xlsx düzeninde Excel">Etiket Excel</button>
+        <button type="button" class="btn btn-sm" id="btnExportSvg">SVG</button>
+        <button type="button" class="btn btn-sm btn-primary" id="btnExportPdf">PDF İndir</button>
+      </div>
+    </header>
+
+    <aside class="left-panel">
+      <nav class="panel-tabs" data-panel="left">
+        <button type="button" class="panel-tab active" data-tab="symbols">Semboller</button>
+        <button type="button" class="panel-tab" data-tab="codes">Kodlar</button>
+        <button type="button" class="panel-tab" data-tab="files">Dosyalar</button>
+      </nav>
+      <section class="panel-body" id="tab-symbols">
+        <input type="search" id="symbolSearch" class="search" placeholder="Sembol ara…">
+        <div id="symbolList" class="symbol-list"></div>
+      </section>
+      <section class="panel-body hidden" id="tab-codes">
+        <div id="machineBar" class="machine-bar hidden"></div>
+        <input type="search" id="codeSearch" class="search" placeholder="Kod veya açıklama ara…">
+        <div class="code-filters">
+          <select id="codeSeries" class="field-input"></select>
+          <select id="codeFilter" class="field-input">
+            <option value="all">Tümü</option>
+            <option value="unused">Çizimde olmayan</option>
+            <option value="used">Çizimde olan</option>
+            <option value="machine">Makine kaydındaki</option>
+          </select>
+        </div>
+        <div id="codeList" class="code-list"></div>
+      </section>
+      <section class="panel-body hidden" id="tab-files">
+        <div id="fileList" class="file-list"></div>
+      </section>
+    </aside>
+
+    <main class="canvas-wrap" id="canvasWrap">
+      <svg id="canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="hint" class="canvas-hint hidden"></div>
+    </main>
+
+    <aside class="right-panel">
+      <nav class="panel-tabs" data-panel="right">
+        <button type="button" class="panel-tab active" data-tab="props">Özellikler</button>
+        <button type="button" class="panel-tab" data-tab="checks">Kontrol <span id="checkBadge" class="badge hidden"></span></button>
+      </nav>
+      <section class="panel-body" id="tab-props"><div id="inspector" class="inspector"></div></section>
+      <section class="panel-body hidden" id="tab-checks"><div id="checkList" class="check-list"></div></section>
+    </aside>
+
+    <section class="dock" id="dock">
+      <div class="dock-resize" id="dockResize" title="Yüksekliği değiştirmek için sürükleyin"></div>
+      <nav class="dock-tabs">
+        <button type="button" class="dock-tab" data-dock="components">Bileşen Listesi <span id="dockCountComponents" class="dock-count"></span></button>
+        <button type="button" class="dock-tab" data-dock="logic">Bağlantı Mantığı <span id="dockCountLogic" class="dock-count"></span></button>
+        <button type="button" class="dock-tab" data-dock="safety">Güvenlik Fonksiyonları <span id="dockCountSafety" class="dock-count"></span></button>
+        <div class="tb-spacer"></div>
+        <button type="button" class="icon-btn dock-toggle" id="dockToggle"></button>
+      </nav>
+      <div class="dock-body" id="dockBody"></div>
+    </section>
+
+    <footer class="bottombar">
+      <div id="sheetTabs" class="sheet-tabs"></div>
+      <div class="tb-spacer"></div>
+      <div class="layer-toggles" id="layerToggles"></div>
+      <label class="toggle-inline"><input type="checkbox" id="snapToggle" checked> Yakala</label>
+      <label class="toggle-inline"><input type="checkbox" id="gridToggle" checked> Izgara</label>
+      <span id="statusPos" class="status-pos"></span>
+    </footer>
+  </div>
+
+  <div id="coverStudio" class="cover-studio hidden"></div>
+  <div id="reportStudio" class="cover-studio hidden"></div>
+  <div id="printRoot"></div>
+  <div id="modalRoot"></div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="../../../ortak/ppx-db.js"></script>
+  <script src="../../../ortak/ppx-fs.js"></script>
+  <script src="../../../ortak/ppx-github.js"></script>
+  <script src="../../../ortak/ppx-boot.js"></script>
+  <script src="host.js"></script>
+  <script src="cover.js"></script>
+  <script src="header.js"></script>
+  <script src="engine/symbols.js"></script>
+  <script src="engine/router.js"></script>
+  <script src="engine/model.js"></script>
+  <script src="engine/revisions.js"></script>
+  <script src="engine/presets.js"></script>
+  <script src="engine/sheet.js"></script>
+  <script src="engine/checks.js"></script>
+  <script src="engine/logic.js"></script>
+  <script src="engine/samples/ornek.js"></script>
+  <script src="engine/editor.js"></script>
+  <script src="engine/panels.js"></script>
+  <script src="engine/machines.js"></script>
+  <script src="engine/xlsx.js"></script>
+  <script src="engine/pdf.js"></script>
+  <script src="engine/pdf-dom.js"></script>
+  <script src="engine/report.js"></script>
+  <script src="engine/covers.js"></script>
+  <script src="engine/app.js"></script>
+</body>
+</html>

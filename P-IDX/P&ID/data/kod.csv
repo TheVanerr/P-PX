@@ -1,0 +1,342 @@
+﻿KOD;BİLEŞEN ADI;AÇIKLAMA
+PE01;Ön Yıkama Pompa Motoru;Ön yıkama proses tankından emiş hattı üzerinden yıkama suyunun sepet ve sprey manifoldlarına sirkülasyonunu sağlar. Emiş vanası, pompa koruma rölesi ve VFD çıkış devresine bağlıdır.
+PE02;Yıkama Pompa Motoru;Ana yıkama devresinde proses suyunun basınçlı transferini sağlar. Proses tankı, emiş vanası, basma manifoldu ve motor kontrol devresine bağlıdır.
+PE03;Ön Durulama Pompa Motoru;Ön durulama aşamasında proses suyunun sirkülasyonunu sağlar. Durulama tankı emiş hattı, vanalar ve motor koruma devresine bağlıdır.
+PE04;Durulama Pompa Motoru;Durulama devresinde proses suyunun sepet ve sprey hatlarına transferini sağlar. Basma/emiş vanaları ve motor kontrol devresine bağlıdır.
+PE05;Otomatik Drenaj Pompası Motoru;Otomatik drenaj fazında proses sıvısının tank veya hücreden tahliyesini sağlar. Drenaj vanası, seviye sensörü ve motor koruma devresine bağlıdır.
+PE06;Vakum Pompası Motoru;Hücre içi vakum oluşturmak için proses sıvısını emer. Vakum tankı, emiş vanası, basınç sensörü ve motor kontrol devresine bağlıdır.
+PE07;Hücre Boşaltma Pompası Motoru;Hücre boşaltma fazında sıvının tahliye hattına transferini sağlar. Boşaltma vanası, hücre drenaj hattı ve motor koruma devresine bağlıdır.
+PE08;Arıtma Gidiş Pompası Motoru;Arıtma devresinde proses suyunun filtre/arıtma ünitesine beslemesini sağlar. Arıtma gidiş hattı, vanalar ve motor kontrol devresine bağlıdır.
+PE09;Arıtma Dönüş Pompası Motoru;Arıtma sonrası proses suyunun ana devreye geri dönüşünü sağlar. Dönüş hattı, vanalar ve motor kontrol devresine bağlıdır.
+PE10;1.  Dozaj Pompası;Kimyasal dozaj devresinde belirlenen debide sıvı enjeksiyonu sağlar. Dozaj tankı, seviye sensörü, dozaj vanası ve motor kontrol devresine bağlıdır.
+PE11;2.  Dozaj Pompası;Kimyasal dozaj devresinde belirlenen debide sıvı enjeksiyonu sağlar. Dozaj tankı, seviye sensörü, dozaj vanası ve motor kontrol devresine bağlıdır.
+PE12;3.  Dozaj Pompası;Kimyasal dozaj devresinde belirlenen debide sıvı enjeksiyonu sağlar. Dozaj tankı, seviye sensörü, dozaj vanası ve motor kontrol devresine bağlıdır.
+PE13;Hassas Filre Pompası Motoru;Hassas filtrasyon hattında proses suyunun filtre girişine transferini sağlar. Filtre, emiş/basma vanaları ve motor koruma devresine bağlıdır.
+PE14;Yağ Ayırıcı Pompası Motoru;Yağ ayırıcı devresinde yağlı fazın ayrıştırılması için sıvı sirkülasyonunu sağlar. Ayırıcı tank, vanalar ve motor kontrol devresine bağlıdır.
+PE15;xxx Pompası Motoru;Proses hattında sıvı transferi ve sirkülasyon sağlar. İlgili emiş/basma hatları, vanalar, sensörler ve motor kontrol devresine bağlıdır.
+FE01;Egzost Fanı Motoru;Proses ve kurutma sonrası nemli havanın egzoz hattından dışarı atılmasını sağlar. Egzoz kanalı, damper vanası ve motor koruma devresine bağlıdır.
+FE02;1. Kurutma Fanı Motoru;Kurutma devresinde hücre içi hava sirkülasyonunu ve nem tahliyesini sağlar. Kurutma hattı, ısıtma devresi ve motor kontrol devresine bağlıdır.
+FE03;2. Kurutma Fanı Motoru;Kurutma devresinde hücre içi hava sirkülasyonunu ve nem tahliyesini sağlar. Kurutma hattı, ısıtma devresi ve motor kontrol devresine bağlıdır.
+FE04;1. Blower Motoru;Hücre veya proses hattında basınçlı hava üflemesi sağlar. Hava dağıtım hattı, kontrol vanası ve motor koruma devresine bağlıdır.
+FE05;2. Blower Motoru;Hücre veya proses hattında basınçlı hava üflemesi sağlar. Hava dağıtım hattı, kontrol vanası ve motor koruma devresine bağlıdır.
+FE06;3. Blower Motoru;Hücre veya proses hattında basınçlı hava üflemesi sağlar. Hava dağıtım hattı, kontrol vanası ve motor koruma devresine bağlıdır.
+FE07;4. Blower Motoru;Hücre veya proses hattında basınçlı hava üflemesi sağlar. Hava dağıtım hattı, kontrol vanası ve motor koruma devresine bağlıdır.
+FE08;xxx Fan Motoru;Hava akışını düzenler ve ilgili proses hattına transfer sağlar. Hava kanalı, vanalar ve motor kontrol devresine bağlıdır.
+FE09;xxx Fan Motoru;Hava akışını düzenler ve ilgili proses hattına transfer sağlar. Hava kanalı, vanalar ve motor kontrol devresine bağlıdır.
+FE10;xxx Fan Motoru;Hava akışını düzenler ve ilgili proses hattına transfer sağlar. Hava kanalı, vanalar ve motor kontrol devresine bağlıdır.
+VE01;1. Vibrasyon  Motoru;Sepet veya tambur üzerinde titreşim uygulayarak parça ayrıştırma ve proses verimini destekler. Vibrasyon ünitesi, mekanik bağlantı ve motor koruma devresine bağlıdır.
+VE02;2. Vibrasyon  Motoru;Sepet veya tambur üzerinde titreşim uygulayarak parça ayrıştırma ve proses verimini destekler. Vibrasyon ünitesi, mekanik bağlantı ve motor koruma devresine bağlıdır.
+VE03;Vibrasyon xxx Motoru;Sepet veya tambur üzerinde titreşim uygulayarak parça ayrıştırma ve proses verimini destekler. Vibrasyon ünitesi, mekanik bağlantı ve motor koruma devresine bağlıdır.
+VE04;Vibrasyon xxx Motoru;Sepet veya tambur üzerinde titreşim uygulayarak parça ayrıştırma ve proses verimini destekler. Vibrasyon ünitesi, mekanik bağlantı ve motor koruma devresine bağlıdır.
+VE05;Vibrasyon xxx Motoru;Sepet veya tambur üzerinde titreşim uygulayarak parça ayrıştırma ve proses verimini destekler. Vibrasyon ünitesi, mekanik bağlantı ve motor koruma devresine bağlıdır.
+GE01;Sepet Redüktörü Motoru;Yıkama sepetinin proses pozisyonları arasında döndürülmesini sağlar. Sepet tahrik mekanizması, pozisyon sensörleri ve motor/VFD devresine bağlıdır.
+GE02;Tambur Redüktör Motoru;Tambur tip proses ekipmanının dönme hareketini sağlar. Tambur tahrik, mekanik bağlantı ve motor koruma devresine bağlıdır.
+GE03;Otomatik Yükleme Motoru;Otomatik parça yükleme konveyörünün hareketini sağlar. Konveyör hattı, giriş/çıkış sensörleri ve motor kontrol devresine bağlıdır.
+GE04;Kapı Redüktör Motoru;Hücre veya erişim kapısının açılıp kapanma hareketini sağlar. Kapı mekanizması, interlock sensörleri ve motor devresine bağlıdır.
+GE05;1. Konveyör  Redüktör Motoru;Parça taşıma konveyörünün sürekli veya adım hareketini sağlar. Konveyör hattı, prox sensörleri ve motor kontrol devresine bağlıdır.
+GE06;1. Yağ Sıyırıcı Redüktör Motoru;Yağ veya proses sıvısı yüzeyindeki tabakayı sıyırarak toplama devresine aktarımı destekler. Sıyırıcı mekanizma ve motor kontrol devresine bağlıdır.
+GE07;2. Yağ Sıyırıcı Redüktör Motoru;Yağ veya proses sıvısı yüzeyindeki tabakayı sıyırarak toplama devresine aktarımı destekler. Sıyırıcı mekanizma ve motor kontrol devresine bağlıdır.
+GE08;1. Yükleme( Konveyör) Redüktör Motoru;Otomatik parça yükleme konveyörünün hareketini sağlar. Konveyör hattı, giriş/çıkış sensörleri ve motor kontrol devresine bağlıdır.
+GE09;2. Yükleme (Konveyör) Redüktör Motoru;Otomatik parça yükleme konveyörünün hareketini sağlar. Konveyör hattı, giriş/çıkış sensörleri ve motor kontrol devresine bağlıdır.
+GE10;xxx Redüktör Motoru;Mekanik tahrik devresinde dönme/lineer hareket sağlar. İlgili mekanik grup, limit switch ve motor kontrol devresine bağlıdır.
+R01;1. Proses Tankı 1. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R02;1. Proses Tankı 2. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R03;1. Proses Tankı 3. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R04;1. Proses Tank 4. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R05;1. Proses Tankı 5. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R06;2. Proses Tankı 1. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R07;2. Proses Tankı 2. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R08;2. Proses Tankı 3. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R09;2. Proses Tankı 4. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R10;2. Proses Tankı 5. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R11;3. Proses Tankı 1. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R12;3. Proses Tankı 2. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R13;3. Proses Tankı 3. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R14;3. Proses Tankı 4. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R15;3. Proses Tankı 5. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R16;4. Proses Tankı 1. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R17;4. Proses Tankı 2. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R18;4. Proses Tankı 3. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R19;4. Proses Tankı 4. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R20;4. Proses Tankı 5. Rezistans;Proses tankı sıvısının hedef sıcaklığa ısıtılmasını sağlar. Tank ısı sensörü, termostat/SSR ve PLC ısı kontrol devresine bağlıdır.
+R21;1. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R22;2. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R23;3. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R24;4. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R25;5. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R26;6. Kurutma Rezistansı Grubu;Kurutma havasının ısıtılması için rezistans grubunu çalıştırır. Kurutma fanı, sıcaklık sensörü, SSR/kontaktör ve PLC ısı kontrol devresine bağlıdır.
+R27;xxx Rezistansı;Proses devresinde ısıtma sağlar. Sıcaklık sensörü, ısı kontrol rölesi ve PLC devresine bağlıdır.
+R28;xxx Rezistansı;Proses devresinde ısıtma sağlar. Sıcaklık sensörü, ısı kontrol rölesi ve PLC devresine bağlıdır.
+R29;xxx Rezistansı;Proses devresinde ısıtma sağlar. Sıcaklık sensörü, ısı kontrol rölesi ve PLC devresine bağlıdır.
+R30;xxx Rezistansı;Proses devresinde ısıtma sağlar. Sıcaklık sensörü, ısı kontrol rölesi ve PLC devresine bağlıdır.
+TD01;1.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD02;2.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD03;3.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD04;4.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD05;5.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD06;6.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD07;7.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD08;8.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD09;9.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+TD10;10.  Proses Tankı Ultrasonik Jeneratör Seti;Proses tankında ultrasonik temizleme için jeneratör/transdüser setini besler. Ultrasonik jeneratör, tank ve PLC proses kontrol devresine bağlıdır.
+L01;Tepe Lambası - Uyarı Lambası;Makine durumu, alarm veya proses fazı bilgisini operatöre görsel olarak iletir. PLC dijital çıkış devresine bağlıdır.
+L02;Hücre İçi Aydınlatma Lambası;Hücre içi bakım ve operasyon için aydınlatma sağlar. Pano beslemesi ve kontrol devresine bağlıdır.
+L03;Pano Lambası;Elektrik panosu içi bakım aydınlatması sağlar. Pano kapı switch ve besleme devresine bağlıdır.
+L04;xxx Lambası;Görsel bilgilendirme veya aydınlatma sağlar. İlgili besleme ve kontrol devresine bağlıdır.
+L05;xxx Lambası;Görsel bilgilendirme veya aydınlatma sağlar. İlgili besleme ve kontrol devresine bağlıdır.
+LS01;1. Proses Tankı Alt Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS02;1. Proses Tankı Orta Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS03;1. Proses Tankı Üst Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS04;2. Proses Tankı Alt Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS05;2. Proses Tankı Orta Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS06;2. Proses Tankı Üst Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS07;3. Proses Tankı Alt Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS08;3. Proses Tankı Orta Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS09;3. Proses Tankı Üst Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS10;4. Proses Tankı Alt Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS11;4. Proses Tankı Orta Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS12;4. Proses Tankı Üst Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS13;Hücre İçi 1. Seviye Sensörü;Hücre içi proses sıvısı seviyesini izler. Sepet, drenaj ve PLC seviye kontrol devresine bağlıdır.
+LS14;Hücre İçi 2. Seviye Sensörü;Hücre içi proses sıvısı seviyesini izler. Sepet, drenaj ve PLC seviye kontrol devresine bağlıdır.
+LS15;Hücre İçi 3. Seviye Sensörü;Hücre içi proses sıvısı seviyesini izler. Sepet, drenaj ve PLC seviye kontrol devresine bağlıdır.
+LS16;Hücre İçi 4. Seviye Sensörü;Hücre içi proses sıvısı seviyesini izler. Sepet, drenaj ve PLC seviye kontrol devresine bağlıdır.
+LS17;Drenaj Hattı 1. Seviye Sensörü;"Drenaj hattı veya tavasında sıvı seviyesini izler; taşma veya boş kalma durumunda PLC'ye sinyal verir. Drenaj hattı ve alarm/interlock devresine bağlıdır."
+LS18;Drenaj Hattı 2. Seviye Sensörü;"Drenaj hattı veya tavasında sıvı seviyesini izler; taşma veya boş kalma durumunda PLC'ye sinyal verir. Drenaj hattı ve alarm/interlock devresine bağlıdır."
+LS19;Drenaj Hattı 3. Seviye Sensörü;"Drenaj hattı veya tavasında sıvı seviyesini izler; taşma veya boş kalma durumunda PLC'ye sinyal verir. Drenaj hattı ve alarm/interlock devresine bağlıdır."
+LS20;Drenaj Hattı 4. Seviye Sensörü;"Drenaj hattı veya tavasında sıvı seviyesini izler; taşma veya boş kalma durumunda PLC'ye sinyal verir. Drenaj hattı ve alarm/interlock devresine bağlıdır."
+LS21;Vakum Pompası Tank Üst Seviye Sensörü;Vakum pompası tankında minimum/maksimum sıvı seviyesini izler. Vakum pompası, emiş hattı ve PLC seviye kontrol devresine bağlıdır.
+LS22;Vakum Pompası Tank Alt Seviye Sensörü;Vakum pompası tankında minimum/maksimum sıvı seviyesini izler. Vakum pompası, emiş hattı ve PLC seviye kontrol devresine bağlıdır.
+LS23;1. Dozaj Pompası Seviye Sensörü;"Dozaj tankı sıvı seviyesini izler; minimum seviyede dozaj pompası koruma sinyali üretir. Dozaj tankı ve PLC devresine bağlıdır."
+LS24;2. Dozaj Pompası Seviye Sensörü;"Dozaj tankı sıvı seviyesini izler; minimum seviyede dozaj pompası koruma sinyali üretir. Dozaj tankı ve PLC devresine bağlıdır."
+LS25;3. Dozaj Pompası Seviye Sensörü;"Dozaj tankı sıvı seviyesini izler; minimum seviyede dozaj pompası koruma sinyali üretir. Dozaj tankı ve PLC devresine bağlıdır."
+LS26;Sızıntı Tavası Uyarı Seviye Sensörü;Sızıntı tavasında anormal sıvı birikimini algılar ve alarm/interlock sinyali üretir. PLC güvenlik devresine bağlıdır.
+LS27;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS28;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS29;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+LS30;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve PLC dijital giriş devresine bağlıdır.
+SS01;El Koruma Sensörü;Operatör elinin tehlikeli bölgeye girmesini algılar ve proses/hareket interlock sinyali üretir. PLC güvenlik devresine bağlıdır.
+SS02;Interlock Kilit;"Kapak veya erişim noktası kilit/kapalı konumunu doğrular; güvenli olmayan durumda prosesi kilitleyen sinyal üretir. PLC interlock devresine bağlıdır."
+SS03;Işın Bariyeri Safety Sensörü;Işın bariyeri kirişinin kesilmesini algılar ve acil durdurma/interlock sinyali üretir. PLC güvenlik devresine bağlıdır.
+SS04;İnterlock Kilit Sensörü;"Kapak veya erişim noktası kilit/kapalı konumunu doğrular; güvenli olmayan durumda prosesi kilitleyen sinyal üretir. PLC interlock devresine bağlıdır."
+SS05;1. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS06;2. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS07;3. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS08;4. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS09;5. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS10;6. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SS11;7. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+PRS01;Sepet Pozisyon 1 Sensörü;Sepetin proses pozisyonunda olup olmadığını algılar. Sepet tahrik, proses interlock ve PLC dijital giriş devresine bağlıdır.
+PRS02;Sepet Pozisyon 2 Sensörü;Sepetin proses pozisyonunda olup olmadığını algılar. Sepet tahrik, proses interlock ve PLC dijital giriş devresine bağlıdır.
+PRS03;1. Konveyör Giriş Prox Sensörü;Konveyör girişinde parça varlığını algılar. Konveyör hattı, yükleme interlock ve PLC dijital giriş devresine bağlıdır.
+PRS04;2. Konveyör Giriş Prox Sensörü;Konveyör girişinde parça varlığını algılar. Konveyör hattı, yükleme interlock ve PLC dijital giriş devresine bağlıdır.
+PRS05;3. Konveyör Giriş Prox Sensörü;Konveyör girişinde parça varlığını algılar. Konveyör hattı, yükleme interlock ve PLC dijital giriş devresine bağlıdır.
+PRS06;1. Konveyör Çıkış Prox Sensörü;Konveyör çıkışında parça varlığını algılar. Konveyör hattı, boşaltma interlock ve PLC dijital giriş devresine bağlıdır.
+PRS07;2. Konveyör Çıkış Prox Sensörü;Konveyör çıkışında parça varlığını algılar. Konveyör hattı, boşaltma interlock ve PLC dijital giriş devresine bağlıdır.
+PRS08;3. Konveyör Çıkış Prox Sensörü;Konveyör çıkışında parça varlığını algılar. Konveyör hattı, boşaltma interlock ve PLC dijital giriş devresine bağlıdır.
+PRS09;xxx Prox Sensörü;Ekipman veya parça pozisyonunu algılar. İlgili mekanik grup ve PLC dijital giriş devresine bağlıdır.
+PRS10;xxx Prox Sensörü;Ekipman veya parça pozisyonunu algılar. İlgili mekanik grup ve PLC dijital giriş devresine bağlıdır.
+SWB01;1. Proses Pompa Emiş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB02;2. Proses Pompa Emiş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB03;3. Proses Pompa Emiş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB04;4. Proses Pompa Emiş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB05;Conta Şişirme Aktüator Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB06;Conta Söndürme Aktüator Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB07;1. Kurutma Hattı Aktüator Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB08;2. Kurutma Hattı Aktüator Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB09;Hücre Drenaj Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB10;Hücre Emiş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB11;Proses Ana Geri Dönüş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB12;Hat Temizleme Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB13;By-Pass Hattı Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB14;Ana Yıkama Nozul Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB15;Emiş Kollektör Temizleme Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB16;1. Proses Geri Dönüş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB17;2. Proses Geri Dönüş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB18;3. Proses Geri Dönüş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB19;4. Proses Geri Dönüş Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB20;1. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB21;2. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB22;3. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB23;4. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB24;1. Proses Tankı Kaskat Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB25;2. Proses Tankı Kaskat Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB26;3. Proses Tankı Kaskat Aktüatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB27;1. Tank Drenaj Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB28;2. Tank Drenaj Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB29;3. Tank Drenaj Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB30;Arıtma Dönüş Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB31;1. Eşanjör Gidiş Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB32;1. Tank İçi Yıkama Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB33;2. Tank İçi Yıkama Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB34;3. Tank İçi Yıkama Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB35;Şebeke Suyu ile Durulama  Aktuatör Vanası Switch Box;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB36;Sepet Alma Kontrol Switch Box 1;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB37;Sepet Alma Kontrol Switch Box 2;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB38;1. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB39;2. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB40;1. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB41;2. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB42;1. Proses Hattı Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB43;2. Proses Hattı Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB44;Hat Temizleme Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB45;Egzos Hattı Aktüatör Vanası Switchbox;Saha aktüatör vanasının açık/kapalı konum geri bildirimini toplar ve PLC dijital giriş devresine iletir. İlgili aktüatör vanası, solenoid ve proses hattına bağlıdır.
+SWB46;1. Tank Otomatik Dolum Solenoid Vanası;Tanka otomatik dolum akışını açıp kapatır. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+SWB47;2. Tank Otomatik Dolum Solenoid Vanası;Tanka otomatik dolum akışını açıp kapatır. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+SW01;Hücre Kapak Açık Konumda Switchi;Kapak veya kapağın tam açık konumda olduğunu doğrular. Kapak pistonu/aktüatör ve PLC interlock devresine bağlıdır.
+SW02;Hücre Kapak Kapalı Konumda Switchi;Kapak veya kapağın tam kapalı konumda olduğunu doğrular. Kapak interlock ve PLC güvenlik devresine bağlıdır.
+SW03;1. Proses Tank Kapağı Açık Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW04;1. Proses Tank Kapağı Kapalı Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW05;2. Proses Tank Kapağı Açık Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW06;2. Proses Tank Kapağı Kapalı Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW07;3. Proses Tank Kapağı Açık Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW08;3. Proses Tank Kapağı Kapalı Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW09;4. Proses Tank Kapağı Açık Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW10;4. Proses Tank Kapağı Kapalı Konumda Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW11;Sepet 1. Pozisyon Switchi;Mekanik ekipmanın hedef pozisyonda olduğunu doğrular. İlgili tahrik ünitesi ve PLC dijital giriş devresine bağlıdır.
+SW12;Sepet 2. Pozisyon Switchi;Mekanik ekipmanın hedef pozisyonda olduğunu doğrular. İlgili tahrik ünitesi ve PLC dijital giriş devresine bağlıdır.
+SW13;1. Flow  Switchi;Hat akışının mevcut olup olmadığını algılar. Proses pompası, hat vanaları ve PLC dijital giriş devresine bağlıdır.
+SW14;2. Flow  Switchi;Hat akışının mevcut olup olmadığını algılar. Proses pompası, hat vanaları ve PLC dijital giriş devresine bağlıdır.
+SW15;3. Flow  Switchi;Hat akışının mevcut olup olmadığını algılar. Proses pompası, hat vanaları ve PLC dijital giriş devresine bağlıdır.
+SW16;4. Flow  Switchi;Hat akışının mevcut olup olmadığını algılar. Proses pompası, hat vanaları ve PLC dijital giriş devresine bağlıdır.
+SW17;xxx Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW18;Hücre Kapağı Kontrol Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW19;xxx Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+SW20;xxx Switchi;Mekanik konum veya durum geri bildirimi sağlar. İlgili ekipman ve PLC dijital giriş devresine bağlıdır.
+PPS01;Ana Hücre Kapak Pistonu Açık Sensörü;Ana hücre kapak pistonunun açık/kapalı konumunu algılar. Kapak piston vanası, interlock ve PLC güvenlik devresine bağlıdır.
+PPS02;Ana Hücre Kapak Pistonu Kapalı Sensörü;Ana hücre kapak pistonunun açık/kapalı konumunu algılar. Kapak piston vanası, interlock ve PLC güvenlik devresine bağlıdır.
+PPS03;1. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS04;1. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS05;1. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS06;1. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS07;2. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS08;2. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS09;2. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS10;2. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS11;Hücre Tahliye Pistonu Açık Sensörü;Hücre tahliye pistonunun konumunu algılar. Tahliye vanası, hücre drenaj hattı ve PLC dijital giriş devresine bağlıdır.
+PPS12;Hücre Tahliye Pistonu Kapalı Sensörü;Hücre tahliye pistonunun konumunu algılar. Tahliye vanası, hücre drenaj hattı ve PLC dijital giriş devresine bağlıdır.
+PPS13;1. Proses Tankı Lift Pistonu Açık Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS14;1. Proses Tankı Lift Pistonu Ara Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS15;1. Proses Tankı Lift Pistonu Kapalı Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS16;2. Proses Tankı Lift Pistonu Açık Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS17;2. Proses Tankı Lift Pistonu Ara Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS18;2. Proses Tankı Lift Pistonu Kapalı Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS19;3. Proses Tankı Lift Pistonu Açık Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS20;3. Proses Tankı Lift Pistonu Ara Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS21;3. Proses Tankı Lift Pistonu Kapalı Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS22;4. Proses Tankı Lift Pistonu Açık Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS23;4. Proses Tankı Lift Pistonu Ara Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS24;4. Proses Tankı Lift Pistonu Kapalı Sensörü;Proses tankı lift pistonunun açık, ara veya kapalı konumunu algılar. Lift piston vanası, tank mekanizması ve PLC dijital giriş devresine bağlıdır.
+PPS25;3. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS26;3. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS27;3. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS28;3. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS29;xxx Pistonu Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS30;xxx Pistonu Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS31;1. Tank Kapağı Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS32;1. Tank Kapağı Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS33;2. Tank Kapağı Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS34;2. Tank Kapağı Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS35;3. Tank Kapağı Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS36;3. Tank Kapağı Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+TC01;1. Proses Tankı Isı Ölçer;Proses tankı sıcaklığını ölçer ve ısı kontrol döngüsüne analog sinyal sağlar. Rezistans/ısıtma devresi ve PLC analog girişe bağlıdır.
+TC02;2. Proses Tankı Isı Ölçer;Proses tankı sıcaklığını ölçer ve ısı kontrol döngüsüne analog sinyal sağlar. Rezistans/ısıtma devresi ve PLC analog girişe bağlıdır.
+TC03;3. Proses Tankı Isı Ölçer;Proses tankı sıcaklığını ölçer ve ısı kontrol döngüsüne analog sinyal sağlar. Rezistans/ısıtma devresi ve PLC analog girişe bağlıdır.
+TC04;4. Proses Tankı Isı Ölçer;Proses tankı sıcaklığını ölçer ve ısı kontrol döngüsüne analog sinyal sağlar. Rezistans/ısıtma devresi ve PLC analog girişe bağlıdır.
+TC05;1. Kurutma Isı Ölçer;Kurutma hattı hava sıcaklığını ölçer ve PLC analog giriş devresine 4–20 mA sinyali iletir. Kurutma rezistansı, fan ve ısı kontrol devresine bağlıdır.
+TC06;2. Kurutma Isı Ölçer;Kurutma hattı hava sıcaklığını ölçer ve PLC analog giriş devresine 4–20 mA sinyali iletir. Kurutma rezistansı, fan ve ısı kontrol devresine bağlıdır.
+TC07;Hücre İçi Isı Ölçer;Hücre içi proses ortam sıcaklığını ölçer. PLC analog giriş ve ısı kontrol devresine bağlıdır.
+TC08;xxx Isı Ölçer;Proses ortam sıcaklığını ölçer. PLC analog giriş ve ısı kontrol devresine bağlıdır.
+TC09;xxx Isı Ölçer;Proses ortam sıcaklığını ölçer. PLC analog giriş ve ısı kontrol devresine bağlıdır.
+TC10;xxx Isı Ölçer;Proses ortam sıcaklığını ölçer. PLC analog giriş ve ısı kontrol devresine bağlıdır.
+PS01;1. Proses Pompası Basınç Sensörü ( 4-20 mA);"Proses pompası çıkış basıncını ölçer; düşük basınçta pompa koruma sinyali üretir. Pompa, emiş hattı ve PLC analog giriş devresine bağlıdır."
+PS02;2. Proses Pompası Basınç Sensörü ( 4-20 mA);"Proses pompası çıkış basıncını ölçer; düşük basınçta pompa koruma sinyali üretir. Pompa, emiş hattı ve PLC analog giriş devresine bağlıdır."
+PS03;3. Proses Pompası Basınç Sensörü ( 4-20 mA);"Proses pompası çıkış basıncını ölçer; düşük basınçta pompa koruma sinyali üretir. Pompa, emiş hattı ve PLC analog giriş devresine bağlıdır."
+PS04;4. Proses Pompası Basınç Sensörü ( 4-20 mA);"Proses pompası çıkış basıncını ölçer; düşük basınçta pompa koruma sinyali üretir. Pompa, emiş hattı ve PLC analog giriş devresine bağlıdır."
+PS05;Hücre İçi Vakum Sensörü  ( 4-20 mA);Hücre içi vakum basıncını ölçer ve PLC analog giriş devresine 4–20 mA sinyali iletir. Vakum pompası, emiş hattı ve proses kontrol devresine bağlıdır.
+PS06;Giriş Su Basınç Sensörü ( 4-20 mA);Besleme su hattı basıncını izler. Su besleme vanası, basınç şalteri ve PLC analog giriş devresine bağlıdır.
+PS07;Giriş Hava Basınç Sensörü ( 4-20 mA);Pnömatik hava hattı basıncını izler. Hava regülatörü, basınç şalteri ve PLC analog/dijital giriş devresine bağlıdır.
+PS08;1. Basınç Şalteri;Hat basıncının eşik üstü/altı durumunu anahtarlayarak dijital sinyal üretir. Basınç hattı ve PLC dijital giriş devresine bağlıdır.
+PS09;2. Basınç Şalteri;Hat basıncının eşik üstü/altı durumunu anahtarlayarak dijital sinyal üretir. Basınç hattı ve PLC dijital giriş devresine bağlıdır.
+PS10;xxxx Sensörü;Proses hattı basıncını ölçer veya izler. İlgili hat, pompa/vana ve PLC giriş devresine bağlıdır.
+PHS01;1. Proses Tankı pH Sensörü;Proses sıvısının pH değerini ölçer ve dozaj/ proses kontrol için PLC analog giriş devresine sinyal iletir. Dozaj pompası, karıştırma ve proses tankına bağlıdır.
+PHS02;2. Proses Tankı pH Sensörü;Proses sıvısının pH değerini ölçer ve dozaj/ proses kontrol için PLC analog giriş devresine sinyal iletir. Dozaj pompası, karıştırma ve proses tankına bağlıdır.
+PHS03;3. Proses Tankı pH Sensörü;Proses sıvısının pH değerini ölçer ve dozaj/ proses kontrol için PLC analog giriş devresine sinyal iletir. Dozaj pompası, karıştırma ve proses tankına bağlıdır.
+PHS04;4. Proses Tankı pH Sensörü;Proses sıvısının pH değerini ölçer ve dozaj/ proses kontrol için PLC analog giriş devresine sinyal iletir. Dozaj pompası, karıştırma ve proses tankına bağlıdır.
+PHS05;Yıkama Hattı pH Sensörü;Proses sıvısının pH değerini ölçer ve dozaj/ proses kontrol için PLC analog giriş devresine sinyal iletir. Dozaj pompası, karıştırma ve proses tankına bağlıdır.
+CS01;1. Proses Tankı İletkenlik Sensörü;"Proses sıvısının iletkenlik değerini ölçer; konsantrasyon ve dozaj kontrolü için PLC analog giriş devresine sinyal iletir. Proses tankı, dozaj ve yıkama hattına bağlıdır."
+CS02;2. Proses Tankı İletkenlik Sensörü;"Proses sıvısının iletkenlik değerini ölçer; konsantrasyon ve dozaj kontrolü için PLC analog giriş devresine sinyal iletir. Proses tankı, dozaj ve yıkama hattına bağlıdır."
+CS03;3. Proses Tankı İletkenlik Sensörü;"Proses sıvısının iletkenlik değerini ölçer; konsantrasyon ve dozaj kontrolü için PLC analog giriş devresine sinyal iletir. Proses tankı, dozaj ve yıkama hattına bağlıdır."
+CS04;4. Proses Tankı İletkenlik Sensörü;"Proses sıvısının iletkenlik değerini ölçer; konsantrasyon ve dozaj kontrolü için PLC analog giriş devresine sinyal iletir. Proses tankı, dozaj ve yıkama hattına bağlıdır."
+CS05;xxxx İletkenlik Sensörü;"Proses sıvısının iletkenlik değerini ölçer; konsantrasyon ve dozaj kontrolü için PLC analog giriş devresine sinyal iletir. Proses tankı, dozaj ve yıkama hattına bağlıdır."
+V01;1. Proses Pompa Emiş Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V02;2. Proses Pompa Emiş Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V03;3. Proses Pompa Emiş Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V04;4. Proses Pompa Emiş Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V05;Conta Şişirme Aktüator Vanası valfi;Kapak/conta şişirme veya söndürme hattında pnömatik akışı kontrol eder. Kapak pistonu, basınç regülatörü ve PLC dijital çıkış devresine bağlıdır.
+V06;Conta Söndürme Aktüator Vanası valfi;Kapak/conta şişirme veya söndürme hattında pnömatik akışı kontrol eder. Kapak pistonu, basınç regülatörü ve PLC dijital çıkış devresine bağlıdır.
+V07;1. Kurutma Hattı Aktüator Vanası valfi;Kurutma hattı hava/akış yönlendirmesini kontrol eder. Kurutma fanı, ısıtıcı ve PLC dijital çıkış devresine bağlıdır.
+V08;2. Kurutma Hattı Aktüator Vanası valfi;Kurutma hattı hava/akış yönlendirmesini kontrol eder. Kurutma fanı, ısıtıcı ve PLC dijital çıkış devresine bağlıdır.
+V09;Hücre Drenaj Aktüatör Vanası valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V10;Hücre Emiş Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V11;Proses Ana Geri Dönüş Aktüatör Vanası valfi;Proses geri dönüş hattında akış yönlendirme sağlar. Proses pompası, filtre ve PLC dijital çıkış devresine bağlıdır.
+V12;Hat Temizleme Aktüatör Vanası valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V13;By-Pass Hattı Aktüatör Vanası valfi;By-pass hattında akış yönlendirme ve filtre/devre izolasyonu sağlar. Ana proses hattı ve PLC dijital çıkış devresine bağlıdır.
+V14;Ana Yıkama Nozzle Aktüatör Vanası valfi;Ana yıkama nozul hattında sprey akışını açar/kapatır. Basma pompası, manifold ve PLC dijital çıkış devresine bağlıdır.
+V15;Emiş Kollektör Temizleme Aktüatör Vanası valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V16;1. Proses Geri Dönüş Aktüatör Vanası valfi;Proses geri dönüş hattında akış yönlendirme sağlar. Proses pompası, filtre ve PLC dijital çıkış devresine bağlıdır.
+V17;2. Proses Geri Dönüş Aktüatör Vanası valfi;Proses geri dönüş hattında akış yönlendirme sağlar. Proses pompası, filtre ve PLC dijital çıkış devresine bağlıdır.
+V18;3. Proses Geri Dönüş Aktüatör Vanası valfi;Proses geri dönüş hattında akış yönlendirme sağlar. Proses pompası, filtre ve PLC dijital çıkış devresine bağlıdır.
+V19;4. Proses Geri Dönüş Aktüatör Vanası valfi;Proses geri dönüş hattında akış yönlendirme sağlar. Proses pompası, filtre ve PLC dijital çıkış devresine bağlıdır.
+V20;1. Proses Tankı Oto. Dolum Aktüatör Vanası valfi;Proses tankına otomatik dolum akışını kontrol eder. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V21;2. Proses Tankı Oto. Dolum Aktüatör Vanası valfi;Proses tankına otomatik dolum akışını kontrol eder. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V22;3. Proses Tankı Oto. Dolum Aktüatör Vanası valfi;Proses tankına otomatik dolum akışını kontrol eder. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V23;4. Proses Tankı Oto. Dolum Aktüatör Vanası valfi;Proses tankına otomatik dolum akışını kontrol eder. Besleme hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V24;1. Proses Tankı Kaskat Aktüatör Vanası valfi;Tanklar arası kaskad dolum/aktarım akışını yönlendirir. Kaynak ve hedef tank, seviye sensörleri ve PLC devresine bağlıdır.
+V25;2. Proses Tankı Kaskat Aktüatör Vanası valfi;Tanklar arası kaskad dolum/aktarım akışını yönlendirir. Kaynak ve hedef tank, seviye sensörleri ve PLC devresine bağlıdır.
+V26;3. Proses Tankı Kaskat Aktüatör Vanası valfi;Tanklar arası kaskad dolum/aktarım akışını yönlendirir. Kaynak ve hedef tank, seviye sensörleri ve PLC devresine bağlıdır.
+V27;1. Tank Drenaj Aktuatör Vanası valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V28;2. Tank Drenaj Aktuatör Vanası valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V29;3. Tank Drenaj Aktuatör Vanası valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V30;Arıtma Dönüş Aktuatör Vanası valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V31;1. Proses Tankı Tahliye Vanası Aç Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V32;1. Proses Tankı Tahliye Vanası Kapat Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V33;2. Proses Tankı Tahliye Vanası Aç Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V34;2. Proses Tankı Tahliye Vanası Kapat Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V35;3. Proses Tankı Tahliye Vanası Aç Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V36;3. Proses Tankı Tahliye Vanası Kapat Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V37;4. Proses Tankı Tahliye Vanası Aç Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V38;4. Proses Tankı Tahliye Vanası Kapat Valfi;Tank veya hücre drenaj/tahliye hattında sıvı akışını kontrol eder. Drenaj hattı, seviye sensörü ve PLC dijital çıkış devresine bağlıdır.
+V39;Hücre Boşaltma Pistonu Vanası Aç Valf'i;İlgili tahliye veya piston vanasının açılma komutunu uygular. Pnömatik aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V40;Hücre Boşaltma Pistonu Vanası Kapat Valf'i;İlgili tahliye veya piston vanasının kapanma komutunu uygular. Pnömatik aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V41;Sepet Alma Kontrol Valfi 1;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V42;Sepet Alma Kontol Valfi 2;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V43;1. Process Tankı Kapak Pistonu Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V44;2. Process Tankı Kapak Pistonu Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V45;1. Process Tankı Kapak Pistonu Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V46;2. Process Tankı Kapak Pistonu Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V47;Ana Valf;"Ana proses akış yönlendirme vanasıdır; hat seçimi ve izolasyon sağlar. Ana proses hattı ve PLC dijital çıkış devresine bağlıdır."
+V48;Kapak Aç Valf'i;İlgili tahliye veya piston vanasının açılma komutunu uygular. Pnömatik aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V49;Kapak Kapat Valf'i;İlgili tahliye veya piston vanasının kapanma komutunu uygular. Pnömatik aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V50;1. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V51;2. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V52;3. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V53;4. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V54;1. Hücreden Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V55;2. Hücreden Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V56;3. Hücreden Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V57;4. Hücreden Pompaya Emiş Aktüatör Vanası Valfi;Emiş hattında akış yönlendirme ve izolasyon sağlar. Pompa emiş hattı, aktüatör, limit switch ve PLC dijital çıkış devresine bağlıdır.
+V58;Egzos Hattı Aktüatör Vanası Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V59;1. Proses Hattı Aktüatör Vanası Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V60;2. Proses Hattı Aktüatör Vanası Valfi;Proses hattında akış yönlendirme, izolasyon veya kontrol sağlar. İlgili hat, aktüatör/solenoid ve PLC dijital çıkış devresine bağlıdır.
+V61;1. Tank Sepet Kaldırma Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V62;1. Tank Sepet İndirme Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V63;2. Tank Sepet Kaldırma Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V64;2. Tank Sepet İndirme Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V65;3. Tank Sepet Kaldırma Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V66;3. Tank Sepet İndirme Valfi;Tank sepetinin kaldırma/indirme hareketi için pnömatik komutu uygular. Sepet pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V67;1. Tank Kapağı Açma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V68;1. Tank Kapağı Kapatma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V69;2. Tank Kapağı Açma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V70;2. Tank Kapağı Kapatma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V71;3. Tank Kapağı Açma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.
+V72;3. Tank Kapağı Kapatma Valfi;Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve PLC dijital çıkış devresine bağlıdır.

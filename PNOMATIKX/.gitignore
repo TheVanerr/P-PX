@@ -1,0 +1,8 @@
+node_modules/
+.cursor/
+*.log
+.DS_Store
+Thumbs.db
+*.crswap
+# Önizleme dosyası P&IDX makine kayıtlarını içerir: depoya eklenmez
+onizleme*.html

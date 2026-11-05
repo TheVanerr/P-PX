@@ -1,0 +1,11 @@
+node_modules/
+.cursor/
+*.log
+.DS_Store
+Thumbs.db
+ML/*.tmp
+*.crswap
+# STEP dosyalari GitHub limitini asabilir
+P&ID/projects/*/step/*
+!P&ID/projects/*/step/.gitkeep
+.web-build/

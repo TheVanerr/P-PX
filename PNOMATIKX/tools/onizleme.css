@@ -1,0 +1,64 @@
+/* Önizleme dosyası: bilgi şeridi ve dar ekran düzeni (programın kendi temasına eklenir). */
+
+:root { color-scheme: dark; }
+
+.pnx-preview-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 10px 16px 0;
+  padding: 8px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--info);
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.pnx-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #9cc3ff; }
+.pnx-text { flex: 1 1 420px; min-width: 0; color: var(--muted); }
+.pnx-text b { color: var(--text); font-weight: 600; }
+
+/* Dar ekran: paneller çizimin altına iner, sayfa dikey kayar, yatay kaydırma olmaz */
+@media (max-width: 1000px) {
+  html, body { height: auto; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+  .home { height: auto; min-height: 100%; overflow: visible; }
+  .home-bar { flex-wrap: wrap; gap: 12px; padding: 14px 16px; }
+  .home-actions { margin-left: 0; flex-wrap: wrap; }
+  .home-nav { flex-wrap: wrap; padding: 0 16px; }
+  .home-folder { max-width: 100%; }
+  .pid-link-bar { flex-wrap: wrap; margin: 10px 16px 0; }
+  .project-list { padding: 16px; grid-template-columns: minmax(0, 1fr); overflow: visible; }
+  .pid-page { height: auto; padding: 12px 16px; }
+  .pid-grid { grid-template-columns: minmax(0, 1fr); }
+  .ml-codes-page { padding: 12px 16px; min-height: 70vh; }
+  .ml-filters { grid-template-columns: minmax(0, 1fr); }
+  .ml-table-wrap { max-height: 70vh; }
+
+  .app {
+    height: auto;
+    min-height: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 62vh auto auto auto auto;
+    grid-template-areas: 'top' 'canvas' 'bottom' 'dock' 'left' 'right';
+  }
+  .topbar { flex-wrap: wrap; row-gap: 6px; padding: 6px 8px; }
+  .topbar .tb-spacer { display: none; }
+  .tb-project { flex: 1 1 160px; min-width: 0; max-width: none; }
+  .tb-group { flex-wrap: wrap; }
+  .left-panel, .right-panel { max-height: 75vh; border: none; border-top: 1px solid var(--line); }
+  .bottombar { flex-wrap: wrap; height: auto; min-height: 34px; padding: 4px 8px; gap: 6px 10px; }
+  .dock-tabs { flex-wrap: wrap; }
+
+  .modal { width: auto; max-width: calc(100vw - 32px); max-height: calc(100vh - 32px); overflow: auto; }
+  .modal.gen-modal { width: calc(100vw - 24px); }
+  .gen-supply .field-input { max-width: 100%; }
+
+  .cs-bar { flex-wrap: wrap; }
+  .cs-actions { flex-wrap: wrap; flex-shrink: 1; }
+  .rs-toggles { flex-wrap: wrap; }
+  .cs-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-body { grid-template-columns: minmax(0, 1fr); }
+  .cs-rail { display: none; }
+}

@@ -1,0 +1,57 @@
+# P&PX
+
+P&ID ve pnömatik çizim programları, tek veritabanı. Veritabanı özel bir GitHub deposudur: ücretsizdir, sunucu ve kurulum gerektirmez, her kayıt geçmişte durur. Pnömatik, P&ID verisini klasör bağlamadan okur.
+
+## Başlatma
+
+`index.html` dosyasını **Chrome veya Edge** ile açın (çift tık). Sunucu ya da yayın adresi yoktur.
+
+İlk açılışta ekrandaki üç adımı izleyin (yaklaşık 3 dakika):
+
+1. Özel depo oluşturun. Bağlantı adı (`ppx-veri`) ve görünürlüğü hazır getirir.
+2. Erişim anahtarı oluşturun. "Only select repositories" altında yalnız bu depoyu seçin.
+3. Anahtarı ana ekrana yapıştırıp **Bağlan** deyin. Ardından **Klasörden aktar** ile P&PX klasörünü seçin.
+
+Başka bir bilgisayarda: program klasörünü kopyalayın ya da git ile alın, `index.html` dosyasını açın, aynı depo ve anahtarla bağlanın. Veriler kendiliğinden gelir. Veri ve program ayrı durur.
+
+GitHub'a bağlanmadan denemek için ekrandaki **Şimdilik yalnız bu bilgisayarda kullan** seçilir; sonradan bağlanınca yapılanlar depoya gönderilir.
+
+Kurulum yapılmamış bir tarayıcıda programlar eskisi gibi klasör izniyle çalışır. Kurulum yapıldıktan sonra `P-IDX` ve `PNOMATIKX` klasörlerindeki veri dosyaları kullanılmaz, güncel veri depodadır.
+
+## Klasörler
+
+| Yol | İçerik |
+|---|---|
+| `index.html` | Ana ekran: programlar, depo bağlantısı, aktarma, yedek |
+| `P-IDX/`, `PNOMATIKX/` | İki program |
+| `ortak/` | Veritabanı (`ppx-db.js`), GitHub bağlantısı (`ppx-github.js`), klasör görünümü (`ppx-fs.js`), açılış (`ppx-boot.js`) |
+| `test/` | Ortak katman testleri |
+| `_yedek/` | Birleştirme öncesi PNOMATIKX yedeği |
+| `FARKLAR.md` | İki programın farkları ve kalan işler |
+
+## Kayıt nasıl çalışır
+
+- Çizim her değişiklikte önce bu cihazın tarayıcı veritabanına yazılır, internet kesilse de kaybolmaz.
+- Değişenler en geç 1 dakikada bir, sayfadan çıkarken ve sayfa açılırken tek commit olarak depoya gönderilir. Ana ekrandaki **Şimdi eşitle** beklemeden gönderir.
+- Sayfa kapanırken gönderim yarım kalırsa kayıt cihazda bekler, sonraki açılışta gider. Hemen başka bilgisayara geçecekseniz önce eşitleyin.
+- İki cihazda aynı dosya değişirse yeni olan asıl dosya olur, eskisi yanında `.catisma-<tarih>` adıyla saklanır. Silme ile düzenleme karşılaşırsa düzenleme kalır.
+- Depoda dosyalar programdaki gibi durur (`P&ID/projects/...`, `ML/kayitlar/...`). Eski bir sürüm GitHub'daki geçmişten alınabilir. Ana ekrandaki **Yedek indir** de tüm veriyi tek dosyaya alır.
+
+## Depo sınırları
+
+Veriler küçük olduğu için bu sınırlara yaklaşılmaz: istek hızı en çok dakikada 3 yazma isteğidir (GitHub sınırı dakikada 80, saatte 500), tek dosya sınırı 100 MB. Sınıra takılan kayıt cihazda bekler, sonra kendiliğinden gönderilir.
+
+## Sınırlar
+
+- **Girdi dosyaları:** Elektrik, Layout, PLC ve Katalog klasörlerindeki dosyalar aktarılır, ancak veritabanı modunda yeni dosya ekleme düğmesi henüz yok. STEP dosyaları ve 5 MB üstü dosyalar aktarılmaz, bilgisayarda kalır.
+- **Çıktılar:** PDF, SVG ve Excel proje klasörüne değil, İndirilenler'e ya da seçilen yere kaydedilir.
+- **Erişim anahtarı:** Yalnız bu tarayıcıda saklanır, ancak bilgisayarda açtığınız başka bir yerel HTML dosyası da onu okuyabilir. Bu yüzden anahtar yalnız `ppx-veri` deposuna izinli olmalıdır; bilinmeyen HTML dosyalarını bu tarayıcıda açmayın. Süresi dolunca ana ekrandan yenilenir.
+- **Özel depo zorunlu:** Herkese açık depoya bağlanılmaz, çünkü müşteri verisi içerir.
+
+## Test
+
+```
+npm test
+```
+
+Üç paketi de çalıştırır: ortak katman, P&ID, pnömatik.

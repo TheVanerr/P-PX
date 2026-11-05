@@ -1,0 +1,1676 @@
+{
+  "kodlar": [
+    {
+      "kod": "PE01",
+      "aciklama": "Ön Yıkama Pompa Motoru"
+    },
+    {
+      "kod": "PE02",
+      "aciklama": "Yıkama Pompa Motoru"
+    },
+    {
+      "kod": "PE03",
+      "aciklama": "Ön Durulama Pompa Motoru"
+    },
+    {
+      "kod": "PE04",
+      "aciklama": "Durulama Pompa Motoru"
+    },
+    {
+      "kod": "PE05",
+      "aciklama": "Otomatik Drenaj Pompası Motoru"
+    },
+    {
+      "kod": "PE06",
+      "aciklama": "Vakum Pompası Motoru"
+    },
+    {
+      "kod": "PE07",
+      "aciklama": "Hücre Boşaltma Pompası Motoru"
+    },
+    {
+      "kod": "PE08",
+      "aciklama": "Arıtma Gidiş Pompası Motoru"
+    },
+    {
+      "kod": "PE09",
+      "aciklama": "Arıtma Dönüş Pompası Motoru"
+    },
+    {
+      "kod": "PE10",
+      "aciklama": "1.  Dozaj Pompası"
+    },
+    {
+      "kod": "PE11",
+      "aciklama": "2.  Dozaj Pompası"
+    },
+    {
+      "kod": "PE12",
+      "aciklama": "3.  Dozaj Pompası"
+    },
+    {
+      "kod": "PE13",
+      "aciklama": "Hassas Filre Pompası Motoru"
+    },
+    {
+      "kod": "PE14",
+      "aciklama": "Yağ Ayırıcı Pompası Motoru"
+    },
+    {
+      "kod": "PE15",
+      "aciklama": "xxx Pompası Motoru"
+    },
+    {
+      "kod": "FE01",
+      "aciklama": "Egzost Fanı Motoru"
+    },
+    {
+      "kod": "FE02",
+      "aciklama": "1. Kurutma Fanı Motoru"
+    },
+    {
+      "kod": "FE03",
+      "aciklama": "2. Kurutma Fanı Motoru"
+    },
+    {
+      "kod": "FE04",
+      "aciklama": "1. Blower Motoru"
+    },
+    {
+      "kod": "FE05",
+      "aciklama": "2. Blower Motoru"
+    },
+    {
+      "kod": "FE06",
+      "aciklama": "3. Blower Motoru"
+    },
+    {
+      "kod": "FE07",
+      "aciklama": "4. Blower Motoru"
+    },
+    {
+      "kod": "FE08",
+      "aciklama": "xxx Fan Motoru"
+    },
+    {
+      "kod": "FE09",
+      "aciklama": "xxx Fan Motoru"
+    },
+    {
+      "kod": "FE10",
+      "aciklama": "xxx Fan Motoru"
+    },
+    {
+      "kod": "VE01",
+      "aciklama": "1. Vibrasyon  Motoru"
+    },
+    {
+      "kod": "VE02",
+      "aciklama": "2. Vibrasyon  Motoru"
+    },
+    {
+      "kod": "VE03",
+      "aciklama": "Vibrasyon xxx Motoru"
+    },
+    {
+      "kod": "VE04",
+      "aciklama": "Vibrasyon xxx Motoru"
+    },
+    {
+      "kod": "VE05",
+      "aciklama": "Vibrasyon xxx Motoru"
+    },
+    {
+      "kod": "GE01",
+      "aciklama": "Sepet Redüktörü Motoru"
+    },
+    {
+      "kod": "GE02",
+      "aciklama": "Tambur Redüktör Motoru"
+    },
+    {
+      "kod": "GE03",
+      "aciklama": "Otomatik Yükleme Motoru"
+    },
+    {
+      "kod": "GE04",
+      "aciklama": "Kapı Redüktör Motoru"
+    },
+    {
+      "kod": "GE05",
+      "aciklama": "1. Konveyör  Redüktör Motoru"
+    },
+    {
+      "kod": "GE06",
+      "aciklama": "1. Yağ Sıyırıcı Redüktör Motoru"
+    },
+    {
+      "kod": "GE07",
+      "aciklama": "2. Yağ Sıyırıcı Redüktör Motoru"
+    },
+    {
+      "kod": "GE08",
+      "aciklama": "1. Yükleme( Konveyör) Redüktör Motoru"
+    },
+    {
+      "kod": "GE09",
+      "aciklama": "2. Yükleme (Konveyör) Redüktör Motoru"
+    },
+    {
+      "kod": "GE10",
+      "aciklama": "xxx Redüktör Motoru"
+    },
+    {
+      "kod": "R01",
+      "aciklama": "1. Proses Tankı 1. Rezistans"
+    },
+    {
+      "kod": "R02",
+      "aciklama": "1. Proses Tankı 2. Rezistans"
+    },
+    {
+      "kod": "R03",
+      "aciklama": "1. Proses Tankı 3. Rezistans"
+    },
+    {
+      "kod": "R04",
+      "aciklama": "1. Proses Tank 4. Rezistans"
+    },
+    {
+      "kod": "R05",
+      "aciklama": "1. Proses Tankı 5. Rezistans"
+    },
+    {
+      "kod": "R06",
+      "aciklama": "2. Proses Tankı 1. Rezistans"
+    },
+    {
+      "kod": "R07",
+      "aciklama": "2. Proses Tankı 2. Rezistans"
+    },
+    {
+      "kod": "R08",
+      "aciklama": "2. Proses Tankı 3. Rezistans"
+    },
+    {
+      "kod": "R09",
+      "aciklama": "2. Proses Tankı 4. Rezistans"
+    },
+    {
+      "kod": "R10",
+      "aciklama": "2. Proses Tankı 5. Rezistans"
+    },
+    {
+      "kod": "R11",
+      "aciklama": "3. Proses Tankı 1. Rezistans"
+    },
+    {
+      "kod": "R12",
+      "aciklama": "3. Proses Tankı 2. Rezistans"
+    },
+    {
+      "kod": "R13",
+      "aciklama": "3. Proses Tankı 3. Rezistans"
+    },
+    {
+      "kod": "R14",
+      "aciklama": "3. Proses Tankı 4. Rezistans"
+    },
+    {
+      "kod": "R15",
+      "aciklama": "3. Proses Tankı 5. Rezistans"
+    },
+    {
+      "kod": "R16",
+      "aciklama": "4. Proses Tankı 1. Rezistans"
+    },
+    {
+      "kod": "R17",
+      "aciklama": "4. Proses Tankı 2. Rezistans"
+    },
+    {
+      "kod": "R18",
+      "aciklama": "4. Proses Tankı 3. Rezistans"
+    },
+    {
+      "kod": "R19",
+      "aciklama": "4. Proses Tankı 4. Rezistans"
+    },
+    {
+      "kod": "R20",
+      "aciklama": "4. Proses Tankı 5. Rezistans"
+    },
+    {
+      "kod": "R21",
+      "aciklama": "1. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R22",
+      "aciklama": "2. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R23",
+      "aciklama": "3. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R24",
+      "aciklama": "4. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R25",
+      "aciklama": "5. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R26",
+      "aciklama": "6. Kurutma Rezistansı Grubu"
+    },
+    {
+      "kod": "R27",
+      "aciklama": "xxx Rezistansı"
+    },
+    {
+      "kod": "R28",
+      "aciklama": "xxx Rezistansı"
+    },
+    {
+      "kod": "R29",
+      "aciklama": "xxx Rezistansı"
+    },
+    {
+      "kod": "R30",
+      "aciklama": "xxx Rezistansı"
+    },
+    {
+      "kod": "INV01",
+      "aciklama": "Sepet Redüktörü İnvertörü"
+    },
+    {
+      "kod": "INV02",
+      "aciklama": "Tambur Redüktör İnvertörü"
+    },
+    {
+      "kod": "INV03",
+      "aciklama": "1. Konveyör Redüktör İnvertörü"
+    },
+    {
+      "kod": "INV04",
+      "aciklama": "1.Taşıma Konveyörü İnvertörü"
+    },
+    {
+      "kod": "INV05",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "INV06",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "INV07",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "INV08",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "INV09",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "INV10",
+      "aciklama": "xxx İnvertörü"
+    },
+    {
+      "kod": "BR01",
+      "aciklama": "1. Proses Tankı Brülörü"
+    },
+    {
+      "kod": "BR02",
+      "aciklama": "2. Proses Tankı Brülörü"
+    },
+    {
+      "kod": "BR03",
+      "aciklama": "3. Proses Tankı Brülörü"
+    },
+    {
+      "kod": "BR04",
+      "aciklama": "4. Proses Tankı Brülörü"
+    },
+    {
+      "kod": "BR05",
+      "aciklama": "Kurutma Brülörü"
+    },
+    {
+      "kod": "TD01",
+      "aciklama": "1.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD02",
+      "aciklama": "2.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD03",
+      "aciklama": "3.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD04",
+      "aciklama": "4.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD05",
+      "aciklama": "5.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD06",
+      "aciklama": "6.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD07",
+      "aciklama": "7.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD08",
+      "aciklama": "8.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD09",
+      "aciklama": "9.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "TD10",
+      "aciklama": "10.  Proses Tankı Ultrasonik Jeneratör Seti"
+    },
+    {
+      "kod": "L01",
+      "aciklama": "Tepe Lambası - Uyarı Lambası"
+    },
+    {
+      "kod": "L02",
+      "aciklama": "Hücre İçi Aydınlatma Lambası"
+    },
+    {
+      "kod": "L03",
+      "aciklama": "Pano Lambası"
+    },
+    {
+      "kod": "L04",
+      "aciklama": "xxx Lambası"
+    },
+    {
+      "kod": "L05",
+      "aciklama": "xxx Lambası"
+    },
+    {
+      "kod": "T01",
+      "aciklama": "1. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T02",
+      "aciklama": "2. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T03",
+      "aciklama": "3. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T04",
+      "aciklama": "4. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T05",
+      "aciklama": "5. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T06",
+      "aciklama": "6. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T07",
+      "aciklama": "7. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T08",
+      "aciklama": "8. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T09",
+      "aciklama": "9. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T10",
+      "aciklama": "10. Pompa  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T11",
+      "aciklama": "1. Fan   Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T12",
+      "aciklama": "2. Fan   Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T13",
+      "aciklama": "3. Fan   Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T14",
+      "aciklama": "4. Fan   Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T15",
+      "aciklama": "5. Fan   Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T16",
+      "aciklama": "1. Vibrasyon  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T17",
+      "aciklama": "2. Vibrasyon  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T18",
+      "aciklama": "3. Vibrasyon  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T19",
+      "aciklama": "4. Vibrasyon  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T20",
+      "aciklama": "5. Vibrasyon  Motoru  Termik/MKŞ"
+    },
+    {
+      "kod": "T21",
+      "aciklama": "1. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T22",
+      "aciklama": "2. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T23",
+      "aciklama": "3. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T24",
+      "aciklama": "4. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T25",
+      "aciklama": "5. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T26",
+      "aciklama": "6. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T27",
+      "aciklama": "7. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T28",
+      "aciklama": "8. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T29",
+      "aciklama": "9. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "T30",
+      "aciklama": "10. Redüktör  Motoru Termik/MKŞ"
+    },
+    {
+      "kod": "LS01",
+      "aciklama": "1. Proses Tankı Alt Seviye Sensörü"
+    },
+    {
+      "kod": "LS02",
+      "aciklama": "1. Proses Tankı Orta Seviye Sensörü"
+    },
+    {
+      "kod": "LS03",
+      "aciklama": "1. Proses Tankı Üst Seviye Sensörü"
+    },
+    {
+      "kod": "LS04",
+      "aciklama": "2. Proses Tankı Alt Seviye Sensörü"
+    },
+    {
+      "kod": "LS05",
+      "aciklama": "2. Proses Tankı Orta Seviye Sensörü"
+    },
+    {
+      "kod": "LS06",
+      "aciklama": "2. Proses Tankı Üst Seviye Sensörü"
+    },
+    {
+      "kod": "LS07",
+      "aciklama": "3. Proses Tankı Alt Seviye Sensörü"
+    },
+    {
+      "kod": "LS08",
+      "aciklama": "3. Proses Tankı Orta Seviye Sensörü"
+    },
+    {
+      "kod": "LS09",
+      "aciklama": "3. Proses Tankı Üst Seviye Sensörü"
+    },
+    {
+      "kod": "LS10",
+      "aciklama": "4. Proses Tankı Alt Seviye Sensörü"
+    },
+    {
+      "kod": "LS11",
+      "aciklama": "4. Proses Tankı Orta Seviye Sensörü"
+    },
+    {
+      "kod": "LS12",
+      "aciklama": "4. Proses Tankı Üst Seviye Sensörü"
+    },
+    {
+      "kod": "LS13",
+      "aciklama": "Hücre İçi 1. Seviye Sensörü"
+    },
+    {
+      "kod": "LS14",
+      "aciklama": "Hücre İçi 2. Seviye Sensörü"
+    },
+    {
+      "kod": "LS15",
+      "aciklama": "Hücre İçi 3. Seviye Sensörü"
+    },
+    {
+      "kod": "LS16",
+      "aciklama": "Hücre İçi 4. Seviye Sensörü"
+    },
+    {
+      "kod": "LS17",
+      "aciklama": "Drenaj Hattı 1. Seviye Sensörü"
+    },
+    {
+      "kod": "LS18",
+      "aciklama": "Drenaj Hattı 2. Seviye Sensörü"
+    },
+    {
+      "kod": "LS19",
+      "aciklama": "Drenaj Hattı 3. Seviye Sensörü"
+    },
+    {
+      "kod": "LS20",
+      "aciklama": "Drenaj Hattı 4. Seviye Sensörü"
+    },
+    {
+      "kod": "LS21",
+      "aciklama": "Vakum Pompası Tank Üst Seviye Sensörü"
+    },
+    {
+      "kod": "LS22",
+      "aciklama": "Vakum Pompası Tank Alt Seviye Sensörü"
+    },
+    {
+      "kod": "LS23",
+      "aciklama": "1. Dozaj Pompası Seviye Sensörü"
+    },
+    {
+      "kod": "LS24",
+      "aciklama": "2. Dozaj Pompası Seviye Sensörü"
+    },
+    {
+      "kod": "LS25",
+      "aciklama": "3. Dozaj Pompası Seviye Sensörü"
+    },
+    {
+      "kod": "LS26",
+      "aciklama": "Sızıntı Tavası Uyarı Seviye Sensörü"
+    },
+    {
+      "kod": "LS27",
+      "aciklama": "xxx Seviye Sensörü"
+    },
+    {
+      "kod": "LS28",
+      "aciklama": "xxx Seviye Sensörü"
+    },
+    {
+      "kod": "LS29",
+      "aciklama": "xxx Seviye Sensörü"
+    },
+    {
+      "kod": "LS30",
+      "aciklama": "xxx Seviye Sensörü"
+    },
+    {
+      "kod": "SS01",
+      "aciklama": "El Koruma Sensörü"
+    },
+    {
+      "kod": "SS02",
+      "aciklama": "Interlock Kilit"
+    },
+    {
+      "kod": "SS03",
+      "aciklama": "Işın Bariyeri Safety Sensörü"
+    },
+    {
+      "kod": "SS04",
+      "aciklama": "İnterlock Kilit Sensörü"
+    },
+    {
+      "kod": "SS05",
+      "aciklama": "1. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS06",
+      "aciklama": "2. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS07",
+      "aciklama": "3. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS08",
+      "aciklama": "4. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS09",
+      "aciklama": "5. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS10",
+      "aciklama": "6. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "SS11",
+      "aciklama": "7. KAPAK RFID SENSÖRÜ"
+    },
+    {
+      "kod": "PRS01",
+      "aciklama": "Sepet Pozisyon 1 Sensörü"
+    },
+    {
+      "kod": "PRS02",
+      "aciklama": "Sepet Pozisyon 2 Sensörü"
+    },
+    {
+      "kod": "PRS03",
+      "aciklama": "1. Konveyör Giriş Prox Sensörü"
+    },
+    {
+      "kod": "PRS04",
+      "aciklama": "2. Konveyör Giriş Prox Sensörü"
+    },
+    {
+      "kod": "PRS05",
+      "aciklama": "3. Konveyör Giriş Prox Sensörü"
+    },
+    {
+      "kod": "PRS06",
+      "aciklama": "1. Konveyör Çıkış Prox Sensörü"
+    },
+    {
+      "kod": "PRS07",
+      "aciklama": "2. Konveyör Çıkış Prox Sensörü"
+    },
+    {
+      "kod": "PRS08",
+      "aciklama": "3. Konveyör Çıkış Prox Sensörü"
+    },
+    {
+      "kod": "PRS09",
+      "aciklama": "xxx Prox Sensörü"
+    },
+    {
+      "kod": "PRS10",
+      "aciklama": "xxx Prox Sensörü"
+    },
+    {
+      "kod": "SWB01",
+      "aciklama": "1. Proses Pompa Emiş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB02",
+      "aciklama": "2. Proses Pompa Emiş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB03",
+      "aciklama": "3. Proses Pompa Emiş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB04",
+      "aciklama": "4. Proses Pompa Emiş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB05",
+      "aciklama": "Conta Şişirme Aktüator Vanası Switch Box"
+    },
+    {
+      "kod": "SWB06",
+      "aciklama": "Conta Söndürme Aktüator Vanası Switch Box"
+    },
+    {
+      "kod": "SWB07",
+      "aciklama": "1. Kurutma Hattı Aktüator Vanası Switch Box"
+    },
+    {
+      "kod": "SWB08",
+      "aciklama": "2. Kurutma Hattı Aktüator Vanası Switch Box"
+    },
+    {
+      "kod": "SWB09",
+      "aciklama": "Hücre Drenaj Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB10",
+      "aciklama": "Hücre Emiş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB11",
+      "aciklama": "Proses Ana Geri Dönüş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB12",
+      "aciklama": "Hat Temizleme Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB13",
+      "aciklama": "By-Pass Hattı Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB14",
+      "aciklama": "Ana Yıkama Nozul Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB15",
+      "aciklama": "Emiş Kollektör Temizleme Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB16",
+      "aciklama": "1. Proses Geri Dönüş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB17",
+      "aciklama": "2. Proses Geri Dönüş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB18",
+      "aciklama": "3. Proses Geri Dönüş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB19",
+      "aciklama": "4. Proses Geri Dönüş Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB20",
+      "aciklama": "1. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB21",
+      "aciklama": "2. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB22",
+      "aciklama": "3. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB23",
+      "aciklama": "4. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB24",
+      "aciklama": "1. Proses Tankı Kaskat Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB25",
+      "aciklama": "2. Proses Tankı Kaskat Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB26",
+      "aciklama": "3. Proses Tankı Kaskat Aktüatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB27",
+      "aciklama": "1. Tank Drenaj Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB28",
+      "aciklama": "2. Tank Drenaj Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB29",
+      "aciklama": "3. Tank Drenaj Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB30",
+      "aciklama": "Arıtma Dönüş Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB31",
+      "aciklama": "1. Eşanjör Gidiş Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB32",
+      "aciklama": "1. Tank İçi Yıkama Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB33",
+      "aciklama": "2. Tank İçi Yıkama Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB34",
+      "aciklama": "3. Tank İçi Yıkama Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB35",
+      "aciklama": "Şebeke Suyu ile Durulama  Aktuatör Vanası Switch Box"
+    },
+    {
+      "kod": "SWB36",
+      "aciklama": "Sepet Alma Kontrol Switch Box 1"
+    },
+    {
+      "kod": "SWB37",
+      "aciklama": "Sepet Alma Kontrol Switch Box 2"
+    },
+    {
+      "kod": "SWB38",
+      "aciklama": "1. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB39",
+      "aciklama": "2. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB40",
+      "aciklama": "1. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB41",
+      "aciklama": "2. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB42",
+      "aciklama": "1. Proses Hattı Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB43",
+      "aciklama": "2. Proses Hattı Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB44",
+      "aciklama": "Hat Temizleme Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB45",
+      "aciklama": "Egzos Hattı Aktüatör Vanası Switchbox"
+    },
+    {
+      "kod": "SWB46",
+      "aciklama": "1. Tank Otomatik Dolum Solenoid Vanası"
+    },
+    {
+      "kod": "SWB47",
+      "aciklama": "2. Tank Otomatik Dolum Solenoid Vanası"
+    },
+    {
+      "kod": "SW01",
+      "aciklama": "Hücre Kapak Açık Konumda Switchi"
+    },
+    {
+      "kod": "SW02",
+      "aciklama": "Hücre Kapak Kapalı Konumda Switchi"
+    },
+    {
+      "kod": "SW03",
+      "aciklama": "1. Proses Tank Kapağı Açık Konumda Switchi"
+    },
+    {
+      "kod": "SW04",
+      "aciklama": "1. Proses Tank Kapağı Kapalı Konumda Switchi"
+    },
+    {
+      "kod": "SW05",
+      "aciklama": "2. Proses Tank Kapağı Açık Konumda Switchi"
+    },
+    {
+      "kod": "SW06",
+      "aciklama": "2. Proses Tank Kapağı Kapalı Konumda Switchi"
+    },
+    {
+      "kod": "SW07",
+      "aciklama": "3. Proses Tank Kapağı Açık Konumda Switchi"
+    },
+    {
+      "kod": "SW08",
+      "aciklama": "3. Proses Tank Kapağı Kapalı Konumda Switchi"
+    },
+    {
+      "kod": "SW09",
+      "aciklama": "4. Proses Tank Kapağı Açık Konumda Switchi"
+    },
+    {
+      "kod": "SW10",
+      "aciklama": "4. Proses Tank Kapağı Kapalı Konumda Switchi"
+    },
+    {
+      "kod": "SW11",
+      "aciklama": "Sepet 1. Pozisyon Switchi"
+    },
+    {
+      "kod": "SW12",
+      "aciklama": "Sepet 2. Pozisyon Switchi"
+    },
+    {
+      "kod": "SW13",
+      "aciklama": "1. Flow  Switchi"
+    },
+    {
+      "kod": "SW14",
+      "aciklama": "2. Flow  Switchi"
+    },
+    {
+      "kod": "SW15",
+      "aciklama": "3. Flow  Switchi"
+    },
+    {
+      "kod": "SW16",
+      "aciklama": "4. Flow  Switchi"
+    },
+    {
+      "kod": "SW17",
+      "aciklama": "xxx Switchi"
+    },
+    {
+      "kod": "SW18",
+      "aciklama": "Hücre Kapağı Kontrol Switchi"
+    },
+    {
+      "kod": "SW19",
+      "aciklama": "xxx Switchi"
+    },
+    {
+      "kod": "SW20",
+      "aciklama": "xxx Switchi"
+    },
+    {
+      "kod": "PPS01",
+      "aciklama": "Ana Hücre Kapak Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS02",
+      "aciklama": "Ana Hücre Kapak Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS03",
+      "aciklama": "1. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS04",
+      "aciklama": "1. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS05",
+      "aciklama": "1. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS06",
+      "aciklama": "1. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS07",
+      "aciklama": "2. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS08",
+      "aciklama": "2. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS09",
+      "aciklama": "2. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS10",
+      "aciklama": "2. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS11",
+      "aciklama": "Hücre Tahliye Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS12",
+      "aciklama": "Hücre Tahliye Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS13",
+      "aciklama": "1. Proses Tankı Lift Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS14",
+      "aciklama": "1. Proses Tankı Lift Pistonu Ara Sensörü"
+    },
+    {
+      "kod": "PPS15",
+      "aciklama": "1. Proses Tankı Lift Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS16",
+      "aciklama": "2. Proses Tankı Lift Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS17",
+      "aciklama": "2. Proses Tankı Lift Pistonu Ara Sensörü"
+    },
+    {
+      "kod": "PPS18",
+      "aciklama": "2. Proses Tankı Lift Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS19",
+      "aciklama": "3. Proses Tankı Lift Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS20",
+      "aciklama": "3. Proses Tankı Lift Pistonu Ara Sensörü"
+    },
+    {
+      "kod": "PPS21",
+      "aciklama": "3. Proses Tankı Lift Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS22",
+      "aciklama": "4. Proses Tankı Lift Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS23",
+      "aciklama": "4. Proses Tankı Lift Pistonu Ara Sensörü"
+    },
+    {
+      "kod": "PPS24",
+      "aciklama": "4. Proses Tankı Lift Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS25",
+      "aciklama": "3. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS26",
+      "aciklama": "3. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS27",
+      "aciklama": "3. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS28",
+      "aciklama": "3. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS29",
+      "aciklama": "xxx Pistonu Açık Sensörü"
+    },
+    {
+      "kod": "PPS30",
+      "aciklama": "xxx Pistonu Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS31",
+      "aciklama": "1. Tank Kapağı Açık Sensörü"
+    },
+    {
+      "kod": "PPS32",
+      "aciklama": "1. Tank Kapağı Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS33",
+      "aciklama": "2. Tank Kapağı Açık Sensörü"
+    },
+    {
+      "kod": "PPS34",
+      "aciklama": "2. Tank Kapağı Kapalı Sensörü"
+    },
+    {
+      "kod": "PPS35",
+      "aciklama": "3. Tank Kapağı Açık Sensörü"
+    },
+    {
+      "kod": "PPS36",
+      "aciklama": "3. Tank Kapağı Kapalı Sensörü"
+    },
+    {
+      "kod": "F01",
+      "aciklama": "Ana Sigorta"
+    },
+    {
+      "kod": "F02",
+      "aciklama": "1. Bölge Sigorta"
+    },
+    {
+      "kod": "F03",
+      "aciklama": "2. Bölge Sigorta"
+    },
+    {
+      "kod": "F04",
+      "aciklama": "3. Bölge Sigorta"
+    },
+    {
+      "kod": "F05",
+      "aciklama": "4. Bölge Sigorta"
+    },
+    {
+      "kod": "F06",
+      "aciklama": "5. Bölge Sigorta"
+    },
+    {
+      "kod": "FC01",
+      "aciklama": "Ana Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC02",
+      "aciklama": "1. Bölge  Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC03",
+      "aciklama": "2. Bölge  Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC04",
+      "aciklama": "3. Bölge  Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC05",
+      "aciklama": "4. Bölge  Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC06",
+      "aciklama": "5. Bölge  Kaçak Akım Sigorta"
+    },
+    {
+      "kod": "FC07",
+      "aciklama": "Besleme Hattı Sigorta"
+    },
+    {
+      "kod": "FC08",
+      "aciklama": "xxx Hattı sigorta"
+    },
+    {
+      "kod": "FC09",
+      "aciklama": "xxx Hattı sigorta"
+    },
+    {
+      "kod": "FC10",
+      "aciklama": "xxx Hattı sigorta"
+    },
+    {
+      "kod": "B01",
+      "aciklama": "Makine Start Düğmesi"
+    },
+    {
+      "kod": "B02",
+      "aciklama": "Makine Stop Düğmesi"
+    },
+    {
+      "kod": "B03",
+      "aciklama": "Kapı Aç"
+    },
+    {
+      "kod": "B04",
+      "aciklama": "Kapı  Kapa (çift el butonu)"
+    },
+    {
+      "kod": "B05",
+      "aciklama": "Acil Stop Butonu"
+    },
+    {
+      "kod": "B06",
+      "aciklama": "Reset"
+    },
+    {
+      "kod": "B07",
+      "aciklama": "xxx  Butonu"
+    },
+    {
+      "kod": "B08",
+      "aciklama": "xxx  Butonu"
+    },
+    {
+      "kod": "B09",
+      "aciklama": "xxx  Butonu"
+    },
+    {
+      "kod": "B10",
+      "aciklama": "xxx  Butonu"
+    },
+    {
+      "kod": "ENC01",
+      "aciklama": "Sepet / Tambur Encoderi"
+    },
+    {
+      "kod": "ENC02",
+      "aciklama": "xxx Encoderi"
+    },
+    {
+      "kod": "INV01",
+      "aciklama": "Sepet Redüktörü İnvertörü"
+    },
+    {
+      "kod": "INV02",
+      "aciklama": "Tambur Redüktör İnvertörü"
+    },
+    {
+      "kod": "INV03",
+      "aciklama": "1. Konveyör Redüktör İnvertörü"
+    },
+    {
+      "kod": "INV04",
+      "aciklama": "1.Taşıma Konveyörü"
+    },
+    {
+      "kod": "TC01",
+      "aciklama": "1. Proses Tankı Isı Ölçer"
+    },
+    {
+      "kod": "TC02",
+      "aciklama": "2. Proses Tankı Isı Ölçer"
+    },
+    {
+      "kod": "TC03",
+      "aciklama": "3. Proses Tankı Isı Ölçer"
+    },
+    {
+      "kod": "TC04",
+      "aciklama": "4. Proses Tankı Isı Ölçer"
+    },
+    {
+      "kod": "TC05",
+      "aciklama": "1. Kurutma Isı Ölçer"
+    },
+    {
+      "kod": "TC06",
+      "aciklama": "2. Kurutma Isı Ölçer"
+    },
+    {
+      "kod": "TC07",
+      "aciklama": "Hücre İçi Isı Ölçer"
+    },
+    {
+      "kod": "TC08",
+      "aciklama": "xxx Isı Ölçer"
+    },
+    {
+      "kod": "TC09",
+      "aciklama": "xxx Isı Ölçer"
+    },
+    {
+      "kod": "TC10",
+      "aciklama": "xxx Isı Ölçer"
+    },
+    {
+      "kod": "PS01",
+      "aciklama": "1. Proses Pompası Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS02",
+      "aciklama": "2. Proses Pompası Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS03",
+      "aciklama": "3. Proses Pompası Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS04",
+      "aciklama": "4. Proses Pompası Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS05",
+      "aciklama": "Hücre İçi Vakum Sensörü  ( 4-20 mA)"
+    },
+    {
+      "kod": "PS06",
+      "aciklama": "Giriş Su Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS07",
+      "aciklama": "Giriş Hava Basınç Sensörü ( 4-20 mA)"
+    },
+    {
+      "kod": "PS08",
+      "aciklama": "1. Basınç Şalteri"
+    },
+    {
+      "kod": "PS09",
+      "aciklama": "2. Basınç Şalteri"
+    },
+    {
+      "kod": "PS10",
+      "aciklama": "xxxx Sensörü"
+    },
+    {
+      "kod": "PHS01",
+      "aciklama": "1. Proses Tankı pH Sensörü"
+    },
+    {
+      "kod": "PHS02",
+      "aciklama": "2. Proses Tankı pH Sensörü"
+    },
+    {
+      "kod": "PHS03",
+      "aciklama": "3. Proses Tankı pH Sensörü"
+    },
+    {
+      "kod": "PHS04",
+      "aciklama": "4. Proses Tankı pH Sensörü"
+    },
+    {
+      "kod": "PHS05",
+      "aciklama": "Yıkama Hattı pH Sensörü"
+    },
+    {
+      "kod": "CS01",
+      "aciklama": "1. Proses Tankı İletkenlik Sensörü"
+    },
+    {
+      "kod": "CS02",
+      "aciklama": "2. Proses Tankı İletkenlik Sensörü"
+    },
+    {
+      "kod": "CS03",
+      "aciklama": "3. Proses Tankı İletkenlik Sensörü"
+    },
+    {
+      "kod": "CS04",
+      "aciklama": "4. Proses Tankı İletkenlik Sensörü"
+    },
+    {
+      "kod": "CS05",
+      "aciklama": "xxxx İletkenlik Sensörü"
+    },
+    {
+      "kod": "V01",
+      "aciklama": "1. Proses Pompa Emiş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V02",
+      "aciklama": "2. Proses Pompa Emiş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V03",
+      "aciklama": "3. Proses Pompa Emiş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V04",
+      "aciklama": "4. Proses Pompa Emiş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V05",
+      "aciklama": "Conta Şişirme Aktüator Vanası valfi"
+    },
+    {
+      "kod": "V06",
+      "aciklama": "Conta Söndürme Aktüator Vanası valfi"
+    },
+    {
+      "kod": "V07",
+      "aciklama": "1. Kurutma Hattı Aktüator Vanası valfi"
+    },
+    {
+      "kod": "V08",
+      "aciklama": "2. Kurutma Hattı Aktüator Vanası valfi"
+    },
+    {
+      "kod": "V09",
+      "aciklama": "Hücre Drenaj Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V10",
+      "aciklama": "Hücre Emiş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V11",
+      "aciklama": "Proses Ana Geri Dönüş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V12",
+      "aciklama": "Hat Temizleme Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V13",
+      "aciklama": "By-Pass Hattı Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V14",
+      "aciklama": "Ana Yıkama Nozzle Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V15",
+      "aciklama": "Emiş Kollektör Temizleme Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V16",
+      "aciklama": "1. Proses Geri Dönüş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V17",
+      "aciklama": "2. Proses Geri Dönüş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V18",
+      "aciklama": "3. Proses Geri Dönüş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V19",
+      "aciklama": "4. Proses Geri Dönüş Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V20",
+      "aciklama": "1. Proses Tankı Oto. Dolum Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V21",
+      "aciklama": "2. Proses Tankı Oto. Dolum Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V22",
+      "aciklama": "3. Proses Tankı Oto. Dolum Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V23",
+      "aciklama": "4. Proses Tankı Oto. Dolum Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V24",
+      "aciklama": "1. Proses Tankı Kaskat Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V25",
+      "aciklama": "2. Proses Tankı Kaskat Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V26",
+      "aciklama": "3. Proses Tankı Kaskat Aktüatör Vanası valfi"
+    },
+    {
+      "kod": "V27",
+      "aciklama": "1. Tank Drenaj Aktuatör Vanası valfi"
+    },
+    {
+      "kod": "V28",
+      "aciklama": "2. Tank Drenaj Aktuatör Vanası valfi"
+    },
+    {
+      "kod": "V29",
+      "aciklama": "3. Tank Drenaj Aktuatör Vanası valfi"
+    },
+    {
+      "kod": "V30",
+      "aciklama": "Arıtma Dönüş Aktuatör Vanası valfi"
+    },
+    {
+      "kod": "V31",
+      "aciklama": "1. Proses Tankı Tahliye Vanası Aç Valfi"
+    },
+    {
+      "kod": "V32",
+      "aciklama": "1. Proses Tankı Tahliye Vanası Kapat Valfi"
+    },
+    {
+      "kod": "V33",
+      "aciklama": "2. Proses Tankı Tahliye Vanası Aç Valfi"
+    },
+    {
+      "kod": "V34",
+      "aciklama": "2. Proses Tankı Tahliye Vanası Kapat Valfi"
+    },
+    {
+      "kod": "V35",
+      "aciklama": "3. Proses Tankı Tahliye Vanası Aç Valfi"
+    },
+    {
+      "kod": "V36",
+      "aciklama": "3. Proses Tankı Tahliye Vanası Kapat Valfi"
+    },
+    {
+      "kod": "V37",
+      "aciklama": "4. Proses Tankı Tahliye Vanası Aç Valfi"
+    },
+    {
+      "kod": "V38",
+      "aciklama": "4. Proses Tankı Tahliye Vanası Kapat Valfi"
+    },
+    {
+      "kod": "V39",
+      "aciklama": "Hücre Boşaltma Pistonu Vanası Aç Valf'i"
+    },
+    {
+      "kod": "V40",
+      "aciklama": "Hücre Boşaltma Pistonu Vanası Kapat Valf'i"
+    },
+    {
+      "kod": "V41",
+      "aciklama": "Sepet Alma Kontrol Valfi 1"
+    },
+    {
+      "kod": "V42",
+      "aciklama": "Sepet Alma Kontol Valfi 2"
+    },
+    {
+      "kod": "V43",
+      "aciklama": "1. Process Tankı Kapak Pistonu Valfi"
+    },
+    {
+      "kod": "V44",
+      "aciklama": "2. Process Tankı Kapak Pistonu Valfi"
+    },
+    {
+      "kod": "V45",
+      "aciklama": "1. Process Tankı Kapak Pistonu Valfi"
+    },
+    {
+      "kod": "V46",
+      "aciklama": "2. Process Tankı Kapak Pistonu Valfi"
+    },
+    {
+      "kod": "V47",
+      "aciklama": "Ana Valf"
+    },
+    {
+      "kod": "V48",
+      "aciklama": "Kapak Aç Valf'i"
+    },
+    {
+      "kod": "V49",
+      "aciklama": "Kapak Kapat Valf'i"
+    },
+    {
+      "kod": "V50",
+      "aciklama": "1. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V51",
+      "aciklama": "2. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V52",
+      "aciklama": "3. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V53",
+      "aciklama": "4. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V54",
+      "aciklama": "1. Hücreden Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V55",
+      "aciklama": "2. Hücreden Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V56",
+      "aciklama": "3. Hücreden Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V57",
+      "aciklama": "4. Hücreden Pompaya Emiş Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V58",
+      "aciklama": "Egzos Hattı Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V59",
+      "aciklama": "1. Proses Hattı Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V60",
+      "aciklama": "2. Proses Hattı Aktüatör Vanası Valfi"
+    },
+    {
+      "kod": "V61",
+      "aciklama": "1. Tank Sepet Kaldırma Valfi"
+    },
+    {
+      "kod": "V62",
+      "aciklama": "1. Tank Sepet İndirme Valfi"
+    },
+    {
+      "kod": "V63",
+      "aciklama": "2. Tank Sepet Kaldırma Valfi"
+    },
+    {
+      "kod": "V64",
+      "aciklama": "2. Tank Sepet İndirme Valfi"
+    },
+    {
+      "kod": "V65",
+      "aciklama": "3. Tank Sepet Kaldırma Valfi"
+    },
+    {
+      "kod": "V66",
+      "aciklama": "3. Tank Sepet İndirme Valfi"
+    },
+    {
+      "kod": "V67",
+      "aciklama": "1. Tank Kapağı Açma Valfi"
+    },
+    {
+      "kod": "V68",
+      "aciklama": "1. Tank Kapağı Kapatma Valfi"
+    },
+    {
+      "kod": "V69",
+      "aciklama": "2. Tank Kapağı Açma Valfi"
+    },
+    {
+      "kod": "V70",
+      "aciklama": "2. Tank Kapağı Kapatma Valfi"
+    },
+    {
+      "kod": "V71",
+      "aciklama": "3. Tank Kapağı Açma Valfi"
+    },
+    {
+      "kod": "V72",
+      "aciklama": "3. Tank Kapağı Kapatma Valfi"
+    }
+  ]
+}

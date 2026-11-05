@@ -1,0 +1,10 @@
+{
+  "name": "pnomatikx",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PNOMATIKX: P&ID kodlarıyla bağlantılı, tarayıcıda çalışan pnömatik devre şeması programı. Başlatmak için index.html dosyasını açın.",
+  "scripts": {
+    "test": "node --test \"PNOMATIK/codes/engine/test/engine.test.js\" \"PNOMATIK/codes/engine/test/pidlink.test.js\" \"PNOMATIK/codes/engine/test/logic.test.js\" \"PNOMATIK/codes/engine/test/host.test.js\" \"PNOMATIK/codes/engine/test/place.test.js\"",
+    "onizleme": "node tools/onizleme.js"
+  }
+}

@@ -1,0 +1,81 @@
+/* Açıklama sayfası (A3 yatay): P&ID sayfasıyla aynı antet ve çerçeve içinde tablolar */
+
+.rp-sheet {
+  --rp-accent: #ff0000;
+  position: relative;
+  background: #fff;
+  color: #15171c;
+  text-align: left;
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  white-space: normal;
+}
+.rp-sheet > svg { position: absolute; left: 0; top: 0; }
+.rp-col { position: absolute; display: flex; flex-direction: column; gap: 6mm; }
+
+.rp-head { display: flex; align-items: center; gap: 2.4mm; padding-bottom: 1.6mm; border-bottom: 0.7mm solid var(--rp-accent); }
+.rp-num {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6mm;
+  height: 5.6mm;
+  background: var(--rp-accent);
+  color: #fff;
+  font: 800 9.5pt 'Segoe UI', Calibri, Arial, sans-serif;
+}
+.rp-title { font: 700 11pt 'Segoe UI', Calibri, Arial, sans-serif; letter-spacing: 0.04em; }
+.rp-cont { font-weight: 400; color: #6b7280; letter-spacing: 0; }
+
+.rp-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 9pt; line-height: 1.26; }
+.rp-table th {
+  padding: 1.3mm 1.5mm;
+  background: #f1f2f5;
+  border-bottom: 0.3mm solid #15171c;
+  color: #3c4250;
+  font-size: 8.5pt;
+  font-weight: 700;
+  text-align: left;
+}
+.rp-table td {
+  padding: 1.2mm 1.5mm;
+  border-bottom: 0.2mm solid #d7dbe2;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+.rp-table .rp-code { font-weight: 700; white-space: nowrap; }
+.rp-table .rp-gf { font-weight: 800; color: var(--rp-accent); white-space: nowrap; }
+.rp-table .rp-strong { font-weight: 700; }
+.rp-table .rp-muted { color: #4b5563; }
+.rp-table .rp-sym { padding: 0.6mm 0.5mm; }
+.rp-table .rp-sym svg { display: block; width: 9mm; height: 6.6mm; margin: 0 auto; color: #000; }
+.rp-opt { color: #ff0000; font-weight: 600; white-space: nowrap; }
+.rp-pill { display: inline-block; font-size: 8pt; font-weight: 700; line-height: 1.2; color: #3c4250; }
+.rp-pill.interlock { color: #fff; background: var(--rp-accent); padding: 0.3mm 1.3mm; border-radius: 0.8mm; }
+.rp-pill.control { color: #1d4ed8; }
+
+.rp-measure {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 185mm;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── Açıklama penceresi ── */
+.rs-toggles { display: flex; align-items: center; gap: 12px; margin-right: 8px; }
+.rs-toggle { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.rs-toggle input { accent-color: var(--dolfin); margin: 0; }
+.rs-pages {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+}
+.rs-pages .cs-sheet { flex-shrink: 0; }
+.rs-empty { margin: auto; max-width: 520px; text-align: center; color: var(--muted); }

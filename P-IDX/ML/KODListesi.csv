@@ -1,0 +1,419 @@
+﻿KOD;AÇIKLAMA
+PE01;Ön Yıkama Pompa Motoru
+PE02;Yıkama Pompa Motoru
+PE03;Ön Durulama Pompa Motoru
+PE04;Durulama Pompa Motoru
+PE05;Otomatik Drenaj Pompası Motoru
+PE06;Vakum Pompası Motoru
+PE07;Hücre Boşaltma Pompası Motoru
+PE08;Arıtma Gidiş Pompası Motoru
+PE09;Arıtma Dönüş Pompası Motoru
+PE10;1.  Dozaj Pompası
+PE11;2.  Dozaj Pompası
+PE12;3.  Dozaj Pompası
+PE13;Hassas Filre Pompası Motoru
+PE14;Yağ Ayırıcı Pompası Motoru
+PE15;xxx Pompası Motoru
+FE01;Egzost Fanı Motoru
+FE02;1. Kurutma Fanı Motoru
+FE03;2. Kurutma Fanı Motoru
+FE04;1. Blower Motoru
+FE05;2. Blower Motoru
+FE06;3. Blower Motoru
+FE07;4. Blower Motoru
+FE08;xxx Fan Motoru
+FE09;xxx Fan Motoru
+FE10;xxx Fan Motoru
+VE01;1. Vibrasyon  Motoru  
+VE02;2. Vibrasyon  Motoru  
+VE03;Vibrasyon xxx Motoru  
+VE04;Vibrasyon xxx Motoru  
+VE05;Vibrasyon xxx Motoru  
+GE01;Sepet Redüktörü Motoru
+GE02;Tambur Redüktör Motoru
+GE03;Otomatik Yükleme Motoru
+GE04;Kapı Redüktör Motoru
+GE05;1. Konveyör  Redüktör Motoru
+GE06;1. Yağ Sıyırıcı Redüktör Motoru
+GE07;2. Yağ Sıyırıcı Redüktör Motoru
+GE08;1. Yükleme( Konveyör) Redüktör Motoru
+GE09;2. Yükleme (Konveyör) Redüktör Motoru
+GE10;xxx Redüktör Motoru
+R01;1. Proses Tankı 1. Rezistans 
+R02;1. Proses Tankı 2. Rezistans
+R03;1. Proses Tankı 3. Rezistans 
+R04;1. Proses Tank 4. Rezistans
+R05;1. Proses Tankı 5. Rezistans 
+R06;2. Proses Tankı 1. Rezistans
+R07;2. Proses Tankı 2. Rezistans
+R08;2. Proses Tankı 3. Rezistans
+R09;2. Proses Tankı 4. Rezistans
+R10;2. Proses Tankı 5. Rezistans
+R11;3. Proses Tankı 1. Rezistans
+R12;3. Proses Tankı 2. Rezistans
+R13;3. Proses Tankı 3. Rezistans
+R14;3. Proses Tankı 4. Rezistans
+R15;3. Proses Tankı 5. Rezistans
+R16;4. Proses Tankı 1. Rezistans
+R17;4. Proses Tankı 2. Rezistans
+R18;4. Proses Tankı 3. Rezistans
+R19;4. Proses Tankı 4. Rezistans
+R20;4. Proses Tankı 5. Rezistans
+R21;1. Kurutma Rezistansı Grubu 
+R22;2. Kurutma Rezistansı Grubu
+R23;3. Kurutma Rezistansı Grubu
+R24;4. Kurutma Rezistansı Grubu
+R25;5. Kurutma Rezistansı Grubu
+R26;6. Kurutma Rezistansı Grubu
+R27;xxx Rezistansı
+R28;xxx Rezistansı
+R29;xxx Rezistansı
+R30;xxx Rezistansı
+INV01;Sepet Redüktörü İnvertörü
+INV02;Tambur Redüktör İnvertörü
+INV03;1. Konveyör Redüktör İnvertörü
+INV04;1.Taşıma Konveyörü İnvertörü
+INV05;xxx İnvertörü
+INV06;xxx İnvertörü
+INV07;xxx İnvertörü
+INV08;xxx İnvertörü
+INV09;xxx İnvertörü
+INV10;xxx İnvertörü
+BR01;1. Proses Tankı Brülörü
+BR02;2. Proses Tankı Brülörü
+BR03;3. Proses Tankı Brülörü
+BR04;4. Proses Tankı Brülörü
+BR05;Kurutma Brülörü
+TD01;1.  Proses Tankı Ultrasonik Jeneratör Seti
+TD02;2.  Proses Tankı Ultrasonik Jeneratör Seti
+TD03;3.  Proses Tankı Ultrasonik Jeneratör Seti
+TD04;4.  Proses Tankı Ultrasonik Jeneratör Seti
+TD05;5.  Proses Tankı Ultrasonik Jeneratör Seti
+TD06;6.  Proses Tankı Ultrasonik Jeneratör Seti
+TD07;7.  Proses Tankı Ultrasonik Jeneratör Seti
+TD08;8.  Proses Tankı Ultrasonik Jeneratör Seti
+TD09;9.  Proses Tankı Ultrasonik Jeneratör Seti
+TD10;10.  Proses Tankı Ultrasonik Jeneratör Seti
+L01;Tepe Lambası - Uyarı Lambası
+L02;Hücre İçi Aydınlatma Lambası
+L03;Pano Lambası
+L04;xxx Lambası 
+L05;xxx Lambası 
+T01;1. Pompa  Motoru  Termik/MKŞ
+T02;2. Pompa  Motoru  Termik/MKŞ
+T03;3. Pompa  Motoru  Termik/MKŞ
+T04;4. Pompa  Motoru  Termik/MKŞ
+T05;5. Pompa  Motoru  Termik/MKŞ
+T06;6. Pompa  Motoru  Termik/MKŞ
+T07;7. Pompa  Motoru  Termik/MKŞ
+T08;8. Pompa  Motoru  Termik/MKŞ
+T09;9. Pompa  Motoru  Termik/MKŞ
+T10;10. Pompa  Motoru  Termik/MKŞ
+T11;1. Fan   Motoru Termik/MKŞ
+T12;2. Fan   Motoru Termik/MKŞ
+T13;3. Fan   Motoru Termik/MKŞ
+T14;4. Fan   Motoru Termik/MKŞ
+T15;5. Fan   Motoru Termik/MKŞ
+T16;1. Vibrasyon  Motoru  Termik/MKŞ
+T17;2. Vibrasyon  Motoru  Termik/MKŞ
+T18;3. Vibrasyon  Motoru  Termik/MKŞ
+T19;4. Vibrasyon  Motoru  Termik/MKŞ
+T20;5. Vibrasyon  Motoru  Termik/MKŞ
+T21;1. Redüktör  Motoru Termik/MKŞ
+T22;2. Redüktör  Motoru Termik/MKŞ
+T23;3. Redüktör  Motoru Termik/MKŞ
+T24;4. Redüktör  Motoru Termik/MKŞ
+T25;5. Redüktör  Motoru Termik/MKŞ
+T26;6. Redüktör  Motoru Termik/MKŞ
+T27;7. Redüktör  Motoru Termik/MKŞ
+T28;8. Redüktör  Motoru Termik/MKŞ
+T29;9. Redüktör  Motoru Termik/MKŞ
+T30;10. Redüktör  Motoru Termik/MKŞ
+LS01;1. Proses Tankı Alt Seviye Sensörü
+LS02;1. Proses Tankı Orta Seviye Sensörü
+LS03;1. Proses Tankı Üst Seviye Sensörü
+LS04;2. Proses Tankı Alt Seviye Sensörü
+LS05;2. Proses Tankı Orta Seviye Sensörü
+LS06;2. Proses Tankı Üst Seviye Sensörü
+LS07;3. Proses Tankı Alt Seviye Sensörü
+LS08;3. Proses Tankı Orta Seviye Sensörü
+LS09;3. Proses Tankı Üst Seviye Sensörü
+LS10;4. Proses Tankı Alt Seviye Sensörü
+LS11;4. Proses Tankı Orta Seviye Sensörü
+LS12;4. Proses Tankı Üst Seviye Sensörü
+LS13;Hücre İçi 1. Seviye Sensörü
+LS14;Hücre İçi 2. Seviye Sensörü
+LS15;Hücre İçi 3. Seviye Sensörü
+LS16;Hücre İçi 4. Seviye Sensörü
+LS17;Drenaj Hattı 1. Seviye Sensörü
+LS18;Drenaj Hattı 2. Seviye Sensörü
+LS19;Drenaj Hattı 3. Seviye Sensörü
+LS20;Drenaj Hattı 4. Seviye Sensörü
+LS21;Vakum Pompası Tank Üst Seviye Sensörü
+LS22;Vakum Pompası Tank Alt Seviye Sensörü
+LS23;1. Dozaj Pompası Seviye Sensörü
+LS24;2. Dozaj Pompası Seviye Sensörü
+LS25;3. Dozaj Pompası Seviye Sensörü
+LS26;Sızıntı Tavası Uyarı Seviye Sensörü
+LS27;xxx Seviye Sensörü
+LS28;xxx Seviye Sensörü
+LS29;xxx Seviye Sensörü
+LS30;xxx Seviye Sensörü
+SS01;El Koruma Sensörü
+SS02;Interlock Kilit
+SS03;Işın Bariyeri Safety Sensörü
+SS04;İnterlock Kilit Sensörü
+SS05;1. KAPAK RFID SENSÖRÜ
+SS06;2. KAPAK RFID SENSÖRÜ
+SS07;3. KAPAK RFID SENSÖRÜ
+SS08;4. KAPAK RFID SENSÖRÜ
+SS09;5. KAPAK RFID SENSÖRÜ
+SS10;6. KAPAK RFID SENSÖRÜ
+SS11;7. KAPAK RFID SENSÖRÜ
+PRS01;Sepet Pozisyon 1 Sensörü
+PRS02;Sepet Pozisyon 2 Sensörü
+PRS03;1. Konveyör Giriş Prox Sensörü
+PRS04;2. Konveyör Giriş Prox Sensörü
+PRS05;3. Konveyör Giriş Prox Sensörü
+PRS06;1. Konveyör Çıkış Prox Sensörü
+PRS07;2. Konveyör Çıkış Prox Sensörü
+PRS08;3. Konveyör Çıkış Prox Sensörü
+PRS09;xxx Prox Sensörü
+PRS10;xxx Prox Sensörü
+SWB01;1. Proses Pompa Emiş Aktüatör Vanası Switch Box
+SWB02;2. Proses Pompa Emiş Aktüatör Vanası Switch Box
+SWB03;3. Proses Pompa Emiş Aktüatör Vanası Switch Box
+SWB04;4. Proses Pompa Emiş Aktüatör Vanası Switch Box
+SWB05;Conta Şişirme Aktüator Vanası Switch Box
+SWB06;Conta Söndürme Aktüator Vanası Switch Box
+SWB07;1. Kurutma Hattı Aktüator Vanası Switch Box
+SWB08;2. Kurutma Hattı Aktüator Vanası Switch Box
+SWB09;Hücre Drenaj Aktüatör Vanası Switch Box
+SWB10;Hücre Emiş Aktüatör Vanası Switch Box
+SWB11;Proses Ana Geri Dönüş Aktüatör Vanası Switch Box
+SWB12;Hat Temizleme Aktüatör Vanası Switch Box
+SWB13;By-Pass Hattı Aktüatör Vanası Switch Box
+SWB14;Ana Yıkama Nozul Aktüatör Vanası Switch Box
+SWB15;Emiş Kollektör Temizleme Aktüatör Vanası Switch Box
+SWB16;1. Proses Geri Dönüş Aktüatör Vanası Switch Box
+SWB17;2. Proses Geri Dönüş Aktüatör Vanası Switch Box
+SWB18;3. Proses Geri Dönüş Aktüatör Vanası Switch Box
+SWB19;4. Proses Geri Dönüş Aktüatör Vanası Switch Box
+SWB20;1. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box
+SWB21;2. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box
+SWB22;3. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box
+SWB23;4. Proses Tankı Oto. Dolum Aktüatör Vanası Switch Box
+SWB24;1. Proses Tankı Kaskat Aktüatör Vanası Switch Box
+SWB25;2. Proses Tankı Kaskat Aktüatör Vanası Switch Box
+SWB26;3. Proses Tankı Kaskat Aktüatör Vanası Switch Box
+SWB27;1. Tank Drenaj Aktuatör Vanası Switch Box
+SWB28;2. Tank Drenaj Aktuatör Vanası Switch Box
+SWB29;3. Tank Drenaj Aktuatör Vanası Switch Box
+SWB30;Arıtma Dönüş Aktuatör Vanası Switch Box
+SWB31;1. Eşanjör Gidiş Aktuatör Vanası Switch Box
+SWB32;1. Tank İçi Yıkama Aktuatör Vanası Switch Box
+SWB33;2. Tank İçi Yıkama Aktuatör Vanası Switch Box
+SWB34;3. Tank İçi Yıkama Aktuatör Vanası Switch Box
+SWB35;Şebeke Suyu ile Durulama  Aktuatör Vanası Switch Box
+SWB36;Sepet Alma Kontrol Switch Box 1
+SWB37;Sepet Alma Kontrol Switch Box 2
+SWB38;1. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox
+SWB39;2. Proses Tankından Pompaya Emiş Aktüatör Vanası Switchbox
+SWB40;1. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox
+SWB41;2. Hücreden Pompaya Emiş Aktüatör Vanası Switchbox
+SWB42;1. Proses Hattı Aktüatör Vanası Switchbox
+SWB43;2. Proses Hattı Aktüatör Vanası Switchbox
+SWB44;Hat Temizleme Aktüatör Vanası Switchbox
+SWB45;Egzos Hattı Aktüatör Vanası Switchbox
+SWB46;1. Tank Otomatik Dolum Solenoid Vanası
+SWB47;2. Tank Otomatik Dolum Solenoid Vanası
+SW01;Hücre Kapak Açık Konumda Switchi
+SW02;Hücre Kapak Kapalı Konumda Switchi
+SW03;1. Proses Tank Kapağı Açık Konumda Switchi
+SW04;1. Proses Tank Kapağı Kapalı Konumda Switchi
+SW05;2. Proses Tank Kapağı Açık Konumda Switchi
+SW06;2. Proses Tank Kapağı Kapalı Konumda Switchi
+SW07;3. Proses Tank Kapağı Açık Konumda Switchi
+SW08;3. Proses Tank Kapağı Kapalı Konumda Switchi
+SW09;4. Proses Tank Kapağı Açık Konumda Switchi
+SW10;4. Proses Tank Kapağı Kapalı Konumda Switchi
+SW11;Sepet 1. Pozisyon Switchi
+SW12;Sepet 2. Pozisyon Switchi
+SW13;1. Flow  Switchi
+SW14;2. Flow  Switchi
+SW15;3. Flow  Switchi
+SW16;4. Flow  Switchi
+SW17;xxx Switchi
+SW18;Hücre Kapağı Kontrol Switchi
+SW19;xxx Switchi
+SW20;xxx Switchi
+PPS01;Ana Hücre Kapak Pistonu Açık Sensörü
+PPS02;Ana Hücre Kapak Pistonu Kapalı Sensörü
+PPS03;1. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü
+PPS04;1. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü
+PPS05;1. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü
+PPS06;1. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü
+PPS07;2. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü
+PPS08;2. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü
+PPS09;2. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü
+PPS10;2. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü
+PPS11;Hücre Tahliye Pistonu Açık Sensörü
+PPS12;Hücre Tahliye Pistonu Kapalı Sensörü
+PPS13;1. Proses Tankı Lift Pistonu Açık Sensörü
+PPS14;1. Proses Tankı Lift Pistonu Ara Sensörü
+PPS15;1. Proses Tankı Lift Pistonu Kapalı Sensörü
+PPS16;2. Proses Tankı Lift Pistonu Açık Sensörü
+PPS17;2. Proses Tankı Lift Pistonu Ara Sensörü
+PPS18;2. Proses Tankı Lift Pistonu Kapalı Sensörü
+PPS19;3. Proses Tankı Lift Pistonu Açık Sensörü
+PPS20;3. Proses Tankı Lift Pistonu Ara Sensörü
+PPS21;3. Proses Tankı Lift Pistonu Kapalı Sensörü
+PPS22;4. Proses Tankı Lift Pistonu Açık Sensörü
+PPS23;4. Proses Tankı Lift Pistonu Ara Sensörü
+PPS24;4. Proses Tankı Lift Pistonu Kapalı Sensörü
+PPS25;3. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü
+PPS26;3. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü
+PPS27;3. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü
+PPS28;3. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü
+PPS29;xxx Pistonu Açık Sensörü
+PPS30;xxx Pistonu Kapalı Sensörü
+PPS31;1. Tank Kapağı Açık Sensörü
+PPS32;1. Tank Kapağı Kapalı Sensörü
+PPS33;2. Tank Kapağı Açık Sensörü
+PPS34;2. Tank Kapağı Kapalı Sensörü
+PPS35;3. Tank Kapağı Açık Sensörü
+PPS36;3. Tank Kapağı Kapalı Sensörü
+F01;Ana Sigorta  
+F02;1. Bölge Sigorta 
+F03;2. Bölge Sigorta 
+F04;3. Bölge Sigorta 
+F05;4. Bölge Sigorta 
+F06;5. Bölge Sigorta 
+FC01;Ana Kaçak Akım Sigorta  
+FC02;1. Bölge  Kaçak Akım Sigorta   
+FC03;2. Bölge  Kaçak Akım Sigorta   
+FC04;3. Bölge  Kaçak Akım Sigorta   
+FC05;4. Bölge  Kaçak Akım Sigorta   
+FC06;5. Bölge  Kaçak Akım Sigorta   
+FC07;Besleme Hattı Sigorta  
+FC08;xxx Hattı sigorta
+FC09;xxx Hattı sigorta
+FC10;xxx Hattı sigorta
+B01;Makine Start Düğmesi
+B02;Makine Stop Düğmesi
+B03;Kapı Aç
+B04;Kapı  Kapa (çift el butonu)
+B05;Acil Stop Butonu
+B06;Reset
+B07;xxx  Butonu
+B08;xxx  Butonu
+B09;xxx  Butonu
+B10;xxx  Butonu
+ENC01;Sepet / Tambur Encoderi
+ENC02;xxx Encoderi
+INV01;Sepet Redüktörü İnvertörü
+INV02;Tambur Redüktör İnvertörü
+INV03;1. Konveyör Redüktör İnvertörü
+INV04;1.Taşıma Konveyörü
+TC01;1. Proses Tankı Isı Ölçer
+TC02;2. Proses Tankı Isı Ölçer
+TC03;3. Proses Tankı Isı Ölçer
+TC04;4. Proses Tankı Isı Ölçer
+TC05;1. Kurutma Isı Ölçer
+TC06;2. Kurutma Isı Ölçer
+TC07;Hücre İçi Isı Ölçer
+TC08;xxx Isı Ölçer
+TC09;xxx Isı Ölçer
+TC10;xxx Isı Ölçer
+PS01;1. Proses Pompası Basınç Sensörü ( 4-20 mA)
+PS02;2. Proses Pompası Basınç Sensörü ( 4-20 mA)
+PS03;3. Proses Pompası Basınç Sensörü ( 4-20 mA)
+PS04;4. Proses Pompası Basınç Sensörü ( 4-20 mA)
+PS05;Hücre İçi Vakum Sensörü  ( 4-20 mA)
+PS06;Giriş Su Basınç Sensörü ( 4-20 mA)
+PS07;Giriş Hava Basınç Sensörü ( 4-20 mA)
+PS08;1. Basınç Şalteri
+PS09;2. Basınç Şalteri
+PS10;xxxx Sensörü 
+PHS01;1. Proses Tankı pH Sensörü
+PHS02;2. Proses Tankı pH Sensörü
+PHS03;3. Proses Tankı pH Sensörü
+PHS04;4. Proses Tankı pH Sensörü
+PHS05;Yıkama Hattı pH Sensörü
+CS01;1. Proses Tankı İletkenlik Sensörü
+CS02;2. Proses Tankı İletkenlik Sensörü
+CS03;3. Proses Tankı İletkenlik Sensörü
+CS04;4. Proses Tankı İletkenlik Sensörü
+CS05;xxxx İletkenlik Sensörü
+V01;1. Proses Pompa Emiş Aktüatör Vanası valfi
+V02;2. Proses Pompa Emiş Aktüatör Vanası valfi
+V03;3. Proses Pompa Emiş Aktüatör Vanası valfi
+V04;4. Proses Pompa Emiş Aktüatör Vanası valfi
+V05;Conta Şişirme Aktüator Vanası valfi
+V06;Conta Söndürme Aktüator Vanası valfi
+V07;1. Kurutma Hattı Aktüator Vanası valfi
+V08;2. Kurutma Hattı Aktüator Vanası valfi
+V09;Hücre Drenaj Aktüatör Vanası valfi
+V10;Hücre Emiş Aktüatör Vanası valfi
+V11;Proses Ana Geri Dönüş Aktüatör Vanası valfi
+V12;Hat Temizleme Aktüatör Vanası valfi
+V13;By-Pass Hattı Aktüatör Vanası valfi
+V14;Ana Yıkama Nozzle Aktüatör Vanası valfi
+V15;Emiş Kollektör Temizleme Aktüatör Vanası valfi
+V16;1. Proses Geri Dönüş Aktüatör Vanası valfi
+V17;2. Proses Geri Dönüş Aktüatör Vanası valfi
+V18;3. Proses Geri Dönüş Aktüatör Vanası valfi
+V19;4. Proses Geri Dönüş Aktüatör Vanası valfi
+V20;1. Proses Tankı Oto. Dolum Aktüatör Vanası valfi
+V21;2. Proses Tankı Oto. Dolum Aktüatör Vanası valfi
+V22;3. Proses Tankı Oto. Dolum Aktüatör Vanası valfi
+V23;4. Proses Tankı Oto. Dolum Aktüatör Vanası valfi
+V24;1. Proses Tankı Kaskat Aktüatör Vanası valfi
+V25;2. Proses Tankı Kaskat Aktüatör Vanası valfi
+V26;3. Proses Tankı Kaskat Aktüatör Vanası valfi
+V27;1. Tank Drenaj Aktuatör Vanası valfi
+V28;2. Tank Drenaj Aktuatör Vanası valfi
+V29;3. Tank Drenaj Aktuatör Vanası valfi
+V30;Arıtma Dönüş Aktuatör Vanası valfi
+V31;1. Proses Tankı Tahliye Vanası Aç Valfi
+V32;1. Proses Tankı Tahliye Vanası Kapat Valfi
+V33;2. Proses Tankı Tahliye Vanası Aç Valfi
+V34;2. Proses Tankı Tahliye Vanası Kapat Valfi
+V35;3. Proses Tankı Tahliye Vanası Aç Valfi
+V36;3. Proses Tankı Tahliye Vanası Kapat Valfi
+V37;4. Proses Tankı Tahliye Vanası Aç Valfi
+V38;4. Proses Tankı Tahliye Vanası Kapat Valfi
+V39;Hücre Boşaltma Pistonu Vanası Aç Valf'i
+V40;Hücre Boşaltma Pistonu Vanası Kapat Valf'i
+V41;Sepet Alma Kontrol Valfi 1
+V42;Sepet Alma Kontol Valfi 2
+V43;1. Process Tankı Kapak Pistonu Valfi
+V44;2. Process Tankı Kapak Pistonu Valfi
+V45;1. Process Tankı Kapak Pistonu Valfi
+V46;2. Process Tankı Kapak Pistonu Valfi
+V47;Ana Valf
+V48;Kapak Aç Valf'i
+V49;Kapak Kapat Valf'i
+V50;1. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi
+V51;2. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi
+V52;3. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi
+V53;4. Proses Tankından Pompaya Emiş Aktüatör Vanası Valfi
+V54;1. Hücreden Pompaya Emiş Aktüatör Vanası Valfi
+V55;2. Hücreden Pompaya Emiş Aktüatör Vanası Valfi
+V56;3. Hücreden Pompaya Emiş Aktüatör Vanası Valfi
+V57;4. Hücreden Pompaya Emiş Aktüatör Vanası Valfi
+V58;Egzos Hattı Aktüatör Vanası Valfi
+V59;1. Proses Hattı Aktüatör Vanası Valfi
+V60;2. Proses Hattı Aktüatör Vanası Valfi
+V61;1. Tank Sepet Kaldırma Valfi
+V62;1. Tank Sepet İndirme Valfi
+V63;2. Tank Sepet Kaldırma Valfi
+V64;2. Tank Sepet İndirme Valfi
+V65;3. Tank Sepet Kaldırma Valfi
+V66;3. Tank Sepet İndirme Valfi
+V67;1. Tank Kapağı Açma Valfi
+V68;1. Tank Kapağı Kapatma Valfi
+V69;2. Tank Kapağı Açma Valfi
+V70;2. Tank Kapağı Kapatma Valfi
+V71;3. Tank Kapağı Açma Valfi
+V72;3. Tank Kapağı Kapatma Valfi

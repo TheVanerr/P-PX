@@ -1,0 +1,9 @@
+{
+  "name": "ppx",
+  "version": "1.0.0",
+  "private": true,
+  "description": "P&PX: P&ID ve pnömatik çizim programları, tek veritabanı. Başlatmak için index.html dosyasını açın.",
+  "scripts": {
+    "test": "node --test test/ppx.test.js && npm --prefix P-IDX test && npm --prefix PNOMATIKX test"
+  }
+}

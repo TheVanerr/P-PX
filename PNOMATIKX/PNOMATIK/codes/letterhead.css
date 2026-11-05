@@ -1,0 +1,398 @@
+/* A4 sayfa, antet, kapak ve PDF/print kuralları */
+
+.pages-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.a4-page {
+  --a4-height: 1123px;
+  --line-h: 22px;
+  --header-rule-y: 71px;
+  --footer-rule-inset: 99px;
+  --content-footer-gap: 24px;
+  --content-pad-top: calc(var(--header-rule-y) + var(--line-h) / 2);
+  --content-pad-bottom: calc(var(--footer-rule-inset) + var(--content-footer-gap));
+  --content-max-h: calc(var(--a4-height) - var(--content-pad-top) - var(--content-pad-bottom));
+
+  width: 794px;
+  min-height: var(--a4-height);
+  background: #ffffff;
+  color: #1a1a2e;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  padding: var(--content-pad-top) 70px var(--content-pad-bottom) 70px;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.page-content {
+  width: 100%;
+  max-height: var(--content-max-h);
+  color: #1a1a2e;
+  font-family: 'Calibri', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  line-height: 1.65;
+  display: flow-root;
+  overflow: hidden;
+  box-sizing: border-box;
+  --doc-block-gap: 11px;
+}
+
+/* ── Doküman grafik motoru (tipografi + dikey ritim) ── */
+.doc-block-stack {
+  display: flow-root;
+}
+
+.doc-block-stack > * + * {
+  margin-top: var(--doc-block-gap);
+}
+
+.page-content > .doc-block-stack + .doc-block-stack {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid #e8ecf2;
+}
+
+.doc-h2 {
+  font-family: 'Calibri', sans-serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: #1a2540;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.doc-p {
+  font-family: 'Calibri', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  color: #1a1a2e;
+  margin: 0;
+  line-height: 1.65;
+  text-align: justify;
+}
+
+.doc-p.doc-note {
+  font-weight: 600;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Calibri', sans-serif;
+  font-size: 8.5pt;
+  margin: 0;
+  table-layout: fixed;
+}
+
+.doc-table th,
+.doc-table td {
+  box-sizing: border-box;
+  max-width: 0;
+  padding: 11px 10px;
+  border: 1px solid #cbd5e0;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  line-height: 1.45;
+}
+
+.doc-table th {
+  background: #eef2fb;
+  font-family: 'Calibri', sans-serif;
+  font-weight: 700;
+  font-size: 8.5pt;
+  color: #1a2540;
+}
+
+.doc-table td {
+  font-family: 'Calibri', sans-serif;
+  font-weight: 400;
+  font-size: 8.5pt;
+  color: #1a1a2e;
+}
+
+.doc-table .col-id { width: 13.75%; }
+.doc-table .col-trigger { width: 13.75%; }
+.doc-table .col-locked { width: 13.75%; }
+.doc-table .col-logic { width: 58.75%; }
+
+.doc-table col.col-id { width: 13.75%; }
+.doc-table col.col-trigger { width: 13.75%; }
+.doc-table col.col-locked { width: 13.75%; }
+.doc-table col.col-logic { width: 58.75%; }
+
+.safety-matrix-section {
+  width: 100%;
+  --doc-block-gap: 17px;
+}
+
+.process-overview-section {
+  width: 100%;
+  --doc-block-gap: 17px;
+}
+
+.page-number {
+  position: absolute;
+  bottom: 66px;
+  right: 79px;
+  font-size: 11pt;
+  color: var(--brand-color, #ff0000);
+  font-family: 'Calibri', sans-serif;
+}
+
+.ph-footer-line {
+  position: absolute;
+  bottom: 99px;
+  left: 79px;
+  right: 79px;
+  height: 0;
+  border-top: 2px solid var(--brand-color, #ff0000);
+}
+
+.ph-footer {
+  position: absolute;
+  left: 79px;
+  bottom: 65px;
+  width: 199px;
+  height: 16px;
+  font-family: 'Calibri', sans-serif;
+  font-size: 10pt;
+  color: var(--brand-color, #ff0000);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.page-header {
+  position: absolute;
+  top: 24px;
+  left: 70px;
+  right: 70px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--brand-color, #ff0000);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ph-brand { display: flex; align-items: baseline; gap: 8px; }
+
+.ph-brand-logo {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  line-height: 1;
+}
+
+.ph-logo {
+  display: block;
+  height: 16px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.ph-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--brand-color, #ff0000);
+  letter-spacing: 0.5px;
+}
+
+.ph-sub {
+  font-size: 10px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.ph-brand-logo .ph-sub {
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 9px;
+}
+
+.ph-model {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-color, #ff0000);
+  letter-spacing: 0.5px;
+}
+
+/* P&ID içerik — doc-h2 / doc-p ile uyumlu */
+.pid-title {
+  font-family: 'Calibri', sans-serif;
+  font-size: 12pt;
+  font-weight: 700;
+  margin: 0 0 var(--doc-block-gap, 11px);
+  color: #1a2540;
+  line-height: 1.3;
+}
+
+.pid-diagram {
+  width: 100%;
+  max-height: var(--content-max-h);
+  border: 1px solid #cbd5e0;
+  background: #fafbfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pid-diagram img,
+.pid-diagram svg {
+  max-width: 100%;
+  max-height: calc(var(--content-max-h) - 40px);
+  object-fit: contain;
+}
+
+.pid-meta {
+  margin-top: var(--doc-block-gap, 11px);
+  font-family: 'Calibri', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  color: #4a5568;
+}
+
+/* P&ID çizim sayfası — antetsiz tam sayfa SVG */
+.a4-page.drawing-page {
+  height: var(--a4-height);
+  padding: 24px 32px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawing-page-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.drawing-page-inner svg.drawing-svg,
+.drawing-page-inner .drawing-svg {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+}
+
+/* Kapak sayfası */
+.a4-page.cover-page {
+  height: var(--a4-height);
+  padding: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.cover-page {
+  padding: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.cover-rect {
+  position: absolute;
+  background: var(--cover-accent, #ff0000);
+  z-index: 2;
+}
+
+.cover-title {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  color: var(--cover-accent, #ff0000);
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 22pt;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.cover-info {
+  position: absolute;
+  z-index: 2;
+  color: var(--cover-accent, #ff0000);
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 16pt;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cover-image {
+  position: absolute;
+  z-index: 2;
+  object-fit: contain;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  /* Tarayıcı arka plan renklerini kendiliğinden basmaz: kapak şeridi ve tablo renkleri kalmalı */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  .app-toolbar,
+  .toast {
+    display: none !important;
+  }
+
+  .preview-area {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    background: white;
+  }
+
+  .pages-container {
+    display: block !important;
+    gap: 0 !important;
+    width: auto !important;
+  }
+
+  .a4-page {
+    box-shadow: none;
+    border-radius: 0;
+    break-after: page;
+    page-break-after: always;
+    margin: 0;
+  }
+
+  .a4-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}

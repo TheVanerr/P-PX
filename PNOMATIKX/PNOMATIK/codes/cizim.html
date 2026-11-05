@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dolfin Pnömatik Çizim Motoru</title>
+  <link rel="stylesheet" href="letterhead.css">
+  <link rel="stylesheet" href="engine/engine.css">
+  <link rel="stylesheet" href="engine/covers.css">
+  <link rel="stylesheet" href="engine/report.css">
+</head>
+<body>
+  <section id="home" class="home">
+    <div class="home-bar">
+      <img src="../assets/logos/dolfin.png" alt="Dolfin" class="home-logo">
+      <div class="home-title">
+        <h1>Pnömatik Çizim Motoru</h1>
+        <p>ISO 1219-1 · ISO 1219-2 · P&amp;ID kodlarıyla bağlantılı</p>
+      </div>
+      <div class="home-actions">
+        <button type="button" class="btn" id="btnSample">Örnek Çizimi Aç</button>
+        <button type="button" class="btn btn-primary" id="btnNewProject">+ Yeni Proje</button>
+      </div>
+    </div>
+    <nav class="home-nav">
+      <button type="button" class="home-tab active" data-home-tab="projects">Projeler</button>
+      <button type="button" class="home-tab" data-home-tab="pid">P&amp;ID Projeleri <span id="pidCount" class="home-count"></span></button>
+      <button type="button" class="home-tab" data-home-tab="codes">Kod Eşleştirme <span id="codeCount" class="home-count"></span></button>
+      <div class="tb-spacer"></div>
+      <button type="button" class="home-link" id="btnPidLink" title="P&amp;IDX klasörü (yalnız okunur)"></button>
+      <button type="button" class="home-link home-folder" id="btnFolder" title="Bağlı klasörü değiştir"></button>
+    </nav>
+    <div id="pidBanner" class="pid-link-bar hidden"></div>
+
+    <div id="homeProjects" class="home-page">
+      <div id="projectList" class="project-list"></div>
+    </div>
+
+    <div id="homePid" class="home-page hidden">
+      <div id="pidPage" class="pid-page"></div>
+    </div>
+
+    <div id="homeCodes" class="home-page hidden">
+      <div class="ml-codes-page">
+        <form id="mapForm" class="ml-card ml-code-form map-form">
+          <div class="field"><label for="mapKod">P&amp;ID Kodu</label><input id="mapKod" class="field-input" required maxlength="20" placeholder="V31" autocomplete="off" list="catalogCodes"></div>
+          <div class="field" style="flex:1.4"><label for="mapDevre">Devre (aynı adı taşıyan kodlar tek devre olur)</label><input id="mapDevre" class="field-input" placeholder="1. Proses Tankı Tahliye Vanası" autocomplete="off" list="mapDevreList"></div>
+          <div class="field"><label for="mapRol">Rol</label><select id="mapRol" class="field-input"></select></div>
+          <div class="field"><label for="mapAkt">Aktüatör</label><select id="mapAkt" class="field-input"></select></div>
+          <div class="field"><label for="mapValf">Valf</label><select id="mapValf" class="field-input"></select></div>
+          <button type="button" class="btn" id="mapCancel" hidden>İptal</button>
+          <button type="submit" class="btn btn-primary" id="mapSubmit">Kaydet</button>
+        </form>
+        <datalist id="mapDevreList"></datalist>
+        <div class="ml-card ml-code-card">
+          <div class="ml-card-head">
+            <h2>P&amp;ID → Pnömatik Kod Eşleştirme</h2>
+            <div class="ml-card-actions">
+              <button type="button" class="btn btn-sm" id="mapCsvImport">CSV Yükle</button>
+              <button type="button" class="btn btn-sm" id="mapCsvExport">CSV Dışa Aktar</button>
+              <input type="file" id="mapCsvInput" accept=".csv,text/csv,text/plain" hidden>
+            </div>
+          </div>
+          <p class="ml-note">Her P&amp;ID kodunun pnömatik şemadaki rolü. <strong>Otomatik</strong> satırlar kod adından tahmin edilir (ör. "Aç / Kapat Valfi" çifti → 5/2 çift bobinli valf). Bir satırı değiştirip kaydettiğinizde <strong>PNOMATIK/data/eslestirme.csv</strong> dosyasına yazılır ve tüm projelerde kullanılır.</p>
+          <div class="ml-filters">
+            <div class="field"><label for="mapListSeri">Kod / Seri</label><input type="search" id="mapListSeri" class="search" placeholder="V, PPS, SWB…"></div>
+            <div class="field"><label for="mapListText">Açıklama / Devre</label><input type="search" id="mapListText" class="search" placeholder="tahliye, kapak, sepet…"></div>
+          </div>
+          <div id="mapChips" class="ml-chips"></div>
+          <div class="ml-filter-row">
+            <span id="mapResult" class="ml-result"></span>
+            <button type="button" class="btn btn-sm" id="mapClear">Filtreyi Temizle</button>
+          </div>
+          <div class="ml-table-wrap">
+            <table class="ml-table">
+              <thead><tr><th>P&amp;ID Kodu</th><th>P&amp;ID Açıklaması</th><th>Devre</th><th>Rol</th><th>Aktüatör / Valf</th><th>Kaynak</th><th class="ml-td-actions">İşlem</th></tr></thead>
+              <tbody id="mapBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <button type="button" class="tb-logo" id="btnHome" title="Projelere dön">
+        <img src="../assets/logos/dolfin.png" alt="Dolfin">
+      </button>
+      <div class="tb-project">
+        <strong id="projName"></strong>
+        <span id="saveState" class="save-state"></span>
+      </div>
+
+      <div class="tb-group tb-tools" role="toolbar" aria-label="Araçlar">
+        <button type="button" class="tool" data-tool="select" title="Seç ve taşı (V)">
+          <svg viewBox="0 0 20 20"><path d="M4 2l11 8.5-5 .6 3 5.6-2.4 1.2-2.8-5.6L4 16z"/></svg>
+        </button>
+        <button type="button" class="tool" data-tool="line" title="Hat çiz (L)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M3 16V8h14V3"/><circle cx="3" cy="16" r="2"/><circle cx="17" cy="3" r="2"/></svg>
+        </button>
+        <button type="button" class="tool" data-tool="text" title="Metin ekle (T)">
+          <svg viewBox="0 0 20 20"><path d="M3 3h14v3.5h-1.6L15 5H11v10.4l2 .4V17H7v-1.2l2-.4V5H5l-.4 1.5H3z"/></svg>
+        </button>
+        <select id="lineKind" class="tb-select" title="Hat tipi"></select>
+      </div>
+
+      <div class="tb-group">
+        <button type="button" class="icon-btn" id="btnUndo" title="Geri al (Ctrl+Z)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M7 4L3 8l4 4M3 8h9a5 5 0 010 10H8"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnRedo" title="Yinele (Ctrl+Y)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M13 4l4 4-4 4M17 8H8a5 5 0 000 10h4"/></svg>
+        </button>
+      </div>
+
+      <div class="tb-group">
+        <button type="button" class="icon-btn" id="btnRotate" title="90° döndür (R)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M16 10a6 6 0 11-2-4.5M16 2v4h-4"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnFlip" title="Aynala (X)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M10 2v16"/><path d="M8 5v10L2 15zM12 5v10l6 0z"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="btnDelete" title="Sil (Delete)">
+          <svg viewBox="0 0 20 20"><path class="stroke" d="M3 5h14M8 5V3h4v2M5 5l1 12h8l1-12M8.5 8v6M11.5 8v6"/></svg>
+        </button>
+      </div>
+
+      <div class="tb-group tb-zoom">
+        <button type="button" class="icon-btn" id="btnZoomOut" title="Uzaklaş">−</button>
+        <button type="button" class="zoom-value" id="zoomValue" title="Sayfaya sığdır (F)">100%</button>
+        <button type="button" class="icon-btn" id="btnZoomIn" title="Yakınlaş">+</button>
+      </div>
+
+      <div class="tb-spacer"></div>
+
+      <div class="tb-group">
+        <button type="button" class="btn btn-sm" id="btnGenerate" title="P&amp;ID kodlarından pnömatik devreleri otomatik çizer">Otomatik Oluştur</button>
+        <button type="button" class="btn btn-sm" id="btnSave" title="Projeyi kaydet (Ctrl+S)">Kaydet</button>
+        <button type="button" class="btn btn-sm" id="btnCover">Kapak</button>
+        <button type="button" class="btn btn-sm" id="btnReport" title="Açıklama 1: bileşen listesi, bağlantı mantığı, güvenlik · Açıklama 2: P&amp;ID kod eşleştirme">Açıklama</button>
+        <button type="button" class="btn btn-sm" id="btnExportSvg">SVG</button>
+        <button type="button" class="btn btn-sm btn-primary" id="btnExportPdf">PDF İndir</button>
+      </div>
+    </header>
+
+    <aside class="left-panel">
+      <nav class="panel-tabs" data-panel="left">
+        <button type="button" class="panel-tab active" data-tab="symbols">Semboller</button>
+        <button type="button" class="panel-tab" data-tab="codes">P&amp;ID Kodları</button>
+        <button type="button" class="panel-tab" data-tab="files">Dosyalar</button>
+      </nav>
+      <section class="panel-body" id="tab-symbols">
+        <input type="search" id="symbolSearch" class="search" placeholder="Sembol ara…">
+        <div id="symbolList" class="symbol-list"></div>
+      </section>
+      <section class="panel-body hidden" id="tab-codes">
+        <div id="machineBar" class="machine-bar hidden"></div>
+        <input type="search" id="codeSearch" class="search" placeholder="P&amp;ID kodu veya açıklama ara…">
+        <div class="code-filters">
+          <select id="codeSeries" class="field-input"></select>
+          <select id="codeFilter" class="field-input">
+            <option value="pneu">Pnömatikle ilgili</option>
+            <option value="project">P&amp;ID projesindeki</option>
+            <option value="unused">Eşleşmemiş</option>
+            <option value="used">Şemada eşleşmiş</option>
+            <option value="all">Tümü</option>
+          </select>
+        </div>
+        <div id="codeList" class="code-list"></div>
+      </section>
+      <section class="panel-body hidden" id="tab-files">
+        <div id="fileList" class="file-list"></div>
+      </section>
+    </aside>
+
+    <main class="canvas-wrap" id="canvasWrap">
+      <svg id="canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="hint" class="canvas-hint hidden"></div>
+    </main>
+
+    <aside class="right-panel">
+      <nav class="panel-tabs" data-panel="right">
+        <button type="button" class="panel-tab active" data-tab="props">Özellikler</button>
+        <button type="button" class="panel-tab" data-tab="checks">Kontrol <span id="checkBadge" class="badge hidden"></span></button>
+      </nav>
+      <section class="panel-body" id="tab-props"><div id="inspector" class="inspector"></div></section>
+      <section class="panel-body hidden" id="tab-checks"><div id="checkList" class="check-list"></div></section>
+    </aside>
+
+    <section class="dock" id="dock">
+      <div class="dock-resize" id="dockResize" title="Yüksekliği değiştirmek için sürükleyin"></div>
+      <nav class="dock-tabs">
+        <button type="button" class="dock-tab" data-dock="components">Bileşen Listesi <span id="dockCountComponents" class="dock-count"></span></button>
+        <button type="button" class="dock-tab" data-dock="logic">Bağlantı Mantığı <span id="dockCountLogic" class="dock-count"></span></button>
+        <button type="button" class="dock-tab" data-dock="safety">Güvenlik Fonksiyonları <span id="dockCountSafety" class="dock-count"></span></button>
+        <button type="button" class="dock-tab" data-dock="mapping">Kod Eşleştirme (P&amp;ID) <span id="dockCountMapping" class="dock-count"></span></button>
+        <div class="tb-spacer"></div>
+        <button type="button" class="icon-btn dock-toggle" id="dockToggle"></button>
+      </nav>
+      <div class="dock-body" id="dockBody"></div>
+    </section>
+
+    <footer class="bottombar">
+      <div id="sheetTabs" class="sheet-tabs"></div>
+      <div class="tb-spacer"></div>
+      <div class="layer-toggles" id="layerToggles"></div>
+      <label class="toggle-inline"><input type="checkbox" id="snapToggle" checked> Yakala</label>
+      <label class="toggle-inline"><input type="checkbox" id="gridToggle" checked> Izgara</label>
+      <span id="statusPos" class="status-pos"></span>
+    </footer>
+  </div>
+
+  <div id="coverStudio" class="cover-studio hidden"></div>
+  <div id="reportStudio" class="cover-studio hidden"></div>
+  <div id="printRoot"></div>
+  <div id="modalRoot"></div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="../../../ortak/ppx-db.js"></script>
+  <script src="../../../ortak/ppx-fs.js"></script>
+  <script src="../../../ortak/ppx-github.js"></script>
+  <script src="../../../ortak/ppx-boot.js"></script>
+  <script src="host.js"></script>
+  <script src="cover.js"></script>
+  <script src="header.js"></script>
+  <script src="engine/symbols.js"></script>
+  <script src="engine/router.js"></script>
+  <script src="engine/model.js"></script>
+  <script src="engine/pidlink.js"></script>
+  <script src="engine/sheet.js"></script>
+  <script src="engine/checks.js"></script>
+  <script src="engine/logic.js"></script>
+  <script src="engine/generator.js"></script>
+  <script src="engine/place.js"></script>
+  <script src="engine/samples/ornek.js"></script>
+  <script src="engine/editor.js"></script>
+  <script src="engine/panels.js"></script>
+  <script src="engine/pidx.js"></script>
+  <script src="engine/wizard.js"></script>
+  <script src="engine/pdf.js"></script>
+  <script src="engine/pdf-dom.js"></script>
+  <script src="engine/report.js"></script>
+  <script src="engine/covers.js"></script>
+  <script src="engine/app.js"></script>
+</body>
+</html>

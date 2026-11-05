@@ -1,0 +1,295 @@
+/* Dışa aktarılan HTML belgesi — bağımsız dosya stilleri */
+
+:root {
+  --html-text: #1a1a2e;
+  --content-max-h: 900px;
+}
+
+html.html-export,
+body.html-export {
+  margin: 0;
+  padding: 0;
+  background: #eef1f6;
+  color: var(--html-text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body.html-export {
+  padding: 32px 16px 48px;
+}
+
+.html-document.html-unified {
+  width: 100%;
+  max-width: 794px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: var(--html-text);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.html-cover-section .cover-page,
+.html-inline-cover {
+  position: relative;
+  width: 100% !important;
+  height: 1123px !important;
+  min-height: 1123px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.cover-page { padding: 0; overflow: hidden; background: #ffffff; }
+
+.cover-rect {
+  position: absolute;
+  background: var(--cover-accent, #ff0000);
+  z-index: 2;
+}
+
+.cover-title {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  color: var(--cover-accent, #ff0000);
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 22pt;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.cover-info {
+  position: absolute;
+  z-index: 2;
+  color: var(--cover-accent, #ff0000);
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 16pt;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cover-image {
+  position: absolute;
+  z-index: 2;
+  object-fit: contain;
+}
+
+.html-content-section {
+  padding: 0 70px 64px;
+  font-family: 'Calibri', sans-serif;
+  font-size: 10pt;
+  line-height: 1.65;
+  color: var(--html-text);
+  border-top: 1px solid #e8ecf2;
+}
+
+.html-content-section .page-header {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  height: auto;
+  margin: 0;
+  padding: 36px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--brand-color, #ff0000);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ph-brand { display: flex; align-items: baseline; gap: 8px; }
+.ph-brand-logo { flex-direction: column; align-items: flex-start; gap: 1px; line-height: 1; }
+.ph-logo { display: block; height: 16px; width: auto; max-width: 110px; object-fit: contain; }
+.ph-name { font-size: 17px; font-weight: 800; color: var(--brand-color, #ff0000); }
+.ph-sub { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1.2px; }
+.ph-model { font-size: 11px; font-weight: 600; color: var(--brand-color, #ff0000); }
+
+.html-flow-content { padding: 16px 0 0; overflow: visible; }
+
+.html-flow-content .doc-block-stack + .doc-block-stack,
+.html-flow-content .html-pid-section + .safety-matrix-section {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid #e8ecf2;
+}
+
+/* Doküman grafik motoru — HTML export */
+.doc-block-stack > * + * {
+  margin-top: 11px;
+}
+
+.safety-matrix-section {
+  --doc-block-gap: 17px;
+}
+
+.process-overview-section {
+  --doc-block-gap: 17px;
+}
+
+.color-coding-section {
+  --doc-block-gap: 17px;
+}
+
+.pid-component-section {
+  --doc-block-gap: 17px;
+}
+
+.safety-matrix-section.doc-block-stack > * + *,
+.process-overview-section.doc-block-stack > * + *,
+.color-coding-section.doc-block-stack > * + *,
+.pid-component-section.doc-block-stack > * + * {
+  margin-top: 17px;
+}
+
+.doc-h2 {
+  font-family: 'Calibri', sans-serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: #1a2540;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.doc-p {
+  font-family: 'Calibri', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  color: #1a1a2e;
+  margin: 0;
+  line-height: 1.65;
+  text-align: justify;
+}
+
+.doc-p.doc-note {
+  font-weight: 600;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Calibri', sans-serif;
+  font-size: 8.5pt;
+  table-layout: fixed;
+}
+
+.doc-table th,
+.doc-table td {
+  box-sizing: border-box;
+  max-width: 0;
+  padding: 11px 10px;
+  border: 1px solid #cbd5e0;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  line-height: 1.45;
+}
+
+.doc-table th {
+  background: #eef2fb;
+  font-family: 'Calibri', sans-serif;
+  font-weight: 700;
+  font-size: 8.5pt;
+  color: #1a2540;
+}
+
+.doc-table td {
+  font-family: 'Calibri', sans-serif;
+  font-weight: 400;
+  font-size: 8.5pt;
+  line-height: 1.45;
+}
+
+.doc-table .col-id { width: 13.75%; }
+.doc-table .col-trigger { width: 13.75%; }
+.doc-table .col-locked { width: 13.75%; }
+.doc-table .col-logic { width: 58.75%; }
+
+.doc-table col.col-id { width: 13.75%; }
+.doc-table col.col-trigger { width: 13.75%; }
+.doc-table col.col-locked { width: 13.75%; }
+.doc-table col.col-logic { width: 58.75%; }
+
+.html-pid-section {
+  padding: 28px 0;
+  border-bottom: 1px solid #e8ecf2;
+}
+
+.html-pid-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pid-title {
+  font-family: 'Calibri', sans-serif;
+  font-size: 12pt;
+  font-weight: 700;
+  margin-bottom: 11px;
+  color: #1a2540;
+}
+
+.pid-diagram {
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  background: #fafbfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pid-diagram svg,
+.pid-diagram img {
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.pid-meta {
+  margin-top: 10px;
+  font-size: 9pt;
+  color: #4a5568;
+}
+
+.html-drawing-section {
+  width: 100%;
+  height: 1123px;
+  min-height: 1123px;
+  background: #ffffff;
+  border-top: 1px solid #e8ecf2;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  break-after: page;
+  page-break-after: always;
+}
+
+.html-drawing-section:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.html-drawing-section .drawing-page-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.html-drawing-section .drawing-svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+}

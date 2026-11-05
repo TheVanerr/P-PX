@@ -1,0 +1,9 @@
+{
+  "name": "pidx",
+  "version": "1.0.0",
+  "private": true,
+  "description": "P&IDX: tarayıcıda çalışan P&ID çizim programı. Başlatmak için index.html dosyasını açın.",
+  "scripts": {
+    "test": "node --test \"P&ID/codes/engine/test/engine.test.js\" \"P&ID/codes/engine/test/host.test.js\" \"P&ID/codes/engine/test/logic.test.js\" \"P&ID/codes/engine/test/pdf.test.js\""
+  }
+}
