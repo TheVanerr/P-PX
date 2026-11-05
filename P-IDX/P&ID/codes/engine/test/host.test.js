@@ -124,8 +124,6 @@ function setup(t) {
   write(root, 'P&ID/data/guvenlik.csv', 'KOD;TETİK SENSÖRÜ;KİLİTLENEN EKİPMAN;GÜVENLİK MANTIĞI\nLS01;Alt Seviye;Pompalar;"Susuz; çalışmayı engeller"\n');
   write(root, 'P&ID/assets/logos/dolfin.png', Buffer.from([1, 2, 3]));
   write(root, 'P&ID/assets/logos/enva.svg', '<svg/>');
-  write(root, 'P&ID/drawings/lym/lym-1/LYM ŞABLON.svg', '<svg id="x"/>');
-  write(root, 'P&ID/codes/html-export.css', 'body{}');
   write(root, 'ML/KODListesi.csv', '﻿KOD;AÇIKLAMA\nPE01;Ön Yıkama Pompa Motoru\nPE99;Yalnız CSV\n');
   write(root, 'ML/kayitlar/kodlar.json', JSON.stringify({ kodlar: [
     { kod: 'PE01', aciklama: 'Ön Yıkama Pompa Motoru' },
@@ -320,32 +318,6 @@ test('görsel: yalnız assets klasöründen okunur', async (t) => {
   assert.ok(svg.uri.startsWith('data:image/svg+xml;base64,'));
   assert.equal((await store.engine.asset('../data/kod.csv')).ok, false);
   assert.equal((await store.engine.asset('../assets/logos/yok.png')).ok, false);
-});
-
-test('drawings: klasör listesi, varlık ve SVG okuma', async (t) => {
-  const { store } = setup(t);
-  const top = await store.listDrawings('');
-  assert.deepEqual(top.folders, ['lym']);
-  const inner = await store.listDrawings('lym/lym-1');
-  assert.deepEqual(inner.files, ['LYM ŞABLON.svg']);
-  assert.equal((await store.listDrawings('yok')).ok, false);
-  assert.equal((await store.drawingsExists('lym/lym-1')).exists, true);
-  assert.equal((await store.drawingsExists('yok')).exists, false);
-  assert.equal((await store.drawingsExists('../../..')).exists, false);
-  const svg = await store.readDrawingSvg('lym/lym-1/LYM ŞABLON.svg');
-  assert.equal(svg.name, 'LYM ŞABLON');
-  assert.equal(svg.content, '<svg id="x"/>');
-  assert.equal((await store.readDrawingSvg('lym/lym-1/notlar.txt')).ok, false);
-  await assert.rejects(store.readDrawingSvg('../data/kod.csv'), /Geçersiz yol/);
-  await assert.rejects(store.listDrawings('../data'), /Geçersiz yol/);
-});
-
-test('HTML dışa aktarım: görseller gömülür, bulunmayan bağlantı kalır', async (t) => {
-  const { store } = setup(t);
-  const html = await store.inlineImages('<img src="../assets/logos/dolfin.png" alt="a"><img src="data:image/png;base64,AA"><img src="yok.png">');
-  assert.ok(html.includes(`src="data:image/png;base64,${Buffer.from([1, 2, 3]).toString('base64')}"`));
-  assert.ok(html.includes('src="data:image/png;base64,AA"'));
-  assert.ok(html.includes('src="yok.png"'));
 });
 
 test('eski ML hafızası: yalnız klasörde olmayan kayıtlar aktarılır', async (t) => {

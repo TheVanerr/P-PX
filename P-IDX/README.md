@@ -1,6 +1,6 @@
 # P&IDX
 
-P&ID çizim motoru, makine kayıtları, doküman editörü ve CAD çıktısı. Kurulum gerektirmez, tarayıcıda çalışır.
+P&ID çizim motoru ve makine kayıtları. Kurulum gerektirmez, tarayıcıda çalışır.
 
 ## Başlatma
 
@@ -16,8 +16,6 @@ Klasör hatırlanır, ancak tarayıcı her yeniden açıldığında izin yeniden
 | Projeler | Ana ekran | Proje açar, çizim motorunda P&ID çizer |
 | Makineler | Ana ekran, sekme | Seri no bazında makine kayıtları ve kod seçimi |
 | Kod Listesi | Ana ekran, sekme | Kod ekler, düzenler, CSV alır ve verir |
-| Doküman Editörü | Ana ekran, üst bağlantı | Process Overview, Safety Matrix ve P&ID Component dokümanı |
-| CAD | Ana ekran, üst bağlantı | Draw.io (`.drawio`) çıktısı |
 
 Aynı seri nolu proje açıldığında makine kaydı çizime bağlanır. Kodlar sekmesindeki **Taslak çiz** düğmesi makine kaydından taslak kurar: kayıttaki seviye sensörü ve rezistans kodlarına göre su tanklarını, ayrıca yıkama hücresini hazır gruplarıyla yerleştirir, grupta olup kayıtta olmayan parçaları (örneğin kayıtta PE03 yoksa pompası) çıkarır, kalan kodları sayfanın altına dizer. Sayfa gerekirse A2 veya A1 olur; çizim boş değilse taslak yeni sayfaya kurulur. Kodlar panelindeki yıldızla kod ekleyip çıkarabilir, Kontrol sekmesinde kayıt ile çizim arasındaki farkları görebilirsiniz.
 
@@ -52,7 +50,6 @@ Aynı seri nolu proje açıldığında makine kaydı çizime bağlanır. Kodlar 
 | `P&ID/projects/<proje>/` | `proje.json`, `pid/cizim.json`, girdi dosyaları ve `pid/cikti/` |
 | `ML/kayitlar/` | Makine kayıtları (`<seri no>.json`) ve kod listesi (`kodlar.json`) |
 | `P&ID/data/` | Çok dilli kod ve güvenlik katalogları |
-| `P&ID/drawings/` | Doküman editörünün SVG çizimleri |
 
 `ML/KODListesi.csv` yalnızca `kodlar.json` yoksa başlangıç kaynağı olarak okunur. Program güncel listeyi `kodlar.json`'a yazar, CSV'ye Kod Listesi sekmesinden aktarılır.
 

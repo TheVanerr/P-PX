@@ -12,10 +12,8 @@
   const IMPORT_RULES = [
     /^P&ID\/data\//,
     /^P&ID\/projects\//,
-    /^P&ID\/drawings\//,
     /^P&ID\/symbols\//,
     /^P&ID\/assets\//,
-    /^P&ID\/codes\/html-export\.css$/,
     /^ML\//,
     /^PNOMATIK\/data\/(?!pid-)/,
     /^PNOMATIK\/projects\//,

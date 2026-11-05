@@ -14,7 +14,6 @@
   const PID_ROOT = 'P&ID';
   const CODES_DIR = `${PID_ROOT}/codes`;
   const ASSETS_ROOT = `${PID_ROOT}/assets`;
-  const DRAWINGS_ROOT = `${PID_ROOT}/drawings`;
   const PROJECTS_ROOT = `${PID_ROOT}/projects`;
   const DATA_DIR = `${PID_ROOT}/data`;
   const KAYITLAR_DIR = 'ML/kayitlar';
@@ -38,14 +37,6 @@
   const EXPORT_SUFFIX = 'P&ID DIAGRAM';
 
   /* ─── Metin ve ad yardımcıları ────────────────────────── */
-
-  function sanitizeFileName(name) {
-    return String(name || '')
-      .trim()
-      .replace(/[<>:"/\\|?*]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
 
   /** Windows sondaki nokta ve boşluğu kabul etmez; klasör ve proje adlarında temizlenir */
   function sanitizeName(name) {
@@ -364,11 +355,6 @@
         if (missing(e)) return null;
         throw e;
       }
-    }
-
-    async function exists(path) {
-      if (await tryFile(path)) return true;
-      return !!(await tryDir(path));
     }
 
     async function readBytes(path) {
@@ -804,74 +790,13 @@
       return { ok: true, bytes: new Uint8Array(await file.arrayBuffer()) };
     }
 
-    /* ── Doküman editörü: drawings klasörü ve görseller ── */
-
-    async function listDrawings(relativePath) {
-      const rel = pathSegments(relativePath).join('/');
-      const dir = await tryDir(`${DRAWINGS_ROOT}/${rel}`);
-      if (!dir) return { ok: false, error: 'Directory not found' };
-      const entries = await entriesOf(dir);
-      const byName = (a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' });
-      return {
-        ok: true,
-        path: rel,
-        folders: entries.filter((e) => e.kind === 'directory').map((e) => e.name).sort(byName),
-        files: entries.filter((e) => e.kind === 'file' && e.name.toLowerCase().endsWith('.svg')).map((e) => e.name).sort(byName)
-      };
-    }
-
-    async function drawingsExists(relativePath) {
-      try {
-        return { ok: true, exists: await exists(`${DRAWINGS_ROOT}/${pathSegments(relativePath).join('/')}`) };
-      } catch {
-        return { ok: true, exists: false };
-      }
-    }
-
-    async function readDrawingSvg(relativePath) {
-      const rel = pathSegments(relativePath).join('/');
-      if (!rel.toLowerCase().endsWith('.svg')) return { ok: false, error: 'Only SVG files are allowed' };
-      const text = await tryReadText(`${DRAWINGS_ROOT}/${rel}`);
-      if (text === null) return { ok: false, error: 'File not found' };
-      return { ok: true, path: rel, name: rel.split('/').pop().replace(/\.svg$/i, ''), content: text };
-    }
-
-    /** Dışa aktarılan HTML tek başına açılabilsin diye görseller dosyanın içine gömülür */
-    async function inlineImages(html) {
-      const tags = [...String(html).matchAll(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/gi)];
-      const replacements = new Map();
-      for (const [, src] of tags) {
-        if (replacements.has(src) || /^data:/i.test(src)) continue;
-        try {
-          const rel = decodeURIComponent(src);
-          const candidates = [`${CODES_DIR}/${rel}`, `${PID_ROOT}/${rel.replace(/^\.\.\//, '')}`];
-          for (const candidate of candidates) {
-            const path = pathSegments(candidate).join('/');
-            const file = await tryFile(path);
-            if (file) {
-              replacements.set(src, imageDataUri(path, new Uint8Array(await file.arrayBuffer())));
-              break;
-            }
-          }
-        } catch { /* görsel gömülemezse bağlantısı kalır */ }
-      }
-      return String(html).replace(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/gi, (tag, src) => (
-        replacements.has(src) ? tag.replace(src, replacements.get(src)) : tag
-      ));
-    }
-
     return {
       name: rootDir.name,
       dirAt,
       fileHandleAt,
-      tryReadText,
       projectPath,
-      inlineImages,
       readKodCatalog: loadKodCatalog,
       readSafetyCatalog: loadSafetyCatalog,
-      listDrawings,
-      drawingsExists,
-      readDrawingSvg,
       engine: {
         listProjects,
         createProject,
@@ -1167,53 +1092,6 @@
     });
   }
 
-  /** Yazdırma penceresi; Chrome bu başlığı önerilen PDF dosya adı olarak kullanır.
-      window.print() pencere kapanana kadar sayfayı bekletir. */
-  async function printDocument(title) {
-    await imagesDecoded(document);
-    const previous = document.title;
-    document.title = title;
-    try {
-      window.print();
-    } finally {
-      document.title = previous;
-    }
-  }
-
-  async function exportHtml(payload) {
-    const s = await ready();
-    const model = payload?.model || 'pid';
-    const baseName = sanitizeFileName(payload?.fileName) || `${model} ${EXPORT_SUFFIX}`;
-    const title = payload?.title || `${model} P&ID Doküman`;
-    const lang = payload?.lang || 'tr';
-    try {
-      const css = (await s.tryReadText(`${CODES_DIR}/html-export.css`)) || '';
-      const body = await s.inlineImages(payload?.bodyHtml || '');
-      const html = `<!DOCTYPE html>
-<html lang="${escapeHtml(lang)}" class="html-export">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(title)}</title>
-  <style>${css}</style>
-</head>
-<body class="html-export">
-${body}
-</body>
-</html>`;
-      const res = await saveAs({ name: `${baseName}.html`, data: html, mime: 'text/html', ext: 'html', description: 'HTML' });
-      return res.ok ? { success: true, filePath: res.filePath } : { success: false };
-    } catch (e) {
-      return { success: false, error: friendlyError(e) };
-    }
-  }
-
-  async function printPdf(payload) {
-    await ready();
-    await printDocument(sanitizeFileName(payload?.fileName) || `pid-dokuman ${EXPORT_SUFFIX}`);
-    return { success: true };
-  }
-
   const VIEWABLE = {
     pdf: 'application/pdf',
     txt: 'text/plain;charset=utf-8',
@@ -1271,10 +1149,6 @@ ${body}
   }
 
   const engine = {
-    open: async () => {
-      window.open('cizim.html', 'pidx-cizim');
-      return { ok: true };
-    },
     listProjects: bound((s) => s.engine.listProjects),
     createProject: bound((s) => s.engine.createProject),
     readProject: bound((s) => s.engine.readProject),
@@ -1333,13 +1207,7 @@ ${body}
     downloadBlob,
     imagesDecoded,
     nextPaint,
-    printPdf,
-    exportHtml,
-    readKodCatalog: bound((s) => s.readKodCatalog),
     readSafetyCatalog: bound((s) => s.readSafetyCatalog),
-    listDrawings: bound((s) => s.listDrawings),
-    drawingsExists: bound((s) => s.drawingsExists),
-    readDrawingSvg: bound((s) => s.readDrawingSvg),
     engine,
     ml
   });

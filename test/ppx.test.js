@@ -469,7 +469,6 @@ test('klasörden aktarma: veri ve yazı tipi alınır; kod kopyaları, program k
   assert.deepEqual((await db.list()).map((r) => r.path).sort(), [
     'ML/kayitlar/1.json',
     'P&ID/assets/fonts/Carlito-Regular.ttf',
-    'P&ID/codes/html-export.css',
     'P&ID/data/kod.csv',
     'P&ID/projects/a/proje.json',
     'PNOMATIK/assets/logos/vico.png',
@@ -539,9 +538,7 @@ test('her sayfa ortak katmanı programdan önce yükler ve yollar diskte vardır
   const pages = [
     ['index.html', 'ortak/ppx-boot.js'],
     ['P-IDX/P&ID/codes/cizim.html', 'host.js'],
-    ['P-IDX/P&ID/codes/index.html', 'host.js'],
-    ['PNOMATIKX/PNOMATIK/codes/cizim.html', 'host.js'],
-    ['P-IDX/CAD/index.html', 'data/machine-types.js']
+    ['PNOMATIKX/PNOMATIK/codes/cizim.html', 'host.js']
   ];
   for (const [page, first] of pages) {
     const html = fs.readFileSync(path.join(ROOT, page), 'utf8');

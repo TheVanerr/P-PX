@@ -14,7 +14,7 @@ function walk(dir, rel) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const r = rel ? `${rel}/${e.name}` : e.name;
     if (e.isDirectory()) { if (SKIP_DIR.has(e.name)) continue; M.dirs.push(r); walk(path.join(dir, e.name), r); }
-    else if (!SKIP_FILE.test(e.name) && !r.startsWith('LYM ') && r !== 'index.html' && r !== 'package.json') M.files.push(r);
+    else if (!SKIP_FILE.test(e.name) && r !== 'index.html' && r !== 'package.json') M.files.push(r);
   }
 }
 walk(ROOT, '');
@@ -24,13 +24,13 @@ for (const rel of M.files) {
   const dest = path.join(OUT, urlPath(rel));
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   let data = fs.readFileSync(path.join(ROOT, rel));
-  if (rel === 'P&ID/codes/cizim.html' || rel === 'P&ID/codes/index.html') {
+  if (rel === 'P&ID/codes/cizim.html') {
     data = Buffer.from(String(data).replace('<script src="host.js"></script>', '<script src="../../preview-fs.js"></script>\n  <script src="host.js"></script>'));
   }
-  if (/\.(svg|drawio)$/.test(rel)) data = Buffer.from(String(data).replace(/<!DOCTYPE[^>\[]*(\[[\s\S]*?\])?\s*>/i, ''));
+  if (/\.svg$/.test(rel)) data =Buffer.from(String(data).replace(/<!DOCTYPE[^>\[]*(\[[\s\S]*?\])?\s*>/i, ''));
   fs.writeFileSync(dest, data);
   const ext = path.extname(rel);
-  files[urlPath(rel)] = ext === '.drawio' ? { from: dest, contentType: 'application/xml' } : ext === '.csv' ? { from: dest, contentType: 'text/csv' } : ext === '.xlsx' ? { from: dest, contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' } : dest;
+  files[urlPath(rel)] = ext === '.csv' ?{ from: dest, contentType: 'text/csv' } : ext === '.xlsx' ? { from: dest, contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' } : dest;
 }
 const fake = fs.readFileSync(path.join(__dirname, 'preview-fs.tpl.js'), 'utf8').replace('__MANIFEST__', JSON.stringify(M));
 fs.writeFileSync(path.join(OUT, 'preview-fs.js'), fake);

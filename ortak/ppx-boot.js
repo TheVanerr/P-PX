@@ -184,16 +184,6 @@
         return original(clean);
       };
     }
-    // CAD kod listesini dosya adresinden okur; içerik aynı veritabanından verilir
-    if (location.pathname.includes('/CAD/')) {
-      const originalFetch = window.fetch.bind(window);
-      window.fetch = async (url, init) => {
-        if (!String(url).endsWith('ML/kayitlar/kodlar.json')) return originalFetch(url, init);
-        await window.__PPX.ready();
-        const record = await db.read('ML/kayitlar/kodlar.json');
-        return new Response(record ? record.bytes : null, { status: record ? 200 : 404 });
-      };
-    }
   }
 
   /* ─── İki program arasında gezinme ──────────────────────── */
