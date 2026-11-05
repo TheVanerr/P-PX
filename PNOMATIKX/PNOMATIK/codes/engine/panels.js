@@ -293,6 +293,20 @@ const PidPanels = (() => {
     return nextCode(`${nr}${LETTER[def.role] || 'Z'}`);
   }
 
+  /** Başka sayfaya taşıma seçimi (birden çok sayfa varsa) */
+  function moveSheetField() {
+    const sheets = app.editor.drawing.sheets;
+    if (sheets.length < 2) return '';
+    const options = [['', 'Seçin…'], ...sheets.map((sh, i) => [String(i), `${i + 1}. ${sh.title}`]).filter(([i]) => Number(i) !== app.editor.sheetIndex)];
+    return sel('mMoveSheet', 'Başka sayfaya taşı', options, '');
+  }
+
+  function bindMoveSheet() {
+    onField('mMoveSheet', 'change', (el) => {
+      if (el.value !== '') app.moveSelectionToSheet(parseInt(el.value, 10));
+    });
+  }
+
   function inspectSymbol(item) {
     const def = PidSymbols.get(item.symbol);
     const coils = PidSymbols.coilsOf(def);
@@ -338,11 +352,13 @@ const PidPanels = (() => {
       <div class="field"><label for="fSymbol">Sembol</label><select id="fSymbol" class="field-input">${symbolOptions()}</select></div>
       ${def.resizable ? `<div class="field-row">${inp('fW', 'Genişlik (mm)', item.w, 'type="number" step="2.5" min="10"')}${inp('fH', 'Yükseklik (mm)', item.h, 'type="number" step="2.5" min="10"')}</div>` : ''}
       ${!def.resizable ? '<div class="insp-actions"><button type="button" class="btn btn-sm" id="fRotate">Döndür 90°</button><button type="button" class="btn btn-sm" id="fFlip">Aynala</button></div>' : ''}
+      ${moveSheetField()}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', item.optional)}
       ${item.tagOffset ? '<button type="button" class="btn btn-sm" id="fTagReset">Etiket konumunu sıfırla</button>' : ''}
     `;
 
     $('fSymbol').value = item.symbol;
+    bindMoveSheet();
     const upper = (v) => String(v || '').trim().toUpperCase();
     onField('fTag', 'change', (el) => {
       app.editor.updateItem(item, { tag: upper(el.value) });
@@ -512,8 +528,10 @@ const PidPanels = (() => {
       <div class="align-grid">${align.map(([m, t]) => `<button type="button" class="btn btn-sm" data-align="${m}">${t}</button>`).join('')}</div>
       <div class="field-label">Eşit aralıkla dağıt</div>
       <div class="insp-actions"><button type="button" class="btn btn-sm" data-align="distH">Yatay</button><button type="button" class="btn btn-sm" data-align="distV">Dikey</button></div>
+      ${moveSheetField()}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', allOption)}
     `;
+    bindMoveSheet();
     document.querySelectorAll('[data-align]').forEach((b) => b.addEventListener('click', () => app.editor.align(b.dataset.align)));
     onField('fOptional', 'change', (el) => {
       items.forEach((it) => app.editor.updateItem(it, { optional: el.checked }, { commit: false }));
@@ -527,11 +545,29 @@ const PidPanels = (() => {
     const meta = app.editor.project;
     const hasLegend = sheet.items.some((it) => it.type === 'legend');
     const revRows = (meta.revizyonlar || []).map((r, i) => `<div class="rev-row"><strong>${esc(r.rev)}</strong><span>${esc(r.aciklama)}</span><button type="button" class="rev-del" data-rev="${i}" title="Sil">×</button></div>`).join('');
+    const count = app.editor.drawing.sheets.length;
+    const isFirst = app.editor.sheetIndex === 0;
+    const isLast = app.editor.sheetIndex === count - 1;
 
     $('inspector').innerHTML = `
-      <div class="insp-head"><div class="insp-title">Sayfa ${app.editor.sheetIndex + 1}</div></div>
+      <div class="insp-head"><div class="insp-title">Sayfa ${app.editor.sheetIndex + 1} / ${count}</div></div>
+      ${count > 1 ? `<div class="insp-actions">
+        <button type="button" class="btn btn-sm" id="sPrev" title="Önceki sayfayı aç (PageUp)"${isFirst ? ' disabled' : ''}>◀ Önceki sayfa</button>
+        <button type="button" class="btn btn-sm" id="sNext" title="Sonraki sayfayı aç (PageDown)"${isLast ? ' disabled' : ''}>Sonraki sayfa ▶</button>
+      </div>` : ''}
       ${inp('sTitle', 'Çizim adı', sheet.title)}
       ${sel('sSize', 'Sayfa boyutu (yatay)', SHEET_SIZES.map((s) => [s, s]), sheet.size)}
+      <div class="insp-actions sheet-actions">
+        <button type="button" class="btn btn-sm" id="sAdd">+ Yeni sayfa</button>
+        <button type="button" class="btn btn-sm" id="sDup">Çoğalt</button>
+        <button type="button" class="btn btn-sm" id="sDel"${count < 2 ? ' disabled' : ''}>Sil</button>
+      </div>
+      ${count > 1 ? `<div class="field-label">Sayfa sırası</div>
+      <div class="insp-actions">
+        <button type="button" class="btn btn-sm" id="sLeft" title="Bu sayfayı bir sıra öne alır"${isFirst ? ' disabled' : ''}>Öne al</button>
+        <button type="button" class="btn btn-sm" id="sRight" title="Bu sayfayı bir sıra arkaya alır"${isLast ? ' disabled' : ''}>Arkaya al</button>
+      </div>` : ''}
+      <div class="field-help">Antetteki sayfa numarası (1 / 2, 2 / 2) ve sayfa bağlantıları (ŞEMA 2) sıra değişince kendiliğinden güncellenir.</div>
       ${hasLegend ? '' : '<button type="button" class="btn btn-sm" id="sLegend">Lejant ekle</button>'}
 
       <div class="insp-section">P&amp;ID bağlantısı</div>
@@ -566,9 +602,16 @@ const PidPanels = (() => {
       <button type="button" class="btn btn-sm" id="rAdd">Revizyon ekle</button>
 
       <div class="insp-section">Kısayollar</div>
-      <div class="field-help">V seç · L hat · T metin · R döndür · X aynala · F sığdır · Sağ tuş (veya orta tuş, Boşluk) + sürükle kaydır · Tekerlek yakınlaştır, Shift + tekerlek yana kaydır · Alt yakalamayı kapatır · Sağ tık iptal</div>
+      <div class="field-help">V seç · L hat · T metin · R döndür · X aynala · F sığdır · Sağ tuş (veya orta tuş, Boşluk) + sürükle kaydır · Tekerlek yakınlaştır, Shift + tekerlek yana kaydır · PageUp / PageDown sayfa değiştir · Alt yakalamayı kapatır · Sağ tık iptal</div>
     `;
 
+    onField('sPrev', 'click', () => app.goToSheet(-1));
+    onField('sNext', 'click', () => app.goToSheet(1));
+    onField('sAdd', 'click', () => app.addSheet());
+    onField('sDup', 'click', () => app.duplicateSheet());
+    onField('sLeft', 'click', () => app.moveSheet(-1));
+    onField('sRight', 'click', () => app.moveSheet(1));
+    onField('sDel', 'click', () => app.deleteSheet(app.editor.sheetIndex));
     onField('sTitle', 'change', (el) => {
       sheet.title = el.value.trim() || sheet.title;
       app.editor.renderPaper();

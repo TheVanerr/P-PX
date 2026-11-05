@@ -78,6 +78,9 @@
           continue;
         }
         if (def.hidden) continue;
+        if (it.symbol === 'l.offpage' && /\?\s*$/.test(it.note || '')) {
+          add('warn', 'offpage-target', `Sayfa bağlantısının hedef sayfası silinmiş: "${it.note}"`, sheet.id, it.id);
+        }
         const needsTag = def.tag !== 'none' && !def.container;
         if (needsTag && !String(it.tag || '').trim()) {
           add('info', 'tag-empty', `${def.name.tr}: kod girilmemiş`, sheet.id, it.id);

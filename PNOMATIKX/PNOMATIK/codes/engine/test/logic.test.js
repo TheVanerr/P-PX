@@ -6,6 +6,7 @@ const Logic = require('../logic.js');
 const Link = require('../pidlink.js');
 const Gen = require('../generator.js');
 const Sample = require('../samples/ornek.js');
+const Checks = require('../checks.js');
 
 const catalog = new Map(Sample.CODES.map(([id, name]) => [id, { id, name, en: name, de: name }]));
 const sampleDrawing = () => Sample.build().drawing;
@@ -76,6 +77,53 @@ test('sonradan eklenen sayfa "ŞEMA 1" bağlantısıyla ana hatta bağlanır', (
   const r = Logic.analyze(d, { lang: 'tr' });
   assert.ok(!r.hints.some((h) => h.code === 'no-dump'));
   assert.ok(r.safety[0].affected.includes('5A1'), 'yeni devre de tahliye fonksiyonuna girer');
+});
+
+/* Örnek şema + sonradan eklenen 2. sayfa: 5A1 havayı yalnız "ŞEMA n" sayfa bağlantısı üzerinden alır */
+function twoPages() {
+  const d = Sample.build().drawing;
+  const extra = Link.assign({ supply: {}, circuits: Link.group([{ kod: 'V20', name: '1. Proses Tankı Oto. Dolum Aktüatör Vanası valfi' }], new Map()).circuits, excluded: [] },
+    { start: Link.maxCircuit(d) + 1, manualValve: false, mainValve: false, pressureSensor: false });
+  Gen.appendCircuits(d, extra.circuits, { lang: 'tr' });
+  return d;
+}
+const offpages = (sheet) => sheet.items.filter((x) => x.symbol === 'l.offpage').map((x) => x.note);
+const onMainLine = (d) => Logic.analyze(d, { lang: 'tr' }).safety[0].affected.includes('5A1');
+
+test('sayfa sırası değişince sayfa bağlantıları aynı sayfayı gösterir, hava hattı kopmaz', () => {
+  const d = twoPages();
+  const [first, second] = d.sheets;
+  assert.deepEqual([offpages(first), offpages(second)], [['ŞEMA 2'], ['ŞEMA 1']]);
+  assert.ok(onMainLine(d));
+
+  assert.equal(Model.moveSheet(d, 1, -1), 0);
+  assert.equal(d.sheets[0], second);
+  assert.deepEqual([offpages(first), offpages(second)], [['ŞEMA 1'], ['ŞEMA 2']], 'numaralar yeni sıraya uyar');
+  assert.ok(onMainLine(d), 'sıralama sonrası 5A1 ana hatta bağlı kalmalı');
+});
+
+test('sayfa çoğaltılınca arkadaki sayfaların numarası kayar, bağlantılar bozulmaz', () => {
+  const d = twoPages();
+  const [first, second] = d.sheets;
+  const copy = Model.duplicateSheet(d, 0);
+  assert.deepEqual(d.sheets, [first, copy, second]);
+  assert.deepEqual(offpages(first), ['ŞEMA 3'], 'asıl sayfa kaymış 2. sayfayı gösterir');
+  assert.deepEqual(offpages(copy), ['ŞEMA 3'], 'kopya da aynı sayfayı gösterir');
+  assert.deepEqual(offpages(second), ['ŞEMA 1']);
+  assert.ok(onMainLine(d));
+});
+
+test('hedef sayfası silinen bağlantı başka sayfaya bağlanmaz, Kontrol uyarır', () => {
+  const d = twoPages();
+  const second = d.sheets[1];
+  // Üçüncü sayfa, 1. sayfa silinince onun numarasını devralacak: yanlışlıkla ona bağlanmamalı
+  const third = Model.createSheet('Üç');
+  d.sheets.push(third);
+  Model.addSymbol(third, 'l.offpage', 30, 30, { note: 'ŞEMA 2' });
+  assert.equal(d.sheets[Model.removeSheet(d, 0, 1)], second, 'açık sayfada kalınır');
+  assert.deepEqual(offpages(second), ['ŞEMA ?']);
+  assert.deepEqual(offpages(third), ['ŞEMA 1'], 'var olan sayfaya giden bağlantı yeni numarayı alır');
+  assert.ok(Checks.run(d, new Map(), [], null).some((x) => x.code === 'offpage-target' && x.sheetId === second.id));
 });
 
 test('dil: İngilizce ve Almanca metinler', () => {

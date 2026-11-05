@@ -143,6 +143,65 @@ test('üretici: mevcut şemaya tek devre ve yeni sayfalar eklenir', () => {
   assert.ok(d.sheets[0].items.some((x) => x.symbol === 'l.offpage' && x.note === 'ŞEMA 2'), '1. sayfanın ana hattı 2. sayfaya devam eder');
 });
 
+test('sayfalar: seçimi taşır, çoğaltır, sıralar; antet numarası sıraya uyar', () => {
+  const drawing = Model.createDrawing('Bir');
+  const [s1] = drawing.sheets;
+  const valve = Model.addSymbol(s1, 'v.52bi', 80, 100, { tag: '1V1', coils: [{ tag: '1Y1', pid: 'V31' }, { tag: '1Y2', pid: 'V32' }] });
+  const cyl = Model.addSymbol(s1, 'a.cylDouble', 160, 60, { tag: '1A1', sensors: [{ tag: '1B1', pid: 'SWB01', pos: 0 }] });
+  const sensor = Model.addSymbol(s1, 'k.pressureSensor', 250, 100, { tag: '0B1' });
+  const port = (it, i) => ({ node: it.id, port: Model.portsOf(it)[i].id });
+  Model.addLine(s1, port(valve, 0), port(cyl, 0));
+  const cross = Model.addLine(s1, port(cyl, 1), port(sensor, 0));
+  const s2 = Model.createSheet('İki');
+  drawing.sheets.push(s2);
+
+  const moved = Model.moveToSheet(s1, s2, [valve.id, cyl.id]);
+  assert.equal(moved.length, 3, 'iki sembol ve aralarındaki hat');
+  assert.ok(s2.items.includes(valve) && !s1.items.includes(valve));
+  assert.ok(!cross.from.node && cross.to.node === sensor.id, 'sayfa dışına giden hat ucu boşa çıkmalı');
+  assert.deepEqual(Model.moveToSheet(s2, s2, [valve.id]), []);
+
+  const copy = Model.duplicateSheet(drawing, 1);
+  assert.equal(drawing.sheets[2], copy);
+  assert.equal(copy.title, 'İki (kopya)');
+  assert.equal(copy.items.length, s2.items.length);
+  assert.ok(copy.items.every((it) => !s2.items.some((o) => o.id === it.id)), 'kimlikler yeni olmalı');
+  const copied = copy.items.find((it) => it.tag === '1V1');
+  assert.equal(copied.coils[0].pid, 'V31', 'bobin kodları kopyalanır');
+  copied.coils[0].pid = 'X';
+  assert.equal(valve.coils[0].pid, 'V31', 'kopya asıl sayfaya bağlı olmamalı');
+  const line = copy.items.find(Model.isLine);
+  assert.ok(copy.items.some((it) => it.id === line.from.node), 'kopyadaki hat kopyadaki sembole bağlanır');
+
+  assert.equal(Model.moveSheet(drawing, 2, -1), 1);
+  assert.equal(drawing.sheets[1], copy);
+  assert.equal(Model.moveSheet(drawing, 0, -1), 0);
+  assert.match(Sheet.renderFrame(project, copy, 1, drawing.sheets.length, { lang: 'tr' }), /2 \/ 3/);
+});
+
+test('sayfa silme: başka sayfa silinince açık sayfa değişmez, son sayfa silinmez', () => {
+  const drawing = Model.createDrawing('A');
+  const [a] = drawing.sheets;
+  const b = Model.createSheet('B');
+  const c = Model.createSheet('C');
+  drawing.sheets.push(b, c);
+  // B açıkken A silinir: B'de kalınır (eskiden C açılıyordu)
+  let open = Model.removeSheet(drawing, 0, 1);
+  assert.equal(drawing.sheets[open], b);
+  drawing.sheets.unshift(a);
+  // C açıkken C silinir: yeni son sayfa açılır
+  open = Model.removeSheet(drawing, 2, 2);
+  assert.equal(drawing.sheets[open], b);
+  // Ortadaki açıkken silinir: aynı sıradaki sayfa açılır
+  drawing.sheets.push(c);
+  open = Model.removeSheet(drawing, 1, 1);
+  assert.equal(drawing.sheets[open], c);
+  Model.removeSheet(drawing, 0, 0);
+  open = Model.removeSheet(drawing, 0, 0);
+  assert.equal(drawing.sheets.length, 1, 'son sayfa silinmez');
+  assert.equal(open, 0);
+});
+
 test('kontrol: aynı pnömatik kod ve farklı devrelerde aynı P&ID kodu hata verir', () => {
   const d = Model.createDrawing();
   const s = d.sheets[0];

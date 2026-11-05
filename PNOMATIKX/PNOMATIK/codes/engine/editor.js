@@ -95,6 +95,34 @@ class PidEditor {
     this.host.onSheets();
   }
 
+  /** Sayfayı siler; başka bir sayfa silindiyse kullanıcı bulunduğu sayfada kalır */
+  removeSheet(index) {
+    const open = this.sheet;
+    this.sheetIndex = PidModel.removeSheet(this.drawing, index, this.sheetIndex);
+    const changed = this.sheet !== open;
+    if (changed) {
+      this.selection.clear();
+      this.resetTransient();
+    }
+    this.renderAll();
+    if (changed) this.fit();
+    this.commit();
+    this.host.onSelection();
+    this.host.onSheets();
+  }
+
+  /** Açık sayfanın sırasını değiştirir; görünüm ve seçim korunur */
+  moveSheet(dir) {
+    const to = PidModel.moveSheet(this.drawing, this.sheetIndex, dir);
+    if (to === this.sheetIndex) return false;
+    this.sheetIndex = to;
+    this.renderAll();
+    this.commit();
+    this.host.onSelection();
+    this.host.onSheets();
+    return true;
+  }
+
   /* ─── Görünüm ─────────────────────────────────────────── */
 
   applyView() {
@@ -1540,6 +1568,8 @@ class PidEditor {
       case 'ArrowRight': this.nudge(step, 0); e.preventDefault(); break;
       case 'ArrowUp': this.nudge(0, -step); e.preventDefault(); break;
       case 'ArrowDown': this.nudge(0, step); e.preventDefault(); break;
+      case 'PageUp': this.setSheet(this.sheetIndex - 1); e.preventDefault(); break;
+      case 'PageDown': this.setSheet(this.sheetIndex + 1); e.preventDefault(); break;
       default:
         if (key === 'v') this.setTool('select');
         else if (key === 'l') this.setTool('line');

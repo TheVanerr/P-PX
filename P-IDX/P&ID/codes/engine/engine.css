@@ -587,7 +587,7 @@ textarea.field-input { resize: vertical; min-height: 64px; }
   border-top: 1px solid var(--line);
   min-width: 0;
 }
-.sheet-tabs { display: flex; align-items: stretch; height: 100%; min-width: 0; overflow-x: auto; }
+.sheet-tabs { display: flex; align-items: stretch; height: 100%; min-width: 0; overflow-x: auto; scrollbar-width: thin; scroll-padding-right: 84px; }
 .sheet-tab {
   display: flex;
   align-items: center;
@@ -606,7 +606,8 @@ textarea.field-input { resize: vertical; min-height: 64px; }
 .sheet-tab.active { color: var(--text); background: var(--panel-2); border-top-color: var(--dolfin); font-weight: 600; }
 .sheet-tab .x { opacity: 0.55; font-size: 13px; padding: 0 2px; }
 .sheet-tab .x:hover { opacity: 1; color: var(--dolfin); }
-.sheet-add { margin: 4px 6px; padding: 0 10px; background: transparent; border: 1px dashed var(--line); border-radius: var(--radius); cursor: pointer; color: var(--muted); font: 600 12px var(--font); white-space: nowrap; }
+/* Sekmeler taşınca da görünür kalır; çevresindeki gölge alttan kayan sekmeleri örter */
+.sheet-add { position: sticky; right: 6px; flex: none; margin: 3px 6px; padding: 0 10px; background: var(--panel); box-shadow: 0 0 0 6px var(--panel); border: 1px dashed var(--line); border-radius: var(--radius); cursor: pointer; color: var(--muted); font: 600 12px var(--font); white-space: nowrap; }
 .sheet-add:hover { color: var(--text); border-color: var(--muted); }
 .sheet-actions { flex-wrap: wrap; }
 .layer-toggles { display: flex; gap: 10px; }

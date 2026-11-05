@@ -18,6 +18,11 @@ Ortak zayıflıklar: otomatik yeniden deneme yoktu, çakışma algılanmıyordu,
 | Pnömatik yarım hat | Sayfa değişince başka sayfaya taşınırdı | Temizlenir |
 | Esc ile pencere kapatma | P&ID: çalışmazdı. Pnömatik: onay penceresinde sayfa silme yarım kalırdı | İkisinde de çalışır, onay "Vazgeç" sayılır |
 | Başarısız kayıt | Sonraki düzenlemeyi beklerdi | İkisinde de 15 saniyede bir yeniden dener |
+| Pnömatik sayfa ekleme | Etiketsiz `+`; sağ panelde düğme yoktu | Alt çubukta `+ Sayfa`, sağ panelde `+ Yeni sayfa` |
+| Sayfa ekleme düğmesi | İkisinde de: ad alanından çıkarken tıklama kaybolurdu, çok sayfada düğme ve açık sekme görünmezdi | İkisinde de tıklama kaybolmaz, düğme ve açık sekme görünür kalır |
+| Pnömatik sayfa işlemleri | Yalnız ekleme ve silme; önceki sayfa silinince açık sayfa kayardı | Çoğaltma, sıralama, seçimi taşıma, PageUp/Down; silmede açık sayfa korunur |
+
+Pnömatiğe özgü fark: sayfa bağlantıları (`ŞEMA 2`) hava hattını sayfa numarasıyla sürdürür, bu yüzden sıralama, çoğaltma ve silme bu numaraları da günceller. P&ID'de bağlantı yalnız yazıdır, güncelleme gerekmez.
 
 ## Kalan işler (P&ID'den pnömatiğe)
 
@@ -25,8 +30,7 @@ Bunlar `model.js` ve çizim verisine dokunur, her biri kendi testiyle ayrı yap�
 
 | Özellik | Bugün pnömatikte | Büyüklük | Not |
 |---|---|---|---|
-| Sayfa çoğaltma, sıralama, seçimi taşıma, PageUp/Down | Yalnız ekleme ve silme; önceki sayfa silinince açık sayfa kayar | Küçük-orta | Önerilen ilk iş |
-| Sayfa sekmelerini yerinde güncelleme, panel hızlandırma | Her çizimde yeniden kurulur | Küçük | Tıklama kaybını önler |
+| Panel hızlandırma | Her çizimde yeniden kurulur | Küçük | |
 | Gruplama | Yok | Orta | Sürükleme kodu değişir |
 | Revizyon bulutları | Yalnız revizyon tablosu | Orta | Karşılaştırmaya bobin, sensör ve P&ID kodu eklenmeli |
 | Çok dilli PDF ve eksik çeviri kontrolü | Tek dil, kapakta seçilir | Orta | Çeviri alanları gerekir |

@@ -315,11 +315,14 @@ const PidApp = (() => {
 
   /* ─── Sayfa sekmeleri ─────────────────────────────────── */
 
+  let tabsHeld = false;
+
   /**
-   * Sekmeler yeniden kurulmaz, yerinde güncellenir: ad alanından çıkarken gelen "change" tıklamanın ortasında
-   * çalışır ve sekme değişirse tıklama kaybolur, sayfaya geçilemez.
+   * Ad alanından çıkarken gelen "change" tıklamanın ortasında çalışır. Sekmeler o anda değişirse ya da ad kısalıp
+   * düğme imlecin altından kayarsa tıklama kaybolur; bu yüzden basılıyken güncellenmez, bırakınca güncellenir.
    */
   function renderSheets() {
+    if (tabsHeld) return;
     const editor = state.editor;
     const wrap = $('sheetTabs');
     const sheets = editor.drawing.sheets;
@@ -332,10 +335,24 @@ const PidApp = (() => {
       sheets.forEach((s, i) => { tabs[i].innerHTML = label(s, i); });
     }
     wrap.querySelectorAll('.sheet-tab').forEach((tab, i) => tab.classList.toggle('active', i === editor.sheetIndex));
+    // Çok sayfada açık sekme görünür alanda kalır
+    const active = wrap.querySelector('.sheet-tab.active');
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
   function bindSheetTabs() {
     const wrap = $('sheetTabs');
+    const release = () => {
+      if (!tabsHeld) return;
+      // Tıklama bu olaydan hemen sonra gelir; sekmeler o işlendikten sonra güncellenir
+      setTimeout(() => {
+        tabsHeld = false;
+        renderSheets();
+      });
+    };
+    wrap.addEventListener('pointerdown', () => { tabsHeld = true; });
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
     wrap.addEventListener('click', (e) => {
       if (e.target.closest('#sheetAdd')) {
         addSheet();

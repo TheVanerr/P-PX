@@ -532,6 +532,116 @@
     return copies;
   }
 
+  /* ─── Sayfalar ────────────────────────────────────────── */
+
+  const isJunction = (it) => isSymbol(it) && it.symbol === 'l.junction';
+
+  /** Seçim ve onunla bir bütün olanlar: en az iki kolu seçime varan bağlantı noktaları, iki ucu seçimde olan hatlar */
+  function closeSelection(sheet, ids) {
+    const set = new Set(ids);
+    const waiting = sheet.items.filter((it) => isJunction(it) && !set.has(it.id));
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const j of waiting) {
+        if (set.has(j.id)) continue;
+        const arms = attachedLines(sheet, j.id).filter((l) => {
+          if (set.has(l.id)) return true;
+          const far = l.from.node === j.id ? l.to : l.from;
+          return !!far.node && set.has(far.node);
+        });
+        if (arms.length >= 2) {
+          set.add(j.id);
+          changed = true;
+        }
+      }
+    }
+    for (const l of sheet.items) {
+      if (isLine(l) && l.from.node && l.to.node && set.has(l.from.node) && set.has(l.to.node)) set.add(l.id);
+    }
+    return set;
+  }
+
+  /**
+   * Sayfa bağlantıları sayfayı numarasıyla gösterir ("ŞEMA 2") ve hava hattı bu numarayla sürer.
+   * Sıra değişince her bağlantı aynı sayfayı göstermeye devam eder. Sayfası silinen bağlantı "ŞEMA ?" olur;
+   * böylece silinen sayfanın yerine geçen sayfaya yanlışlıkla bağlanmaz.
+   * @param before sayfa kimlikleri, değişiklikten önceki sırayla
+   */
+  function renumberOffpage(drawing, before) {
+    const after = new Map(drawing.sheets.map((s, i) => [s.id, i + 1]));
+    for (const sheet of drawing.sheets) {
+      for (const it of sheet.items) {
+        if (!isSymbol(it) || it.symbol !== 'l.offpage') continue;
+        const m = String(it.note || '').match(/^(.*?)(\d+)\s*$/);
+        const id = m ? before[parseInt(m[2], 10) - 1] : null;
+        if (id) it.note = `${m[1]}${after.has(id) ? after.get(id) : '?'}`;
+      }
+    }
+  }
+
+  const sheetIds = (drawing) => drawing.sheets.map((s) => s.id);
+
+  /**
+   * Seçimi başka sayfaya taşır; yerleri ve hat yolları aynen kalır, hedef sayfadaki hatlara dokunulmaz.
+   * Dışarıda kalan uçlara bağlı hatlar iki sayfada da boşa çıkar.
+   */
+  function moveToSheet(fromSheet, toSheet, ids) {
+    if (fromSheet === toSheet) return [];
+    const set = closeSelection(fromSheet, ids);
+    for (const l of fromSheet.items) {
+      if (isLine(l) && set.has(l.id) && [l.from, l.to].some((a) => a.node && !set.has(a.node))) set.delete(l.id);
+    }
+    for (const l of fromSheet.items) {
+      if (!isLine(l) || set.has(l.id)) continue;
+      if (l.from.node && set.has(l.from.node)) l.from = freeAnchor(fromSheet, l.from);
+      if (l.to.node && set.has(l.to.node)) l.to = freeAnchor(fromSheet, l.to);
+    }
+    const moving = fromSheet.items.filter((it) => set.has(it.id));
+    fromSheet.items = fromSheet.items.filter((it) => !set.has(it.id));
+    toSheet.items.push(...moving);
+    cleanupJunctions(fromSheet);
+    updateJunctionDots(fromSheet);
+    updateJunctionDots(toSheet);
+    return moving.map((it) => it.id);
+  }
+
+  /** Sayfanın kopyası hemen arkasına eklenir */
+  function duplicateSheet(drawing, index) {
+    const src = drawing.sheets[index];
+    const before = sheetIds(drawing);
+    const copy = createSheet(`${src.title} (kopya)`, src.size);
+    copy.items = cloneList(src, src.items, 0, 0);
+    drawing.sheets.splice(index + 1, 0, copy);
+    renumberOffpage(drawing, before);
+    return copy;
+  }
+
+  /**
+   * Sayfayı siler; son sayfa silinmez. Açık kalacak sayfanın sırasını döner:
+   * başka bir sayfa silindiyse kullanıcı bulunduğu sayfada kalır.
+   */
+  function removeSheet(drawing, index, current) {
+    if (drawing.sheets.length < 2 || !drawing.sheets[index]) return current;
+    const before = sheetIds(drawing);
+    const open = drawing.sheets[current];
+    drawing.sheets.splice(index, 1);
+    renumberOffpage(drawing, before);
+    const kept = drawing.sheets.indexOf(open);
+    return kept >= 0 ? kept : Math.min(index, drawing.sheets.length - 1);
+  }
+
+  /** Sayfayı sola (-1) ya da sağa (+1) kaydırır; yeni sırasını döner */
+  function moveSheet(drawing, index, dir) {
+    const to = index + dir;
+    if (to < 0 || to >= drawing.sheets.length) return index;
+    const before = sheetIds(drawing);
+    const [sheet] = drawing.sheets.splice(index, 1);
+    drawing.sheets.splice(to, 0, sheet);
+    renumberOffpage(drawing, before);
+    return to;
+  }
+
   /** Sembolün kendisi, bobinleri ve sensörleri: [{part, index, tag, pid}] */
   function partsOf(it) {
     const out = [{ part: 'item', index: -1, tag: it.tag || '', pid: it.pid || '' }];
@@ -601,6 +711,10 @@
     removeItems,
     cloneItems,
     cloneList,
+    moveToSheet,
+    duplicateSheet,
+    removeSheet,
+    moveSheet,
     syncParts,
     partsOf,
     usedTags,

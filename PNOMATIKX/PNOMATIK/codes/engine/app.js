@@ -332,31 +332,87 @@ const PidApp = (() => {
 
   /* ─── Sayfa sekmeleri ─────────────────────────────────── */
 
+  let tabsHeld = false;
+
+  /**
+   * Ad alanından çıkarken gelen "change" tıklamanın ortasında çalışır. Sekmeler o anda değişirse ya da ad kısalıp
+   * düğme imlecin altından kayarsa tıklama kaybolur; bu yüzden basılıyken güncellenmez, bırakınca güncellenir.
+   */
   function renderSheets() {
+    if (tabsHeld) return;
     const editor = state.editor;
     const wrap = $('sheetTabs');
-    wrap.innerHTML = editor.drawing.sheets.map((s, i) => {
-      const closable = editor.drawing.sheets.length > 1;
-      return `<button type="button" class="sheet-tab${i === editor.sheetIndex ? ' active' : ''}" data-index="${i}">${i + 1}. ${esc(s.title)}${closable ? `<span class="x" data-del="${i}" title="Sayfayı sil">×</span>` : ''}</button>`;
-    }).join('') + '<button type="button" class="sheet-add" id="sheetAdd" title="Yeni sayfa">+</button>';
+    const sheets = editor.drawing.sheets;
+    const closable = sheets.length > 1;
+    const label = (s, i) => `${i + 1}. ${esc(s.title)}${closable ? `<span class="x" data-del="${i}" title="Sayfayı sil">×</span>` : ''}`;
+    const tabs = wrap.querySelectorAll('.sheet-tab');
+    if (tabs.length !== sheets.length) {
+      wrap.innerHTML = `${sheets.map((s, i) => `<button type="button" class="sheet-tab" data-index="${i}">${label(s, i)}</button>`).join('')}<button type="button" class="sheet-add" id="sheetAdd" title="Yeni sayfa ekle">+ Sayfa</button>`;
+    } else {
+      sheets.forEach((s, i) => { tabs[i].innerHTML = label(s, i); });
+    }
+    wrap.querySelectorAll('.sheet-tab').forEach((tab, i) => tab.classList.toggle('active', i === editor.sheetIndex));
+    // Çok sayfada açık sekme görünür alanda kalır
+    const active = wrap.querySelector('.sheet-tab.active');
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
 
-    wrap.querySelectorAll('.sheet-tab').forEach((tab) => {
-      tab.addEventListener('click', (e) => {
-        if (e.target.dataset.del !== undefined) {
-          deleteSheet(parseInt(e.target.dataset.del, 10));
-          return;
-        }
-        editor.setSheet(parseInt(tab.dataset.index, 10));
+  function bindSheetTabs() {
+    const wrap = $('sheetTabs');
+    const release = () => {
+      if (!tabsHeld) return;
+      // Tıklama bu olaydan hemen sonra gelir; sekmeler o işlendikten sonra güncellenir
+      setTimeout(() => {
+        tabsHeld = false;
+        renderSheets();
       });
+    };
+    wrap.addEventListener('pointerdown', () => { tabsHeld = true; });
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
+    wrap.addEventListener('click', (e) => {
+      if (e.target.closest('#sheetAdd')) {
+        addSheet();
+        return;
+      }
+      if (e.target.dataset.del !== undefined) {
+        deleteSheet(parseInt(e.target.dataset.del, 10));
+        return;
+      }
+      const tab = e.target.closest('.sheet-tab');
+      if (!tab) return;
+      const index = parseInt(tab.dataset.index, 10);
+      if (index !== state.editor.sheetIndex) state.editor.setSheet(index);
     });
-    $('sheetAdd').addEventListener('click', () => {
-      const sheet = PidModel.createSheet(`${DEFAULT_TITLE} ${editor.drawing.sheets.length + 1}`, editor.sheet.size);
-      editor.drawing.sheets.push(sheet);
-      editor.commit();
-      editor.setSheet(editor.drawing.sheets.length - 1);
-      editor.renderAll();
-      renderSheets();
-    });
+  }
+
+  /** Yeni sayfa aynı boyutta açılır; antet numarası (2 / 2) kendiliğinden yazılır */
+  function addSheet() {
+    const editor = state.editor;
+    const sheet = PidModel.createSheet(`${DEFAULT_TITLE} ${editor.drawing.sheets.length + 1}`, editor.sheet.size);
+    editor.drawing.sheets.push(sheet);
+    editor.setSheet(editor.drawing.sheets.length - 1);
+    editor.commit();
+    toast(`Sayfa ${editor.drawing.sheets.length} eklendi`);
+  }
+
+  function duplicateSheet() {
+    const editor = state.editor;
+    PidModel.duplicateSheet(editor.drawing, editor.sheetIndex);
+    editor.setSheet(editor.sheetIndex + 1);
+    editor.commit();
+    toast('Sayfa çoğaltıldı. Kopyadaki kodlar asıl sayfadakilerle aynı; Kontrol sekmesi tekrar eden kodları gösterir.');
+  }
+
+  /** Sayfalar arasında gezinir; içerik ve sıra değişmez */
+  function goToSheet(delta) {
+    state.editor.setSheet(state.editor.sheetIndex + delta);
+  }
+
+  /** Sayfanın sırasını değiştirir (gezinmekle karışmasın diye düğmeleri ayrıdır) */
+  function moveSheet(dir) {
+    const editor = state.editor;
+    if (editor.moveSheet(dir)) toast(`"${editor.sheet.title}" artık ${editor.sheetIndex + 1}. sırada`);
   }
 
   /** Tarayıcının onay penceresi yerine sayfa içi onay (gömülü görünümlerde confirm() çalışmaz) */
@@ -389,14 +445,23 @@ const PidApp = (() => {
 
   async function deleteSheet(index) {
     const editor = state.editor;
+    if (editor.drawing.sheets.length < 2) return;
     const sheet = editor.drawing.sheets[index];
-    if (sheet.items.length && !(await confirmModal(`"${sheet.title}" sayfası ve içindekiler silinecek.`, 'Sayfayı sil'))) return;
-    editor.drawing.sheets.splice(index, 1);
-    editor.sheetIndex = Math.min(editor.sheetIndex, editor.drawing.sheets.length - 1);
-    editor.renderAll();
+    if (sheet.items.length && !(await confirmModal(`"${sheet.title}" sayfası ve içindekiler silinecek. Geri Al ile geri getirebilirsiniz.`, 'Sayfayı sil'))) return;
+    editor.removeSheet(index);
+  }
+
+  /** Seçimi başka sayfaya taşır ve o sayfaya geçer */
+  function moveSelectionToSheet(index) {
+    const editor = state.editor;
+    const target = editor.drawing.sheets[index];
+    if (!target || index === editor.sheetIndex) return;
+    const moved = PidModel.moveToSheet(editor.sheet, target, [...editor.selection]);
+    if (!moved.length) return;
     editor.commit();
-    editor.host.onSelection();
-    renderSheets();
+    editor.setSheet(index);
+    editor.setSelection(moved.filter((id) => !PidModel.isLine(PidModel.findItem(target, id))));
+    toast(`${moved.length} öğe ${index + 1}. sayfaya taşındı. Diğer sayfaya giden hatlar boşta kaldıysa Sayfa Bağlantısı ile bağlayın.`);
   }
 
   /* ─── Otomatik oluşturma ve P&ID kodu bağlama ─────────── */
@@ -1130,6 +1195,7 @@ const PidApp = (() => {
     $('btnExportSvg').addEventListener('click', exportSvg);
     $('btnCover').addEventListener('click', () => PidCovers.open());
     $('btnReport').addEventListener('click', () => PidReport.open());
+    bindSheetTabs();
     $('snapToggle').addEventListener('change', (e) => { editor.snap = e.target.checked; });
     $('gridToggle').addEventListener('change', (e) => editor.setGrid(e.target.checked));
 
@@ -1236,6 +1302,12 @@ const PidApp = (() => {
     placingSpecForCode,
     placingSpecForSymbol,
     renderSheets,
+    addSheet,
+    duplicateSheet,
+    goToSheet,
+    moveSheet,
+    deleteSheet,
+    moveSelectionToSheet,
     onMetaChange,
     openProject,
     openSample,

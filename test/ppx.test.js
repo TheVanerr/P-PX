@@ -524,6 +524,32 @@ test('kapak logosu iki programda da yüklenen veriden gelir: dosyadan açılınc
   }
 });
 
+test('sayfa ekleme iki programda da alt çubukta ve sağ panelde görünür, tıklama kaybolmaz', () => {
+  for (const dir of ['P-IDX/P&ID', 'PNOMATIKX/PNOMATIK']) {
+    const app = fs.readFileSync(path.join(ROOT, dir, 'codes/engine/app.js'), 'utf8');
+    const panels = fs.readFileSync(path.join(ROOT, dir, 'codes/engine/panels.js'), 'utf8');
+    assert.match(app, /id="sheetAdd"[^>]*>\+ Sayfa</, dir);
+    // Sekmeler yeniden kurulsa da tıklama çalışsın diye dinleyici üst öğededir
+    assert.match(app, /e\.target\.closest\('#sheetAdd'\)/, dir);
+    // Basılıyken ad değişirse düğme imlecin altından kayar; sekmeler bırakınca güncellenir
+    assert.match(app, /if \(tabsHeld\) return;/, dir);
+    assert.match(fs.readFileSync(path.join(ROOT, dir, 'codes/engine/engine.css'), 'utf8'), /\.sheet-add \{ position: sticky;/, dir);
+    assert.match(panels, /id="sAdd"/, dir);
+    assert.match(panels, /onField\('sAdd', 'click', \(\) => app\.addSheet\(\)\)/, dir);
+  }
+});
+
+test('sayfa işlemleri iki programda da aynı: çoğaltma, sıralama, silme, seçimi taşıma, PageUp/PageDown', () => {
+  for (const dir of ['P-IDX/P&ID', 'PNOMATIKX/PNOMATIK']) {
+    const read = (file) => fs.readFileSync(path.join(ROOT, dir, 'codes/engine', file), 'utf8');
+    const panels = read('panels.js');
+    for (const id of ['sPrev', 'sNext', 'sAdd', 'sDup', 'sDel', 'sLeft', 'sRight', 'mMoveSheet']) assert.ok(panels.includes(`'${id}'`), `${dir}: ${id}`);
+    for (const fn of ['duplicateSheet', 'goToSheet', 'moveSheet', 'deleteSheet', 'moveSelectionToSheet']) assert.match(read('app.js'), new RegExp(`\\n    ${fn},`), `${dir}: ${fn}`);
+    assert.match(read('app.js'), /editor\.removeSheet\(index\)/, dir);
+    assert.match(read('editor.js'), /case 'PageDown'/, dir);
+  }
+});
+
 test('başarısız kayıt iki programda da kendiliğinden yeniden denenir', () => {
   for (const file of ['P-IDX/P&ID/codes/engine/app.js', 'PNOMATIKX/PNOMATIK/codes/engine/app.js']) {
     const app = fs.readFileSync(path.join(ROOT, file), 'utf8');
