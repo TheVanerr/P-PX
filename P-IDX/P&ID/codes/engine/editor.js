@@ -1385,27 +1385,58 @@ class PidEditor {
     this.host.onSelection();
   }
 
+  /** Kopyanın geldiği yer: aynı proje ve sayfaya yapıştırılırsa kayık, başka yere aynı konuma konur */
+  sourceKey() {
+    const project = this.host.projectKey ? this.host.projectKey() : '';
+    return `${project}|${this.sheet ? this.sheet.id : ''}`;
+  }
+
   copy() {
     if (!this.selection.size) return false;
     // İki ucu da seçimde olan hatlar ve aradaki bağlantı noktaları kopyaya otomatik girer
-    const ids = PidModel.closeSelection(this.sheet, [...this.selection]);
-    const items = this.sheet.items.filter((it) => ids.has(it.id));
-    this.clipboard = { items: JSON.parse(JSON.stringify(items)), sheet: JSON.parse(JSON.stringify(this.sheet)) };
+    const items = PidModel.copyPayload(this.sheet, [...this.selection]);
+    this.clipboard = { items, source: this.sourceKey(), at: Date.now() };
+    // Pano tarayıcıda saklanır: başka sekmedeki ya da sonra açılan projeye de yapıştırılır
+    try {
+      localStorage.setItem(PidEditor.CLIPBOARD_KEY, JSON.stringify(this.clipboard));
+    } catch { /* hafıza doluysa ya da kapalıysa kopya yalnız bu sekmede kalır */ }
+    if (this.host.onCopy) this.host.onCopy(items);
     return true;
   }
 
-  paste() {
-    if (!this.clipboard) return;
-    const copies = PidModel.cloneList(this.clipboard.sheet, this.clipboard.items, 10, 10);
+  /** En yeni pano: bu sekmenin kopyası ya da başka sekmede alınan kopya */
+  readClipboard() {
+    let stored = null;
+    try {
+      stored = JSON.parse(localStorage.getItem(PidEditor.CLIPBOARD_KEY));
+    } catch { /* bozuk ya da erişilemez kayıt yok sayılır */ }
+    const mine = this.clipboard;
+    if (stored && Array.isArray(stored.items) && (!mine || (stored.at || 0) >= (mine.at || 0))) return stored;
+    return mine;
+  }
+
+  pasteItems(items, offset) {
+    const copies = PidModel.cloneList(null, items, offset, offset);
     this.sheet.items.push(...copies);
     this.selection = new Set(copies.map((c) => c.id));
     this.renderAll();
     this.commit();
     this.host.onSelection();
+    return copies;
   }
 
+  paste() {
+    const clip = this.readClipboard();
+    if (!clip || !clip.items || !clip.items.length) return;
+    const sameSheet = clip.source === this.sourceKey();
+    const copies = this.pasteItems(clip.items, sameSheet ? 10 : 0);
+    if (this.host.onPaste) this.host.onPaste(copies, { sameSheet });
+  }
+
+  /** Ctrl+D: aynı sayfada kayık kopya; projeler arası panoya dokunmaz */
   duplicate() {
-    if (this.copy()) this.paste();
+    if (!this.selection.size) return;
+    this.pasteItems(PidModel.copyPayload(this.sheet, [...this.selection]), 10);
   }
 
   align(mode) {
@@ -1524,3 +1555,6 @@ class PidEditor {
     }
   }
 }
+
+/* Projeler ve sekmeler arası ortak pano (tarayıcı hafızası) */
+PidEditor.CLIPBOARD_KEY = 'pidx_pano';

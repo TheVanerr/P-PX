@@ -106,6 +106,14 @@ const PidApp = (() => {
               ${machines.map((m) => `<option value="${esc(m.id)}">${esc(m.seriNo)} · ${esc(m.firma)} · ${esc(m.model)}</option>`).join('')}
             </select>
           </div>
+          <div class="field">
+            <label for="npCopy">Çizim</label>
+            <select id="npCopy" class="field-input">
+              <option value="">Boş çizimle başla</option>
+              ${(state.projects || []).map((p) => `<option value="${esc(p.id)}">Kopyası: ${esc(p.id)}</option>`).join('')}
+            </select>
+            <div class="field-help">Benzer bir makine için seçilen projenin çizimi kopyalanır; o proje değişmez. Revizyon işaretleri kopyalanmaz.</div>
+          </div>
           <div class="field"><label for="npSeri">Seri no</label><input id="npSeri" class="field-input" placeholder="0626051" required></div>
           <div class="field"><label for="npMusteri">Müşteri</label><input id="npMusteri" class="field-input" placeholder="DÜNYA" required></div>
           <div class="field"><label for="npModel">Model</label><input id="npModel" class="field-input" placeholder="ULT M200 3B" required></div>
@@ -139,9 +147,29 @@ const PidApp = (() => {
         toast(res.error, 'error');
         return;
       }
+      const copyFrom = $('npCopy').value;
       root.innerHTML = '';
+      if (copyFrom) {
+        const copied = await copyDrawing(copyFrom, res.id);
+        if (!copied.ok) toast(`Proje oluşturuldu ama çizim kopyalanamadı: ${copied.error}`, 'error');
+        else toast(`${copyFrom} çiziminin kopyasıyla başlandı (${copied.count} öğe). Asıl proje değişmedi.`);
+      }
       openProject(res.id);
     });
+  }
+
+  /** Başka projenin çizimini yeni projeye kopyalar; kaynak yalnız okunur. Revizyon geçmişi yeni projeye geçmez. */
+  async function copyDrawing(fromId, toId) {
+    const src = await api().readProject(fromId);
+    if (!src.ok) return { ok: false, error: src.error };
+    if (!src.drawing) return { ok: false, error: 'Kaynak projede çizim yok' };
+    // Açık projeye almakla aynı kural: çizim tahtası gelir, antet ve revizyon geçmişi gelmez
+    const drawing = PidModel.createDrawing('P&ID Şeması');
+    PidModel.importSheets(drawing, src.drawing, 'replace');
+    const saved = await api().saveProject({ id: toId, drawing });
+    if (!saved.ok) return { ok: false, error: saved.error };
+    const count = drawing.sheets.reduce((n, s) => n + s.items.length, 0);
+    return { ok: true, count };
   }
 
   function projectForMachine(machine) {
@@ -428,6 +456,63 @@ const PidApp = (() => {
       $('confirmCancel').addEventListener('click', () => done(false));
       $('confirmForm').addEventListener('submit', (e) => { e.preventDefault(); done(true); });
       root.querySelector('button[type=submit]').focus();
+    });
+  }
+
+  /**
+   * Açık projeye başka projenin çizim tahtasını alır: semboller, hatlar, yazılar, lejant, gruplar.
+   * Antet ve proje bilgileri bu projede kalır; kaynak proje yalnız okunur. Geri Al ile geri alınır.
+   */
+  function importDrawingModal() {
+    const editor = state.editor;
+    const others = (state.projects || []).filter((p) => p.id !== state.projectId);
+    if (!others.length) {
+      toast('Kopyalanacak başka proje yok', 'error');
+      return;
+    }
+    const empty = editor.drawing.sheets.every((s) => !s.items.some((it) => !PidModel.isSymbol(it) || it.symbol !== 'l.junction'));
+    const root = $('modalRoot');
+    root.innerHTML = `
+      <div class="modal-overlay">
+        <form class="modal" id="importForm">
+          <h2>Başka projeden çizim al</h2>
+          <div class="field">
+            <label for="imSource">Kaynak proje</label>
+            <select id="imSource" class="field-input">
+              ${others.map((p) => `<option value="${esc(p.id)}">${esc(p.id)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label><input type="radio" name="imMode" value="replace"${empty ? ' checked' : ''}> Bu projenin çizimini değiştir</label>
+            <label><input type="radio" name="imMode" value="append"${empty ? '' : ' checked'}> Yeni sayfa olarak ekle (mevcut çizim kalır)</label>
+          </div>
+          <p class="field-help">Çizim tahtasındaki her şey kopyalanır: semboller, kodlar, hatlar, yazılar, lejant ve gruplar. Antet ve proje bilgileri (proje no, müşteri, model, revizyonlar, çizim adı) bu projede kalır. Kaynak proje değişmez. Geri Al ile geri alınır.</p>
+          <div class="modal-actions">
+            <button type="button" class="btn" id="imCancel">Vazgeç</button>
+            <button type="submit" class="btn btn-primary">Kopyala</button>
+          </div>
+        </form>
+      </div>`;
+    $('imCancel').addEventListener('click', () => { root.innerHTML = ''; });
+    $('importForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = $('imSource').value;
+      const mode = root.querySelector('input[name=imMode]:checked').value;
+      const src = await api().readProject(id);
+      if (!src.ok || !src.drawing || !src.drawing.sheets || !src.drawing.sheets.length) {
+        toast(src.ok ? 'Kaynak projede çizim yok' : src.error, 'error');
+        return;
+      }
+      root.innerHTML = '';
+      const first = PidModel.importSheets(editor.drawing, src.drawing, mode);
+      editor.setSheet(first);
+      editor.commit();
+      renderSheets();
+      const count = src.drawing.sheets.reduce((n, s) => n + s.items.filter((it) => !PidModel.isSymbol(it) || it.symbol !== 'l.junction').length, 0);
+      const pages = src.drawing.sheets.length;
+      toast(mode === 'replace'
+        ? `${id} çizimi alındı (${count} öğe, ${pages} sayfa). Antet bilgileri bu projenin; Geri Al ile eski hâline döner.`
+        : `${id} çizimi ${pages} yeni sayfa olarak eklendi (${count} öğe). Tekrar eden kodlar Kontrol sekmesinde görünür.`);
     });
   }
 
@@ -855,6 +940,25 @@ const PidApp = (() => {
 
   function editorHost() {
     return {
+      projectKey() {
+        return state.projectId || (state.isSample ? 'ornek' : '');
+      },
+      onCopy(items) {
+        const n = items.filter((it) => !(PidModel.isSymbol(it) && it.symbol === 'l.junction')).length;
+        toast(`${n} öğe kopyalandı. Başka sayfada, sekmede ya da projede Ctrl+V ile aynı konuma yapıştırılır.`);
+      },
+      onPaste(copies, info) {
+        const ids = new Set(copies.map((c) => c.id));
+        const pasted = new Set(copies.filter((c) => PidModel.isSymbol(c) && c.tag).map((c) => String(c.tag).trim().toUpperCase()));
+        const repeated = [...PidModel.usedTags(state.editor.drawing)]
+          .filter(([tag, uses]) => pasted.has(tag) && uses.some((u) => !ids.has(u.itemId)))
+          .map(([tag]) => tag);
+        const where = info.sameSheet ? '' : ' aynı konuma';
+        const note = repeated.length
+          ? ` ${repeated.length} kod bu çizimde zaten var (${repeated.slice(0, 6).join(', ')}${repeated.length > 6 ? '…' : ''}); Kontrol sekmesinde görünür.`
+          : '';
+        toast(`${copies.length} öğe${where} yapıştırıldı, seçili; taşımak için sürükleyin.${note}`);
+      },
       onChange() {
         scheduleSave();
         PidReport.invalidate();
@@ -1081,6 +1185,7 @@ const PidApp = (() => {
     DOC_LANGS,
     addSheet,
     duplicateSheet,
+    importDrawingModal,
     goToSheet,
     moveSheet,
     deleteSheet,

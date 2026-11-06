@@ -1234,3 +1234,85 @@ test('etiket listesi sekmesi: alt panelde ve betik sırası doğru', () => {
   const at = (src) => html.indexOf(`<script src="${src}"></script>`);
   assert.ok(at('engine/xlsx.js') > 0 && at('engine/xlsx.js') < at('engine/fieldlist.js') && at('engine/fieldlist.js') < at('engine/report.js'));
 });
+
+test('projeler arası kopya: kaynak değişmez, başka çizime aynı konumda, dış uçlar boşta', () => {
+  const source = Model.createDrawing('A');
+  const s = source.sheets[0];
+  const tank = Model.addSymbol(s, 'e.tank', 100, 100, { note: 'TANK' });
+  const pump = Model.addSymbol(s, 'p.centrifugal', 200, 150, { tag: 'PE02' });
+  const valve = Model.addSymbol(s, 'v.ball', 260, 150);
+  const inner = Model.addLine(s, { node: pump.id, port: 'R' }, { node: valve.id, port: 'L' }, { kind: 'process' });
+  const outer = Model.addLine(s, { node: tank.id, side: 'B', t: 0.5 }, { node: pump.id, port: 'L' }, { kind: 'process' });
+  const before = JSON.stringify(source);
+
+  const payload = Model.copyPayload(s, [pump.id, valve.id, outer.id]);
+  assert.equal(JSON.stringify(source), before, 'kaynak çizim değişmemeli');
+  // JSON'a yazılıp okunabilir (tarayıcı hafızasında saklanır), kaynak sayfaya bağlı değildir
+  const stored = JSON.parse(JSON.stringify(payload));
+  const outerCopy = stored.find((it) => it.id === outer.id);
+  assert.ok(!outerCopy.from.node && Number.isFinite(outerCopy.from.x), 'seçim dışındaki tanka giden uç noktaya sabitlenir');
+  assert.ok(stored.some((it) => it.id === inner.id), 'iki ucu seçimde olan hat kopyaya girer');
+
+  const target = Model.createDrawing('B');
+  const t = target.sheets[0];
+  const copies = Model.cloneList(null, stored, 0, 0);
+  t.items.push(...copies);
+  const pumpCopy = copies.find((c) => c.tag === 'PE02');
+  assert.deepEqual([pumpCopy.x, pumpCopy.y], [200, 150], 'başka çizimde aynı konum');
+  assert.ok(copies.every((c) => !s.items.some((it) => it.id === c.id)), 'yeni kimlikler');
+  const lineCopy = copies.find((c) => c.type === 'line' && c.from.node);
+  assert.ok(copies.some((c) => c.id === lineCopy.from.node) && copies.some((c) => c.id === lineCopy.to.node), 'iç hat kopyalara bağlanır');
+});
+
+test('pano: kopyala / yapıştır editörde projeler arası, Ctrl+D panoya dokunmaz', () => {
+  const src = fsx.readFileSync(pathx.join(__dirname, '../editor.js'), 'utf8');
+  assert.match(src, /PidEditor\.CLIPBOARD_KEY = 'pidx_pano'/);
+  assert.ok(src.includes('this.pasteItems(PidModel.copyPayload(this.sheet, [...this.selection]), 10);'), 'Ctrl+D kayık kopya, panoya yazmaz');
+  const app = fsx.readFileSync(pathx.join(__dirname, '../app.js'), 'utf8');
+  assert.ok(app.includes("PidModel.importSheets(drawing, src.drawing, 'replace')"), 'yeni proje de aynı kuralla kopyalanır');
+  assert.ok(app.includes('PidModel.importSheets(editor.drawing, src.drawing, mode)'), 'açık projeye çizim alınır');
+});
+
+test('başka projeden çizim al: tahta gelir, antet ve kaynak değişmez, revizyon geçmişi gelmez', () => {
+  const source = Model.createDrawing('KAYNAK ÇİZİM');
+  const a = source.sheets[0];
+  a.size = 'A2';
+  const pump = Model.addSymbol(a, 'p.centrifugal', 200, 150, { tag: 'PE02' });
+  const valve = Model.addSymbol(a, 'v.ball', 260, 150);
+  Model.addLine(a, { node: pump.id, port: 'R' }, { node: valve.id, port: 'L' }, { kind: 'process' });
+  Model.addSymbol(a, 'g.rect', 100, 100, { note: 'NOT' });
+  const second = Model.createSheet('KAYNAK 2', 'A3');
+  Model.addSymbol(second, 'e.tank', 120, 120);
+  source.sheets.push(second);
+  source.revSnapshots = [{ rev: '01', sheets: {} }];
+  const before = JSON.stringify(source);
+
+  // Değiştir: var olan sayfa kimliğini ve çizim adını korur
+  const target = Model.createDrawing('BU PROJE');
+  target.revSnapshots = [{ rev: '05', sheets: {} }];
+  const keepId = target.sheets[0].id;
+  Model.addSymbol(target.sheets[0], 'f.fan', 50, 50);
+  assert.equal(Model.importSheets(target, source, 'replace'), 0);
+  assert.equal(JSON.stringify(source), before, 'kaynak değişmez');
+  assert.equal(target.sheets.length, 2);
+  assert.equal(target.sheets[0].id, keepId);
+  assert.equal(target.sheets[0].title, 'BU PROJE', 'antetteki çizim adı bu projenin');
+  assert.equal(target.sheets[0].size, 'A2', 'sayfa boyutu çizimle gelir');
+  assert.equal(target.sheets[1].title, 'KAYNAK 2');
+  assert.ok(!target.sheets[0].items.some((it) => it.symbol === 'f.fan'));
+  assert.equal(target.sheets[0].items.length, 4);
+  assert.deepEqual(target.revSnapshots, [{ rev: '05', sheets: {} }], 'bu projenin revizyon geçmişi kalır, kaynağınki gelmez');
+  const ids = new Set(a.items.map((it) => it.id));
+  assert.ok(target.sheets[0].items.every((it) => !ids.has(it.id)), 'yeni kimlikler');
+  const line = target.sheets[0].items.find((it) => it.type === 'line');
+  const mine = new Set(target.sheets[0].items.map((it) => it.id));
+  assert.ok(mine.has(line.from.node) && mine.has(line.to.node), 'hatlar kopyalara bağlı');
+
+  // Ekle: mevcut çizim kalır, kaynak sayfalar sona eklenir
+  const t2 = Model.createDrawing('BU PROJE');
+  Model.addSymbol(t2.sheets[0], 'f.fan', 50, 50);
+  assert.equal(Model.importSheets(t2, source, 'append'), 1);
+  assert.equal(t2.sheets.length, 3);
+  assert.ok(t2.sheets[0].items.some((it) => it.symbol === 'f.fan'));
+  assert.equal(new Set(t2.sheets.map((s) => s.id)).size, 3);
+});

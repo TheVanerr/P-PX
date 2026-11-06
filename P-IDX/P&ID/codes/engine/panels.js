@@ -703,6 +703,7 @@ const PidPanels = (() => {
         <button type="button" class="btn btn-sm" id="sDup">Çoğalt</button>
         <button type="button" class="btn btn-sm" id="sDel"${app.editor.drawing.sheets.length < 2 ? ' disabled' : ''}>Sil</button>
       </div>
+      <button type="button" class="btn btn-sm" id="sImport" title="Başka projenin çizim tahtasındaki her şeyi bu projeye kopyalar; antet ve proje bilgileri kalır">Başka projeden çizim al…</button>
       ${app.editor.drawing.sheets.length > 1 ? `<div class="field-label">Sayfa sırası</div>
       <div class="insp-actions">
         <button type="button" class="btn btn-sm" id="sLeft" title="Bu sayfayı bir sıra öne alır"${isFirst ? ' disabled' : ''}>Öne al</button>
@@ -745,6 +746,7 @@ const PidPanels = (() => {
     onField('sNext', 'click', () => app.goToSheet(1));
     onField('sAdd', 'click', () => app.addSheet());
     onField('sDup', 'click', () => app.duplicateSheet());
+    onField('sImport', 'click', () => app.importDrawingModal());
     onField('sLeft', 'click', () => app.moveSheet(-1));
     onField('sRight', 'click', () => app.moveSheet(1));
     onField('sDel', 'click', () => app.deleteSheet(app.editor.sheetIndex));

@@ -528,6 +528,27 @@
     return cloneList(sheet, source, dx, dy);
   }
 
+  /**
+   * Panoya alınacak kopya: seçim ve onunla bütün olanlar, sayfadan bağımsız.
+   * Seçim dışındaki sembole giden hat ucu o anki noktasına sabitlenir; böylece kopya
+   * başka sayfaya veya başka projeye kaynak sayfa olmadan yapıştırılabilir.
+   */
+  function copyPayload(sheet, ids) {
+    const set = closeSelection(sheet, ids);
+    const items = JSON.parse(JSON.stringify(sheet.items.filter((it) => set.has(it.id))));
+    for (const it of items) {
+      if (!isLine(it)) continue;
+      for (const end of ['from', 'to']) {
+        const anchor = it[end];
+        if (anchor.node && !set.has(anchor.node)) {
+          const p = anchorPoint(sheet, anchor);
+          it[end] = { x: p.x, y: p.y };
+        }
+      }
+    }
+    return items;
+  }
+
   function cloneList(sourceSheet, source, dx, dy) {
     const idMap = new Map();
     const copies = source.map((it) => {
@@ -921,6 +942,31 @@
   }
 
   /** Sayfanın kopyası hemen arkasına eklenir */
+  /**
+   * Başka projenin çizim tahtasını bu çizime alır. Kaynak yalnız okunur; öğeler yeni kimlik alır.
+   * Antet ve proje bilgileri (seri no, müşteri, revizyon) bu projede kalır, kaynağın revizyon geçmişi gelmez.
+   * mode 'append': kaynak sayfalar sona yeni sayfa olarak eklenir.
+   * mode 'replace': çizim kaynağınkiyle değişir; var olan sayfalar kimliğini ve çizim adını korur.
+   * Dönen değer: alınan ilk sayfanın sırası.
+   */
+  function importSheets(drawing, source, mode) {
+    const copies = source.sheets.map((src) => {
+      const sheet = createSheet(src.title, src.size);
+      sheet.items = cloneList(src, src.items, 0, 0);
+      return sheet;
+    });
+    if (mode !== 'replace') {
+      const first = drawing.sheets.length;
+      drawing.sheets.push(...copies);
+      return first;
+    }
+    const kept = drawing.sheets;
+    drawing.sheets = copies.map((copy, i) => (kept[i]
+      ? Object.assign(copy, { id: kept[i].id, title: kept[i].title })
+      : copy));
+    return 0;
+  }
+
   function duplicateSheet(drawing, index) {
     const src = drawing.sheets[index];
     const copy = createSheet(`${src.title} (kopya)`, src.size);
@@ -1031,6 +1077,7 @@
     removeItems,
     cloneItems,
     cloneList,
+    copyPayload,
     groupItems,
     ungroupItems,
     groupMembers,
@@ -1044,6 +1091,7 @@
     selectionPercent,
     moveToSheet,
     duplicateSheet,
+    importSheets,
     removeSheet,
     moveSheet,
     upgradeGenericSymbols,
