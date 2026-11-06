@@ -539,8 +539,8 @@
         rev: '01',
         tarih: new Date().toISOString().slice(0, 10),
         hazirlayan: 'Fatih GÜRAL',
-        kontrol: '',
-        onay: '',
+        kontrol: 'Furkan BIÇAK',
+        onay: 'Furkan BIÇAK',
         revizyonlar: [],
         pidProje: '',
         pidEtiket: true
@@ -552,7 +552,11 @@
       const text = await tryReadText(`${projectPath(id)}/${META_FILE}`);
       if (text === null) return base;
       try {
-        return Object.assign(base, JSON.parse(text));
+        const meta = Object.assign(base, JSON.parse(text));
+        // Kontrol eden ve onaylayan boş bırakılmış eski projelerde varsayılan ad yazılır
+        if (!String(meta.kontrol || '').trim()) meta.kontrol = 'Furkan BIÇAK';
+        if (!String(meta.onay || '').trim()) meta.onay = 'Furkan BIÇAK';
+        return meta;
       } catch {
         return base;
       }
@@ -662,6 +666,65 @@
       return { ok: true, savedAt: Date.now() };
     }
 
+
+    /* ── Proje adını değiştirme ── */
+
+    /** Klasörü alt klasörleri ve dosyalarıyla başka yola kopyalar */
+    async function copyTree(from, to) {
+      const dir = await dirAt(from);
+      await dirAt(to, true);
+      for (const entry of await entriesOf(dir)) {
+        if (entry.name.endsWith('.crswap')) continue;
+        if (entry.kind === 'directory') await copyTree(`${from}/${entry.name}`, `${to}/${entry.name}`);
+        else await writeFile(`${to}/${entry.name}`, new Uint8Array(await (await entry.handle.getFile()).arrayBuffer()));
+      }
+    }
+
+    async function removeTree(target) {
+      await ensureWritable();
+      const segs = pathSegments(target);
+      const name = segs.pop();
+      const parent = await dirAt(segs.join('/'));
+      await parent.removeEntry(name, { recursive: true });
+    }
+
+    /** Önce kopyalanır, sonra eskisi silinir: yarıda kalırsa asıl proje yerinde durur */
+    async function moveTree(from, to) {
+      await copyTree(from, to);
+      await removeTree(from);
+    }
+
+    /**
+     * Proje adını (klasörünü) seri no, müşteri ve modele göre değiştirir: "0326067-MİTAŞ-KBN 2B 1650" → "...-KBN 2B 1500".
+     * Çizim, girdi dosyaları ve çıktılar yeni klasöre taşınır; proje.json'daki bilgiler de güncellenir.
+     */
+    async function renameProject(input) {
+      const oldId = String((input && input.id) || '');
+      const oldBase = projectPath(oldId);
+      if (!(await tryDir(oldBase))) return { ok: false, error: 'Proje bulunamadı' };
+      const seriNo = sanitizeName(input.seriNo);
+      const musteri = sanitizeName(input.musteri);
+      const model = sanitizeName(input.model);
+      if (!seriNo || !musteri || !model) return { ok: false, error: 'Seri no, müşteri ve model gerekli' };
+      const id = `${seriNo}-${musteri}-${model}`;
+      const meta = Object.assign(await readMeta(oldId), { seriNo, musteri, model });
+      await ensureWritable();
+      if (id !== oldId) {
+        // Windows yalnız harf büyüklüğü değişen adı aynı klasör sayar: geçici adla iki adımda taşınır
+        const caseOnly = lower(id) === lower(oldId);
+        if (!caseOnly && (await tryDir(projectPath(id)))) return { ok: false, error: `"${id}" adında bir proje zaten var` };
+        if (caseOnly) {
+          const temp = projectPath(`.ad-degisiyor-${uid()}`);
+          await moveTree(oldBase, temp);
+          await moveTree(temp, projectPath(id));
+        } else {
+          await moveTree(oldBase, projectPath(id));
+        }
+      }
+      await writeFile(`${projectPath(id)}/${META_FILE}`, `${JSON.stringify(meta, null, 2)}\n`);
+      return { ok: true, id, meta, relinked: 0 };
+    }
+
     /** Tüm projelerde geçerli seçimler (örneğin kapak tasarımı) */
     async function readSettings() {
       const text = await tryReadText(SETTINGS_FILE);
@@ -731,6 +794,7 @@
         createProject,
         readProject,
         saveProject,
+        renameProject,
         listFiles: async (id) => ({ ok: true, files: await fileGroups(id) }),
         snapshotCatalog,
         readMapping,
@@ -1181,6 +1245,7 @@
     createProject: bound((s) => s.engine.createProject),
     readProject: bound((s) => s.engine.readProject),
     saveProject: bound((s) => s.engine.saveProject),
+    renameProject: bound((s) => s.engine.renameProject),
     listFiles: bound((s) => s.engine.listFiles),
     catalog,
     readMapping: bound((s) => s.engine.readMapping),

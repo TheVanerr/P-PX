@@ -1316,3 +1316,11 @@ test('başka projeden çizim al: tahta gelir, antet ve kaynak değişmez, revizy
   assert.ok(t2.sheets[0].items.some((it) => it.symbol === 'f.fan'));
   assert.equal(new Set(t2.sheets.map((s) => s.id)).size, 3);
 });
+
+test('proje adı: panelde düğme, uygulamada onay ve taşıma bağlı', () => {
+  const panels = fsx.readFileSync(pathx.join(__dirname, '../panels.js'), 'utf8');
+  assert.ok(panels.includes('id="mRename"') && panels.includes("onField('mRename', 'click', () => app.renameProject())"));
+  const app = fsx.readFileSync(pathx.join(__dirname, '../app.js'), 'utf8');
+  assert.ok(app.includes('api().renameProject({ id: oldId') && app.includes('state.projectId = res.id;') && /\n    renameProject,\n/.test(app));
+  assert.ok(app.indexOf('await flushSave();', app.indexOf('async function renameProject')) > 0, 'taşımadan önce kayıt biter');
+});

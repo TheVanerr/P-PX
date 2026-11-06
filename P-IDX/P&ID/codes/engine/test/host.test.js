@@ -75,10 +75,11 @@ class DirHandle {
     return new FileHandle(abs);
   }
 
-  async removeEntry(name) {
+  // Tarayıcıdaki gibi: dolu klasör yalnız { recursive: true } ile silinir
+  async removeEntry(name, options) {
     const abs = this.check(name);
     if (!fs.existsSync(abs)) throw domError('NotFoundError');
-    fs.rmSync(abs);
+    fs.rmSync(abs, { recursive: !!(options && options.recursive) });
   }
 
   async* entries() {
@@ -375,4 +376,52 @@ test('hata mesajı: açık dosya ve izin hataları anlaşılır', () => {
   }
   assert.match(Host.friendlyError(domError('NotAllowedError')), /izni/);
   assert.equal(Host.friendlyError(new Error('x')), 'x');
+});
+
+test('proje adı: klasör yeni ada taşınır, dosyalar ve bilgiler korunur, bağlı pnömatik proje güncellenir', async (t) => {
+  const { root, store } = setup(t);
+  const created = await store.engine.createProject({ seriNo: '0326067', musteri: 'MİTAŞ', model: 'KBN 2B 1650' });
+  const oldId = created.id;
+  write(root, `P&ID/projects/${oldId}/pid/cizim.json`, '{"schema":1,"sheets":[]}\n');
+  write(root, `P&ID/projects/${oldId}/elektrik/sema.pdf`, Buffer.from([7, 8, 9]));
+  // Aynı veritabanında duran, bu P&ID projesine bağlı pnömatik proje
+  write(root, 'PNOMATIK/projects/0326067-MİTAŞ-KBN 2B 1650/proje.json', JSON.stringify({ seriNo: '0326067', pidProje: oldId }));
+  write(root, 'PNOMATIK/projects/BASKA/proje.json', JSON.stringify({ seriNo: '1', pidProje: 'baska' }));
+
+  const res = await store.engine.renameProject({ id: oldId, seriNo: '0326067', musteri: 'MİTAŞ', model: 'KBN 2B 1500' });
+  assert.ok(res.ok, res.error);
+  assert.equal(res.id, '0326067-MİTAŞ-KBN 2B 1500');
+  assert.ok(!has(root, `P&ID/projects/${oldId}`), 'eski klasör kalmaz');
+  assert.equal(read(root, `P&ID/projects/${res.id}/pid/cizim.json`), '{"schema":1,"sheets":[]}\n');
+  assert.deepEqual([...fs.readFileSync(path.join(root, 'P&ID', 'projects', res.id, 'elektrik', 'sema.pdf'))], [7, 8, 9]);
+  assert.ok(has(root, `P&ID/projects/${res.id}/layout`), 'boş girdi klasörleri de taşınır');
+  const meta = JSON.parse(read(root, `P&ID/projects/${res.id}/proje.json`));
+  assert.equal(meta.model, 'KBN 2B 1500');
+  assert.equal(meta.hazirlayan, 'Fatih GÜRAL', 'diğer bilgiler korunur');
+  assert.equal(res.relinked, 1);
+  assert.equal(JSON.parse(read(root, 'PNOMATIK/projects/0326067-MİTAŞ-KBN 2B 1650/proje.json')).pidProje, res.id);
+  assert.equal(JSON.parse(read(root, 'PNOMATIK/projects/BASKA/proje.json')).pidProje, 'baska');
+  assert.equal((await store.engine.listProjects()).projects.map((p) => p.id).join(), res.id);
+
+  // Var olan ada taşınmaz; yalnız harf büyüklüğü değişen ad iki adımda taşınır
+  await store.engine.createProject({ seriNo: '1', musteri: 'A', model: 'B' });
+  const clash = await store.engine.renameProject({ id: res.id, seriNo: '1', musteri: 'A', model: 'B' });
+  assert.ok(!clash.ok && /zaten var/.test(clash.error));
+  const caseOnly = await store.engine.renameProject({ id: res.id, seriNo: '0326067', musteri: 'MİTAŞ', model: 'kbn 2B 1500' });
+  assert.ok(caseOnly.ok, caseOnly.error);
+  assert.ok(fs.readdirSync(path.join(root, 'P&ID', 'projects')).includes('0326067-MİTAŞ-kbn 2B 1500'));
+  assert.ok(!fs.readdirSync(path.join(root, 'P&ID', 'projects')).some((n) => n.startsWith('.ad-')), 'geçici klasör kalmaz');
+  assert.ok(!(await store.engine.renameProject({ id: 'yok', seriNo: '1', musteri: 'A', model: 'C' })).ok);
+});
+
+test('kontrol eden ve onaylayan: yeni projede Furkan BIÇAK, boş eski projede de yazılır, elle girilen ad korunur', async (t) => {
+  const { root, store } = setup(t);
+  const created = await store.engine.createProject({ seriNo: '1', musteri: 'A', model: 'B' });
+  const meta = (await store.engine.readProject(created.id)).meta;
+  assert.equal(meta.kontrol, 'Furkan BIÇAK');
+  assert.equal(meta.onay, 'Furkan BIÇAK');
+  write(root, 'P&ID/projects/2-A-B/proje.json', JSON.stringify({ seriNo: '2', kontrol: '', onay: 'Başka Kişi' }));
+  const old = (await store.engine.readProject('2-A-B')).meta;
+  assert.equal(old.kontrol, 'Furkan BIÇAK');
+  assert.equal(old.onay, 'Başka Kişi');
 });

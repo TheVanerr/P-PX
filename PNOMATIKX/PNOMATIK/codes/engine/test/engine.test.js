@@ -213,3 +213,118 @@ test('kontrol: aynı pnömatik kod ve farklı devrelerde aynı P&ID kodu hata ve
   assert.ok(issues.some((i) => i.code === 'pid-cross' && i.msg.includes('V31')));
   assert.equal(issues[0].level, 'error');
 });
+
+/* ─── Gruplama ve boyut (P&ID ile aynı kurallar) ─────────── */
+
+function circuit() {
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const valve = Model.addSymbol(s, 'v.52bi', 100, 150, { tag: '1V1', coils: [{ tag: '1Y1', pid: 'V31' }, { tag: '1Y2', pid: 'V32' }] });
+  const cyl = Model.addSymbol(s, 'a.cylDouble', 100, 90, { tag: '1A1', sensors: [{ tag: '1B1', pos: 0 }, { tag: '1B2', pos: 1 }] });
+  const a = Model.addLine(s, { node: valve.id, port: '4' }, { node: cyl.id, port: 'A' }, { kind: 'work' });
+  const b = Model.addLine(s, { node: valve.id, port: '2' }, { node: cyl.id, port: 'B' }, { kind: 'work' });
+  const src = Model.addSymbol(s, 's.source', 40, 190);
+  const supply = Model.addLine(s, { node: src.id, port: Sym.get('s.source').ports[0].id }, { node: valve.id, port: '1' }, { kind: 'work' });
+  return { drawing, s, valve, cyl, a, b, src, supply };
+}
+
+test('pnömatik gruplama: iç hatlar gruba girer, grup katı parça gibi taşınır, dış hat uzar', () => {
+  const { s, valve, cyl, a, b, supply } = circuit();
+  const gid = Model.groupItems(s, [valve.id, cyl.id]);
+  assert.ok(gid);
+  assert.equal(a.group, gid);
+  assert.equal(b.group, gid);
+  assert.ok(!supply.group, 'grubun dışındaki kaynağa giden hat grupta değil');
+  assert.deepEqual(Model.expandGroups(s, [cyl.id]).sort(), Model.groupMembers(s, valve.id).sort());
+
+  const before = JSON.stringify(a.path);
+  const plan = Model.movePlan(s, Model.groupMembers(s, cyl.id));
+  Model.applyMove(s, plan, 20, 10);
+  assert.deepEqual([valve.x, valve.y, cyl.x, cyl.y], [120, 160, 120, 100]);
+  assert.equal(JSON.stringify(a.path), JSON.stringify(JSON.parse(before).map((p) => [p[0] + 20, p[1] + 10])), 'iç hat şeklini korur');
+  const end = supply.path[supply.path.length - 1];
+  const port = Model.portsOf(valve).find((p) => p.id === '1');
+  assert.deepEqual(end, [port.x, port.y], 'dış hat valfe bağlı kalır');
+
+  // Kopya kendi grubunu alır; bobin ve sensör kodları kopyalanır
+  const copies = Model.cloneList(s, s.items.filter((it) => it.group === gid), 0, 60);
+  assert.ok(copies.every((c) => c.group && c.group !== gid));
+  assert.equal(copies.find((c) => c.symbol === 'v.52bi').coils[1].tag, '1Y2');
+
+  assert.equal(Model.ungroupItems(s, [cyl.id]), 1);
+  assert.ok(!s.items.some((it) => it.group));
+});
+
+test('pnömatik boyut: sembol, portlar, bobin ve sensör etiketleri birlikte küçülür; geri alınabilir değerler', () => {
+  const { s, valve, cyl, a } = circuit();
+  const portBefore = Model.portsOf(valve).find((p) => p.id === '4');
+  Model.scaleItems(s, [valve.id], 0.5, { absolute: true });
+  assert.equal(valve.scale, 0.5);
+  assert.equal(Model.selectionPercent([valve]), 50);
+  const portAfter = Model.portsOf(valve).find((p) => p.id === '4');
+  assert.ok(Math.abs((portAfter.x - valve.x) - (portBefore.x - valve.x) / 2) < 1e-9 && Math.abs((portAfter.y - valve.y) - (portBefore.y - valve.y) / 2) < 1e-9, 'port yarı mesafede');
+  const start = a.path[0];
+  assert.deepEqual(start, [portAfter.x, portAfter.y], 'hat küçülen portu izler');
+  // toLocal ölçeği geri alır (sensör bırakma bunu kullanır)
+  const local = Model.toLocal(valve, portAfter.x, portAfter.y);
+  const def = Sym.get('v.52bi').ports.find((p) => p.id === '4');
+  assert.ok(Math.abs(local.x - def.x) < 1e-9 && Math.abs(local.y - def.y) < 1e-9);
+
+  const svg = Sheet.renderSymbol(valve, { lang: 'tr' });
+  assert.ok(tagsBalanced(svg));
+  assert.match(svg, /scale\(0\.5\)/);
+  assert.match(svg, /font-size="1\.68"[^>]*>1Y1</, 'bobin kodu %70 boyutta (okunur kalır)');
+
+  // Aralıklarla birlikte: grup ortasına göre küçülür, iki sembolün arası da yarıya iner
+  Model.scaleItems(s, [valve.id], 1, { absolute: true });
+  const gap = cyl.y - valve.y;
+  Model.scaleItems(s, [valve.id, cyl.id], 0.5, { spacing: true });
+  assert.ok(Math.abs((cyl.y - valve.y) - gap / 2) < 1e-9);
+  assert.equal(cyl.scale, 0.5);
+  const cylSvg = Sheet.renderSymbol(cyl, { lang: 'tr' });
+  assert.ok(tagsBalanced(cylSvg) && cylSvg.includes('>1B2<'));
+});
+
+test('pnömatik editör ve panel: gruplama ve boyut kısayolları bağlı', () => {
+  const fsx = require('node:fs');
+  const pathx = require('node:path');
+  const editor = fsx.readFileSync(pathx.join(__dirname, '../editor.js'), 'utf8');
+  for (const s of ['groupSelection()', 'ungroupSelection()', 'scaleSelection(', 'PidModel.movePlan(', 'PidModel.expandGroups(', 'PidModel.normalizeGroups(drawing)', 'PidModel.syncLineGroup(']) {
+    assert.ok(editor.includes(s), s);
+  }
+  const panels = fsx.readFileSync(pathx.join(__dirname, '../panels.js'), 'utf8');
+  for (const s of ["id=\"mGroup\"", "id=\"mUngroup\"", "'fScale'", "'mScale'", 'data-scale="0.9"', 'groupRow(line)']) assert.ok(panels.includes(s), s);
+});
+
+test('proje adı: pnömatikte düğme bağlı; P&ID projesinin adı değişince aynı seri nolu projeye yeniden bağlanır', () => {
+  const fsx = require('node:fs');
+  const pathx = require('node:path');
+  const panels = fsx.readFileSync(pathx.join(__dirname, '../panels.js'), 'utf8');
+  assert.ok(panels.includes('id="mRename"') && panels.includes("onField('mRename', 'click', () => app.renameProject())"));
+  const app = fsx.readFileSync(pathx.join(__dirname, '../app.js'), 'utf8');
+  assert.ok(app.includes('api().renameProject({ id: oldId') && /\r?\n    renameProject,\r?\n/.test(app));
+  assert.ok(app.includes('const moved = await findRenamedPid(meta);') && app.includes('meta.pidProje = moved.id;'));
+});
+
+test('belge dili: hazır yazılar çevrilir, kullanıcı yazısı kalır; TR / EN / DE düğmeleri ve çok dilli PDF bağlı', () => {
+  const fsx = require('node:fs');
+  const pathx = require('node:path');
+  assert.equal(Sym.localNote('BASINÇLI HAVA 6 bar', 'en'), 'COMPRESSED AIR 6 bar');
+  assert.equal(Sym.localNote('BASINÇLI HAVA 6 bar', 'de'), 'DRUCKLUFT 6 bar');
+  assert.equal(Sym.localNote('COMPRESSED AIR 6 bar', 'tr'), 'BASINÇLI HAVA 6 bar');
+  assert.equal(Sym.localNote('ŞEMA 2', 'en'), 'DIAGRAM 2');
+  assert.equal(Sym.localNote('Pnömatik Devre Şeması 2', 'de'), 'Pneumatikschaltplan 2');
+  assert.equal(Sym.localNote('KAPAK (AÇ / KAPAT)', 'en'), 'KAPAK (AÇ / KAPAT)');
+
+  const d = Model.createDrawing('Pnömatik Devre Şeması');
+  Model.addSymbol(d.sheets[0], 's.source', 40, 200);
+  const en = Sheet.sheetSvg(Object.assign({}, project, { dil: 'en' }), d, 0, { lang: 'en' });
+  assert.ok(en.includes('COMPRESSED AIR 6 bar') && en.includes('Pneumatic Circuit Diagram'));
+  assert.ok(!en.includes('BASINÇLI HAVA'));
+
+  const read = (f) => fsx.readFileSync(pathx.join(__dirname, '..', f), 'utf8');
+  const app = read('app.js');
+  for (const s of ['function setDocumentLanguage(lang)', 'useLanguage(lang);', 'data-lang=', 'opts.langs', 'state.pdfOptions.langs = null']) assert.ok(app.includes(s), s);
+  assert.ok(read('covers.js').includes('data-doc-lang') && read('report.js').includes('PidCovers.langSeg('));
+  assert.ok(read('engine.css').includes('.lang-seg button.active'));
+});

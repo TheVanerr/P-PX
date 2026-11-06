@@ -42,7 +42,7 @@ const PidCovers = (() => {
       seriNo: meta.seriNo || '',
       musteri: meta.musteri || '',
       modelRaw: meta.model || '',
-      title: drawing.sheets[0] ? drawing.sheets[0].title : '',
+      title: drawing.sheets[0] ? PidSymbols.localNote(drawing.sheets[0].title, lang) : '',
       rev: meta.rev || '',
       date: PidSheet.formatDate(meta.tarih),
       hazirlayan: meta.hazirlayan || '',
@@ -195,8 +195,7 @@ const PidCovers = (() => {
     { key: 'onay', label: 'Onay' },
     { key: 'tarih', label: 'Tarih', type: 'date' },
     { key: 'rev', label: 'Rev.' },
-    { key: 'firma', label: 'Marka', options: [['DOLFIN', 'DOLFIN'], ['ENVA', 'ENVA'], ['VICO', 'VICO'], ['KSYSTEM', 'K.SYSTEM']] },
-    { key: 'dil', label: 'Dil', options: [['tr', 'Türkçe'], ['en', 'English'], ['de', 'Deutsch']] }
+    { key: 'firma', label: 'Marka', options: [['DOLFIN', 'DOLFIN'], ['ENVA', 'ENVA'], ['VICO', 'VICO'], ['KSYSTEM', 'K.SYSTEM']] }
   ];
 
   let app = null;
@@ -221,6 +220,12 @@ const PidCovers = (() => {
     return `<div class="field cs-field"><label for="${id}">${esc(field.label)}</label>${control}</div>`;
   }
 
+  /** Belge dili düğmeleri: kapak, açıklama sayfaları ve şema bu dilde yazılır */
+  function langSeg(current) {
+    return `<span class="lang-label">Belge dili</span><div class="lang-seg" role="group" aria-label="Belge dili">${app.DOC_LANGS.map(([id, code, name]) =>
+      `<button type="button" data-doc-lang="${id}" title="${name}" class="${id === current ? 'active' : ''}" aria-pressed="${id === current}">${code}</button>`).join('')}</div>`;
+  }
+
   const stateText = (selected) => (selected ? '✓ Seçili kapak' : 'Bu kapağı kullan');
 
   function renderShell() {
@@ -231,6 +236,7 @@ const PidCovers = (() => {
           <span>A3 yatay. Bilgileri yukarıdan değiştirin, kullanmak istediğiniz tasarımı sağdan seçin.</span>
         </div>
         <div class="cs-actions">
+          ${langSeg(app.editor.project.dil || 'tr')}
           <button type="button" class="btn btn-sm" id="csSave">Projeyi Kaydet</button>
           <button type="button" class="btn btn-sm" id="csPdfCover">Kapağı PDF İndir</button>
           <button type="button" class="btn btn-sm btn-primary" id="csPdfAll">Tüm Projeyi PDF İndir</button>
@@ -340,6 +346,19 @@ const PidCovers = (() => {
       renderPreviews();
     });
     root.addEventListener('click', (e) => {
+      const langBtn = e.target.closest('[data-doc-lang]');
+      if (langBtn) {
+        app.setDocumentLanguage(langBtn.dataset.docLang);
+        root.querySelectorAll('[data-doc-lang]').forEach((b) => {
+          const on = b === langBtn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+        // Dil değişince tablolar da değişir, sayfa sayısı yeniden hesaplanır
+        pageCount = app.documentPageCount();
+        renderPreviews();
+        return;
+      }
       const card = e.target.closest('.cs-card');
       if (card) {
         choose(card.dataset.design);
@@ -381,5 +400,5 @@ const PidCovers = (() => {
     bindShell();
   }
 
-  return { DESIGNS, DEFAULT_DESIGN, PAGE_W, PAGE_H, isDesign, build, init, open, close, isOpen };
+  return { DESIGNS, DEFAULT_DESIGN, PAGE_W, PAGE_H, isDesign, build, init, open, close, isOpen, langSeg };
 })();

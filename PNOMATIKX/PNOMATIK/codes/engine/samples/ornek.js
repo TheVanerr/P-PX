@@ -38,8 +38,8 @@
       rev: '01',
       tarih: new Date().toISOString().slice(0, 10),
       hazirlayan: 'Fatih GÜRAL',
-      kontrol: '',
-      onay: '',
+      kontrol: 'Furkan BIÇAK',
+      onay: 'Furkan BIÇAK',
       revizyonlar: [],
       pidProje: '',
       pidEtiket: true

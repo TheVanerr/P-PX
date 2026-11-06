@@ -120,8 +120,50 @@ test('gerçek makine kaydı: BODYCOAT kodları beklenen devrelere ayrılır', ()
     'PPS25', 'PPS26', 'PPS27'];
   const plan = Link.plan(entries(codes), new Map(), {});
   assert.equal(plan.supply.main.coil.pid, 'V47');
-  assert.equal(plan.circuits.length, 14);
+  // Tankın tahliye (aç / kapat) valfi ile 1. yönlendirme pistonu sensörleri tek devredir
+  assert.equal(plan.circuits.length, 11);
   const byFirst = plan.circuits.map((c) => c.coils.map((k) => k.pid).join('/'));
   assert.deepEqual(byFirst.slice(0, 8), ['V20', 'V21', 'V22', 'V31/V32', 'V33/V34', 'V35/V36', 'V39/V40', 'V48/V49']);
   assert.deepEqual(plan.circuits[0].sensors.map((s) => s.pid), ['SWB20']);
+});
+
+test('otomatik dolum: tek bobinli 3/2 valf ve yay dönüşlü aktüatör', () => {
+  const plan = Link.plan(entries(['V20', 'SWB20', 'V21']), new Map(), {});
+  for (const c of plan.circuits) {
+    assert.equal(c.valveSymbol, 'v.32nc', c.name);
+    assert.equal(c.actuatorSymbol, 'a.valveActuatorSpring', c.name);
+    assert.equal(c.coils.length, 1);
+  }
+  assert.deepEqual(plan.circuits[0].coils.map((k) => k.pid), ['V20']);
+  assert.deepEqual(plan.circuits[0].sensors.map((s) => s.pid), ['SWB20']);
+});
+
+test('yönlendirme pistonu: 5/2 bistabil valf, iki bobinde ayrı V kodu, çift etkili silindir', () => {
+  // P&ID'de pistonun iki valf çıkışı "n. Proses Tankı Tahliye Vanası Aç / Kapat" kodlarıdır
+  const plan = Link.plan(entries(['V31', 'V32', 'PPS03', 'PPS04', 'V33', 'V34', 'PPS07', 'PPS08', 'PPS05', 'PPS06']), new Map(), {});
+  const byName = (n) => plan.circuits.find((c) => c.name === n);
+  const t1 = byName('1. Proses Tankı 1. Yönlendirme Pistonu');
+  assert.ok(t1, plan.circuits.map((c) => c.name).join(' | '));
+  assert.equal(t1.valveSymbol, 'v.52bi');
+  assert.equal(t1.actuatorSymbol, 'a.cylDouble');
+  assert.deepEqual(t1.coils.map((k) => k.pid), ['V31', 'V32']);
+  assert.deepEqual(t1.sensors.map((s) => `${s.tag}=${s.pid}`), [`${t1.nr}B1=PPS04`, `${t1.nr}B2=PPS03`]);
+  const t2 = byName('2. Proses Tankı 1. Yönlendirme Pistonu');
+  assert.deepEqual(t2.coils.map((k) => k.pid), ['V33', 'V34'], '2. tankta da sıra numarası eşleşmeyi bozmaz');
+  assert.deepEqual(t2.sensors.map((s) => s.pid), ['PPS08', 'PPS07']);
+  // Aynı tankın 2. yönlendirme pistonu ayrı devredir; V kodu yoksa bistabil valfin iki bobini boş gelir
+  const second = byName('1. Proses Tankı 2. Yönlendirme Pistonu');
+  assert.equal(second.valveSymbol, 'v.52bi');
+  assert.deepEqual(second.coils.map((k) => k.pid), ['', '']);
+  assert.deepEqual(second.sensors.map((s) => s.pid), ['PPS06', 'PPS05']);
+  // Adında yönlendirme pistonu geçen V kodları da aynı devreye girer
+  const named = Link.group([
+    { kod: 'V90', name: '4. Proses Tankı Yönlendirme Pistonu Aç Valfi' },
+    { kod: 'V91', name: '4. Proses Tankı Yönlendirme Pistonu Kapat Valfi' },
+    { kod: 'PPS29', name: '4. Proses Tankı Yönlendirme Pistonu Açık Sensörü' },
+    { kod: 'PPS30', name: '4. Proses Tankı Yönlendirme Pistonu Kapalı Sensörü' }
+  ], new Map());
+  assert.equal(named.circuits.length, 1);
+  assert.equal(named.circuits[0].valve, '52b');
+  assert.equal(named.circuits[0].actuator, 'silindir');
 });

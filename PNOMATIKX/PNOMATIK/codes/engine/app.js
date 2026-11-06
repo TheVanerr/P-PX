@@ -191,16 +191,33 @@ const PidApp = (() => {
     $('app').classList.remove('hidden');
   }
 
+  /** Adı değişen P&ID projesi: aynı seri nolu tek P&ID projesi varsa odur */
+  async function findRenamedPid(meta) {
+    const list = await pidApi().listProjects();
+    if (!list.ok) return null;
+    const serial = String(meta.seriNo || String(meta.pidProje || '').split('-')[0]).trim();
+    const same = list.projects.filter((p) => String((p.meta && p.meta.seriNo) || '').trim() === serial);
+    return same.length === 1 ? same[0] : null;
+  }
+
   /** Projenin P&ID kodları: bağlı P&ID projesinin çizimi + makine kaydı (P&IDX'ten) */
   async function loadPidCodes(meta) {
     state.pidProjectCodes = [];
     state.pidSource = '';
     if (!pidApi().status().granted) return { ok: false };
     if (meta.pidProje) {
-      const res = await pidApi().readProject(meta.pidProje);
+      let res = await pidApi().readProject(meta.pidProje);
       if (!res.ok) {
-        toast(`P&ID projesi okunamadı: ${res.error}`, 'error');
-        return { ok: false };
+        const moved = await findRenamedPid(meta);
+        if (moved) {
+          toast(`Bağlı P&ID projesinin adı değişmiş: ${meta.pidProje} → ${moved.id}. Bağlantı güncellendi.`);
+          meta.pidProje = moved.id;
+          res = moved;
+          if (state.projectId) scheduleSave();
+        } else {
+          toast(`P&ID projesi okunamadı: ${res.error}`, 'error');
+          return { ok: false };
+        }
       }
       state.pidProjectCodes = PidPidx.pneumaticCodes(res.codes);
       state.pidSource = `P&ID projesi ${meta.pidProje}`;
@@ -230,6 +247,7 @@ const PidApp = (() => {
     const drawing = res.drawing || PidModel.createDrawing(DEFAULT_TITLE);
     enterEditor();
     state.editor.load(res.meta, drawing, await loadLogos(res.meta));
+    state.pdfOptions.langs = null; // PDF dili yeni projenin diliyle başlar
     await loadPidCodes(res.meta);
     PidPanels.renderInspector();
     PidReport.invalidate();
@@ -416,6 +434,41 @@ const PidApp = (() => {
   }
 
   /** Tarayıcının onay penceresi yerine sayfa içi onay (gömülü görünümlerde confirm() çalışmaz) */
+
+  /**
+   * Proje adını antetteki proje no, müşteri ve modele göre günceller: "0326067-MİTAŞ-KBN 2B 1650" → "...-KBN 2B 1500".
+   * Proje klasörü (çizim, girdi dosyaları, çıktılar) yeni ada taşınır; açık çizim yeni adla sürer.
+   */
+  async function renameProject() {
+    const editor = state.editor;
+    if (!state.projectId || !editor || !editor.project) return;
+    const meta = editor.project;
+    const parts = [meta.seriNo, meta.musteri, meta.model].map((v) => String(v || '').trim());
+    if (parts.some((v) => !v)) {
+      toast('Proje no, müşteri ve model dolu olmalı', 'error');
+      return;
+    }
+    const next = parts.join('-');
+    if (next === state.projectId) {
+      toast('Proje adı bu bilgilerle zaten aynı. Önce proje no, müşteri ya da modeli değiştirin.');
+      return;
+    }
+    const ok = await confirmModal(`Proje adı "${state.projectId}" → "${next}" olacak. Çizim, girdi dosyaları ve çıktılar yeni ada taşınır; P&ID bağlantısı korunur.`, 'Güncelle');
+    if (!ok) return;
+    await flushSave();
+    const oldId = state.projectId;
+    const res = await api().renameProject({ id: oldId, seriNo: parts[0], musteri: parts[1], model: parts[2] });
+    if (!res.ok) {
+      toast(`Proje adı güncellenemedi: ${res.error}`, 'error');
+      return;
+    }
+    state.projectId = res.id;
+    $('projName').textContent = res.id;
+    PidPanels.renderInspector();
+    PidPanels.renderFiles();
+    toast(`Proje adı güncellendi: ${res.id}${res.relinked ? ` · bağlı ${res.relinked} pnömatik proje de yeni adı gösteriyor` : ''}`);
+  }
+
   function confirmModal(message, okLabel) {
     return new Promise((resolve) => {
       const root = $('modalRoot');
@@ -789,6 +842,24 @@ const PidApp = (() => {
     return spec;
   }
 
+  /**
+   * Hazır seti (PNO(SMC), PNO(AIR)) açık sayfaya koyar: setteki yerinde, tek grup ve seçili gelir; sürükleyerek taşınır.
+   * Geri Al tek adımda kaldırır. Setteki P&ID kodları (V47, V48…) aynen gelir, çizimde varsa Kontrol sekmesi gösterir.
+   */
+  function insertSet(id) {
+    const editor = state.editor;
+    if (!editor || !editor.sheet) return;
+    editor.cancelPlacing();
+    const copies = PnoSets.insert(editor.sheet, id);
+    if (!copies.length) return;
+    editor.selection = new Set(copies.map((c) => c.id));
+    editor.renderAll();
+    editor.commit();
+    editor.host.onSelection();
+    const set = PnoSets.get(id);
+    toast(`${set.name} eklendi (gruplu ve seçili). Sürükleyerek yerleştirin; parçalarını düzenlemek için grubu çözün (Ctrl+Shift+G).`);
+  }
+
   /** Semboller sekmesinden yerleştirme; manyetik piston sensörü silindirin üstüne bırakılınca onun sensörü olur */
   function placingSpecForSymbol(symbol, keep) {
     const editor = state.editor;
@@ -817,6 +888,26 @@ const PidApp = (() => {
     return Object.assign({}, state.editor.hidden);
   }
 
+  const DOC_LANGS = [['tr', 'TR', 'Türkçe'], ['en', 'EN', 'English'], ['de', 'DE', 'Deutsch']];
+
+  /** Belgenin (şema, kapak, açıklama) dili; program arayüzü Türkçe kalır */
+  function setDocumentLanguage(lang) {
+    const editor = state.editor;
+    if (!PidSheet.TEXT[lang] || editor.project.dil === lang) return;
+    editor.project.dil = lang;
+    editor.ctx.lang = lang;
+    editor.renderAll();
+    onMetaChange();
+    PidPanels.renderInspector();
+  }
+
+  /** Belge dilini geçici olarak değiştirir; tablolar o dilde yeniden üretilir */
+  function useLanguage(lang) {
+    state.editor.project.dil = lang;
+    state.editor.ctx.lang = lang;
+    PidReport.invalidate();
+  }
+
   /** Eşleştirme sayfası zorunluysa seçeneklere eklenir */
   function withRequired(options) {
     const out = Object.assign({}, options);
@@ -839,19 +930,31 @@ const PidApp = (() => {
         PidPdfDom.begin();
       }
       root.innerHTML = '';
-      appendDocument(root, options);
+      const original = editor.project.dil || 'tr';
+      const wanted = new Set(options.langs && options.langs.length ? options.langs : [original]);
+      const langs = DOC_LANGS.map(([id]) => id).filter((id) => wanted.has(id));
+      try {
+        for (const lang of langs) {
+          useLanguage(lang);
+          appendDocument(root, options);
+        }
+      } finally {
+        useLanguage(original);
+      }
+      const langTag = langs.length > 1 || langs[0] !== original ? ` ${langs.map((l) => l.toUpperCase()).join('-')}` : '';
+      const suffix = options.suffix ? `${options.suffix}${langTag}` : (langTag ? `PNOMATIK DIYAGRAM${langTag}` : undefined);
       await PidxHost.imagesDecoded(root);
       await PidxHost.nextPaint();
       if (!direct) {
-        const printed = await api().exportPdf({ id: state.projectId, fileName: exportBaseName(), suffix: options.suffix });
+        const printed = await api().exportPdf({ id: state.projectId, fileName: exportBaseName(), suffix });
         if (!printed.ok) toast(`PDF oluşturulamadı: ${printed.error}`, 'error');
         return;
       }
       const pdf = await PidPdfDom.render(root, {
-        title: `${exportBaseName()} ${options.suffix || 'PNÖMATİK DİYAGRAM'}`,
+        title: `${exportBaseName()} ${suffix || 'PNÖMATİK DİYAGRAM'}`,
         onProgress: (done, total) => toast(`PDF hazırlanıyor: ${done} / ${total} sayfa`)
       });
-      const res = await api().exportPdf({ id: state.projectId, fileName: exportBaseName(), suffix: options.suffix, bytes: pdf.bytes });
+      const res = await api().exportPdf({ id: state.projectId, fileName: exportBaseName(), suffix, bytes: pdf.bytes });
       if (!res.ok) {
         toast(`PDF oluşturulamadı: ${res.error}`, 'error');
       } else if (pdf.missing.length || pdf.failedImages) {
@@ -914,6 +1017,7 @@ const PidApp = (() => {
     }
     const root = $('modalRoot');
     const opts = state.pdfOptions;
+    if (!Array.isArray(opts.langs) || !opts.langs.length) opts.langs = [state.editor.project.dil || 'tr'];
     const data = PidReport.current();
     const required = PidReport.mappingRequired(data);
     const row = (key, label, note, locked) => {
@@ -931,6 +1035,11 @@ const PidApp = (() => {
           ${row('safety', 'Açıklama 1: Güvenlik fonksiyonları', count(data.safety.length, 'boş'))}
           ${row('mapping', 'Açıklama 2: P&amp;ID – pnömatik kod eşleştirme', required ? `${data.mappingDiffers} farklı kod · zorunlu` : count(data.mapping.length, 'boş'), required)}
           ${row('sheets', 'Pnömatik şema sayfaları', String(state.editor.drawing.sheets.length))}
+          <div class="pdf-langs">
+            <span>Belge dili</span>
+            ${DOC_LANGS.map(([id, code, name]) => `<label class="pdf-lang${opts.langs.includes(id) ? ' is-on' : ''}" title="${name}"><input type="checkbox" data-lang="${id}"${opts.langs.includes(id) ? ' checked' : ''}>${code}</label>`).join('')}
+          </div>
+          <div class="field-help">Birden çok dil seçerseniz her dil kapağıyla birlikte tam belge olarak arka arkaya tek PDF'te birleşir (TR, EN, DE sırasıyla).</div>
           ${PidxHost.preview ? '<div class="field-help">Açılan pencerede hedef olarak <strong>PDF olarak kaydet</strong>i seçin.</div><div class="field-help warn">Önizleme: yazdırma penceresi yalnız dosya Chrome veya Edge ile açıldığında açılır; gömülü görünümlerde açılmaz.</div>' : ''}
           <div class="modal-actions">
             <button type="button" class="btn" id="pdfCancel">İptal</button>
@@ -944,9 +1053,22 @@ const PidApp = (() => {
         box.closest('.switch-row').classList.toggle('is-on', box.checked);
       });
     });
+    root.querySelectorAll('[data-lang]').forEach((box) => {
+      box.addEventListener('change', () => {
+        const set = new Set(opts.langs);
+        if (box.checked) set.add(box.dataset.lang);
+        else set.delete(box.dataset.lang);
+        opts.langs = DOC_LANGS.map(([id]) => id).filter((id) => set.has(id));
+        box.closest('.pdf-lang').classList.toggle('is-on', box.checked);
+      });
+    });
     $('pdfCancel').addEventListener('click', () => { root.innerHTML = ''; });
     $('pdfForm').addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!opts.langs.length) {
+        toast('En az bir dil seçin', 'error');
+        return;
+      }
       const chosen = withRequired(opts);
       if (!['cover', 'sheets', 'components', 'logic', 'safety', 'mapping'].some((k) => chosen[k])) {
         toast('En az bir bölüm seçin', 'error');
@@ -1301,6 +1423,10 @@ const PidApp = (() => {
     toast,
     placingSpecForCode,
     placingSpecForSymbol,
+    insertSet,
+    setDocumentLanguage,
+    DOC_LANGS,
+    renameProject,
     renderSheets,
     addSheet,
     duplicateSheet,

@@ -563,6 +563,7 @@ const PidReport = (() => {
       <header class="cs-bar">
         <div class="cs-title"><h2>Açıklama Sayfaları</h2><span id="rsInfo"></span></div>
         <div class="cs-actions">
+          ${PidCovers.langSeg(app.editor.project.dil || 'tr')}
           <div class="rs-toggles">${TOGGLES.map(([key, label]) => `<label class="rs-toggle"><input type="checkbox" data-rs="${key}"${opts[key] ? ' checked' : ''}> ${label}</label>`).join('')}</div>
           <button type="button" class="btn btn-sm" id="rsPdf">Açıklamayı PDF İndir</button>
           <button type="button" class="btn btn-sm btn-primary" id="rsPdfAll">Tüm Projeyi PDF İndir</button>
@@ -589,6 +590,18 @@ const PidReport = (() => {
       renderStudioPages();
     });
     root.addEventListener('click', (e) => {
+      const langBtn = e.target.closest('[data-doc-lang]');
+      if (langBtn) {
+        app.setDocumentLanguage(langBtn.dataset.docLang);
+        root.querySelectorAll('[data-doc-lang]').forEach((b) => {
+          const on = b === langBtn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+        stale = true;
+        renderStudioPages();
+        return;
+      }
       const id = e.target.id;
       if (id === 'rsClose') closeStudio();
       else if (id === 'rsPdf') app.exportReportPdf();

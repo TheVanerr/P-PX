@@ -191,7 +191,7 @@ const PidWizard = (() => {
           <div class="gen-supply">
             <strong>Besleme (devre 0):</strong>
             <label><input type="checkbox" id="genManual"${s.manual ? ' checked' : ''}> Manuel kesme vanası</label>
-            <label>Şartlandırıcı <select id="genFrl" class="field-input"><option value="s.frl"${s.frl === 's.frl' ? ' selected' : ''}>Filtre-Regülatör-Yağlayıcı</option><option value="s.fr"${s.frl === 's.fr' ? ' selected' : ''}>Filtre-Regülatör</option></select></label>
+            <label>Şartlandırıcı <select id="genFrl" class="field-input"><option value="s.frl"${s.frl === 's.frl' ? ' selected' : ''}>Şartlandırıcı (Filtre-Regülatör)</option><option value="s.fr"${s.frl === 's.fr' ? ' selected' : ''}>Filtre-Regülatör</option></select></label>
             <label><input type="checkbox" id="genMainOn"${s.mainOn ? ' checked' : ''}> Tahliyeli ana valf (3/2)</label> ${supplyCodeSelect('genMain', s.main, 'V')}
             <label><input type="checkbox" id="genPressOn"${s.pressureOn ? ' checked' : ''}> Basınç sensörü</label> ${supplyCodeSelect('genPress', s.pressure, 'PS')}
           </div>

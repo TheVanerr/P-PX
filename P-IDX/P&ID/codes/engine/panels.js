@@ -716,6 +716,8 @@ const PidPanels = (() => {
       ${inp('mSeri', 'Proje no', meta.seriNo)}
       ${inp('mMusteri', 'Müşteri', meta.musteri)}
       ${inp('mModel', 'Model', meta.model)}
+      ${app.projectId ? `<div class="field-help" id="mProjectName">Proje adı: <strong>${esc(app.projectId)}</strong></div>
+      <button type="button" class="btn btn-sm" id="mRename" title="Proje no, müşteri ve model değişince proje klasörünün adını da günceller">Proje adını güncelle</button>` : ''}
       <div class="field-row">
         ${sel('mFirma', 'Marka', BRANDS, meta.firma)}
         ${sel('mDil', 'Dil', LANGS, meta.dil || 'tr')}
@@ -777,6 +779,7 @@ const PidPanels = (() => {
     metaField('mSeri', 'seriNo');
     metaField('mMusteri', 'musteri');
     metaField('mModel', 'model');
+    onField('mRename', 'click', () => app.renameProject());
     metaField('mFirma', 'firma');
     metaField('mDil', 'dil');
     metaField('mRev', 'rev');

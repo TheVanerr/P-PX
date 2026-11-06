@@ -200,3 +200,20 @@ test('gerçek P&IDX ile uyum: depodaki makine kayıtları ve kod listesi okunur'
   const machines = (await reader.machines()).machines;
   assert.ok(machines.some((m) => m.firma === 'BODYCOAT'));
 });
+
+test('proje adı: pnömatik proje yeni ada taşınır, çizim ve P&ID bağlantısı korunur', async (t) => {
+  const root = tempDir(t, 'pnomatikx-ad');
+  write(root, 'PNOMATIK/data/ayarlar.json', '{}');
+  const store = Host.createStore(new DirHandle(root));
+  const created = await store.engine.createProject({ seriNo: '0326067', musteri: 'MİTAŞ', model: 'KBN 2B 1650', pidProje: '0326067-MİTAŞ-KBN 2B 1650' });
+  assert.ok(created.ok, created.error);
+  write(root, `PNOMATIK/projects/${created.id}/pnomatik/cizim.json`, '{"schema":1,"sheets":[]}\n');
+  const res = await store.engine.renameProject({ id: created.id, seriNo: '0326067', musteri: 'MİTAŞ', model: 'KBN 2B 1500' });
+  assert.ok(res.ok, res.error);
+  assert.equal(res.id, '0326067-MİTAŞ-KBN 2B 1500');
+  assert.ok(!fs.existsSync(path.join(root, 'PNOMATIK', 'projects', created.id)));
+  const meta = JSON.parse(fs.readFileSync(path.join(root, 'PNOMATIK', 'projects', res.id, 'proje.json'), 'utf8'));
+  assert.equal(meta.model, 'KBN 2B 1500');
+  assert.equal(meta.pidProje, '0326067-MİTAŞ-KBN 2B 1650', 'P&ID bağlantısı korunur');
+  assert.equal(fs.readFileSync(path.join(root, 'PNOMATIK', 'projects', res.id, 'pnomatik', 'cizim.json'), 'utf8'), '{"schema":1,"sheets":[]}\n');
+});

@@ -36,7 +36,7 @@
       coilName: (i) => (i === 0 ? 'Bobin 14' : 'Bobin 12'),
       motion: {
         extend: 'ileri çıkar', retract: 'geri çekilir', open: 'açılır', close: 'kapanır', turnA: '1. yöne döner', turnB: '2. yöne döner',
-        grip: 'kapanır (parçayı tutar)', release: 'açılır (parçayı bırakır)', inflate: 'şişer', deflate: 'söner', hold: 'vakumla tutar'
+        grip: 'kapanır (parçayı tutar)', release: 'açılır (parçayı bırakır)', inflate: 'şişer', deflate: 'söner', hold: 'vakumla tutar', unlock: 'kilidi açılır'
       },
       position: { linear: ['geri', 'ara', 'ileri'], valve: ['kapalı', 'ara', 'açık'], other: ['başlangıç', 'ara', 'son'] },
       s: {
@@ -107,7 +107,7 @@
         's.source': 'Sisteme basınçlı hava sağlar.',
         's.compressor': 'Basınçlı hava üretir.',
         's.receiver': 'Basınçlı havayı depolar, basınç dalgalanmasını azaltır.',
-        's.frl': 'Havayı filtreler, basıncını ayarlar ve yağlar.',
+        's.frl': 'Havayı filtreler ve basıncını ayarlar.',
         's.fr': 'Havayı filtreler ve basıncını ayarlar.',
         's.filter': 'Havadaki partikülü ve suyu ayırır.',
         's.lubricator': 'Havaya yağ katar.',
@@ -156,11 +156,11 @@
       coilName: (i) => (i === 0 ? 'Solenoid 14' : 'Solenoid 12'),
       motion: {
         extend: 'extends', retract: 'retracts', open: 'opens', close: 'closes', turnA: 'turns in direction 1', turnB: 'turns in direction 2',
-        grip: 'closes (grips the part)', release: 'opens (releases the part)', inflate: 'inflates', deflate: 'deflates', hold: 'holds by vacuum'
+        grip: 'closes (grips the part)', release: 'opens (releases the part)', inflate: 'inflates', deflate: 'deflates', hold: 'holds by vacuum', unlock: 'is unlocked'
       },
       motionPl: {
         extend: 'extend', retract: 'retract', open: 'open', close: 'close', turnA: 'turn in direction 1', turnB: 'turn in direction 2',
-        grip: 'close (grip the part)', release: 'open (release the part)', inflate: 'inflate', deflate: 'deflate', hold: 'hold by vacuum'
+        grip: 'close (grip the part)', release: 'open (release the part)', inflate: 'inflate', deflate: 'deflate', hold: 'hold by vacuum', unlock: 'are unlocked'
       },
       position: { linear: ['retracted', 'intermediate', 'extended'], valve: ['closed', 'intermediate', 'open'], other: ['start', 'intermediate', 'end'] },
       s: {
@@ -231,7 +231,7 @@
         's.source': 'Supplies compressed air to the system.',
         's.compressor': 'Produces compressed air.',
         's.receiver': 'Stores compressed air and reduces pressure fluctuations.',
-        's.frl': 'Filters, regulates and lubricates the air.',
+        's.frl': 'Filters the air and regulates its pressure.',
         's.fr': 'Filters the air and regulates its pressure.',
         's.filter': 'Separates particles and water from the air.',
         's.lubricator': 'Adds oil to the air.',
@@ -280,11 +280,11 @@
       coilName: (i) => (i === 0 ? 'Spule 14' : 'Spule 12'),
       motion: {
         extend: 'fährt aus', retract: 'fährt ein', open: 'öffnet', close: 'schließt', turnA: 'dreht in Richtung 1', turnB: 'dreht in Richtung 2',
-        grip: 'schließt (greift das Teil)', release: 'öffnet (gibt das Teil frei)', inflate: 'bläst sich auf', deflate: 'entleert sich', hold: 'hält mit Vakuum'
+        grip: 'schließt (greift das Teil)', release: 'öffnet (gibt das Teil frei)', inflate: 'bläst sich auf', deflate: 'entleert sich', hold: 'hält mit Vakuum', unlock: 'wird entriegelt'
       },
       motionPl: {
         extend: 'fahren aus', retract: 'fahren ein', open: 'öffnen', close: 'schließen', turnA: 'drehen in Richtung 1', turnB: 'drehen in Richtung 2',
-        grip: 'schließen (greifen das Teil)', release: 'öffnen (geben das Teil frei)', inflate: 'blasen sich auf', deflate: 'entleeren sich', hold: 'halten mit Vakuum'
+        grip: 'schließen (greifen das Teil)', release: 'öffnen (geben das Teil frei)', inflate: 'blasen sich auf', deflate: 'entleeren sich', hold: 'halten mit Vakuum', unlock: 'werden entriegelt'
       },
       position: { linear: ['eingefahrene', 'mittlere', 'ausgefahrene'], valve: ['geschlossene', 'mittlere', 'offene'], other: ['Anfangs-', 'Zwischen-', 'End-'] },
       s: {
@@ -355,7 +355,7 @@
         's.source': 'Versorgt die Anlage mit Druckluft.',
         's.compressor': 'Erzeugt Druckluft.',
         's.receiver': 'Speichert Druckluft und dämpft Druckschwankungen.',
-        's.frl': 'Filtert, regelt und ölt die Druckluft.',
+        's.frl': 'Filtert die Druckluft und regelt ihren Druck.',
         's.fr': 'Filtert die Luft und regelt den Druck.',
         's.filter': 'Scheidet Partikel und Wasser aus der Luft ab.',
         's.lubricator': 'Gibt Öl in die Luft.',

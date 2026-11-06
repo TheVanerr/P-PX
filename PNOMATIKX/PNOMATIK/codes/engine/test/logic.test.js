@@ -135,3 +135,52 @@ test('dil: İngilizce ve Almanca metinler', () => {
   assert.ok(de.logic.some((x) => x.text.startsWith('Wird 2Y1 [V31] bestromt, schaltet 2V1')));
   assert.equal(de.text.titles.docType2, 'Erläuterungsblatt 2');
 });
+
+/* ─── Hazır setler: PNO(SMC), PNO(AIR) ───────────────────── */
+
+test('hazır setler: tek grup, yeni kimlik, kopuk hat yok, semboller tanımlı', () => {
+  const Sets = require('../sets.js');
+  const Model = require('../model.js');
+  const Sym = require('../symbols.js');
+  assert.deepEqual(Sets.list().map((s) => s.name), ['PNO(SMC)', 'PNO(AIR)']);
+  for (const { id } of Sets.list()) {
+    const set = Sets.get(id);
+    for (const it of set.items) if (it.type === 'symbol') assert.ok(Sym.get(it.symbol), `${id}: ${it.symbol}`);
+    const drawing = Model.createDrawing('T');
+    const sheet = drawing.sheets[0];
+    const first = Sets.insert(sheet, id);
+    const second = Sets.insert(sheet, id, 0, 0);
+    assert.equal(first.length, set.items.length);
+    const ids = new Set(sheet.items.map((it) => it.id));
+    assert.equal(ids.size, sheet.items.length, 'iki kez konsa da kimlikler tekil');
+    for (const l of sheet.items.filter((it) => it.type === 'line')) {
+      for (const end of ['from', 'to']) if (l[end].node) assert.ok(ids.has(l[end].node), `${id}: kopuk hat ${l.id}`);
+    }
+    assert.equal(new Set(first.map((c) => c.group)).size, 1, 'set tek grup');
+    assert.notEqual(first[0].group, second[0].group, 'ikinci kopya ayrı grup');
+    assert.ok(set.items.every((it) => !set.items.some((o) => o !== it && o.id === it.id)));
+  }
+  const air = Sets.get('air').items;
+  assert.ok(air.some((it) => it.symbol === 'v.32nc' && it.tag === '0V2' && it.coils[0].pid === 'V47'));
+  assert.equal(air.filter((it) => it.symbol === 'a.cylDouble').length, 2);
+  const smc = Sets.get('smc').items;
+  for (const s of ['v.32manual', 's.fr', 'v.softStart', 'k.pressureSwitch', 'v.32nc', 'v.53exhaust']) assert.ok(smc.some((it) => it.symbol === s), s);
+  assert.equal(smc.filter((it) => it.symbol === 'a.cylLock').length, 2);
+  assert.equal(smc.filter((it) => it.symbol === 'f.throttle').length, 4);
+});
+
+test('PNO(SMC) mantığı: 1V1 silindirleri sürer, 1V2 kilidi açar, 0V2 yumuşak başlatma valfidir', () => {
+  const Sets = require('../sets.js');
+  const Model = require('../model.js');
+  const drawing = Model.createDrawing('T');
+  Sets.insert(drawing.sheets[0], 'smc');
+  const r = Logic.analyze(drawing, { catalog: new Map(), lang: 'tr' });
+  const texts = r.logic.map((x) => x.text);
+  assert.ok(texts.some((t) => /1V2/.test(t) && /1A1/.test(t) && /kilidi açılır/.test(t)), texts.join('\n'));
+  assert.ok(texts.some((t) => /1V1/.test(t) && /1A1/.test(t) && /ileri çıkar|geri çekilir/.test(t)), texts.join('\n'));
+  const en = Logic.analyze(drawing, { catalog: new Map(), lang: 'en' }).logic.map((x) => x.text);
+  assert.ok(en.some((t) => /is unlocked/.test(t)));
+  const html = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../cizim.html'), 'utf8');
+  const at = (f) => html.indexOf(`<script src="engine/${f}"></script>`);
+  assert.ok(at('model.js') < at('sets.js') && at('sets.js') > 0 && at('sets.js') < at('panels.js'));
+});

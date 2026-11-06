@@ -63,6 +63,7 @@ class PidEditor {
         if (PidModel.isLine(it) && !it.path) PidModel.refreshLine(sheet, it);
       }
     }
+    PidModel.normalizeGroups(drawing);
     Object.assign(this.ctx, ctx, { lang: project.dil || 'tr', showPid: project.pidEtiket !== false });
     this.selection.clear();
     this.undoStack = [JSON.stringify(drawing.sheets)];
@@ -278,6 +279,8 @@ class PidEditor {
     for (const id of this.selection) {
       const it = PidModel.findItem(this.sheet, id);
       if (!it) continue;
+      // Grubun içindeki görünmez bağlantı noktaları çerçevelenmez
+      if (!single && PidModel.isSymbol(it) && (PidSymbols.get(it.symbol) || {}).hidden) continue;
       if (PidModel.isLine(it)) {
         const d = it.path.map((p, i) => `${i ? 'L' : 'M'}${p[0]} ${p[1]}`).join('');
         parts.push(`<path d="${d}" fill="none" stroke="${blue}" stroke-width="${Math.max(1.1, 3 * px)}" opacity="0.35" pointer-events="none"/>`);
@@ -825,20 +828,27 @@ class PidEditor {
         this.svg.setPointerCapture(e.pointerId);
         return;
       }
+      const members = PidModel.groupMembers(this.sheet, id);
       if (e.shiftKey) {
         const next = new Set(this.selection);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
+        const removing = next.has(id);
+        for (const m of members) {
+          if (removing) next.delete(m);
+          else next.add(m);
+        }
         this.setSelection([...next]);
         return;
       }
-      if (!this.selection.has(id)) this.setSelection([id]);
+      // Gruptaki parçaya ilk tık grubu, seçili gruptaki parçaya taşımadan ikinci tık yalnız o parçayı seçer
+      const enterMember = members.length > 1 && this.selection.has(id) && members.every((m) => this.selection.has(m)) ? id : null;
+      if (!this.selection.has(id)) this.setSelection(members);
       if (PidModel.isLine(item) && this.selection.size === 1) {
         const near = PidModel.nearestOnLine(item, pos.x, pos.y);
         if (near) this.beginSegment(item, near.index, pos, e);
         return;
       }
       this.beginMove(pos, item, e);
+      if (this.drag) this.drag.enterMember = enterMember;
       return;
     }
 
@@ -998,6 +1008,8 @@ class PidEditor {
           this.renderLines();
           this.commit();
           this.host.onSelection();
+        } else if (drag.enterMember) {
+          this.setSelection([drag.enterMember]);
         }
         break;
       case 'label':
@@ -1042,37 +1054,12 @@ class PidEditor {
   /* ─── Taşıma ──────────────────────────────────────────── */
 
   beginMove(pos, primary, e) {
-    const nodes = new Map();
-    const remember = (it) => { if (!nodes.has(it.id)) nodes.set(it.id, { x: it.x, y: it.y }); };
-    for (const it of this.selectedItems()) {
-      if (PidModel.isLine(it)) continue;
-      remember(it);
-      if (PidModel.isSymbol(it) && (PidSymbols.get(it.symbol) || {}).container && !e.altKey) {
-        // Kapsayıcı taşınınca içindekiler de gelir
-        const b = PidModel.boxOf(it);
-        for (const other of this.sheet.items) {
-          if (other.id === it.id || PidModel.isLine(other) || other.type === 'legend') continue;
-          if (other.x > b[0] && other.x < b[2] && other.y > b[1] && other.y < b[3]) remember(other);
-        }
-      }
-    }
-    const freeLines = this.selectedItems().filter(PidModel.isLine).map((l) => ({
-      line: l,
-      from: Object.assign({}, l.from),
-      to: Object.assign({}, l.to),
-      path: l.path.map((p) => p.slice())
-    }));
-    // Tüm uçları birlikte taşınan elle düzenlenmiş hatlar kaydırılır
-    const carried = this.sheet.items.filter((l) => PidModel.isLine(l) && l.manual &&
-      nodes.has(l.from.node) && nodes.has(l.to.node)).map((l) => ({ line: l, path: l.path.map((p) => p.slice()) }));
     this.drag = {
       type: 'move',
       start: pos,
       primary: PidModel.isLine(primary) ? null : primary,
       origPrimary: PidModel.isLine(primary) ? null : { x: primary.x, y: primary.y },
-      nodes,
-      freeLines,
-      carried,
+      plan: PidModel.movePlan(this.sheet, [...this.selection], { contents: !e.altKey }),
       moved: false
     };
     this.svg.setPointerCapture(e.pointerId);
@@ -1104,43 +1091,8 @@ class PidEditor {
       dy = this.snapValue(dy);
     }
 
-    const moved = [];
-    for (const [id, orig] of d.nodes) {
-      const it = PidModel.findItem(this.sheet, id);
-      it.x = orig.x + dx;
-      it.y = orig.y + dy;
-      moved.push(id);
-      this.renderItem(it);
-    }
-
-    const movedSet = new Set(moved);
-    const carriedIds = new Set();
-    for (const c of d.carried) {
-      c.line.path = c.path.map((p) => [p[0] + dx, p[1] + dy]);
-      carriedIds.add(c.line.id);
-    }
-    for (const f of d.freeLines) {
-      if (!f.from.node) f.line.from = { x: f.from.x + dx, y: f.from.y + dy };
-      if (!f.to.node) f.line.to = { x: f.to.x + dx, y: f.to.y + dy };
-      if (!f.from.node && !f.to.node) {
-        f.line.path = f.path.map((p) => [p[0] + dx, p[1] + dy]);
-        carriedIds.add(f.line.id);
-      }
-    }
-
-    const dirty = [];
-    for (const it of this.sheet.items) {
-      if (!PidModel.isLine(it)) continue;
-      if (carriedIds.has(it.id)) {
-        dirty.push(it.id);
-        continue;
-      }
-      const touches = movedSet.has(it.from.node) || movedSet.has(it.to.node) || d.freeLines.some((f) => f.line.id === it.id);
-      if (touches) {
-        PidModel.refreshLine(this.sheet, it);
-        dirty.push(it.id);
-      }
-    }
+    const dirty = PidModel.applyMove(this.sheet, d.plan, dx, dy);
+    for (const n of d.plan.nodes) this.renderItem(n.item);
     this.renderLines(dirty);
     this.renderOverlay();
   }
@@ -1155,7 +1107,7 @@ class PidEditor {
     let gy = null;
     if (!def) return { x, y };
     for (const it of this.sheet.items) {
-      if (!PidModel.isSymbol(it) || d.nodes.has(it.id)) continue;
+      if (!PidModel.isSymbol(it) || d.plan.ids.has(it.id)) continue;
       const other = PidSymbols.get(it.symbol);
       if (!other || other.hidden || other.container) continue;
       if (gx === null && Math.abs(it.x - nx) <= tol) {
@@ -1187,7 +1139,37 @@ class PidEditor {
       if (fullOnly ? inside(box) : touching(box)) next.add(it.id);
     }
     drag.rect = null;
-    this.setSelection([...next]);
+    this.setSelection(PidModel.expandGroups(this.sheet, [...next]));
+  }
+
+  /* ─── Gruplama ve ölçekleme ───────────────────────────── */
+
+  groupSelection() {
+    const gid = PidModel.groupItems(this.sheet, [...this.selection]);
+    if (!gid) return false;
+    // Seçilmemiş iç hatlar da gruba girmiş olabilir: seçim grubun tamamını gösterir
+    this.selection = new Set(this.sheet.items.filter((it) => it.group === gid).map((it) => it.id));
+    this.renderOverlay();
+    this.commit();
+    this.host.onSelection();
+    return true;
+  }
+
+  ungroupSelection() {
+    const count = PidModel.ungroupItems(this.sheet, [...this.selection]);
+    if (!count) return false;
+    this.commit();
+    this.host.onSelection();
+    return true;
+  }
+
+  /** factor: 1.1 büyütür, 1/1.1 küçültür; spacing: aralıklar da ölçeklenir; absolute: ölçeği doğrudan ayarlar */
+  scaleSelection(factor, options) {
+    const ids = PidModel.scaleItems(this.sheet, [...this.selection], factor, options);
+    if (!ids.length) return;
+    this.renderAll();
+    this.commit();
+    this.host.onSelection();
   }
 
   /* ─── Tutamaçlar ──────────────────────────────────────── */
@@ -1291,6 +1273,7 @@ class PidEditor {
     const resolved = drag.resolved;
     if (!resolved) return;
     drag.line[drag.end] = this.materialize(resolved);
+    PidModel.syncLineGroup(this.sheet, drag.line);
     PidModel.refreshLine(this.sheet, drag.line);
     this.removeStaleEls();
     this.renderLines();
@@ -1438,14 +1421,11 @@ class PidEditor {
   }
 
   nudge(dx, dy) {
-    const nodes = this.selectedItems().filter((it) => !PidModel.isLine(it));
-    if (!nodes.length) return;
-    for (const it of nodes) {
-      it.x += dx;
-      it.y += dy;
-      this.renderItem(it);
-    }
-    PidModel.refreshAttached(this.sheet, nodes.map((n) => n.id));
+    // Ok tuşları da grubu katı parça gibi taşır: iç hatlar şeklini korur
+    const plan = PidModel.movePlan(this.sheet, [...this.selection]);
+    if (!plan.nodes.length && !plan.rigid.length && !plan.stretch.length) return;
+    PidModel.applyMove(this.sheet, plan, dx, dy);
+    for (const n of plan.nodes) this.renderItem(n.item);
     this.renderLines();
     this.renderOverlay();
     this.commit();
@@ -1542,6 +1522,8 @@ class PidEditor {
       else if (key === 'v') { this.paste(); e.preventDefault(); }
       else if (key === 'd') { this.duplicate(); e.preventDefault(); }
       else if (key === 'a') { this.selectAll(); e.preventDefault(); }
+      else if (key === 'g' && e.shiftKey) { this.ungroupSelection(); e.preventDefault(); }
+      else if (key === 'g') { this.groupSelection(); e.preventDefault(); }
       else if (key === '0') { this.fit(); e.preventDefault(); }
       else if (key === '=' || key === '+') { this.zoomAt(1.2); e.preventDefault(); }
       else if (key === '-') { this.zoomAt(1 / 1.2); e.preventDefault(); }
@@ -1577,6 +1559,9 @@ class PidEditor {
         else if (key === 'r') this.rotateSelection();
         else if (key === 'x') this.flipSelection();
         else if (key === 'f') this.fit();
+        // [ küçült, ] büyüt; Shift ile aralıklar da ölçeklenir
+        else if (e.code === 'BracketLeft' || key === '[') this.scaleSelection(1 / 1.1, { spacing: e.shiftKey });
+        else if (e.code === 'BracketRight' || key === ']') this.scaleSelection(1.1, { spacing: e.shiftKey });
         break;
     }
   }

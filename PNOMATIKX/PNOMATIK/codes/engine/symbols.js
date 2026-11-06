@@ -190,6 +190,18 @@
     valve: { positions: 2, rest: 'spring', a: { 2: 'P' }, n: { 2: 'E' } }
   }, VALVE));
 
+  def('v.softStart', 'dir', ['Yumuşak Başlatma Valfi (3/2, Ayarlı Kısmalı)', 'Soft Start-up Valve (3/2, Adjustable)', 'Sanftanlaufventil (3/2, einstellbar)'], Object.assign({
+    body: square(-10) + square(0) + arrow(-7.5, 5, -7.5, -5) +
+      P('M-9.2 -2Q-7.9 0 -9.2 2M-5.8 -2Q-7.1 0 -5.8 2') + P('M-9.8 3L-5.4 -2.6', THIN) + P('M-4.9 -3.3L-6.1 -2.9L-5.2 -2Z', SOLID) +
+      tee(-2.5, 5, -1) + arrow(2.5, -5, 7.5, 5) + tee(2.5, 5, -1) + solenoid(-14) + spring(10, 1),
+    box: [-14, -5, 14.1, 5],
+    ports: PORTS_32,
+    texts: portNo(PORTS_32),
+    coils: 1,
+    coilAt: [LEFT_COIL],
+    valve: { positions: 2, rest: 'spring', a: { 2: 'P' }, n: { 2: 'E' } }
+  }, VALVE));
+
   def('v.32no', 'dir', ['3/2 Tek Bobinli Valf (Normalde Açık)', '3/2 Single Solenoid Valve (Normally Open)', '3/2-Wegeventil, Magnet, normal offen'], Object.assign({
     body: square(-10) + square(0) + arrow(-7.5, -5, -2.5, 5) + tee(-7.5, 5, -1) +
       arrow(2.5, 5, 2.5, -5) + tee(7.5, 5, -1) + solenoid(-14) + spring(10, 1),
@@ -239,6 +251,21 @@
     role: 'actuator',
     sensors: CYL_SPAN,
     act: { kind: 'linear', A: 'extend', B: 'retract' }
+  });
+
+  def('a.cylLock', 'act', ['Kilitli Silindir (Mil Kilitli, Çift Etkili)', 'Cylinder with Lock (Double-Acting)', 'Zylinder mit Verriegelung (doppeltwirkend)'], {
+    body: R(-15, -4.5, 26, 9, WHITE) + P('M-8 -4.5V4.5', 'stroke-width="0.8"') +
+      R(12.5, -4, 6, 8, WHITE) + P('M13.4 -1.2H17.6M13.4 1.2H17.6', 'stroke-width="0.6"') +
+      P('M14.4 -4L15 -3.3L13.8 -2.6L15 -1.9', THIN) + P('M17.5 -4V-1.6', PILOT) +
+      P('M-8 0H23', 'stroke-width="0.7"'),
+    box: [-15, -4.5, 23, 4.5],
+    ports: [{ id: 'A', x: -12, y: 4.5, dir: 'D' }, { id: 'B', x: 8, y: 4.5, dir: 'D' }, { id: 'X', x: 17.5, y: -4, dir: 'U' }],
+    texts: [{ x: 19.4, y: -5.2, t: 'X', s: 1.6, port: true }],
+    tag: 'left',
+    role: 'actuator',
+    sensors: CYL_SPAN,
+    // X portuna basınç gelince kilit açılır; basınç kesilince yay mili kilitler
+    act: { kind: 'linear', A: 'extend', B: 'retract', X: 'unlock' }
   });
 
   def('a.cylSingle', 'act', ['Tek Etkili Silindir (Yay Geri Dönüşlü)', 'Single-Acting Cylinder (Spring Return)', 'Einfachwirkender Zylinder (Federrückstellung)'], {
@@ -432,7 +459,7 @@
     treat: 'receiver'
   });
 
-  def('s.frl', 'supply', ['Şartlandırıcı (Filtre-Regülatör-Yağlayıcı)', 'Air Service Unit (FRL)', 'Wartungseinheit (FRL)'], {
+  def('s.frl', 'supply', ['Şartlandırıcı (Filtre-Regülatör)', 'Air Service Unit (Filter-Regulator)', 'Wartungseinheit (Filter-Regler)'], {
     body: R(-15, -6.5, 30, 13, `${CHAIN} fill="#fff"`) + P('M-15 0H-12.5M-6.5 0H-3M3 0H6.5M12.5 0H15') +
       FILTER(-9.5) + REG(0) + GAUGE(5.2, -4.4) + LUBE(9.5),
     box: [-15, -6.5, 15, 6.5],
@@ -686,6 +713,39 @@
     return b;
   }
 
+  /* Varsayılan yazılar (hava girişi, egzoz, sayfa adı...) belge dili değişince çevrilir.
+     Kullanıcının kendi yazdığı yazı tabloda yoksa olduğu gibi kalır. */
+  const NOTE_I18N = [
+    ['BASINÇLI HAVA 6 bar', 'COMPRESSED AIR 6 bar', 'DRUCKLUFT 6 bar'],
+    ['BASINÇLI HAVA', 'COMPRESSED AIR', 'DRUCKLUFT'],
+    ['EGZOZ', 'EXHAUST', 'ABLUFT'],
+    ['Pnömatik Devre Şeması', 'Pneumatic Circuit Diagram', 'Pneumatikschaltplan']
+  ];
+  const LANG_INDEX = { tr: 0, en: 1, de: 2 };
+  const PAGE_WORDS = [['SAYFA', 'SHEET', 'BLATT'], ['ŞEMA', 'DIAGRAM', 'SCHEMA']];
+  const fold = (text) => String(text == null ? '' : text)
+    .replace(/ı/g, 'i').replace(/I/g, 'i').replace(/İ/g, 'i')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().trim();
+
+  /** "BASINÇLI HAVA 6 bar" → "COMPRESSED AIR 6 bar", "ŞEMA 2" → "DIAGRAM 2"; tanınmayan yazı aynen döner */
+  function localNote(text, lang) {
+    const index = LANG_INDEX[lang];
+    if (!text || index === undefined) return text;
+    const key = fold(text);
+    for (const row of NOTE_I18N) {
+      if (row.some((v) => fold(v) === key)) return row[index];
+    }
+    // Numaralı sayfa adı ve sayfa bağlantısı: "Pnömatik Devre Şeması 2", "ŞEMA 3"
+    const m = String(text).match(/^([\s\S]*?)\s+(\d+)\s*$/);
+    if (m) {
+      const head = fold(m[1]);
+      for (const row of NOTE_I18N) if (row.some((v) => fold(v) === head)) return `${row[index]} ${m[2]}`;
+      for (const words of PAGE_WORDS) if (words.some((w) => fold(w) === head)) return `${words[index]} ${m[2]}`;
+    }
+    return text;
+  }
+
   function boxOf(def_, item) {
     if (def_.resizable) {
       const w = (item && item.w) || def_.defaultSize[0];
@@ -771,6 +831,7 @@
     boxOf,
     resolveBody,
     resolveTexts,
+    localNote,
     coilsOf,
     sensorPoint,
     sensorMark,

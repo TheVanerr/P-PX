@@ -27,10 +27,36 @@ const PidPanels = (() => {
     return thumbCache.get(key);
   }
 
+  /* Hazır setin önizlemesi: setteki semboller ve hatlar küçük çizimde */
+  const setThumbs = new Map();
+  function setThumb(id) {
+    if (setThumbs.has(id)) return setThumbs.get(id);
+    const set = PnoSets.get(id);
+    const b = PnoSets.boxOf(set);
+    const pad = 3;
+    const hops = new Map();
+    const body = set.items.map((it) => (it.type === 'line' ? PidSheet.renderLine(it, hops, {})
+      : it.type === 'symbol' ? PidSheet.renderSymbol(it, { lang: 'tr', showPid: false, portNumbers: false }) : '')).join('');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${b[0] - pad} ${b[1] - pad} ${b[2] - b[0] + pad * 2} ${b[3] - b[1] + pad * 2}" preserveAspectRatio="xMidYMid meet" style="color:#111">${body}</svg>`;
+    setThumbs.set(id, svg);
+    return svg;
+  }
+
   function renderSymbols() {
     const query = PidSymbols.normalize($('symbolSearch').value.trim());
     const list = $('symbolList');
     const html = [];
+    // Hazır setler: tek tıkla besleme ve devreleriyle birlikte konur
+    if (typeof PnoSets !== 'undefined') {
+      const sets = PnoSets.list().filter((s) => !query || PidSymbols.normalize(`${s.name} ${s.note} hazir set`).includes(query));
+      if (sets.length) {
+        html.push('<div class="sym-cat">Hazır Setler</div><div class="sym-grid">');
+        for (const s of sets) {
+          html.push(`<button type="button" class="sym-tile set-tile" data-set="${s.id}" title="${esc(s.note)} · Tıklayınca sayfaya konur, gruplu ve seçili gelir">${setThumb(s.id)}<span>${esc(s.name)}</span></button>`);
+        }
+        html.push('</div>');
+      }
+    }
     for (const cat of PidSymbols.CATEGORIES) {
       const items = PidSymbols.list().filter((d) => d.cat === cat.id &&
         (!query || PidSymbols.normalize(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`).includes(query)));
@@ -59,6 +85,11 @@ const PidPanels = (() => {
     $('symbolSearch').addEventListener('input', renderSymbols);
     const list = $('symbolList');
     list.addEventListener('click', (e) => {
+      const setTile = e.target.closest('.set-tile');
+      if (setTile) {
+        app.insertSet(setTile.dataset.set);
+        return;
+      }
       const tile = e.target.closest('.sym-tile');
       if (!tile) return;
       const current = app.editor.placing;
@@ -70,7 +101,7 @@ const PidPanels = (() => {
     });
     list.addEventListener('dragstart', (e) => {
       const tile = e.target.closest('.sym-tile');
-      if (!tile) return;
+      if (!tile || tile.dataset.set) return;
       e.dataTransfer.setData('text/plain', tile.dataset.symbol);
       e.dataTransfer.effectAllowed = 'copy';
       app.editor.startPlacing(app.placingSpecForSymbol(tile.dataset.symbol, false));
@@ -250,6 +281,42 @@ const PidPanels = (() => {
     if (el) el.addEventListener(event, () => handler(el));
   }
 
+  const SCALE_RANGE = [30, 400];
+
+  /** "70", "%70" ve "70,5" kabul edilir; aralık dışındaysa uyarır ve null döner */
+  function readPercent(text) {
+    const pct = parseFloat(String(text).replace('%', '').replace(',', '.').trim());
+    if (!Number.isFinite(pct)) return null;
+    if (pct < SCALE_RANGE[0] || pct > SCALE_RANGE[1]) {
+      app.toast(`Boyut %${SCALE_RANGE[0]} ile %${SCALE_RANGE[1]} arasında olmalı`, 'error');
+      return null;
+    }
+    return pct;
+  }
+
+  const percentField = (id, label, value, placeholder) =>
+    inp(id, label, value === null ? '' : value, `inputmode="decimal" autocomplete="off" placeholder="${placeholder}"`);
+
+  /** Görünmez bağlantı noktaları öğe sayısına girmez */
+  const isVisibleItem = (it) => !(PidModel.isSymbol(it) && (PidSymbols.get(it.symbol) || {}).hidden);
+
+  /** Grubu olan öğe için: grubu seç, grubu çöz */
+  function groupRow(item) {
+    if (!item.group) return '';
+    const sheet = app.editor.sheet;
+    const count = PidModel.groupMembers(sheet, item.id).filter((id) => isVisibleItem(PidModel.findItem(sheet, id))).length;
+    return `<div class="field-label">Grup (${count} öğe)</div>
+      <div class="insp-actions"><button type="button" class="btn btn-sm" id="fGroupSelect">Grubu seç</button><button type="button" class="btn btn-sm" id="fUngroup">Grubu çöz</button></div>`;
+  }
+
+  function bindGroupRow(item) {
+    onField('fGroupSelect', 'click', () => app.editor.setSelection(PidModel.groupMembers(app.editor.sheet, item.id)));
+    onField('fUngroup', 'click', () => {
+      app.editor.ungroupSelection();
+      app.toast('Grup çözüldü');
+    });
+  }
+
   function symbolOptions() {
     return PidSymbols.CATEGORIES.map((cat) => {
       const items = PidSymbols.list().filter((d) => d.cat === cat.id);
@@ -352,6 +419,8 @@ const PidPanels = (() => {
       <div class="field"><label for="fSymbol">Sembol</label><select id="fSymbol" class="field-input">${symbolOptions()}</select></div>
       ${def.resizable ? `<div class="field-row">${inp('fW', 'Genişlik (mm)', item.w, 'type="number" step="2.5" min="10"')}${inp('fH', 'Yükseklik (mm)', item.h, 'type="number" step="2.5" min="10"')}</div>` : ''}
       ${!def.resizable ? '<div class="insp-actions"><button type="button" class="btn btn-sm" id="fRotate">Döndür 90°</button><button type="button" class="btn btn-sm" id="fFlip">Aynala</button></div>' : ''}
+      ${def.hidden ? '' : percentField('fScale', 'Boyut (%)', PidModel.selectionPercent([item]), 'Örn: 70')}
+      ${groupRow(item)}
       ${moveSheetField()}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', item.optional)}
       ${item.tagOffset ? '<button type="button" class="btn btn-sm" id="fTagReset">Etiket konumunu sıfırla</button>' : ''}
@@ -440,6 +509,12 @@ const PidPanels = (() => {
     onField('fH', 'change', (el) => { app.editor.updateItem(item, { h: Math.max(10, parseFloat(el.value) || item.h) }); });
     onField('fRotate', 'click', () => app.editor.rotateSelection());
     onField('fFlip', 'click', () => app.editor.flipSelection());
+    onField('fScale', 'change', (el) => {
+      const pct = readPercent(el.value);
+      if (pct !== null) app.editor.scaleSelection(pct / 100, { absolute: true });
+      else inspectSymbol(item);
+    });
+    bindGroupRow(item);
     onField('fOptional', 'change', (el) => {
       app.editor.updateItem(item, { optional: el.checked });
       inspectSymbol(item);
@@ -470,7 +545,9 @@ const PidPanels = (() => {
       ${sel('fArrow', 'Akış oku', ARROWS, line.arrow || 'none')}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', line.optional)}
       ${line.manual ? '<button type="button" class="btn btn-sm" id="fAuto">Otomatik rotaya dön</button>' : '<div class="field-help">Yolu değiştirmek için hattın parçalarını sürükleyin.</div>'}
+      ${groupRow(line)}
     `;
+    bindGroupRow(line);
     onField('fKind', 'change', (el) => {
       app.editor.updateItem(line, { kind: el.value });
       inspectLine(line);
@@ -497,7 +574,9 @@ const PidPanels = (() => {
       </div>
       ${toggle('fBold', 'Kalın', item.bold)}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', item.optional)}
+      ${groupRow(item)}
     `;
+    bindGroupRow(item);
     onField('fText', 'input', (el) => app.editor.updateItem(item, { text: el.value }, { commit: false }));
     onField('fText', 'change', () => app.editor.commit());
     onField('fSize', 'change', (el) => app.editor.updateItem(item, { size: parseFloat(el.value) }));
@@ -519,18 +598,50 @@ const PidPanels = (() => {
     `;
   }
 
+  let spacingPref = null;
+
   function inspectMultiple(items) {
-    const allOption = items.every((it) => it.optional);
+    const visible = items.filter(isVisibleItem);
+    const allOption = visible.every((it) => it.optional);
+    const groups = new Set(visible.map((it) => it.group || null));
+    // Tek bir grubun tamamı seçiliyse grup olarak ölçeklenir
+    const grouped = groups.size === 1 && !groups.has(null);
+    const anyGroup = visible.some((it) => it.group);
+    const spacing = spacingPref === null ? grouped : spacingPref;
     const align = [['left', 'Sol'], ['centerX', 'Orta'], ['right', 'Sağ'], ['top', 'Üst'], ['centerY', 'Merkez'], ['bottom', 'Alt']];
     $('inspector').innerHTML = `
-      <div class="insp-head"><div class="insp-title">${items.length} öğe seçili</div></div>
+      <div class="insp-head"><div class="insp-title">${visible.length} öğe seçili</div></div>
       <div class="field-label">Hizala</div>
       <div class="align-grid">${align.map(([m, t]) => `<button type="button" class="btn btn-sm" data-align="${m}">${t}</button>`).join('')}</div>
       <div class="field-label">Eşit aralıkla dağıt</div>
       <div class="insp-actions"><button type="button" class="btn btn-sm" data-align="distH">Yatay</button><button type="button" class="btn btn-sm" data-align="distV">Dikey</button></div>
+      <div class="field-label">Boyut</div>
+      <div class="insp-actions"><button type="button" class="btn btn-sm" data-scale="0.9" title="[ tuşu">Küçült −10%</button><button type="button" class="btn btn-sm" data-scale="1.1" title="] tuşu">Büyüt +10%</button></div>
+      ${percentField('mScale', 'Doğrudan boyut (%)', PidModel.selectionPercent(items), PidModel.selectionPercent(items) === null ? 'Farklı boyutlar · Örn: 70' : 'Örn: 70')}
+      ${toggle('fSpacing', 'Aralıklar da ölçeklensin (Shift)', spacing)}
+      <div class="field-label">Grup</div>
+      <div class="insp-actions">
+        <button type="button" class="btn btn-sm" id="mGroup" title="Ctrl+G"${grouped ? ' disabled' : ''}>Grupla</button>
+        <button type="button" class="btn btn-sm" id="mUngroup" title="Ctrl+Shift+G"${anyGroup ? '' : ' disabled'}>Grubu çöz</button>
+      </div>
       ${moveSheetField()}
       ${toggle('fOptional', 'Opsiyon (kırmızı)', allOption)}
     `;
+    document.querySelectorAll('[data-scale]').forEach((b) => b.addEventListener('click', () => {
+      app.editor.scaleSelection(parseFloat(b.dataset.scale), { spacing: $('fSpacing').checked });
+    }));
+    onField('mScale', 'change', (el) => {
+      const pct = readPercent(el.value);
+      if (pct !== null) app.editor.scaleSelection(pct / 100, { absolute: true, spacing: $('fSpacing').checked });
+      else inspectMultiple(items);
+    });
+    onField('fSpacing', 'change', (el) => { spacingPref = el.checked; });
+    onField('mGroup', 'click', () => {
+      if (app.editor.groupSelection()) app.toast(`${app.editor.selectedItems().filter(isVisibleItem).length} öğe hatlarıyla gruplandı. Tıklayınca grup seçilir, tekrar tıklayınca tek parça.`);
+    });
+    onField('mUngroup', 'click', () => {
+      if (app.editor.ungroupSelection()) app.toast('Grup çözüldü');
+    });
     bindMoveSheet();
     document.querySelectorAll('[data-align]').forEach((b) => b.addEventListener('click', () => app.editor.align(b.dataset.align)));
     onField('fOptional', 'change', (el) => {
@@ -579,6 +690,8 @@ const PidPanels = (() => {
       ${inp('mSeri', 'Proje no', meta.seriNo)}
       ${inp('mMusteri', 'Müşteri', meta.musteri)}
       ${inp('mModel', 'Model', meta.model)}
+      ${app.projectId ? `<div class="field-help" id="mProjectName">Proje adı: <strong>${esc(app.projectId)}</strong></div>
+      <button type="button" class="btn btn-sm" id="mRename" title="Proje no, müşteri ve model değişince proje klasörünün adını da günceller">Proje adını güncelle</button>` : ''}
       <div class="field-row">
         ${sel('mFirma', 'Marka', BRANDS, meta.firma)}
         ${sel('mDil', 'Dil', LANGS, meta.dil || 'tr')}
@@ -602,7 +715,7 @@ const PidPanels = (() => {
       <button type="button" class="btn btn-sm" id="rAdd">Revizyon ekle</button>
 
       <div class="insp-section">Kısayollar</div>
-      <div class="field-help">V seç · L hat · T metin · R döndür · X aynala · F sığdır · Sağ tuş (veya orta tuş, Boşluk) + sürükle kaydır · Tekerlek yakınlaştır, Shift + tekerlek yana kaydır · PageUp / PageDown sayfa değiştir · Alt yakalamayı kapatır · Sağ tık iptal</div>
+      <div class="field-help">V seç · L hat · T metin · R döndür · X aynala · F sığdır · [ küçült · ] büyüt (Shift: aralıklarla) · Ctrl+G grupla · Ctrl+Shift+G grubu çöz · Sağ tuş (veya orta tuş, Boşluk) + sürükle kaydır · Tekerlek yakınlaştır, Shift + tekerlek yana kaydır · PageUp / PageDown sayfa değiştir · Alt yakalamayı kapatır · Sağ tık iptal</div>
     `;
 
     onField('sPrev', 'click', () => app.goToSheet(-1));
@@ -648,6 +761,7 @@ const PidPanels = (() => {
     metaField('mSeri', 'seriNo');
     metaField('mMusteri', 'musteri');
     metaField('mModel', 'model');
+    onField('mRename', 'click', () => app.renameProject());
     metaField('mFirma', 'firma');
     metaField('mDil', 'dil');
     metaField('mRev', 'rev');

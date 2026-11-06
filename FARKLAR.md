@@ -21,6 +21,9 @@ Ortak zayıflıklar: otomatik yeniden deneme yoktu, çakışma algılanmıyordu,
 | Pnömatik sayfa ekleme | Etiketsiz `+`; sağ panelde düğme yoktu | Alt çubukta `+ Sayfa`, sağ panelde `+ Yeni sayfa` |
 | Sayfa ekleme düğmesi | İkisinde de: ad alanından çıkarken tıklama kaybolurdu, çok sayfada düğme ve açık sekme görünmezdi | İkisinde de tıklama kaybolmaz, düğme ve açık sekme görünür kalır |
 | Pnömatik sayfa işlemleri | Yalnız ekleme ve silme; önceki sayfa silinince açık sayfa kayardı | Çoğaltma, sıralama, seçimi taşıma, PageUp/Down; silmede açık sayfa korunur |
+| Pnömatik gruplama | Yoktu | P&ID ile aynı: Ctrl+G / Ctrl+Shift+G, hatlarıyla grup, katı parça gibi taşıma (fare ve ok tuşları), tık grubu, ikinci tık parçayı seçer |
+| Pnömatik belge dili | Yalnız kapaktaki açılır listede | P&ID ile aynı: Kapak ve Açıklama pencerelerinde TR / EN / DE, PDF'te birden çok dil (her dil tam belge), hazır yazılar (BASINÇLI HAVA, EGZOZ, ŞEMA 2, çizim adı) çevrilir |
+| Pnömatik boyut | Yoktu | P&ID ile aynı: Boyut (%), Küçült / Büyüt, [ ve ], aralıklarla ölçekleme (Shift). Bobin ve sensör etiketleri birlikte küçülür, okunur kalsın diye en az %70 boyutta yazılır |
 
 Pnömatiğe özgü fark: sayfa bağlantıları (`ŞEMA 2`) hava hattını sayfa numarasıyla sürdürür, bu yüzden sıralama, çoğaltma ve silme bu numaraları da günceller. P&ID'de bağlantı yalnız yazıdır, güncelleme gerekmez.
 
@@ -31,10 +34,8 @@ Bunlar `model.js` ve çizim verisine dokunur, her biri kendi testiyle ayrı yap�
 | Özellik | Bugün pnömatikte | Büyüklük | Not |
 |---|---|---|---|
 | Panel hızlandırma | Her çizimde yeniden kurulur | Küçük | |
-| Gruplama | Yok | Orta | Sürükleme kodu değişir |
 | Revizyon bulutları | Yalnız revizyon tablosu | Orta | Karşılaştırmaya bobin, sensör ve P&ID kodu eklenmeli |
-| Çok dilli PDF ve eksik çeviri kontrolü | Tek dil, kapakta seçilir | Orta | Çeviri alanları gerekir |
-| Boyut ölçekleme | Yok | Orta-büyük | Bobin ve sensör yazı konumları etkilenir |
+| Eksik çeviri kontrolü | Belge dili var, Kontrol sekmesi EN / DE karşılığı olmayan kodu bildirmez | Küçük | P&ID'deki `kod-en.csv` / `kod-de.csv` kontrolü |
 
 ## Kalan iş (pnömatikten P&ID'ye)
 

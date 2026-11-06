@@ -367,6 +367,9 @@ textarea.field-input { resize: vertical; min-height: 64px; }
 .sym-tile span { font-size: 9.6px; line-height: 1.12; text-align: center; color: #3c4250; height: 22px; overflow: hidden; }
 .sym-tile:hover { border-color: #9aa3b5; }
 .sym-tile.active { border-color: var(--dolfin); background: #fff; }
+.set-tile { grid-column: span 3; cursor: pointer; }
+.set-tile svg { height: 64px; width: 100%; }
+.set-tile span { height: auto; font-size: 11px; font-weight: 600; }
 
 /* Kodlar */
 .machine-bar { display: flex; flex-direction: column; gap: 7px; background: var(--panel-2); border-left: 3px solid var(--dolfin); border-radius: 4px; padding: 8px 9px; flex-shrink: 0; }
@@ -440,6 +443,19 @@ textarea.field-input { resize: vertical; min-height: 64px; }
 .field-help.warn { color: var(--warn); }
 .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 9px; background: var(--panel-2); border-radius: var(--radius); cursor: pointer; }
 .switch-row input { accent-color: var(--dolfin); width: 15px; height: 15px; }
+/* Belge dili: PDF penceresi ve Kapak / Açıklama pencerelerindeki TR / EN / DE (P&ID ile aynı) */
+.pdf-langs { display: flex; align-items: center; gap: 6px; padding: 6px 9px; background: var(--panel-2); border-radius: var(--radius); }
+.pdf-langs > span { flex: 1; }
+.pdf-lang { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border: 1px solid var(--line); border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; color: var(--muted); }
+.pdf-lang input { accent-color: var(--dolfin); margin: 0; }
+.pdf-lang.is-on { background: var(--dolfin-soft); color: var(--text); border-color: var(--dolfin); }
+.lang-seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.lang-seg button { background: var(--panel-2); color: var(--muted); border: 0; border-right: 1px solid var(--line); padding: 5px 10px; font: 600 12px var(--font); cursor: pointer; }
+.lang-seg button:last-child { border-right: 0; }
+.lang-seg button:hover { color: var(--text); }
+.lang-seg button.active { background: var(--dolfin); color: #fff; }
+.lang-seg button:focus-visible { outline: 2px solid var(--select); outline-offset: -2px; }
+.lang-label { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .switch-row.is-on { background: var(--dolfin-soft); }
 .insp-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .insp-actions .btn { flex: 1; }

@@ -168,7 +168,7 @@
       parts.push(textEl(x + logoW / 2, y + h / 2, brand.name || project.firma || '', { size: 7, bold: true, fill: color, anchor: 'middle', middle: true }));
     }
 
-    parts.push(cell(X, y, W, 12, t.drawing, sheet.title, { size: 4.6, bold: true }));
+    parts.push(cell(X, y, W, 12, t.drawing, Sym.localNote(sheet.title, project.dil), { size: 4.6, bold: true }));
 
     const third = W / 3;
     parts.push(cell(X, y + 12, third, 8, t.project, project.seriNo, { bold: true }));
@@ -264,6 +264,16 @@
 
   const pidText = (code) => `[${code}]`;
 
+  /* Ölçekli sembolde (item.scale) bobin ve sensör etiketleri de küçülür, ama okunur kalsın diye
+     yazı en az %70 boyutta tutulur; etiketin gövdeye uzaklığı yazı boyutuna göre ayarlanır. */
+  const scaleOf = (item) => (item.scale && item.scale !== 1 ? item.scale : 1);
+  const labelScale = (item) => Math.max(0.7, scaleOf(item));
+  /** Yerel noktadan sayfada (dx, dy) mm ötesi; dönüş ve aynalama sembolle aynı */
+  function labelAt(item, x, y, dx, dy) {
+    const k = scaleOf(item);
+    return Model.toWorld(item, x + dx / k, y + dy / k);
+  }
+
   function anchorOf(a, item) {
     if (a !== 'start' && a !== 'end') return 'middle';
     if (!item.flip) return a;
@@ -274,15 +284,16 @@
   function renderCoils(item, def, ctx) {
     const places = Sym.coilsOf(def);
     const coils = item.coils || [];
+    const f = labelScale(item);
     let out = '';
     places.forEach((place, i) => {
       const coil = coils[i] || {};
       if (!coil.tag && !coil.pid) return;
-      const tagAt = Model.toWorld(item, place.x, place.y - 2.4);
-      if (coil.tag) out += textEl(tagAt.x, tagAt.y, coil.tag, { size: 2.4, bold: true, anchor: 'middle', middle: true });
+      const tagAt = labelAt(item, place.x, place.y, 0, -2.4 * f);
+      if (coil.tag) out += textEl(tagAt.x, tagAt.y, coil.tag, { size: 2.4 * f, bold: true, anchor: 'middle', middle: true });
       if (coil.pid && ctx.showPid !== false) {
-        const pidAt = Model.toWorld(item, place.x, place.y - (coil.tag ? 5 : 2.4));
-        out += textEl(pidAt.x, pidAt.y, pidText(coil.pid), { size: 2, anchor: 'middle', middle: true });
+        const pidAt = labelAt(item, place.x, place.y, 0, -(coil.tag ? 5 : 2.4) * f);
+        out += textEl(pidAt.x, pidAt.y, pidText(coil.pid), { size: 2 * f, anchor: 'middle', middle: true });
       }
     });
     return out;
@@ -299,40 +310,45 @@
   function sensorLabels(item, def, ctx) {
     const list = item.sensors || [];
     if (!def.sensors || !list.length) return '';
+    const f = labelScale(item);
     let out = '';
     list.forEach((s, i) => {
       const p = Sym.sensorPoint(def, s, i);
       if (p.layout === 'top') {
-        const tagAt = Model.toWorld(item, p.x, p.y - 4.9);
-        if (s.tag) out += textEl(tagAt.x, tagAt.y, s.tag, { size: 2.3, bold: true, anchor: 'middle', middle: true });
+        const tagAt = labelAt(item, p.x, p.y, 0, -4.9 * f);
+        if (s.tag) out += textEl(tagAt.x, tagAt.y, s.tag, { size: 2.3 * f, bold: true, anchor: 'middle', middle: true });
         if (s.pid && ctx.showPid !== false) {
-          const pidAt = Model.toWorld(item, p.x, p.y - (s.tag ? 7.4 : 4.9));
-          out += textEl(pidAt.x, pidAt.y, pidText(s.pid), { size: 1.9, anchor: 'middle', middle: true });
+          const pidAt = labelAt(item, p.x, p.y, 0, -(s.tag ? 7.4 : 4.9) * f);
+          out += textEl(pidAt.x, pidAt.y, pidText(s.pid), { size: 1.9 * f, anchor: 'middle', middle: true });
         }
       } else {
         const anchor = anchorOf('start', item);
-        const tagAt = Model.toWorld(item, p.x + 5.4, p.y + 1.3);
-        if (s.tag) out += textEl(tagAt.x, tagAt.y, s.tag, { size: 2.3, bold: true, anchor, middle: true });
+        const tagAt = labelAt(item, p.x, p.y, 5.4 * f, 1.3 * f);
+        if (s.tag) out += textEl(tagAt.x, tagAt.y, s.tag, { size: 2.3 * f, bold: true, anchor, middle: true });
         if (s.pid && ctx.showPid !== false) {
-          const pidAt = Model.toWorld(item, p.x + 5.4, p.y + (s.tag ? 3.8 : 1.3));
-          out += textEl(pidAt.x, pidAt.y, pidText(s.pid), { size: 1.9, anchor, middle: true });
+          const pidAt = labelAt(item, p.x, p.y, 5.4 * f, (s.tag ? 3.8 : 1.3) * f);
+          out += textEl(pidAt.x, pidAt.y, pidText(s.pid), { size: 1.9 * f, anchor, middle: true });
         }
       }
     });
     return out;
   }
 
-  function renderSymbol(item, ctx) {
-    const def = Sym.get(item.symbol);
+  function renderSymbol(source, ctx) {
+    const def = Sym.get(source.symbol);
     if (!def) return '';
-    const transform = `translate(${n(item.x)} ${n(item.y)}) rotate(${item.rot || 0})${item.flip ? ' scale(-1 1)' : ''}`;
+    // Varsayılan yazılar (BASINÇLI HAVA, EGZOZ, ŞEMA 2...) belge dilinde yazılır
+    const note = source.note ? Sym.localNote(source.note, ctx.lang) : source.note;
+    const item = note === source.note ? source : Object.assign({}, source, { note });
+    const k = item.scale && item.scale !== 1 && !def.resizable ? item.scale : 1;
+    const transform = `translate(${n(item.x)} ${n(item.y)}) rotate(${item.rot || 0})${k !== 1 ? ` scale(${k})` : ''}${item.flip ? ' scale(-1 1)' : ''}`;
     let out = `<g transform="${transform}" fill="none" stroke="currentColor" stroke-width="0.35" stroke-linecap="round" stroke-linejoin="round">${Sym.resolveBody(def, item)}${sensorBodies(item, def)}</g>`;
 
     for (const t of Sym.resolveTexts(def, item, ctx.lang)) {
       if (!t.t) continue;
       if (t.port && ctx.portNumbers === false) continue;
       const w = Model.toWorld(item, t.x, t.y);
-      out += textEl(w.x, w.y, t.t, { size: t.s, bold: t.b, anchor: anchorOf(t.a, item), middle: true, fill: t.port ? PORT_COLOR : undefined });
+      out += textEl(w.x, w.y, t.t, { size: t.s * k, bold: t.b, anchor: anchorOf(t.a, item), middle: true, fill: t.port ? PORT_COLOR : undefined });
     }
     out += renderCoils(item, def, ctx);
     out += sensorLabels(item, def, ctx);

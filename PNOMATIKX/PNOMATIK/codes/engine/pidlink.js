@@ -80,7 +80,28 @@
   /** Grup anahtarı: konum ve genel sözcükler atılmış sözcük dizisi.
       keepActions false ise aç/kapat gibi hareket sözcükleri de atılır (çift bobinli valf eşleşmesi için). */
   function keyOf(name, keepActions) {
-    return words(name).map(tokenOf).filter((t) => t && !DROP.has(t) && (keepActions || !isAction(t)) && !(t in POSITION));
+    return diverter(words(name).map(tokenOf)).filter((t) => t && !DROP.has(t) && (keepActions || !isAction(t)) && !(t in POSITION));
+  }
+
+  /**
+   * Tankın (1.) yönlendirme pistonu, P&ID'deki "Tahliye Vanası Aç / Kapat" valflerinin sürdüğü pistondur:
+   * "1. Proses Tankı 1. Yönlendirme Pistonu" ile "1. Proses Tankı Tahliye Vanası" aynı devre olur.
+   * Aynı tankın 2. yönlendirme pistonu ayrı pistondur ("yonlendirme2"), tahliye valfiyle eşleşmez.
+   */
+  function diverter(tokens) {
+    const out = [];
+    for (let i = 0; i < tokens.length; i += 1) {
+      const t = tokens[i];
+      if (t !== 'yonlendirme') {
+        out.push(t);
+        continue;
+      }
+      const index = out.length && /^\d+$/.test(out[out.length - 1]) && out.length >= 2 ? out[out.length - 1] : null;
+      // Önündeki sayı tank numarası değil piston sırasıysa (tank numarasından sonra gelir) kaldırılır
+      if (index !== null) out.pop();
+      out.push(index === null || index === '1' ? 'tahliye' : `yonlendirme${index}`);
+    }
+    return out;
   }
 
   function displayOf(name, keepActions) {
@@ -157,6 +178,8 @@
   }
 
   function actuatorFromName(n) {
+    // Otomatik dolum vanası enerji kesilince yayla kapanır: 3/2 valf + yay dönüşlü aktüatör
+    if (/\bdolum\b/.test(n) && /\baktuator\b|\bvanasi\b|\bvana\b/.test(n)) return 'vana-yay';
     if (/\b(piston|pistonu|silindir|sepet|lift|kapak|kapagi|kaldirma|indirme)\b/.test(n) && !/\baktuator\b/.test(n)) return 'silindir';
     if (/\baktuator\b|\bvanasi\b|\bvana\b/.test(n)) return 'vana';
     return 'silindir';
@@ -389,8 +412,17 @@
     // 4. Tipler ve sıra
     for (const g of groups) {
       // Switch box aktüatörlü vanada olur: konum sensörü (PPS) yoksa devre vana olarak çizilir
-      if (!g.saved && g.sensors.some((x) => x.role === 'SB') && !g.sensors.some((x) => x.role !== 'SB')) g.actuator = 'vana';
+      if (!g.saved && g.sensors.some((x) => x.role === 'SB') && !g.sensors.some((x) => x.role !== 'SB') && g.actuator !== 'vana-yay') g.actuator = 'vana';
+      // Piston sensörü (PPS) olan çift bobinli devre pistondur: "Tahliye Vanası Aç / Kapat" + "Yönlendirme Pistonu"
+      // sensörleri 5/2 bistabil valf ve çift etkili silindir olur, devre pistonun adını alır
+      const pistonSensors = g.sensors.filter((x) => seriesOf(x.kod) === 'PPS');
+      if (!g.saved && g.coils[0] && g.coils[1] && pistonSensors.length && g.actuator === 'vana') {
+        g.actuator = 'silindir';
+        g.name = displayOf(pistonSensors[0].name, true) || g.name;
+      }
       if (!g.actuator) g.actuator = 'silindir';
+      // Yönlendirme pistonu her zaman 5/2 bistabil valfle sürülür; V kodları henüz yoksa iki bobin boş gelir
+      if (!g.saved && !g.valve && g.actuator === 'silindir' && /\byonlendirme\b/.test(fold(g.name))) g.valve = '52b';
       if (!g.valve) g.valve = defaultValve(g);
       g.sensors.sort((a, b) => a.pos - b.pos || byCode(a.kod, b.kod));
     }

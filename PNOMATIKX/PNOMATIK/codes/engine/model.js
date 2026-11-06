@@ -61,8 +61,10 @@
 
   /** Yerel sembol noktası -> sayfa koordinatı (çevirme, döndürme, öteleme) */
   function toWorld(item, x, y) {
-    let px = item.flip ? -x : x;
-    let py = y;
+    // Ölçek yalnız boyutlanmayan sembollerde kullanılır; boyutlanan kutuda genişlik/yükseklik değişir
+    const k = item.scale && item.scale !== 1 ? item.scale : 1;
+    let px = (item.flip ? -x : x) * k;
+    let py = y * k;
     const rot = ((item.rot || 0) % 360 + 360) % 360;
     for (let i = 0; i < rot / 90; i += 1) {
       const t = px;
@@ -82,7 +84,8 @@
       px = py;
       py = -t;
     }
-    return { x: item.flip ? -px : px, y: py };
+    const k = item.scale && item.scale !== 1 ? item.scale : 1;
+    return { x: (item.flip ? -px : px) / k, y: py / k };
   }
 
   function worldDir(item, dir) {
@@ -308,6 +311,7 @@
       path: null
     }, props || {});
     sheet.items.push(line);
+    syncLineGroup(sheet, line);
     refreshLine(sheet, line);
     updateJunctionDots(sheet);
     return line;
@@ -375,7 +379,7 @@
   function splitLine(sheet, lineId, x, y) {
     const line = findItem(sheet, lineId);
     const near = nearestOnLine(line, x, y);
-    const junction = addSymbol(sheet, 'l.junction', near.x, near.y);
+    const junction = addSymbol(sheet, 'l.junction', near.x, near.y, line.group ? { group: line.group } : undefined);
     const [firstPath, secondPath] = splitPath(line.path, near.index, near);
     const originalTo = line.to;
     line.to = { node: junction.id, port: 'C' };
@@ -398,7 +402,7 @@
     const line = findItem(sheet, lineId);
     const near = nearestOnLine(line, x, y);
     const rotByDir = { R: 0, D: 90, L: 180, U: 270 };
-    const node = addSymbol(sheet, symbolId, near.x, near.y, Object.assign({}, props, { rot: rotByDir[near.dir] }));
+    const node = addSymbol(sheet, symbolId, near.x, near.y, Object.assign({}, props, { rot: rotByDir[near.dir] }, line.group ? { group: line.group } : null));
     const ports = def.ports;
     const inPort = ports[0].id;
     const outPort = ports[1].id;
@@ -443,6 +447,7 @@
     first.manual = false;
     first.label = first.label || second.label;
     sheet.items = sheet.items.filter((it) => it.id !== second.id);
+    syncLineGroup(sheet, first);
     refreshLine(sheet, first);
     return true;
   }
@@ -507,6 +512,14 @@
       idMap.set(it.id, copy.id);
       return copy;
     });
+    // Kopyalar kendi gruplarını oluşturur, asıl grupla karışmaz
+    const groupMap = new Map();
+    for (const c of copies) {
+      if (!c.group) continue;
+      if (!groupMap.has(c.group)) groupMap.set(c.group, uid('grp'));
+      c.group = groupMap.get(c.group);
+    }
+    pruneGroups(copies);
     for (const c of copies) {
       if (isLine(c)) {
         for (const end of ['from', 'to']) {
@@ -536,9 +549,8 @@
 
   const isJunction = (it) => isSymbol(it) && it.symbol === 'l.junction';
 
-  /** Seçim ve onunla bir bütün olanlar: en az iki kolu seçime varan bağlantı noktaları, iki ucu seçimde olan hatlar */
-  function closeSelection(sheet, ids) {
-    const set = new Set(ids);
+  /** Bağlantı noktası görünmez, elle seçilemez: en az iki kolu seçime varan nokta seçimle birlikte gider */
+  function absorbJunctions(sheet, set) {
     const waiting = sheet.items.filter((it) => isJunction(it) && !set.has(it.id));
     let changed = true;
     while (changed) {
@@ -556,10 +568,305 @@
         }
       }
     }
+  }
+
+  /** Seçim ve onunla bir bütün olanlar: ortadaki bağlantı noktaları, iki ucu seçimde olan hatlar */
+  function closeSelection(sheet, ids) {
+    const set = new Set(ids);
+    absorbJunctions(sheet, set);
     for (const l of sheet.items) {
       if (isLine(l) && l.from.node && l.to.node && set.has(l.from.node) && set.has(l.to.node)) set.add(l.id);
     }
     return set;
+  }
+
+  /** Gruba girecekler: seçimin bütünü ve bir ucu grupta, öbür ucu boşta olan hatlar */
+  function groupClosure(sheet, ids) {
+    const set = closeSelection(sheet, ids);
+    for (const l of sheet.items) {
+      if (!isLine(l) || set.has(l.id)) continue;
+      const a = l.from.node;
+      const b = l.to.node;
+      if ((a && !b && set.has(a)) || (b && !a && set.has(b))) set.add(l.id);
+    }
+    return set;
+  }
+
+  /** Tek öğesi kalan grup, grup olmaktan çıkar */
+  function pruneGroups(items) {
+    const count = new Map();
+    for (const it of items) if (it.group) count.set(it.group, (count.get(it.group) || 0) + 1);
+    for (const it of items) if (it.group && count.get(it.group) < 2) delete it.group;
+  }
+
+  /**
+   * Seçilen her şeyi tek grup yapar: sembol, yazı, lejant, hat.
+   * Seçilmemiş olsa da iç hatlar, ucu boşta olan hatlar ve aradaki bağlantı noktaları gruba girer.
+   * Öbür ucu grubun dışındaki bir sembole giden hat seçilmediyse dışarıda kalır: taşırken uzar, kısalır.
+   */
+  function groupItems(sheet, ids) {
+    const chosen = new Set(ids);
+    const visible = sheet.items.filter((it) => chosen.has(it.id) && !isJunction(it));
+    if (visible.length < 2) return null;
+    const members = groupClosure(sheet, ids);
+    const gid = uid('grp');
+    for (const it of sheet.items) if (members.has(it.id)) it.group = gid;
+    pruneGroups(sheet.items);
+    return gid;
+  }
+
+  /** Çizilen veya ucu değişen hat: uçları aynı gruptaysa, ya da grupta bir uçla boştaysa o gruptadır */
+  function syncLineGroup(sheet, line) {
+    const a = line.from.node ? findItem(sheet, line.from.node) : null;
+    const b = line.to.node ? findItem(sheet, line.to.node) : null;
+    if (!a && !b) return;
+    const group = a && b ? (a.group === b.group ? a.group : null) : (a || b).group;
+    if (group) line.group = group;
+    else delete line.group;
+  }
+
+  /**
+   * Eski çizimlerde gruba yalnız semboller ve yazılar girerdi: hatları ve bağlantı noktaları gruba katılır.
+   * Çizimin görünüşü değişmez, revizyon bulutu çıkmaz. Dönen değer gruba katılan öğe sayısı.
+   */
+  function normalizeGroups(drawing) {
+    let count = 0;
+    for (const sheet of drawing.sheets) {
+      const groups = new Map();
+      for (const it of sheet.items) {
+        if (!it.group) continue;
+        if (!groups.has(it.group)) groups.set(it.group, []);
+        groups.get(it.group).push(it.id);
+      }
+      for (const [gid, ids] of groups) {
+        const members = groupClosure(sheet, ids);
+        for (const it of sheet.items) {
+          if (it.group || !members.has(it.id)) continue;
+          it.group = gid;
+          count += 1;
+        }
+      }
+    }
+    return count;
+  }
+
+  function ungroupItems(sheet, ids) {
+    const groups = new Set(sheet.items.filter((it) => ids.includes(it.id) && it.group).map((it) => it.group));
+    for (const it of sheet.items) if (it.group && groups.has(it.group)) delete it.group;
+    return groups.size;
+  }
+
+  /** Öğenin grubundaki bütün öğeler (grupsuzsa yalnız kendisi) */
+  function groupMembers(sheet, id) {
+    const item = findItem(sheet, id);
+    if (!item || !item.group) return [id];
+    return sheet.items.filter((it) => it.group === item.group).map((it) => it.id);
+  }
+
+  /** Seçimi gruplarıyla tamamlar */
+  function expandGroups(sheet, ids) {
+    const out = new Set(ids);
+    for (const id of ids) for (const m of groupMembers(sheet, id)) out.add(m);
+    return [...out];
+  }
+
+  /* ─── Taşıma ──────────────────────────────────────────── */
+
+  /**
+   * Taşıma planı. Seçim katı bir parça gibi gider, şekli bozulmaz:
+   * - nodes: semboller, yazılar, lejant; kapsayıcının içindekiler ve seçimin ortasındaki bağlantı noktaları dahil
+   * - rigid: bütün uçları taşınan hatlar; yol aynen ötelenir, yeniden hesaplanmaz
+   * - stretch: bir ucu yerinde kalan hatlar; yeniden yönlenir
+   * options.contents === false ise kapsayıcının içindekiler gelmez (Alt).
+   */
+  function movePlan(sheet, ids, options) {
+    const selected = new Set(ids);
+    const set = new Set(ids);
+    const boxes = [];
+    if (!options || options.contents !== false) {
+      const ownGroups = new Set(sheet.items.filter((it) => selected.has(it.id) && it.group).map((it) => it.group));
+      for (const c of sheet.items) {
+        if (!selected.has(c.id) || !isSymbol(c) || !(Sym.get(c.symbol) || {}).container) continue;
+        const b = boxOf(c);
+        boxes.push(b);
+        for (const other of sheet.items) {
+          if (other.id === c.id || isLine(other) || other.type === 'legend') continue;
+          if (!(other.x > b[0] && other.x < b[2] && other.y > b[1] && other.y < b[3])) continue;
+          set.add(other.id);
+          // İçeride kalan parça başka bir grubun üyesiyse o grup bölünmez
+          if (other.group && !ownGroups.has(other.group)) for (const m of groupMembers(sheet, other.id)) set.add(m);
+        }
+      }
+    }
+    absorbJunctions(sheet, set);
+
+    const inBoxes = (a) => boxes.some((b) => a.x > b[0] && a.x < b[2] && a.y > b[1] && a.y < b[3]);
+    const plan = { ids: new Set(), nodes: [], rigid: [], stretch: [] };
+    for (const it of sheet.items) {
+      if (!isLine(it)) {
+        if (set.has(it.id)) {
+          plan.ids.add(it.id);
+          plan.nodes.push({ item: it, x: it.x, y: it.y });
+        }
+        continue;
+      }
+      const moves = (a) => (a.node ? set.has(a.node) : set.has(it.id) || inBoxes(a));
+      const fromMoves = moves(it.from);
+      const toMoves = moves(it.to);
+      if (!fromMoves && !toMoves) continue;
+      (fromMoves && toMoves ? plan.rigid : plan.stretch).push({
+        line: it,
+        from: Object.assign({}, it.from),
+        to: Object.assign({}, it.to),
+        fromMoves,
+        toMoves,
+        manual: it.manual,
+        path: it.path ? it.path.map((p) => p.slice()) : null
+      });
+    }
+    return plan;
+  }
+
+  /** Planı başlangıç konumuna göre uygular; değişen hatların kimliklerini döner */
+  function applyMove(sheet, plan, dx, dy) {
+    for (const n of plan.nodes) {
+      n.item.x = n.x + dx;
+      n.item.y = n.y + dy;
+    }
+    const shifted = (a) => ({ x: a.x + dx, y: a.y + dy });
+    const dirty = [];
+    for (const r of plan.rigid) {
+      if (!r.from.node) r.line.from = shifted(r.from);
+      if (!r.to.node) r.line.to = shifted(r.to);
+      if (r.path) r.line.path = r.path.map((p) => [p[0] + dx, p[1] + dy]);
+      else refreshLine(sheet, r.line);
+      dirty.push(r.line.id);
+    }
+    for (const s of plan.stretch) {
+      if (!s.from.node && s.fromMoves) s.line.from = shifted(s.from);
+      if (!s.to.node && s.toMoves) s.line.to = shifted(s.to);
+      // Elle verilmiş rota her adımda aslından hesaplanır, sürüklerken yıpranmaz
+      if (s.manual && s.path) {
+        s.line.path = s.path;
+        s.line.manual = true;
+      }
+      refreshLine(sheet, s.line);
+      dirty.push(s.line.id);
+    }
+    return dirty;
+  }
+
+  /* ─── Ölçekleme ───────────────────────────────────────── */
+
+  const SCALE_MIN = 0.3;
+  const SCALE_MAX = 4;
+  const roundTo = (v, step) => Math.round(v / step) * step;
+
+  /** Öğenin asıl boyutuna göre şimdiki ölçeği (1 = %100) */
+  function itemScale(item) {
+    if (isSymbol(item)) {
+      const def = Sym.get(item.symbol);
+      return (def && def.resizable ? item.sizeScale : item.scale) || 1;
+    }
+    return item.sizeScale || 1;
+  }
+
+  /** Seçimin ortak boyutu (%); öğeler farklı boyuttaysa null */
+  function selectionPercent(items) {
+    const values = items.filter((it) => {
+      if (isLine(it) || it.type === 'legend') return false;
+      return !(isSymbol(it) && (Sym.get(it.symbol) || {}).hidden);
+    }).map((it) => Math.round(itemScale(it) * 100));
+    if (!values.length || values.some((v) => v !== values[0])) return null;
+    return values[0];
+  }
+
+  /**
+   * Seçimi büyütür/küçültür. Semboller ölçek, tank/hücre genişlik-yükseklik, yazılar punto alır.
+   * spacing: aralıklar da ölçeklenir (seçimin ortasına göre), yoksa yerler sabit kalır.
+   * absolute: her öğe asıl boyutunun bu oranına ayarlanır (0,7 = %70).
+   */
+  function scaleItems(sheet, ids, factor, options) {
+    const opts = options || {};
+    // Aralıklar da ölçeklenecekse seçimin içindeki bağlantı noktaları ve hatlar aynı oranda gelir
+    const set = opts.spacing ? closeSelection(sheet, ids) : new Set(ids);
+    const items = sheet.items.filter((it) => set.has(it.id) && !isLine(it) && it.type !== 'legend');
+    if (!items.length) return [];
+    let cx = 0;
+    let cy = 0;
+    let spread = factor;
+    if (opts.spacing) {
+      const boxes = items.map(boxOf);
+      cx = (Math.min(...boxes.map((b) => b[0])) + Math.max(...boxes.map((b) => b[2]))) / 2;
+      cy = (Math.min(...boxes.map((b) => b[1])) + Math.max(...boxes.map((b) => b[3]))) / 2;
+      // Doğrudan değer girilince aralıklar da seçimin şimdiki boyutuna göre aynı oranda değişir
+      const sized = items.filter((it) => !isJunction(it));
+      if (opts.absolute && sized.length) spread = factor / (sized.reduce((sum, it) => sum + itemScale(it), 0) / sized.length);
+    }
+    const place = (it) => {
+      it.x = cx + (it.x - cx) * spread;
+      it.y = cy + (it.y - cy) * spread;
+    };
+    for (const it of items) {
+      // Bağlantı noktasının boyutu olmaz, yalnız yeri değişir
+      if (isJunction(it)) {
+        if (opts.spacing) place(it);
+        continue;
+      }
+      const before = isSymbol(it) ? (it.scale || 1) : 1;
+      let f = factor;
+      if (isSymbol(it)) {
+        const def = Sym.get(it.symbol);
+        if (def && def.resizable) {
+          if (opts.absolute) f = factor / (it.sizeScale || 1);
+          it.w = Math.max(10, roundTo(it.w * f, 0.5));
+          it.h = Math.max(10, roundTo(it.h * f, 0.5));
+          it.sizeScale = Math.round((it.sizeScale || 1) * f * 1000) / 1000;
+        } else {
+          const next = opts.absolute ? factor : before * factor;
+          it.scale = Math.round(Math.max(SCALE_MIN, Math.min(SCALE_MAX, next)) * 100) / 100;
+          if (it.scale === 1) delete it.scale;
+          f = (it.scale || 1) / before;
+        }
+      } else if (it.type === 'text') {
+        if (opts.absolute) f = factor / (it.sizeScale || 1);
+        it.size = Math.max(1.5, Math.min(20, Math.round((it.size || 3.5) * f * 10) / 10));
+        it.sizeScale = Math.round((it.sizeScale || 1) * f * 1000) / 1000;
+      }
+      if (opts.spacing) place(it);
+    }
+    // Aralıklarla ölçeklenen seçimde bütünüyle içeride kalan hatlar şeklini korur
+    const kept = new Set();
+    if (opts.spacing) {
+      for (const l of sheet.items) if (l.type === 'legend' && set.has(l.id)) place(l);
+      const at = (x, y) => [cx + (x - cx) * spread, cy + (y - cy) * spread];
+      for (const l of sheet.items) {
+        if (!isLine(l) || !l.path || !set.has(l.id)) continue;
+        if ((l.from.node && !set.has(l.from.node)) || (l.to.node && !set.has(l.to.node))) continue;
+        for (const end of ['from', 'to']) {
+          if (l[end].node) continue;
+          const [x, y] = at(l[end].x, l[end].y);
+          l[end] = { x, y };
+        }
+        const path = Router.adjustManual(l.path.map((p) => at(p[0], p[1])), anchorPoint(sheet, l.from), anchorPoint(sheet, l.to));
+        if (path) {
+          l.path = path;
+        } else {
+          l.manual = false;
+          refreshLine(sheet, l);
+        }
+        kept.add(l.id);
+      }
+    }
+    // Uçları ölçeklenen öbür hatlar yeniden yönlenir; elle düzenlenmiş yollar bırakılır
+    for (const l of sheet.items) {
+      if (!isLine(l) || kept.has(l.id)) continue;
+      if ((l.from.node && set.has(l.from.node)) || (l.to.node && set.has(l.to.node))) {
+        l.manual = false;
+        refreshLine(sheet, l);
+      }
+    }
+    return items.map((it) => it.id);
   }
 
   /**
@@ -711,6 +1018,18 @@
     removeItems,
     cloneItems,
     cloneList,
+    closeSelection,
+    groupItems,
+    ungroupItems,
+    groupMembers,
+    expandGroups,
+    syncLineGroup,
+    normalizeGroups,
+    movePlan,
+    applyMove,
+    itemScale,
+    selectionPercent,
+    scaleItems,
     moveToSheet,
     duplicateSheet,
     removeSheet,

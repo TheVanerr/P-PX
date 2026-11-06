@@ -516,6 +516,41 @@ const PidApp = (() => {
     });
   }
 
+
+  /**
+   * Proje adını antetteki proje no, müşteri ve modele göre günceller: "0326067-MİTAŞ-KBN 2B 1650" → "...-KBN 2B 1500".
+   * Proje klasörü (çizim, girdi dosyaları, çıktılar) yeni ada taşınır; açık çizim yeni adla sürer.
+   */
+  async function renameProject() {
+    const editor = state.editor;
+    if (!state.projectId || !editor || !editor.project) return;
+    const meta = editor.project;
+    const parts = [meta.seriNo, meta.musteri, meta.model].map((v) => String(v || '').trim());
+    if (parts.some((v) => !v)) {
+      toast('Proje no, müşteri ve model dolu olmalı', 'error');
+      return;
+    }
+    const next = parts.join('-');
+    if (next === state.projectId) {
+      toast('Proje adı bu bilgilerle zaten aynı. Önce proje no, müşteri ya da modeli değiştirin.');
+      return;
+    }
+    const ok = await confirmModal('Proje adını güncelle', `"${state.projectId}" → "${next}". Çizim, girdi dosyaları ve çıktılar yeni ada taşınır. Bu projeye bağlı pnömatik projeler de yeni adı gösterir.`, 'Güncelle');
+    if (!ok) return;
+    await flushSave();
+    const oldId = state.projectId;
+    const res = await api().renameProject({ id: oldId, seriNo: parts[0], musteri: parts[1], model: parts[2] });
+    if (!res.ok) {
+      toast(`Proje adı güncellenemedi: ${res.error}`, 'error');
+      return;
+    }
+    state.projectId = res.id;
+    $('projName').textContent = res.id;
+    PidPanels.renderInspector();
+    PidPanels.renderFiles();
+    toast(`Proje adı güncellendi: ${res.id}${res.relinked ? ` · bağlı ${res.relinked} pnömatik proje de yeni adı gösteriyor` : ''}`);
+  }
+
   async function deleteSheet(index) {
     const editor = state.editor;
     if (editor.drawing.sheets.length < 2) return;
@@ -1186,6 +1221,7 @@ const PidApp = (() => {
     addSheet,
     duplicateSheet,
     importDrawingModal,
+    renameProject,
     goToSheet,
     moveSheet,
     deleteSheet,
