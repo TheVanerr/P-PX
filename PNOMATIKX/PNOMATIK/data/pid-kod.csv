@@ -230,8 +230,8 @@ PPS25;3. Proses Tankı 1. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pis
 PPS26;3. Proses Tankı 1. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
 PPS27;3. Proses Tankı 2. Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
 PPS28;3. Proses Tankı 2. Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
-PPS29;xxx Pistonu Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
-PPS30;xxx Pistonu Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
+PPS29;4. Proses Tankı Yönlendirme Pistonu Açık Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
+PPS30;4. Proses Tankı Yönlendirme Pistonu Kapalı Sensörü;Yönlendirme pistonunun açık/kapalı konumunu algılar. Piston vanası, proses akış yönlendirme hattı ve PLC devresine bağlıdır.
 PPS31;1. Tank Kapağı Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
 PPS32;1. Tank Kapağı Kapalı Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.
 PPS33;2. Tank Kapağı Açık Sensörü;Pnömatik piston konum geri bildirimi sağlar. Piston vanası, solenoid valf ve PLC dijital giriş devresine bağlıdır.

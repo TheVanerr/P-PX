@@ -571,6 +571,10 @@ textarea.field-input { resize: vertical; min-height: 64px; }
 .dk-chip.amber { background: rgba(245, 165, 36, 0.2); color: #f5c068; }
 .dk-chip.gray { background: var(--panel-3); color: #c6cbd5; }
 .dk-empty { color: var(--muted); padding: 18px; text-align: center; }
+.dk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+.dk-actions-note { color: var(--muted); font-size: 11.5px; margin-left: 6px; }
+.dk-labels td:last-child { font-size: 12.5px; }
+.dk-labels th:first-child, .dk-labels td:first-child { width: 1%; padding-right: 28px; }
 .dk-hints { margin: 8px 10px; padding: 7px 10px; background: rgba(245, 165, 36, 0.1); border-left: 3px solid var(--warn); border-radius: 4px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
 .dk-hints-title { font-size: 11.5px; font-weight: 600; color: #f5c068; }
 .dk-hint { background: none; border: none; padding: 1px 0; font-size: 12px; text-align: left; cursor: pointer; color: var(--text); }

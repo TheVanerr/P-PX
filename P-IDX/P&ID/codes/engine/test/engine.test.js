@@ -1192,3 +1192,45 @@ test('doğrudan boyut: aralıklar seçeneği şimdiki boyuta göre oranlar', () 
   Model.scaleItems(s, [a.id, b.id], 1, { absolute: true, spacing: true });
   assert.ok(Math.abs(a.x - x) < 1e-6);
 });
+
+test('etiket listesi: kodlu bileşenler Etiket Excel sırasında, metin WhatsApp biçiminde', () => {
+  const Field = require('../fieldlist.js');
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  Model.addSymbol(s, 'i.zsoIsa', 40, 40, { tag: 'PPS29' });
+  Model.addSymbol(s, 'p.centrifugal', 80, 40, { tag: 'pe02' });
+  Model.addSymbol(s, 'p.centrifugal', 120, 40, { tag: 'PE02' });
+  Model.addSymbol(s, 'h.resistance', 160, 40, { tag: 'R01' });
+  Model.addSymbol(s, 'g.rect', 200, 40);
+  Model.addSymbol(s, 'p.dosatron', 240, 40, { tag: 'XX01' });
+  const catalog = new Map([
+    ['PE02', { name: 'Yıkama Pompa Motoru', en: 'Wash Pump Motor' }],
+    ['R01', { name: '1. Proses Tankı 1. Rezistans' }],
+    ['PPS29', { name: '4. Proses Tankı Yönlendirme Pistonu Açık Sensörü' }]
+  ]);
+  const rows = Field.rows(drawing, catalog, 'tr');
+  assert.deepEqual(rows.map((r) => r.code), ['PE02', 'R01', 'PPS29', 'XX01']);
+  assert.equal(rows[0].name, 'Yıkama Pompa Motoru');
+  assert.equal(rows[3].name, 'Dozatron (Oransal Dozaj)', 'listede olmayan kod sembol adıyla yazılır');
+  assert.ok(rows.every((r) => r.sheetId && r.itemId));
+  assert.equal(Field.rows(drawing, catalog, 'en')[0].name, 'Wash Pump Motor');
+  assert.equal(Field.rows(drawing, catalog, 'en')[1].name, '1. Proses Tankı 1. Rezistans', 'çevirisi yoksa Türkçe');
+
+  const title = Field.title({ model: 'ULT M200 3B', musteri: 'dünya', seriNo: '0626051', dil: 'tr' });
+  assert.equal(title, 'ULT M200 3B - DÜNYA - 0626051');
+  const text = Field.whatsappText(rows, title, 'tr');
+  const lines = text.split('\n');
+  assert.equal(lines[0], '*ULT M200 3B - DÜNYA - 0626051*');
+  assert.equal(lines[1], 'Etiket listesi · 4 kod');
+  assert.ok(lines.includes('*PE02*  Yıkama Pompa Motoru'));
+  // Seriler arasında boş satır
+  assert.equal(lines[lines.indexOf('*R01*  1. Proses Tankı 1. Rezistans') - 1], '');
+  assert.equal(Field.whatsappText([{ code: 'A*1', name: '_x_' }], '', 'en').split('\n')[2], '*A1*  x');
+});
+
+test('etiket listesi sekmesi: alt panelde ve betik sırası doğru', () => {
+  const html = fsx.readFileSync(pathx.join(__dirname, '../../cizim.html'), 'utf8');
+  assert.ok(html.includes('data-dock="labels"') && html.includes('id="dockCountLabels"'));
+  const at = (src) => html.indexOf(`<script src="${src}"></script>`);
+  assert.ok(at('engine/xlsx.js') > 0 && at('engine/xlsx.js') < at('engine/fieldlist.js') && at('engine/fieldlist.js') < at('engine/report.js'));
+});

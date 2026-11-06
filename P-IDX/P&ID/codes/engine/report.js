@@ -33,7 +33,7 @@ const PidReport = (() => {
   function readPrefs() {
     try {
       const saved = JSON.parse(localStorage.getItem(PREFS_KEY)) || {};
-      if (['components', 'logic', 'safety'].includes(saved.tab)) tab = saved.tab;
+      if (['components', 'logic', 'safety', 'labels'].includes(saved.tab)) tab = saved.tab;
       if (typeof saved.open === 'boolean') open = saved.open;
       if (Number.isFinite(saved.height)) height = saved.height;
     } catch { /* tercih yoksa varsayılanlar kullanılır */ }
@@ -128,6 +128,101 @@ const PidReport = (() => {
     return `${hintsHtml(data)}<table class="dk-table"><thead><tr><th>${esc(c.no)}</th><th>${esc(c.fn)}</th><th>${esc(c.trigger)}</th><th>${esc(c.affected)}</th><th>${esc(c.logic)}</th><th>Durum</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
+  /* ─── Etiket listesi: sahada telefonla etiketlemek için ── */
+
+  function labelData() {
+    const editor = app.editor;
+    const lang = (editor.project && editor.project.dil) || 'tr';
+    return {
+      lang,
+      rows: PidFieldList.rows(editor.drawing, app.catalogMap, lang),
+      title: PidFieldList.title(editor.project)
+    };
+  }
+
+  const canShareFiles = () => {
+    try {
+      return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'x.png', { type: 'image/png' })] }));
+    } catch {
+      return false;
+    }
+  };
+
+  function labelsHtml(labels) {
+    if (!labels.rows.length) {
+      return '<div class="dk-empty">Çizimde kodlu bileşen yok. Sembollere kod girildikçe burada kod ve açıklama yan yana listelenir.</div>';
+    }
+    const head = PidFieldList.TEXT[labels.lang] ? PidFieldList.TEXT[labels.lang].head : PidFieldList.TEXT.tr.head;
+    const rows = labels.rows.map((row) => `
+      <tr ${rowAttrs(row)}>
+        <td class="dk-code">${esc(row.code)}</td>
+        <td>${esc(row.name)}</td>
+      </tr>`).join('');
+    return `<div class="dk-actions">
+        <button type="button" class="btn btn-sm btn-primary" data-label-action="text" title="WhatsApp'a yapıştırılacak metin: kalın kod, yanında açıklama">Metni kopyala</button>
+        <button type="button" class="btn btn-sm" data-label-action="image" title="Listeyi telefon ekranına uygun resim olarak panoya kopyalar; WhatsApp Web'e Ctrl+V ile yapıştırılır">Resim olarak kopyala</button>
+        <button type="button" class="btn btn-sm" data-label-action="download">Resmi indir</button>
+        ${canShareFiles() ? '<button type="button" class="btn btn-sm" data-label-action="share" title="Windows paylaşım penceresiyle telefona veya WhatsApp\'a gönderir">Paylaş…</button>' : ''}
+        <span class="dk-actions-note">${esc(labels.title)} · ${labels.rows.length} kod</span>
+      </div>
+      <table class="dk-table dk-labels"><thead><tr><th>${esc(head[0])}</th><th>${esc(head[1])}</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Pano izni yoksa eski yöntem
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      return ok;
+    }
+  }
+
+  function fileName() {
+    const base = (app.projectId || labelData().title || 'P&ID').replace(/[\\/:*?"<>|]+/g, '-');
+    return `${base} ETİKET LİSTESİ.png`;
+  }
+
+  async function labelAction(action) {
+    const labels = labelData();
+    if (!labels.rows.length) return;
+    const blob = () => PidFieldList.imageBlob(labels.rows, labels.title, labels.lang);
+    try {
+      if (action === 'text') {
+        const ok = await copyText(PidFieldList.whatsappText(labels.rows, labels.title, labels.lang));
+        app.toast(ok ? `${labels.rows.length} kod kopyalandı. WhatsApp'ta mesaj kutusuna yapıştırın.` : 'Panoya kopyalanamadı', ok ? '' : 'error');
+      } else if (action === 'image') {
+        // Blob sözü doğrudan verilir: tıklama izni resim hazırlanırken düşmez
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob() })]);
+        app.toast('Resim panoya kopyalandı. WhatsApp Web\'de sohbete Ctrl+V ile yapıştırın.');
+      } else if (action === 'download') {
+        const url = URL.createObjectURL(await blob());
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        app.toast('Resim İndirilenler klasörüne kaydedildi');
+      } else if (action === 'share') {
+        const file = new File([await blob()], fileName(), { type: 'image/png' });
+        await navigator.share({ files: [file], title: labels.title });
+      }
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+      const hint = action === 'image' ? ' "Resmi indir" ile kaydedip gönderebilirsiniz.' : '';
+      app.toast(`İşlem yapılamadı: ${err && err.message ? err.message : err}.${hint}`, 'error');
+    }
+  }
+
   function render() {
     clearTimeout(timer);
     const data = current();
@@ -135,10 +230,13 @@ const PidReport = (() => {
     $('dockCountComponents').textContent = data.components.length || '';
     $('dockCountLogic').textContent = data.logic.length || '';
     $('dockCountSafety').textContent = data.safety.length || '';
+    const labels = labelData();
+    $('dockCountLabels').textContent = labels.rows.length || '';
     if (!open) return;
     const body = $('dockBody');
     const top = body.scrollTop;
-    body.innerHTML = tab === 'components' ? componentsHtml(data) : tab === 'logic' ? logicHtml(data) : safetyHtml(data);
+    body.innerHTML = tab === 'components' ? componentsHtml(data) : tab === 'logic' ? logicHtml(data)
+      : tab === 'labels' ? labelsHtml(labels) : safetyHtml(data);
     body.scrollTop = top;
   }
 
@@ -176,6 +274,11 @@ const PidReport = (() => {
       render();
     });
     $('dockBody').addEventListener('click', (e) => {
+      const action = e.target.closest('[data-label-action]');
+      if (action) {
+        labelAction(action.dataset.labelAction);
+        return;
+      }
       const row = e.target.closest('[data-item]');
       if (row && row.dataset.item) app.editor.focusItem(row.dataset.sheet, row.dataset.item);
     });

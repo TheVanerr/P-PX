@@ -27,7 +27,8 @@ test('pnömatikle ilgili seriler: V, PPS, SWB, SW (flow hariç), PS (yalnız hav
   assert.ok(Link.isRelevant('PS06', 'Giriş Hava Basıncı Basınç Sensörü'));
   assert.ok(!Link.isRelevant('PS01', NAMES.get('PS01')), 'pompa basıncı pnömatik değil');
   assert.ok(!Link.isRelevant('PE02', NAMES.get('PE02')));
-  assert.ok(!Link.isRelevant('PPS29', NAMES.get('PPS29')), 'xxx yer tutucu');
+  assert.ok(!Link.isRelevant('SW17', NAMES.get('SW17')), 'xxx yer tutucu');
+  assert.ok(Link.isRelevant('PPS29', NAMES.get('PPS29')), '4. tank yönlendirme pistonu sensörü');
 });
 
 test('aç / kapat valfleri tek valfin iki bobini olur (V31 = Y1, V32 = Y2)', () => {

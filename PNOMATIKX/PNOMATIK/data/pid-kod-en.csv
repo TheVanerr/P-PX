@@ -230,8 +230,8 @@ PPS25;3. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic c
 PPS26;3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
 PPS27;3. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
 PPS28;3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS29;xxx Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for xxx Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS30;xxx Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for xxx Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
+PPS29;4. Process Tank Diverter Cylinder Open Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
+PPS30;4. Process Tank Diverter Cylinder Closed Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
 PPS31;1. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
 PPS32;1. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
 PPS33;2. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 2. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
