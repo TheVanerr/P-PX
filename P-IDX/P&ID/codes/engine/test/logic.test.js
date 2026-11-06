@@ -667,3 +667,69 @@ test('giriş su ve hava sensörü: PS06 su basıncı, PS07 hava basıncı olarak
   assert.equal(Logic.classify({ tag: '', func: 'PT' }, Sym.get('i.waterPressure'), null).sub, 'water');
   assert.equal(Logic.classify({ tag: '', func: 'PT' }, Sym.get('i.airPressure'), null).sub, 'air');
 });
+
+test('temel şekiller ve ISA piston sensörleri: şekil bileşen sayılmaz, ISA dairesi konum sensörüdür', () => {
+  const shapes = Sym.list().filter((d) => d.cat === 'shape').map((d) => d.id);
+  for (const id of ['g.rect', 'g.square', 'g.triangle', 'g.circle', 'g.ellipse', 'g.diamond']) {
+    assert.ok(shapes.includes(id), `${id} şekil kategorisinde olmalı`);
+    assert.ok(Sym.get(id).resizable && Sym.get(id).decor, id);
+  }
+  const drawing = Model.createDrawing('Test');
+  const sheet = drawing.sheets[0];
+  Model.addSymbol(sheet, 'g.rect', 100, 100, { note: 'NOT' });
+  Model.addSymbol(sheet, 'g.circle', 150, 100);
+  for (const [id, func] of [['i.zsIsa', 'ZS'], ['i.zsoIsa', 'ZSO'], ['i.zsmIsa', 'ZSM'], ['i.zscIsa', 'ZSC']]) {
+    const def = Sym.get(id);
+    assert.equal(def.cat, 'piston');
+    assert.equal(def.defaultFunc, func);
+    assert.deepEqual(Sym.resolveBody(def, {}), Sym.resolveBody(Sym.get('i.field'), {}), `${id} ISA dairesi olmalı`);
+    assert.ok(Sym.seriesOf(id).includes('PPS'));
+  }
+  const zso = Model.addSymbol(sheet, 'i.zsoIsa', 200, 100, { tag: 'PPS01' });
+  assert.equal(zso.func, 'ZSO');
+  assert.equal(Logic.classify(zso, Sym.get('i.zsoIsa'), null).kind, 'position');
+  const res = run(drawing);
+  assert.deepEqual(res.components.map((c) => c.symbol), ['i.zsoIsa']);
+});
+
+test('pistonlu tahliye vanası: hatta oturur, eyleyici vanadır, konum sensörü geri bildirim verir', () => {
+  const def = Sym.get('v.pistonValve');
+  assert.equal(def.cat, 'valve');
+  assert.ok(def.inline);
+  assert.ok(['L', 'R', 'A', 'S1', 'S2'].every((p) => def.ports.some((x) => x.id === p)));
+  assert.ok(Sym.seriesOf('v.pistonValve').includes('V'));
+  assert.equal(Logic.classify({ tag: '', func: '' }, def, null).kind, 'valve');
+
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const valve = Model.addSymbol(s, 'v.pistonValve', 150, 120, { tag: 'V09' });
+  const zso = Model.addSymbol(s, 'i.zsoIsa', 130, 100, { tag: 'PPS11' });
+  Model.addLine(s, { node: zso.id, port: 'D' }, { node: valve.id, port: 'S1' }, { kind: 'signal' });
+  const res = run(drawing);
+  assert.ok(res.components.some((c) => c.symbol === 'v.pistonValve'));
+  assert.ok(res.logic.some((r) => /PPS11/.test(r.text)), JSON.stringify(res.logic.map((r) => r.text)));
+});
+
+test('dozatron: hatta oturur, motorsuz pasif dozaj ünitesidir, akış cümlesinde kimyasal katar', () => {
+  const def = Sym.get('p.dosatron');
+  assert.equal(def.cat, 'pump');
+  assert.ok(def.inline && !def.ports.some((p) => p.id === 'M'), 'motor bağlantısı olmamalı');
+  assert.ok(def.ports.some((p) => p.id === 'D'), 'kimyasal emiş ucu olmalı');
+  assert.equal(Sym.suggest('PE20', 'Dozatron').symbol, 'p.dosatron');
+  assert.equal(Sym.suggest('XY01', 'Hat Dozatronu').symbol, 'p.dosatron');
+  assert.equal(Logic.classify({ tag: '', func: '' }, def, null).role, 'passive');
+
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const inlet = Model.addSymbol(s, 'l.inlet', 60, 100);
+  const doser = Model.addSymbol(s, 'p.dosatron', 120, 100);
+  const tank = Model.addSymbol(s, 'e.tank', 220, 100);
+  Model.addLine(s, { node: inlet.id, port: 'R' }, { node: doser.id, port: 'L' }, { kind: 'utility' });
+  Model.addLine(s, { node: doser.id, port: 'R' }, { node: tank.id, side: 'L', t: 0.5 }, { kind: 'utility' });
+  for (const lang of ['tr', 'en', 'de']) {
+    const res = run(drawing, lang);
+    assert.ok(res.components.some((c) => c.symbol === 'p.dosatron' && c.purpose), lang);
+  }
+  const res = run(drawing);
+  assert.ok(res.logic.some((r) => r.group === 'flow' && /kimyasal katar/.test(r.text)), JSON.stringify(res.logic.map((r) => r.text)));
+});

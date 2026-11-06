@@ -38,7 +38,8 @@
     { id: 'pipe', name: 'Hat Elemanları' },
     { id: 'inst', name: 'Enstrüman (ISA-5.1)' },
     { id: 'elec', name: 'Elektrik ve Koruma' },
-    { id: 'safety', name: 'Güvenlik' }
+    { id: 'safety', name: 'Güvenlik' },
+    { id: 'shape', name: 'Temel Şekiller' }
   ];
 
   const LIST = [];
@@ -124,6 +125,19 @@
       box: [-5, -10, 5, 4],
       ports: [...LR5, { id: 'A', x: 0, y: -10, dir: 'U' }]
     }));
+  /* Pistonlu tahliye vanası: hattaki vana, üstünde silindir gövdesi, içinde piston, piston kolu vanaya iner.
+     A hava girişi, S1/S2 açık-kapalı konum sensörleri (ZSO, ZSC) içindir. Akış yönünden dönüş/drenaj sayılır. */
+  def('v.pistonValve', 'valve', ['Pistonlu Tahliye Vanası', 'Cylinder-Operated Drain Valve', 'Ablassventil mit Zylinder'],
+    Object.assign({}, inlineValve, {
+      body: BOW + R(-4, -12, 8, 7, WHITE) + P('M0 0V-8.5') + P('M-3 -8.5H3', 'stroke-width="0.9"'),
+      box: [-5, -12, 5, 3],
+      ports: [
+        ...LR5,
+        { id: 'A', x: 0, y: -12, dir: 'U' },
+        { id: 'S1', x: -4, y: -8.5, dir: 'L' },
+        { id: 'S2', x: 4, y: -8.5, dir: 'R' }
+      ]
+    }));
   def('v.motor', 'valve', ['Motorlu Vana', 'Motorized Valve', 'Motorventil'],
     Object.assign({}, inlineValve, {
       body: BOW + P('M0 0V-5') + C(0, -8.5, 3.5, WHITE),
@@ -152,6 +166,17 @@
     box: [-6, -6, 6, 6],
     ports: [...lr(6), { id: 'M', x: 0, y: -6, dir: 'U' }],
     inline: true
+  });
+  /* Dozatron: su akışıyla çalışan oransal dozaj ünitesi, elektrik ve motor bağlantısı yoktur.
+     Hatta oturan dik gövde, içinde akış üçgeni, çapraz ok ayarlanabilir dozaj oranıdır;
+     alttaki sap kimyasal emiş hortumudur (D ucu kimyasal bidonuna bağlanır). */
+  def('p.dosatron', 'pump', ['Dozatron (Oransal Dozaj)', 'Dosatron (Proportional Doser)', 'Dosatron (Proportionaldosierer)'], {
+    body: R(-4.5, -8, 9, 13, `rx="1.5" ${WHITE}`) + P('M-2.2 -2.6L2.8 0L-2.2 2.6Z') +
+      P('M-3.4 3.6L3.4 -6.6M3.4 -6.6L1.5 -6.2M3.4 -6.6L3 -4.7', THIN) + P('M0 5V10'),
+    box: [-4.5, -8, 4.5, 10],
+    ports: [...lr(4.5), { id: 'D', x: 0, y: 10, dir: 'D' }],
+    inline: true,
+    tagAbove: true
   });
   def('f.fan', 'pump', ['Fan', 'Fan', 'Ventilator'], {
     body: C(0, 0, 6, WHITE) + P('M-4.24 -4.24L4.24 4.24V-4.24L-4.24 4.24Z'),
@@ -744,6 +769,14 @@
   pistonSensor('i.zso', ['Piston Açık Sensörü', 'Cylinder Open Sensor', 'Zylindersensor offen'], 'ZSO');
   pistonSensor('i.zsm', ['Piston Ara Sensörü', 'Cylinder Mid Sensor', 'Zylindersensor Mitte'], 'ZSM');
   pistonSensor('i.zsc', ['Piston Kapalı Sensörü', 'Cylinder Closed Sensor', 'Zylindersensor geschlossen'], 'ZSC');
+  /* Aynı sensörlerin ISA-5.1 gösterimi: saha enstrümanı dairesi, içinde ZSO / ZSC harfi ve kodu.
+     altOf: kod girilince önerilen silindir gövdeli karşılığı; "Önerilen sembole geç" bunun için çıkmaz. */
+  const isaPistonSensor = (id, names, func, altOf) => def(id, 'piston', names,
+    Object.assign({ body: FIELD }, instrument, { layer: 'inst', defaultFunc: func, altOf }));
+  isaPistonSensor('i.zsIsa', ['Piston Sensörü (ISA, ZS)', 'Cylinder Sensor (ISA, ZS)', 'Zylindersensor (ISA, ZS)'], 'ZS', 'i.pistonSensor');
+  isaPistonSensor('i.zsoIsa', ['Piston Açık Sensörü (ISA, ZSO)', 'Cylinder Open Sensor (ISA, ZSO)', 'Zylindersensor offen (ISA, ZSO)'], 'ZSO', 'i.zso');
+  isaPistonSensor('i.zsmIsa', ['Piston Ara Sensörü (ISA, ZSM)', 'Cylinder Mid Sensor (ISA, ZSM)', 'Zylindersensor Mitte (ISA, ZSM)'], 'ZSM', 'i.zsm');
+  isaPistonSensor('i.zscIsa', ['Piston Kapalı Sensörü (ISA, ZSC)', 'Cylinder Closed Sensor (ISA, ZSC)', 'Zylindersensor geschlossen (ISA, ZSC)'], 'ZSC', 'i.zsc');
   // PRS: mermi gövdeli yaklaşım sensörü, önünde algılama alanı
   typed('i.prox', ['Endüktif Sensör (Prox)', 'Proximity Sensor', 'Näherungsschalter'], 'ZS', {
     body: P('M-8 -5.5H4A5.5 5.5 0 0 1 4 5.5H-8Z', WHITE) + P('M10.6 -2.8Q12 0 10.6 2.8M12.4 -3.8Q14.2 0 12.4 3.8', THIN),
@@ -843,6 +876,35 @@
     ports: lr(6)
   });
 
+  /* ─── Temel şekiller ──────────────────────────────────── */
+  /* Serbest çizim için boyutlanabilir şekiller. İçleri boştur, altındakini örtmez; kenarından seçilir.
+     decor: bileşen listesine, bağlantı mantığına ve kod kontrolüne girmez. Yazı alanı ortaya yazılır. */
+  const SHAPE = 'stroke-width="0.5"';
+  const shapeText = (cy) => (it) => [{ x: 0, y: cy ? cy(it) : 0, t: it.note || '', s: 3, b: true }];
+  const shape = (id, names, size, body, extra) => def(id, 'shape', names, Object.assign({
+    resizable: true,
+    container: true,
+    decor: true,
+    tag: 'none',
+    defaultSize: size,
+    body,
+    texts: shapeText()
+  }, extra));
+  shape('g.rect', ['Dikdörtgen', 'Rectangle', 'Rechteck'], [40, 25],
+    (it) => R(-it.w / 2, -it.h / 2, it.w, it.h, SHAPE));
+  shape('g.square', ['Kare', 'Square', 'Quadrat'], [30, 30],
+    (it) => R(-it.w / 2, -it.h / 2, it.w, it.h, SHAPE), { keepAspect: true });
+  // Eğik kenarlı şekillerde hat kutu kenarına değil şekle bağlanmalı; bu yüzden kenara yapışmazlar
+  shape('g.triangle', ['Üçgen', 'Triangle', 'Dreieck'], [30, 26],
+    (it) => P(`M0 ${-it.h / 2}L${it.w / 2} ${it.h / 2}H${-it.w / 2}Z`, SHAPE),
+    { noObstacle: true, texts: shapeText((it) => it.h / 6) });
+  shape('g.circle', ['Daire', 'Circle', 'Kreis'], [30, 30],
+    (it) => C(0, 0, Math.min(it.w, it.h) / 2, SHAPE), { keepAspect: true, noObstacle: true });
+  shape('g.ellipse', ['Elips', 'Ellipse', 'Ellipse'], [40, 25],
+    (it) => `<ellipse cx="0" cy="0" rx="${it.w / 2}" ry="${it.h / 2}" ${SHAPE}/>`, { noObstacle: true });
+  shape('g.diamond', ['Eşkenar Dörtgen', 'Diamond', 'Raute'], [30, 30],
+    (it) => P(`M0 ${-it.h / 2}L${it.w / 2} 0L0 ${it.h / 2}L${-it.w / 2} 0Z`, SHAPE), { noObstacle: true });
+
   /* ─── Hat tipleri ─────────────────────────────────────── */
   const LINE_KINDS = {
     process: { name: { tr: 'Proses Hattı', en: 'Process Line', de: 'Prozessleitung' }, width: 0.7, layer: 'process', arrow: 'mid' },
@@ -906,7 +968,7 @@
   /* Kod serisi → o serinin çizileceği semboller. Paletteki rozet ve kod aramasının kaynağıdır.
      suggest() bir seriyi burada olmayan sembole düşüremez; bunu test de denetler. */
   const SERIES = {
-    PE: ['p.centrifugal', 'p.dosing', 'p.vacuum'],
+    PE: ['p.centrifugal', 'p.dosing', 'p.vacuum', 'p.dosatron'],
     FE: ['f.fan', 'f.blower'],
     GE: ['d.gearmotor', 'e.skimmer'],
     VE: ['d.vibration'],
@@ -921,10 +983,10 @@
     PHS: ['i.ph'],
     CS: ['i.cond'],
     PRS: ['i.prox'],
-    PPS: ['i.pistonSensor', 'i.zso', 'i.zsm', 'i.zsc'],
+    PPS: ['i.pistonSensor', 'i.zso', 'i.zsm', 'i.zsc', 'i.zsIsa', 'i.zsoIsa', 'i.zsmIsa', 'i.zscIsa'],
     SW: ['i.switch', 'i.lid', 'i.flow'],
     SWB: ['i.switchBox', 'v.solenoidFill', 'v.solenoid'],
-    V: ['v.pneumatic', 'n.valve52', 'n.valve32', 'v.solenoid'],
+    V: ['v.pneumatic', 'n.valve52', 'n.valve32', 'v.solenoid', 'v.pistonValve'],
     SS: ['s.hand', 's.lock', 's.curtain', 's.rfid'],
     B: ['i.button', 's.estop'],
     L: ['i.lamp'],
@@ -947,6 +1009,7 @@
     if (n.includes('basinc')) return n.includes('salter') ? inst('i.ps', 'PS') : inst('i.pt', 'PT');
     if (n.includes('prox')) return inst('i.prox', 'ZS');
     if (n.includes('switch')) return inst('i.switch', 'ZS');
+    if (n.includes('dozatron') || n.includes('dosatron')) return { symbol: 'p.dosatron' };
     if (n.includes('dozaj')) return { symbol: 'p.dosing' };
     if (n.includes('pompa')) return { symbol: 'p.centrifugal' };
     if (n.includes('blower')) return { symbol: 'f.blower' };
@@ -978,6 +1041,7 @@
 
     switch (seri) {
       case 'PE':
+        if (n.includes('dozatron') || n.includes('dosatron')) return { symbol: 'p.dosatron' };
         if (n.includes('dozaj')) return { symbol: 'p.dosing' };
         if (n.includes('vakum')) return { symbol: 'p.vacuum' };
         return { symbol: 'p.centrifugal' };

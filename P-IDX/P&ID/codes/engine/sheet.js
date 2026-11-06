@@ -236,6 +236,10 @@
       if (box[2] - item.x > item.x - box[0] + 0.5) return { x: box[0] - 1.8 + dx, y, anchor: 'end' };
       return { x: box[2] + 1.8 + dx, y, anchor: 'start' };
     }
+    // Altından hat çıkan sembolde (dozatron emişi) kod ve not gövdenin üstüne yazılır
+    if (def.tagAbove && !vertical && !item.rot) {
+      return { x: (box[0] + box[2]) / 2 + dx, y: box[1] - 1.6 - (item.note ? 3 : 0) + dy, anchor: 'middle' };
+    }
     return { x: (box[0] + box[2]) / 2 + dx, y: box[3] + 3.4 + dy, anchor: 'middle' };
   }
 

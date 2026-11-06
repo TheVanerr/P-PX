@@ -124,7 +124,8 @@
         filter: (list) => `${list} üzerinden geçer.`,
         check: (list) => `${list} geri akışı önler.`,
         manual: (list) => `${list} ile elle kesilebilir.`,
-        heat: (list) => `${list} akışı ısıtır.`
+        heat: (list) => `${list} akışı ısıtır.`,
+        dose: (list) => `${list} suya ayarlı oranda kimyasal katar.`
       },
       mech: (a, b) => `${a}, ${b} tahrikini sağlar.`,
       mechGeneric: (a, b) => `${a} ile ${b} mekanik olarak bağlıdır.`,
@@ -171,6 +172,7 @@
         regulator: 'Hat basıncını ayarlanan değerde tutar.',
         filter: 'Sıvıdaki partikülleri tutar.',
         strainer: 'Hattaki iri parçaları tutar.',
+        dosatron: 'Su akışıyla çalışır, elektrik gerektirmez; kimyasalı suya ayarlı oranda katar.',
         nozzle: 'Sıvıyı parçaların üzerine püskürtür.',
         spray: 'Sıvıyı nozullara dağıtır ve parçaların üzerine püskürtür.',
         hx: 'Akışkanlar arasında ısı transferi sağlar.',
@@ -295,7 +297,8 @@
         filter: (list) => `It passes through ${list}.`,
         check: (list) => `${list} prevents backflow.`,
         manual: (list) => `It can be shut off manually with ${list}.`,
-        heat: (list) => `${list} heats the flow.`
+        heat: (list) => `${list} heats the flow.`,
+        dose: (list) => `${list} adds chemical to the water at the set ratio.`
       },
       mech: (a, b) => `${a} drives ${b}.`,
       mechGeneric: (a, b) => `${a} and ${b} are mechanically linked.`,
@@ -342,6 +345,7 @@
         regulator: 'Keeps the line pressure at the set value.',
         filter: 'Retains particles in the liquid.',
         strainer: 'Retains coarse particles in the line.',
+        dosatron: 'Driven by the water flow, needs no power; adds chemical to the water at the set ratio.',
         nozzle: 'Sprays the liquid onto the parts.',
         spray: 'Distributes the liquid to the nozzles and sprays it onto the parts.',
         hx: 'Transfers heat between fluids.',
@@ -467,7 +471,8 @@
         filter: (list) => `Der Durchfluss führt über ${list}.`,
         check: (list) => `${list} verhindert Rückfluss.`,
         manual: (list) => `Er kann mit ${list} von Hand abgesperrt werden.`,
-        heat: (list) => `${list} erwärmt den Durchfluss.`
+        heat: (list) => `${list} erwärmt den Durchfluss.`,
+        dose: (list) => `${list} dosiert dem Wasser Chemikalie im eingestellten Verhältnis zu.`
       },
       mech: (a, b) => `${a} treibt ${b} an.`,
       mechGeneric: (a, b) => `${a} und ${b} sind mechanisch verbunden.`,
@@ -514,6 +519,7 @@
         regulator: 'Hält den Leitungsdruck auf dem Sollwert.',
         filter: 'Hält Partikel in der Flüssigkeit zurück.',
         strainer: 'Hält grobe Partikel in der Leitung zurück.',
+        dosatron: 'Vom Wasserdurchfluss angetrieben, ohne Strom; dosiert Chemikalie im eingestellten Verhältnis zu.',
         nozzle: 'Sprüht die Flüssigkeit auf die Teile.',
         spray: 'Verteilt die Flüssigkeit auf die Düsen und sprüht sie auf die Teile.',
         hx: 'Überträgt Wärme zwischen Medien.',
@@ -533,12 +539,12 @@
   const PASSIVE_KINDS = {
     'v.gate': 'manualValve', 'v.ball': 'manualValve', 'v.butterfly': 'manualValve', 'v.globe': 'manualValve', 'v.threeway': 'manualValve',
     'v.check': 'check', 'v.safety': 'safetyValve', 'v.regulator': 'regulator',
-    'e.filter': 'filter', 'e.strainer': 'strainer', 'e.nozzle': 'nozzle', 'e.spray': 'spray', 'e.hx': 'hx',
+    'e.filter': 'filter', 'e.strainer': 'strainer', 'p.dosatron': 'dosatron', 'e.nozzle': 'nozzle', 'e.spray': 'spray', 'e.hx': 'hx',
     'n.frl': 'frl', 'n.silencer': 'silencer',
     'l.reducer': 'fitting', 'l.flange': 'fitting', 'l.drain': 'terminalOut', 'l.vent': 'terminalOut',
     'l.inlet': 'terminalIn', 'l.outlet': 'terminalOut', 'l.offpage': 'offpage'
   };
-  const ACTUATED_VALVES = new Set(['v.solenoid', 'v.solenoidFill', 'v.pneumatic', 'v.ballPneumatic', 'v.butterflyPneumatic', 'v.motor', 'n.valve52', 'n.valve32']);
+  const ACTUATED_VALVES = new Set(['v.solenoid', 'v.solenoidFill', 'v.pneumatic', 'v.ballPneumatic', 'v.butterflyPneumatic', 'v.motor', 'v.pistonValve', 'n.valve52', 'n.valve32']);
   const ACTUATOR_BY_SYMBOL = {
     'p.centrifugal': 'pump', 'p.dosing': 'pump', 'p.vacuum': 'pump', 'f.fan': 'fan', 'f.blower': 'fan',
     'd.motor': 'drive', 'd.gearmotor': 'drive', 'd.vibration': 'drive', 'd.vfd': 'drive',
@@ -726,7 +732,8 @@
         }
         if (!Model.isSymbol(item)) continue;
         const def = Sym.get(item.symbol);
-        if (!def) continue;
+        // Temel şekiller (dikdörtgen, daire...) yalnız çizimdir: bileşen ve bağlantı sayılmaz
+        if (!def || def.decor) continue;
         const tag = String(item.tag || '').trim().toUpperCase();
         const entry = tag ? catalog.get(tag) || null : null;
         const info = classify(item, def, entry);
@@ -1156,6 +1163,7 @@
       const checks = pick((n) => n.kind === 'check');
       const manual = pick((n) => n.kind === 'manualValve');
       const heats = pick((n) => n.kind === 'heater' || n.kind === 'hx');
+      const doses = pick((n) => n.kind === 'dosatron');
       const medium = t.flow.medium[chain.kind] || t.flow.medium.process;
       const driverList = listJoin(drivers.map((n) => n.label), t);
       let text = t.flow.sentence(driverList, listJoin(opens, t), medium, src.short, dst.short, drivers.length > 1);
@@ -1163,6 +1171,7 @@
       if (checks.length) text += ` ${t.flow.check(listJoin(checks, t))}`;
       if (manual.length) text += ` ${t.flow.manual(listJoin(manual, t))}`;
       if (heats.length) text += ` ${t.flow.heat(listJoin(heats, t))}`;
+      if (doses.length) text += ` ${t.flow.dose(listJoin(doses, t))}`;
       const kindName = (Sym.LINE_KINDS[chain.kind] || Sym.LINE_KINDS.process).name;
       logicRows.push({
         group: 'flow',

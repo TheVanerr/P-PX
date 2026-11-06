@@ -459,7 +459,8 @@ const PidPanels = (() => {
     } else if (item.tag) {
       help = '<div class="field-help warn">Bu kod listede yok</div>';
     }
-    const canSwap = suggestion && suggestion.symbol !== item.symbol && item.tag && entry;
+    // ISA dairesi (ZSO, ZSC) ile önerilen silindir gövdeli sensör aynı şeydir; geçiş önerilmez
+    const canSwap = suggestion && suggestion.symbol !== item.symbol && suggestion.symbol !== def.altOf && item.tag && entry;
 
     $('inspector').innerHTML = `
       <div class="insp-head">
