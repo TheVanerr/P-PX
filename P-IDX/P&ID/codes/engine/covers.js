@@ -43,7 +43,8 @@ const PidCovers = (() => {
       musteri: meta.musteri || '',
       modelRaw: meta.model || '',
       title: drawing.sheets[0] ? PidSymbols.localNote(drawing.sheets[0].title, lang) : '',
-      rev: meta.rev || '',
+      rev: PidRevLog.revText(meta),
+      // Kapak tarihi geçerli revizyonun tarihidir; revizyon tablosunun son satırıyla aynı alan
       date: PidSheet.formatDate(meta.tarih),
       hazirlayan: meta.hazirlayan || '',
       kontrol: meta.kontrol || '',
@@ -194,8 +195,8 @@ const PidCovers = (() => {
     { key: 'hazirlayan', label: 'Hazırlayan' },
     { key: 'kontrol', label: 'Kontrol' },
     { key: 'onay', label: 'Onay' },
-    { key: 'tarih', label: 'Tarih', type: 'date' },
     { key: 'rev', label: 'Rev.' },
+    { key: 'tarih', label: 'Tarih', type: 'date' },
     { key: 'firma', label: 'Marka', options: [['DOLFIN', 'DOLFIN'], ['ENVA', 'ENVA'], ['VICO', 'VICO'], ['KSYSTEM', 'K.SYSTEM']] }
   ];
 
@@ -218,13 +219,31 @@ const PidCovers = (() => {
     return editor.project[field.key] == null ? '' : editor.project[field.key];
   }
 
+  /** Tarih hangi revizyonun tarihi olduğunu söyler: "Tarih (Rev. 01)" */
+  function fieldLabel(field) {
+    if (field.key !== 'tarih') return field.label;
+    const rev = PidRevLog.revText(app.editor.project);
+    return rev ? `Tarih (Rev. ${rev})` : field.label;
+  }
+
   function fieldHtml(field) {
     const value = fieldValue(field);
     const id = `csf-${field.key}`;
+    const extra = field.key === 'rev' ? ' placeholder="00" title="00 ilk yayın, 01 birinci revizyon… Revizyon tablosu bu numaraya göre oluşur."' : '';
     const control = field.options
       ? `<select id="${id}" class="field-input" data-field="${field.key}">${field.options.map(([v, t]) => `<option value="${esc(v)}"${v === value ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>`
-      : `<input id="${id}" class="field-input" data-field="${field.key}" type="${field.type || 'text'}" value="${esc(value)}" autocomplete="off">`;
-    return `<div class="field cs-field"><label for="${id}">${esc(field.label)}</label>${control}</div>`;
+      : `<input id="${id}" class="field-input" data-field="${field.key}" type="${field.type || 'text'}" value="${esc(value)}" autocomplete="off"${extra}>`;
+    return `<div class="field cs-field"><label for="${id}">${esc(fieldLabel(field))}</label>${control}</div>`;
+  }
+
+  /** Rev. değişince Rev., Tarih ve Hazırlayan alanları yeni değerleri gösterir */
+  function refreshRevisionFields() {
+    for (const key of ['rev', 'tarih', 'hazirlayan']) {
+      const input = $(`csf-${key}`);
+      if (input) input.value = fieldValue({ key });
+    }
+    const label = studio().querySelector('label[for="csf-tarih"]');
+    if (label) label.textContent = fieldLabel(FIELDS.find((f) => f.key === 'tarih'));
   }
 
   const stateText = (selected) => (selected ? '✓ Seçili kapak' : 'Bu kapağı kullan');
@@ -332,14 +351,23 @@ const PidCovers = (() => {
     const root = studio();
     root.addEventListener('input', (e) => {
       const key = e.target.dataset && e.target.dataset.field;
-      if (!key) return;
+      // Rev. yazılırken değil, bitince uygulanır: "0" yazıp "01"e giderken satır silinmesin
+      if (!key || key === 'rev') return;
       applyField(key, e.target.value);
       clearTimeout(refreshTimer);
       refreshTimer = setTimeout(renderPreviews, 60);
     });
-    root.addEventListener('change', (e) => {
+    root.addEventListener('change', async (e) => {
       const key = e.target.dataset && e.target.dataset.field;
       if (!key) return;
+      if (key === 'rev') {
+        await app.changeRevision(e.target.value);
+        refreshRevisionFields();
+        // Revizyon satırı sayısı açıklama sayfalarının yerleşimini değiştirebilir
+        pageCount = app.documentPageCount();
+        renderPreviews();
+        return;
+      }
       applyField(key, e.target.value.trim());
       commitField(key);
       renderPreviews();

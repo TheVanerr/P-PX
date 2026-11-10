@@ -4,11 +4,11 @@
 
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('./symbols.js'), require('./model.js'));
+    module.exports = factory(require('./symbols.js'), require('./model.js'), require('./revlog.js'));
   } else {
-    root.PidSheet = factory(root.PidSymbols, root.PidModel);
+    root.PidSheet = factory(root.PidSymbols, root.PidModel, root.PidRevLog);
   }
-})(typeof self !== 'undefined' ? self : this, function (Sym, Model) {
+})(typeof self !== 'undefined' ? self : this, function (Sym, Model, RevLog) {
   'use strict';
 
   const SIZES = Model.SHEET_SIZES;
@@ -187,7 +187,7 @@
       [t.docType, ctx.docTypeValue || t.docTypeValue],
       [t.standard, STANDARD],
       [t.scale, t.scaleValue],
-      [t.rev, project.rev],
+      [t.rev, RevLog.revText(project)],
       // PDF'te numara tüm belgeye göre verilir; ekranda ve tek sayfalık SVG'de çizim sayfasına göre
       [t.sheet, `${ctx.pageNumber || index + 1} / ${ctx.pageTotal || total}`]
     ];
@@ -198,13 +198,14 @@
 
     parts.push(`<path d="M${x} ${y}H${x + w}" stroke="${color}" stroke-width="0.7"/>`);
 
-    const revisions = (project.revizyonlar || []).slice(-4);
+    // Revizyon tablosu Rev.'den çıkar: 00 ilk yayın, son satır kapaktaki tarih (en yeni dört satır)
+    const revisions = RevLog.shown(project);
     if (revisions.length) {
       const rh = 4.5;
       const top = y - rh * (revisions.length + 1);
       const cols = [14, 22, w - 14 - 22 - 30, 30];
       const heads = [t.rev, t.date, t.revDesc, t.prepared];
-      const rowsAll = [heads].concat(revisions.map((r) => [r.rev, formatDate(r.tarih), r.aciklama, r.hazirlayan]));
+      const rowsAll = [heads].concat(revisions.map((r) => [r.rev, formatDate(r.tarih), RevLog.description(r, project.dil), r.hazirlayan]));
       rowsAll.forEach((row, ri) => {
         let rx = x;
         row.forEach((val, ci) => {

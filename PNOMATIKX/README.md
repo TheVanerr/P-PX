@@ -68,6 +68,7 @@ Kodlar nasıl eşleşir:
 - **Kontrol:** Bağlanmamış bobin, P&ID'de olup şemada olmayan kod, farklı devrelerde kullanılan P&ID kodu, açık egzoz portu, tahliyeli ana valf eksikliği gibi uyarılar. PDF'e girmez.
 - **Belge dili:** Kapak ve Açıklama pencerelerinin üstündeki **TR / EN / DE** düğmeleri kapak, açıklama sayfaları ve şemanın dilini değiştirir; program arayüzü Türkçe kalır. Antetteki yazılar, lejant, bağlantı mantığı ve hazır yazılar (BASINÇLI HAVA 6 bar, EGZOZ, ŞEMA 2, Pnömatik Devre Şeması) çevrilir; sizin yazdığınız metinler (devre başlıkları gibi) olduğu gibi kalır. **PDF İndir**'de birden çok dil seçilirse her dil kapağıyla birlikte tam belge olarak TR, EN, DE sırasıyla tek dosyada arka arkaya birleşir.
 - **Kapak / Açıklama / PDF İndir:** P&IDX ile aynı. PDF sırası: kapak, Açıklama Sayfası 1 (bileşen listesi, bağlantı mantığı, güvenlik), Açıklama Sayfası 2 (kod eşleştirme), şema sayfaları. Metinler proje diline (TR, EN, DE) uyar.
+- **Revizyon tablosu:** P&IDX ile aynı kural ve aynı dosya (`engine/revlog.js`). Tablo **Rev.** numarasından oluşur: Rev. 00 ilk yayın (tek satır, tarihi kapaktaki tarih), Rev. 01 ilk yayın ve birinci revizyon, böyle sürer. Kapaktaki ve antetteki tarih geçerli revizyonun tarihidir. Rev. yükselince yeni satırın tarihi bugün olur, düşürülünce üstteki satırlar onayla silinir. Satırların tarihi, hazırlayanı ve açıklaması sağ paneldeki **Revizyonlar** bölümünde düzeltilir. Yeni proje Rev. 00 ile başlar.
 
 ## Veriler
 

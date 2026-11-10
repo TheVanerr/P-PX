@@ -686,7 +686,8 @@ const PidPanels = (() => {
     const sheet = app.editor.sheet;
     const meta = app.editor.project;
     const hasLegend = sheet.items.some((it) => it.type === 'legend');
-    const revRows = (meta.revizyonlar || []).map((r, i) => `<div class="rev-row"><strong>${esc(r.rev)}</strong><span>${esc(r.aciklama)}</span><button type="button" class="rev-del" data-rev="${i}" title="Sil">×</button></div>`).join('');
+    const revCurrent = PidRevLog.current(meta);
+    const revText = PidRevLog.revText(meta);
     const isFirst = app.editor.sheetIndex === 0;
     const isLast = app.editor.sheetIndex === app.editor.drawing.sheets.length - 1;
 
@@ -723,8 +724,8 @@ const PidPanels = (() => {
         ${sel('mDil', 'Dil', LANGS, meta.dil || 'tr')}
       </div>
       <div class="field-row">
-        ${inp('mRev', 'Rev.', meta.rev)}
-        ${inp('mTarih', 'Tarih', meta.tarih, 'type="date"')}
+        ${inp('mRev', 'Rev.', meta.rev, 'placeholder="00" title="00 ilk yayın, 01 birinci revizyon… Revizyon tablosu bu numaraya göre oluşur."')}
+        ${inp('mTarih', revText ? `Tarih (Rev. ${esc(revText)})` : 'Tarih', meta.tarih, 'type="date"')}
       </div>
       ${inp('mHaz', 'Hazırlayan', meta.hazirlayan)}
       <div class="field-row">
@@ -732,13 +733,12 @@ const PidPanels = (() => {
         ${inp('mOnay', 'Onay', meta.onay)}
       </div>
 
-      <div class="insp-section">Revizyon geçmişi</div>
-      ${revRows || '<div class="field-help">Kayıt yok</div>'}
-      <div class="field-row">
-        ${inp('rRev', 'Rev.', '', 'placeholder="02"')}
-        ${inp('rDesc', 'Açıklama', '', 'placeholder="Değişiklik"')}
-      </div>
-      <button type="button" class="btn btn-sm" id="rAdd">Revizyon ekle</button>
+      <div class="insp-section">Revizyonlar</div>
+      ${revisionRowsHtml(meta)}
+      ${revCurrent === null ? '' : `<div class="insp-actions">
+        ${revCurrent < 99 ? `<button type="button" class="btn btn-sm" id="rNext" title="Yeni revizyon açar: tarihi bugün olur, kapak ve antet bu revizyonu gösterir">+ Rev. ${PidRevLog.label(revCurrent + 1)}</button>` : ''}
+        ${revCurrent > 0 ? `<button type="button" class="btn btn-sm" id="rUndo" title="Son revizyon satırını siler, bir önceki revizyona döner">Rev. ${PidRevLog.label(revCurrent)} sil</button>` : ''}
+      </div>`}
 
       <div class="insp-section">Kısayollar</div>
       <div class="field-help">V seç · L hat · T metin · R döndür · X aynala · F sığdır · [ küçült · ] büyüt (Shift: aralıklarla) · Ctrl+G grupla · Ctrl+Shift+G grubu çöz · Sağ tuş veya Boşluk + sürükle gezin · PageUp / PageDown sayfa değiştir · Alt yakalamayı kapatır · Sağ tık iptal</div>
@@ -782,38 +782,63 @@ const PidPanels = (() => {
     onField('mRename', 'click', () => app.renameProject());
     metaField('mFirma', 'firma');
     metaField('mDil', 'dil');
-    metaField('mRev', 'rev');
-    metaField('mTarih', 'tarih');
-    metaField('mHaz', 'hazirlayan');
     metaField('mKontrol', 'kontrol');
     metaField('mOnay', 'onay');
+    bindRevisions(meta);
+  }
 
-    onField('rAdd', 'click', () => {
-      const rev = $('rRev').value.trim();
-      const aciklama = $('rDesc').value.trim();
-      if (!rev || !aciklama) {
-        app.toast('Rev. ve açıklama gerekli', 'error');
-        return;
-      }
-      meta.revizyonlar = meta.revizyonlar || [];
-      meta.revizyonlar.push({ rev, aciklama, tarih: meta.tarih, hazirlayan: meta.hazirlayan });
-      meta.rev = rev;
-      // Çizimin bu anki hâli saklanır; önceki revizyondan bu yana değişenler bulutla işaretlenir
-      PidRevisions.record(app.editor.drawing, rev);
-      app.editor.commit();
-      app.onMetaChange();
+  /* ─── Revizyonlar ─────────────────────────────────────── */
+
+  /** Rev. 00'dan geçerli revizyona kadar her satır: tarih, hazırlayan, açıklama. Son satır antettekiyle aynıdır. */
+  function revisionRowsHtml(meta) {
+    if (PidRevLog.current(meta) === null) {
+      return '<div class="field-help warn">Rev. numarası girin: 00 ilk yayın, 01 birinci revizyon… Revizyon tablosu bu numaraya göre oluşur.</div>';
+    }
+    const rows = PidRevLog.rows(meta).map((r) => {
+      const name = `Rev. ${r.rev}`;
+      return `<div class="rev-item${r.current ? ' current' : ''}">
+        <div class="rev-head"><strong>${name}</strong><span>${esc(PidRevLog.title(r.n))}</span>${r.current ? '<em title="Kapakta ve antette yazan revizyon">Geçerli</em>' : ''}</div>
+        <div class="field-row">
+          <input class="field-input" type="date" data-rev-n="${r.n}" data-rev-key="tarih" value="${esc(r.tarih)}" aria-label="${name} tarihi" title="${name} tarihi${r.current ? ' (kapak ve antetteki tarih)' : ''}">
+          <input class="field-input" data-rev-n="${r.n}" data-rev-key="hazirlayan" value="${esc(r.hazirlayan)}" placeholder="Hazırlayan" aria-label="${name} hazırlayan">
+        </div>
+        <input class="field-input" data-rev-n="${r.n}" data-rev-key="aciklama" value="${esc(r.aciklama)}" placeholder="${r.n === 0 ? 'İlk yayın' : 'Değişiklik açıklaması'}" aria-label="${name} açıklaması">
+      </div>`;
+    }).join('');
+    const hidden = PidRevLog.rows(meta).length > PidRevLog.SHOWN ? ` Antette son ${PidRevLog.SHOWN} revizyon görünür.` : '';
+    return `<div class="field-help">Kapak ve antetteki tarih, geçerli revizyonun tarihidir.${hidden}</div>${rows}`;
+  }
+
+  function bindRevisions(meta) {
+    // Rev. değişince satırlar eklenir ya da (onayla) silinir; panel yeniden çizilir
+    const goTo = async (value) => {
+      await app.changeRevision(value);
       inspectSheet();
-      const marked = PidRevisions.active(app.editor.drawing);
-      app.toast(marked
-        ? `Rev. ${rev} eklendi. Rev. ${marked.base.rev}'den bu yana değişenler bulutla işaretlendi (alt çubuktaki "Revizyon" ile gizlenir).`
-        : `Rev. ${rev} eklendi. Bundan sonraki revizyonda bu hâlden farklar bulutla işaretlenecek.`);
+    };
+    onField('mRev', 'change', (el) => goTo(el.value));
+    onField('rNext', 'click', () => goTo(PidRevLog.current(meta) + 1));
+    onField('rUndo', 'click', () => goTo(PidRevLog.current(meta) - 1));
+
+    // Antetteki Tarih ve Hazırlayan, revizyon tablosunun son satırıdır; iki yerde de aynı görünür
+    const syncInputs = () => {
+      const cur = PidRevLog.current(meta);
+      const set = (el, value) => { if (el && el !== document.activeElement) el.value = value; };
+      set($('mTarih'), meta.tarih || '');
+      set($('mHaz'), meta.hazirlayan || '');
+      set(document.querySelector(`[data-rev-n="${cur}"][data-rev-key="tarih"]`), meta.tarih || '');
+      set(document.querySelector(`[data-rev-n="${cur}"][data-rev-key="hazirlayan"]`), meta.hazirlayan || '');
+    };
+    const antetField = (id, key) => onField(id, 'change', (el) => {
+      meta[key] = el.value.trim();
+      app.onMetaChange();
+      syncInputs();
     });
-    document.querySelectorAll('[data-rev]').forEach((b) => b.addEventListener('click', () => {
-      const [removed] = meta.revizyonlar.splice(parseInt(b.dataset.rev, 10), 1);
-      if (removed) PidRevisions.forget(app.editor.drawing, removed.rev);
-      app.editor.commit();
+    antetField('mTarih', 'tarih');
+    antetField('mHaz', 'hazirlayan');
+    document.querySelectorAll('[data-rev-key]').forEach((el) => el.addEventListener('change', () => {
+      PidRevLog.setField(meta, parseInt(el.dataset.revN, 10), el.dataset.revKey, el.value.trim());
       app.onMetaChange();
-      inspectSheet();
+      syncInputs();
     }));
   }
 

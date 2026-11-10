@@ -460,6 +460,47 @@ const PidApp = (() => {
   }
 
   /**
+   * Rev. değişikliği (sağ panel ve kapak aynı yolu kullanır). Revizyon tablosu Rev.'e göre oluşur:
+   * yükselince yeni satır bugünün tarihiyle eklenir ve kapak tarihi olur; düşünce üstteki satırlar
+   * onayla silinir. Yükselişte çizimin o anki hâli saklanır, bir önceki revizyondan farklar bulutla işaretlenir.
+   * @returns değişiklik uygulandıysa true
+   */
+  async function changeRevision(value) {
+    const editor = state.editor;
+    const project = editor.project;
+    const change = PidRevLog.plan(project, value);
+    if (!change.ok) {
+      toast(change.error, 'error');
+      return false;
+    }
+    if (!change.changed) return false;
+    const removed = change.removed.map((r) => `Rev. ${r}`).join(', ');
+    if (change.ask && !(await confirmModal('Revizyonu geri al',
+      `${removed} ${change.removed.length > 1 ? 'satırları' : 'satırı'} (tarih ve açıklama) revizyon tablosundan silinecek. Kapak ve antet Rev. ${change.rev} olacak.`, 'Sil'))) return false;
+    PidRevLog.apply(project, change, PidRevLog.today());
+    const drawing = editor.drawing;
+    if (change.from !== null && change.to > change.from) {
+      PidRevisions.record(drawing, change.rev);
+      editor.commit();
+    } else if (change.from !== null && change.to < change.from) {
+      for (const snap of (drawing.revSnapshots || []).slice()) {
+        if (PidRevLog.parse(snap.rev) > change.to) PidRevisions.forget(drawing, snap.rev);
+      }
+      editor.commit();
+    }
+    onMetaChange();
+    if (change.from === null || change.to === change.from) return true;
+    if (change.to > change.from) {
+      const marked = PidRevisions.active(drawing);
+      toast(`Rev. ${change.rev} eklendi, tarihi ${PidSheet.formatDate(project.tarih)}. Açıklamasını sağ paneldeki Revizyonlar bölümüne yazın.` +
+        (marked ? ` Rev. ${marked.base.rev} sonrası değişenler bulutla işaretlenir.` : ''));
+    } else {
+      toast(`Geçerli revizyon Rev. ${change.rev}; ${removed} silindi.`);
+    }
+    return true;
+  }
+
+  /**
    * Açık projeye başka projenin çizim tahtasını alır: semboller, hatlar, yazılar, lejant, gruplar.
    * Antet ve proje bilgileri bu projede kalır; kaynak proje yalnız okunur. Geri Al ile geri alınır.
    */
@@ -948,6 +989,8 @@ const PidApp = (() => {
 
   function onMetaChange() {
     const editor = state.editor;
+    // Antetteki Tarih ve Hazırlayan revizyon tablosunun son satırıdır; kayıt da aynı kalsın
+    PidRevLog.mirror(editor.project);
     loadLogos(editor.project).then((logos) => {
       Object.assign(editor.ctx, logos);
       editor.refreshFrame();
@@ -1208,6 +1251,7 @@ const PidApp = (() => {
     toast,
     renderSheets,
     onMetaChange,
+    changeRevision,
     openProject,
     openSample,
     showHome,

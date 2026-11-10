@@ -224,5 +224,214 @@
     return result;
   }
 
-  return { createRoot, importFolder, findSources, hasProgramData, IMPORT_RULES, MAX_IMPORT_BYTES };
+  /* ─── Program verisi: kod listesi ve güvenlik kataloğu ──── */
+
+  /* Programla gelen, programların yalnız okuduğu dosyalar. Aktarma var olan dosyayı korur; program güncellenince
+     bunlar "Program verilerini güncelle" ile seçilen klasördeki sürüme getirilir. Programda değiştirilen dosyalar
+     (projeler, makine kayıtları, ML kod listesi, kod eşleştirme, ayarlar) burada yoktur, güncellemede değişmez. */
+  const PROGRAM_DATA = [
+    { path: 'P&ID/data/kod.csv', label: 'Kod listesi TR' },
+    { path: 'P&ID/data/kod-en.csv', label: 'Kod listesi EN' },
+    { path: 'P&ID/data/kod-de.csv', label: 'Kod listesi DE' },
+    { path: 'P&ID/data/guvenlik.csv', label: 'Güvenlik kataloğu TR' },
+    { path: 'P&ID/data/safety.csv', label: 'Güvenlik kataloğu EN' },
+    { path: 'P&ID/data/safety-de.csv', label: 'Güvenlik kataloğu DE' }
+  ];
+  /* Katalog her değiştiğinde sürüm bir artar (npm run veri-surumu, test denetler). Dosya katalogla birlikte yazılır:
+     veritabanındaki sürüm seçilen klasördekinden yeniyse eski program yeni veriyi ezemez. */
+  const DATA_VERSION_FILE = 'P&ID/data/surum.json';
+  const MAX_LISTED_CODES = 6;
+
+  /** BOM ve satır sonu farkı içerik farkı sayılmaz: aynı dosya Windows'ta CRLF, başka yerde LF olabilir */
+  function comparable(bytes) {
+    const start = bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf ? 3 : 0;
+    const out = new Uint8Array(bytes.length - start);
+    let n = 0;
+    for (let i = start; i < bytes.length; i += 1) {
+      if (bytes[i] !== 0x0d) {
+        out[n] = bytes[i];
+        n += 1;
+      }
+    }
+    return out.subarray(0, n);
+  }
+
+  function sameContent(a, b) {
+    const x = comparable(a);
+    const y = comparable(b);
+    if (x.length !== y.length) return false;
+    for (let i = 0; i < x.length; i += 1) if (x[i] !== y[i]) return false;
+    return true;
+  }
+
+  /** Sürüm dosyasındaki dosya kimliği: satır sonu ne olursa olsun aynı içerik aynı değeri verir */
+  async function dataHash(bytes) {
+    const digest = await crypto.subtle.digest('SHA-1', comparable(bytes));
+    return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  /** Programlar gibi okunur: UTF-8 değilse Türkçe Windows kodlaması */
+  function decodeText(bytes) {
+    try {
+      return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    } catch {
+      return new TextDecoder('windows-1254').decode(bytes);
+    }
+  }
+
+  /** Satırlar ilk sütundaki koda göre; ilk satır başlıktır. Programlar da aynı kodun yalnız ilk satırını okur. */
+  function csvRows(text) {
+    const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+    const header = lines.length ? lines[0] : '';
+    const delimiter = (header.match(/;/g) || []).length > (header.match(/,/g) || []).length ? ';' : ',';
+    const rows = new Map();
+    for (const line of lines.slice(1)) {
+      const key = line.split(delimiter)[0].replace(/"/g, '').trim();
+      if (key && !rows.has(key)) rows.set(key, line);
+    }
+    return { header, rows };
+  }
+
+  function rowDiff(before, after) {
+    const a = csvRows(before);
+    const b = csvRows(after);
+    const added = [];
+    const removed = [];
+    let changed = 0;
+    for (const [key, line] of b.rows) {
+      if (!a.rows.has(key)) added.push(key);
+      else if (a.rows.get(key) !== line) changed += 1;
+    }
+    for (const key of a.rows.keys()) if (!b.rows.has(key)) removed.push(key);
+    return { changed, added, removed, header: !!a.header && a.header !== b.header };
+  }
+
+  async function fileIn(dir, path) {
+    const segs = path.split('/');
+    const name = segs.pop();
+    let current = dir;
+    for (const seg of segs) {
+      current = await childDir(current, seg);
+      if (!current) return null;
+    }
+    try {
+      return new Uint8Array(await (await (await current.getFileHandle(name)).getFile()).arrayBuffer());
+    } catch {
+      return null;
+    }
+  }
+
+  function readVersion(bytes) {
+    try {
+      const data = JSON.parse(decodeText(bytes));
+      const surum = Number(data && data.surum);
+      return Number.isInteger(surum) && surum > 0 ? { surum, tarih: String(data.tarih || '') } : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Seçilen program klasöründeki kod listesi ve güvenlik kataloğunu veritabanındakiyle karşılaştırır, hiçbir şey yazmaz.
+      Sürüm bilgisi olmayan eski program klasörü ve veritabanındakinden eski sürüm reddedilir.
+      seen: plan anında veritabanındaki dosyanın kimliği; uygulamada değişmiş mi diye bakılır. */
+  async function planProgramData(db, dir) {
+    const sources = [];
+    for (const handle of await findSources(dir)) {
+      if (await hasPath(handle, ['P&ID', 'data'])) sources.push(handle);
+    }
+    if (!sources.length) return { ok: false, error: `"${dir.name}" içinde P&ID/data bulunamadı. P&PX klasörünü seçin.` };
+    if (sources.length > 1) return { ok: false, error: `"${dir.name}" içinde birden çok P&ID klasörü var (${sources.map((s) => s.name).join(', ')}). Güncel P-IDX klasörünü seçin.` };
+    const source = sources[0];
+    const versionBytes = await fileIn(source, DATA_VERSION_FILE);
+    const to = versionBytes ? readVersion(versionBytes) : null;
+    if (!to) {
+      return { ok: false, error: `"${source.name}" klasöründe ${DATA_VERSION_FILE} yok ya da okunamıyor; bu eski bir program sürümü olabilir. Güncel P&PX klasörünü seçin.` };
+    }
+    const stored = await db.read(DATA_VERSION_FILE);
+    const storedFile = stored && stored.kind === 'file' ? stored : null;
+    const from = storedFile ? readVersion(storedFile.bytes) : null;
+    if (from && from.surum > to.surum) {
+      return {
+        ok: false,
+        newer: true,
+        from,
+        to,
+        error: `Veritabanındaki kod listesi ve güvenlik kataloğu daha yeni: sürüm ${from.surum}, seçilen klasörde sürüm ${to.surum}. Hiçbir şey değişmedi. Önce bu bilgisayardaki programı güncelleyin.`
+      };
+    }
+    const files = [];
+    for (const { path, label } of PROGRAM_DATA) {
+      const bytes = await fileIn(source, path);
+      // Programda olmayan dosya veritabanında olduğu gibi kalır
+      if (!bytes) continue;
+      const record = await db.read(path);
+      const current = record && record.kind === 'file' ? record : null;
+      if (current && sameContent(current.bytes, bytes)) continue;
+      const diff = rowDiff(current ? decodeText(current.bytes) : '', decodeText(bytes));
+      files.push(Object.assign({ path, label, bytes, isNew: !current, seen: record ? record.hash : null }, diff));
+    }
+    const version = storedFile && sameContent(storedFile.bytes, versionBytes)
+      ? null
+      : { path: DATA_VERSION_FILE, bytes: versionBytes, seen: stored ? stored.hash : null };
+    return { ok: true, source: source.name, from, to, files, version };
+  }
+
+  /** Plandakileri yazar, sürüm dosyasını en son. Plandan sonra veritabanında biri değiştiyse hiçbirini yazmaz. */
+  async function applyProgramData(db, plan) {
+    const items = plan.files.concat(plan.version ? [plan.version] : []);
+    for (const item of items) {
+      const record = await db.read(item.path);
+      if ((record ? record.hash : null) !== item.seen) {
+        return { ok: false, error: 'Veritabanı bu sırada değişti, hiçbir şey yazılmadı. Yeniden deneyin.' };
+      }
+    }
+    for (const item of items) await db.write(item.path, item.bytes);
+    return { ok: true, written: plan.files.length };
+  }
+
+  function formatDate(iso) {
+    const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? `${m[3]}.${m[2]}.${m[1]}` : String(iso || '');
+  }
+
+  function codeList(keys) {
+    const shown = keys.slice(0, MAX_LISTED_CODES).join(', ');
+    return keys.length > MAX_LISTED_CODES ? `${shown} ve ${keys.length - MAX_LISTED_CODES} kod daha` : shown;
+  }
+
+  /** Onaydan önce gösterilecek satırlar */
+  function programDataSummary(plan) {
+    const when = plan.to.tarih ? `, ${formatDate(plan.to.tarih)}` : '';
+    const lines = [`Programdaki kod listesi ve güvenlik kataloğu (sürüm ${plan.to.surum}${when}) veritabanındakinden farklı:`];
+    for (const f of plan.files) {
+      const parts = [];
+      if (f.isNew) {
+        parts.push('veritabanında yok, eklenecek');
+      } else {
+        if (f.changed) parts.push(`${f.changed} kodun metni değişecek`);
+        if (f.added.length) parts.push(`${f.added.length} kod eklenecek`);
+        if (f.removed.length) parts.push(`${f.removed.length} kod silinecek (${codeList(f.removed)})`);
+        if (f.header) parts.push('başlık satırı değişecek');
+        if (!parts.length) parts.push('yalnız biçim değişecek');
+      }
+      lines.push(`• ${f.label} (${f.path.split('/').pop()}): ${parts.join(', ')}`);
+    }
+    lines.push('Projeler, makine kayıtları, ML kod listesi, kod eşleştirme ve ayarlar değişmez.');
+    return lines;
+  }
+
+  return {
+    createRoot,
+    importFolder,
+    findSources,
+    hasProgramData,
+    planProgramData,
+    applyProgramData,
+    programDataSummary,
+    dataHash,
+    IMPORT_RULES,
+    MAX_IMPORT_BYTES,
+    PROGRAM_DATA,
+    DATA_VERSION_FILE
+  };
 });

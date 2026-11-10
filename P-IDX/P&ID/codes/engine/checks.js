@@ -2,11 +2,11 @@
 
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('./symbols.js'), require('./model.js'));
+    module.exports = factory(require('./symbols.js'), require('./model.js'), require('./revlog.js'));
   } else {
-    root.PidChecks = factory(root.PidSymbols, root.PidModel);
+    root.PidChecks = factory(root.PidSymbols, root.PidModel, root.PidRevLog);
   }
-})(typeof self !== 'undefined' ? self : this, function (Sym, Model) {
+})(typeof self !== 'undefined' ? self : this, function (Sym, Model, RevLog) {
   'use strict';
 
   /**
@@ -99,6 +99,7 @@
       if (!project.model) add('warn', 'meta-missing', 'Antette model boş');
       if (!project.kontrol) add('info', 'meta-missing', 'Antette "Kontrol" boş');
       if (!project.onay) add('info', 'meta-missing', 'Antette "Onay" boş');
+      for (const p of RevLog.problems(project)) add(p.level, 'revision', p.msg);
     }
 
     const rank = { error: 0, warn: 1, info: 2 };

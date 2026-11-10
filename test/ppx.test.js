@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 const PpxDb = require('../ortak/ppx-db.js');
@@ -501,6 +502,189 @@ test('yedek indirilip boş veritabanına aynen yüklenir, var olan dosya korunur
   assert.equal(str((await fresh.read('a.json')).bytes), 'daha yeni');
   assert.deepEqual([...(await fresh.read('logo.png')).bytes], [255, 0, 128]);
   await assert.rejects(() => fresh.importBackup({ format: 'baska' }), /yedeği değil/);
+});
+
+/* ─── Program verisi güncelleme ─────────────────────────── */
+
+const OLD_KOD = '﻿KOD;BİLEŞEN ADI;AÇIKLAMA\r\nV31;Sepet Aç Valfi;PLC\'ye bağlıdır\r\nV32;Sepet Kapat Valfi;y\r\nV33;Tahliye Valfi;z\r\n';
+const NEW_KOD = '﻿KOD;BİLEŞEN ADI;AÇIKLAMA\r\nV31;Sepet Aç Valfi;Kontrol ünitesine (PLC/Röle) bağlıdır\r\nV32;Sepet Kapat Valfi;y\r\nV40;Dolum Valfi;w\r\n';
+// str() BOM'u siler; BOM korunuyor mu diye ham bayt okunur
+const raw = (bytes) => Buffer.from(bytes).toString('utf8');
+const versionJson = (surum) => JSON.stringify({ surum, tarih: '2026-11-10', dosyalar: {} });
+
+/** Güncellenmiş program klasörü (P&PX). null verilen dosya klasörde olmaz. */
+function programFolder(changes, surum) {
+  const files = Object.assign({
+    'P-IDX/P&ID/data/surum.json': versionJson(surum === undefined ? 1 : surum),
+    'P-IDX/P&ID/data/kod.csv': NEW_KOD,
+    'P-IDX/P&ID/data/kod-en.csv': 'KOD;COMPONENT NAME;DESCRIPTION\nV31;Basket Open Valve;control unit (PLC/relay)\n',
+    'P-IDX/P&ID/data/guvenlik.csv': 'KOD;TETİK;KİLİT;MANTIK\nLS01;Alt Seviye;Pompa;kontrol ünitesi (PLC/Röle) durdurur\n',
+    'P-IDX/P&ID/data/ayarlar.json': '{"kapakTasarimi":"bant"}',
+    'P-IDX/P&ID/projects/a/proje.json': '{"programdaki":true}',
+    'P-IDX/ML/kayitlar/kodlar.json': '{"kodlar":[{"kod":"V31","aciklama":"programdaki"}]}',
+    'PNOMATIKX/PNOMATIK/data/eslestirme.csv': 'KOD;DEVRE\nprogramdaki\n'
+  }, changes);
+  return fakeSource(Object.fromEntries(Object.entries(files).filter(([, v]) => v !== null)));
+}
+
+/** Eski katalogla aktarılmış veritabanı ve programda değiştirilmiş kullanıcı verisi */
+async function userDb(db) {
+  const target = db || localDb();
+  await target.write('P&ID/data/kod.csv', text(OLD_KOD));
+  await target.write('P&ID/data/guvenlik.csv', text('KOD;TETİK;KİLİT;MANTIK\nLS01;Alt Seviye;Pompa;PLC durdurur\n'));
+  await target.write('P&ID/data/ayarlar.json', text('{"kapakTasarimi":"kose"}'));
+  await target.write('P&ID/projects/a/proje.json', text('{"kullanici":true}'));
+  await target.write('ML/kayitlar/kodlar.json', text('{"kodlar":[{"kod":"V31","aciklama":"kullanıcının"}]}'));
+  await target.write('PNOMATIK/data/eslestirme.csv', text('KOD;DEVRE\nkullanıcının\n'));
+  return target;
+}
+
+test('program verileri: yalnız kod listesi ve güvenlik kataloğu güncellenir, kullanıcı verisi korunur', async () => {
+  const db = await userDb();
+  const others = ['P&ID/data/ayarlar.json', 'P&ID/projects/a/proje.json', 'ML/kayitlar/kodlar.json', 'PNOMATIK/data/eslestirme.csv'];
+  const before = new Map();
+  for (const p of others) before.set(p, str((await db.read(p)).bytes));
+  const folder = await programFolder();
+
+  const plan = await PpxFs.planProgramData(db, folder);
+  assert.ok(plan.ok, plan.error);
+  assert.equal(plan.source, 'P-IDX');
+  assert.equal(plan.from, null);
+  assert.deepEqual(plan.to, { surum: 1, tarih: '2026-11-10' });
+  assert.deepEqual(plan.files.map((f) => f.path), ['P&ID/data/kod.csv', 'P&ID/data/kod-en.csv', 'P&ID/data/guvenlik.csv']);
+  const [kod, en] = plan.files;
+  assert.deepEqual([kod.changed, kod.added, kod.removed, kod.header, kod.isNew], [1, ['V40'], ['V33'], false, false]);
+  assert.equal(en.isNew, true);
+  const summary = PpxFs.programDataSummary(plan).join('\n');
+  assert.match(summary, /\(sürüm 1, 10\.11\.2026\)/);
+  assert.match(summary, /Kod listesi TR \(kod\.csv\): 1 kodun metni değişecek, 1 kod eklenecek, 1 kod silinecek \(V33\)/);
+  assert.match(summary, /Kod listesi EN \(kod-en\.csv\): veritabanında yok, eklenecek/);
+  assert.match(summary, /Güvenlik kataloğu TR \(guvenlik\.csv\): 1 kodun metni değişecek/);
+  assert.match(summary, /Projeler, makine kayıtları, ML kod listesi, kod eşleştirme ve ayarlar değişmez/);
+  assert.match(str((await db.read('P&ID/data/kod.csv')).bytes), /PLC'ye/, 'karşılaştırma bir şey yazmamalı');
+
+  assert.deepEqual(await PpxFs.applyProgramData(db, plan), { ok: true, written: 3 });
+  assert.equal(raw((await db.read('P&ID/data/kod.csv')).bytes), NEW_KOD);
+  assert.equal(JSON.parse(str((await db.read('P&ID/data/surum.json')).bytes)).surum, 1);
+  for (const p of others) assert.equal(str((await db.read(p)).bytes), before.get(p), `${p} değişmemeli`);
+  const catalog = await PidHost.createStore(rootOf(db)).engine.catalog();
+  const v31 = catalog.entries.find((e) => e.id === 'V31');
+  assert.match(v31.description, /ünitesine \(PLC\/Röle\)/);
+  assert.match(v31.desc.en, /control unit \(PLC\/relay\)/);
+
+  const again = await PpxFs.planProgramData(db, folder);
+  assert.deepEqual([again.ok, again.files.length, again.version], [true, 0, null]);
+});
+
+test('program verileri: satır sonu ve BOM farkı değişiklik sayılmaz, eksik sürüm bilgisi yazılır', async () => {
+  const db = localDb();
+  await db.write('P&ID/data/kod.csv', text(NEW_KOD.replace(/^﻿/, '').replace(/\r\n/g, '\n')));
+  const plan = await PpxFs.planProgramData(db, await programFolder({ 'P-IDX/P&ID/data/kod-en.csv': null, 'P-IDX/P&ID/data/guvenlik.csv': null }));
+  assert.ok(plan.ok, plan.error);
+  assert.deepEqual(plan.files, []);
+  assert.ok(plan.version);
+  assert.deepEqual(await PpxFs.applyProgramData(db, plan), { ok: true, written: 0 });
+  assert.equal(JSON.parse(str((await db.read('P&ID/data/surum.json')).bytes)).surum, 1);
+  assert.equal(str((await db.read('P&ID/data/kod.csv')).bytes).includes('\r'), false, 'veritabanındaki kopyaya dokunulmaz');
+});
+
+test('program verileri: veritabanındaki sürüm daha yeniyse eski program klasörü hiçbir şey yazmaz', async () => {
+  const db = localDb();
+  await db.write('P&ID/data/surum.json', text(versionJson(3)));
+  await db.write('P&ID/data/kod.csv', text(NEW_KOD));
+  const stale = await PpxFs.planProgramData(db, await programFolder({ 'P-IDX/P&ID/data/kod.csv': OLD_KOD }, 2));
+  assert.equal(stale.ok, false);
+  assert.equal(stale.newer, true);
+  assert.match(stale.error, /daha yeni: sürüm 3, seçilen klasörde sürüm 2/);
+  assert.equal(raw((await db.read('P&ID/data/kod.csv')).bytes), NEW_KOD);
+  // Aynı sürümde içerik farklıysa (veritabanındaki elle değiştirilmiş) programdaki geri yazılabilir
+  const same = await PpxFs.planProgramData(db, await programFolder({ 'P-IDX/P&ID/data/kod.csv': OLD_KOD }, 3));
+  assert.ok(same.ok, same.error);
+  assert.equal(same.files[0].path, 'P&ID/data/kod.csv');
+  assert.equal(same.version, null);
+});
+
+test('program verileri: sürüm bilgisi olmayan eski klasör ve P&ID içermeyen klasör reddedilir', async () => {
+  const db = await userDb();
+  const old = await PpxFs.planProgramData(db, await programFolder({ 'P-IDX/P&ID/data/surum.json': null }));
+  assert.equal(old.ok, false);
+  assert.match(old.error, /surum\.json yok ya da okunamıyor/);
+  const broken = await PpxFs.planProgramData(db, await programFolder({ 'P-IDX/P&ID/data/surum.json': '{"surum":"bir"}' }));
+  assert.equal(broken.ok, false);
+  const pnx = await PpxFs.planProgramData(db, await fakeSource({ 'PNOMATIKX/PNOMATIK/data/eslestirme.csv': 'x' }));
+  assert.match(pnx.error, /P&ID\/data bulunamadı/);
+  const two = await PpxFs.planProgramData(db, await fakeSource({ 'A/P&ID/data/surum.json': versionJson(1), 'B/P&ID/data/surum.json': versionJson(1) }));
+  assert.match(two.error, /birden çok P&ID klasörü/);
+  assert.match(str((await db.read('P&ID/data/kod.csv')).bytes), /PLC'ye/);
+});
+
+test('program verileri: karşılaştırmadan sonra veritabanı değiştiyse hiçbir dosya yazılmaz', async () => {
+  const db = await userDb();
+  const plan = await PpxFs.planProgramData(db, await programFolder());
+  await db.write('P&ID/data/guvenlik.csv', text('KOD;TETİK;KİLİT;MANTIK\nLS01;başka cihazdan\n'));
+  const res = await PpxFs.applyProgramData(db, plan);
+  assert.equal(res.ok, false);
+  assert.match(res.error, /bu sırada değişti/);
+  assert.match(str((await db.read('P&ID/data/kod.csv')).bytes), /PLC'ye/, 'yarım güncelleme olmamalı');
+  assert.equal(await db.read('P&ID/data/surum.json'), null);
+});
+
+test('program verileri: güncelleme depoya tek commit gider, öbür cihaz eski programla geri alamaz', async () => {
+  const hub = createFakeGitHub();
+  const a = await userDb(device(hub));
+  await a.sync();
+  const commits = hub.commitCount();
+  const plan = await PpxFs.planProgramData(a, await programFolder({}, 2));
+  assert.ok((await PpxFs.applyProgramData(a, plan)).ok);
+  await a.sync();
+  assert.equal(hub.commitCount(), commits + 1);
+  assert.equal(raw(hub.files().get('P&ID/data/kod.csv')), NEW_KOD);
+  assert.equal(str(hub.files().get('P&ID/data/ayarlar.json')), '{"kapakTasarimi":"kose"}');
+
+  const b = device(hub);
+  await b.sync();
+  assert.equal(raw((await b.read('P&ID/data/kod.csv')).bytes), NEW_KOD);
+  const stale = await PpxFs.planProgramData(b, await programFolder({ 'P-IDX/P&ID/data/kod.csv': OLD_KOD }, 1));
+  assert.equal(stale.newer, true);
+});
+
+test('program verisi sürümü katalogla uyuşur: katalog değişince npm run veri-surumu ile artırılmalı', async () => {
+  const pidx = path.join(ROOT, 'P-IDX');
+  const manifest = JSON.parse(fs.readFileSync(path.join(pidx, PpxFs.DATA_VERSION_FILE), 'utf8'));
+  assert.ok(Number.isInteger(manifest.surum) && manifest.surum >= 1);
+  assert.match(manifest.tarih, /^\d{4}-\d{2}-\d{2}$/);
+  assert.deepEqual(Object.keys(manifest.dosyalar), PpxFs.PROGRAM_DATA.map((d) => d.path));
+  for (const { path: rel } of PpxFs.PROGRAM_DATA) {
+    const hash = await PpxFs.dataHash(fs.readFileSync(path.join(pidx, rel)));
+    assert.equal(manifest.dosyalar[rel], hash, `${rel} değişmiş: npm run veri-surumu ile sürümü artırın`);
+  }
+});
+
+test('veri sürümü aracı yalnız içerik değişince sürümü artırır, satır sonu farkını saymaz', async () => {
+  const { bump } = require('../P-IDX/tools/veri-surumu.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ppx-surum-'));
+  try {
+    fs.mkdirSync(path.join(tmp, 'P&ID', 'data'), { recursive: true });
+    for (const { path: rel } of PpxFs.PROGRAM_DATA) fs.writeFileSync(path.join(tmp, rel), 'KOD;AD\r\nV31;Valf\r\n');
+    assert.deepEqual(await bump(tmp, '2026-01-01'), { from: 0, to: 1, changed: PpxFs.PROGRAM_DATA.map((d) => d.path) });
+    fs.writeFileSync(path.join(tmp, 'P&ID/data/kod.csv'), '﻿KOD;AD\nV31;Valf\n');
+    assert.equal((await bump(tmp, '2026-01-02')).to, 1, 'yalnız BOM ve satır sonu değişti');
+    fs.writeFileSync(path.join(tmp, 'P&ID/data/kod.csv'), 'KOD;AD\nV31;Yeni Valf\n');
+    assert.deepEqual(await bump(tmp, '2026-01-03'), { from: 1, to: 2, changed: ['P&ID/data/kod.csv'] });
+    assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, PpxFs.DATA_VERSION_FILE), 'utf8')).tarih, '2026-01-03');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('ana ekranda program verilerini güncelle: önce eşitler, onayda yeniden karşılaştırır, aktarmada önerilir', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  assert.match(html, /id="updateData"[^>]*>Program verilerini güncelle</);
+  assert.match(html, /id="dataOffer" hidden/);
+  const apply = html.slice(html.indexOf("$('dataApply')"), html.indexOf("$('dataCancel')"));
+  assert.ok(apply.indexOf('syncedFirst') < apply.indexOf('planProgramData') && apply.indexOf('planProgramData') < apply.indexOf('applyProgramData'), apply);
+  const importer = html.slice(html.indexOf("$('importFolder')"), html.indexOf("$('backup')"));
+  assert.match(importer, /planProgramData[\s\S]*offer\(dir/);
 });
 
 /* ─── İki programın ortak davranışı ─────────────────────── */

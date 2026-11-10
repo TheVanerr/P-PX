@@ -496,6 +496,33 @@ const PidApp = (() => {
     });
   }
 
+  /**
+   * Rev. değişikliği (sağ panel ve kapak aynı yolu kullanır). Revizyon tablosu Rev.'e göre oluşur:
+   * yükselince yeni satır bugünün tarihiyle eklenir ve kapak tarihi olur; düşünce üstteki satırlar onayla silinir.
+   * @returns değişiklik uygulandıysa true
+   */
+  async function changeRevision(value) {
+    const project = state.editor.project;
+    const change = PidRevLog.plan(project, value);
+    if (!change.ok) {
+      toast(change.error, 'error');
+      return false;
+    }
+    if (!change.changed) return false;
+    const removed = change.removed.map((r) => `Rev. ${r}`).join(', ');
+    if (change.ask && !(await confirmModal(
+      `${removed} ${change.removed.length > 1 ? 'satırları' : 'satırı'} (tarih ve açıklama) revizyon tablosundan silinecek. Kapak ve antet Rev. ${change.rev} olacak.`, 'Sil'))) return false;
+    PidRevLog.apply(project, change, PidRevLog.today());
+    onMetaChange();
+    if (change.from === null || change.to === change.from) return true;
+    if (change.to > change.from) {
+      toast(`Rev. ${change.rev} eklendi, tarihi ${PidSheet.formatDate(project.tarih)}. Açıklamasını sağ paneldeki Revizyonlar bölümüne yazın.`);
+    } else {
+      toast(`Geçerli revizyon Rev. ${change.rev}; ${removed} silindi.`);
+    }
+    return true;
+  }
+
   async function deleteSheet(index) {
     const editor = state.editor;
     if (editor.drawing.sheets.length < 2) return;
@@ -1205,6 +1232,8 @@ const PidApp = (() => {
 
   function onMetaChange() {
     const editor = state.editor;
+    // Antetteki Tarih ve Hazırlayan revizyon tablosunun son satırıdır; kayıt da aynı kalsın
+    PidRevLog.mirror(editor.project);
     loadLogos(editor.project).then((logos) => {
       Object.assign(editor.ctx, logos, { showPid: editor.project.pidEtiket !== false });
       editor.refreshFrame();
@@ -1435,6 +1464,7 @@ const PidApp = (() => {
     deleteSheet,
     moveSelectionToSheet,
     onMetaChange,
+    changeRevision,
     openProject,
     openSample,
     showHome,

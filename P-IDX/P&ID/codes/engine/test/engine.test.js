@@ -1324,3 +1324,106 @@ test('proje adı: panelde düğme, uygulamada onay ve taşıma bağlı', () => {
   assert.ok(app.includes('api().renameProject({ id: oldId') && app.includes('state.projectId = res.id;') && /\n    renameProject,\n/.test(app));
   assert.ok(app.indexOf('await flushSave();', app.indexOf('async function renameProject')) > 0, 'taşımadan önce kayıt biter');
 });
+
+/* ─── Revizyon tablosu: satırlar Rev.'den çıkar ───────────── */
+
+const RevLog = require('../revlog.js');
+const revTable = (p, lang) => RevLog.rows(p).map((r) => [r.rev, r.tarih, RevLog.description(r, lang || 'tr')]);
+const count = (text, part) => text.split(part).length - 1;
+
+test('revizyon tablosu: Rev. 00 ilk yayın; Rev. 01 ilk yayın ve birinci revizyon; son satırın tarihi kapak tarihi', () => {
+  const p = Object.assign({}, project, { rev: '00', tarih: '2026-11-10', revizyonlar: [] });
+  const d = Model.createDrawing('Genel');
+  assert.deepEqual(revTable(p), [['00', '2026-11-10', 'İlk yayın']]);
+  let svg = Sheet.sheetSvg(p, d, 0, { brands: {} });
+  assert.ok(svg.includes('>İlk yayın</text>'));
+  assert.equal(count(svg, '>10.11.2026</text>'), 2, 'antetteki tarih ile ilk yayın satırı aynı');
+  assert.ok(Sheet.sheetSvg(Object.assign({}, p, { dil: 'en' }), d, 0, { brands: {} }).includes('>First issue</text>'));
+  assert.ok(Sheet.sheetSvg(Object.assign({}, p, { dil: 'de' }), d, 0, { brands: {} }).includes('>Erstausgabe</text>'));
+
+  // Rev. 01: ilk yayının tarihi kalır, yeni satırın tarihi kapak tarihi olur
+  RevLog.apply(p, RevLog.plan(p, '01'), '2026-12-01');
+  assert.deepEqual([p.rev, p.tarih], ['01', '2026-12-01']);
+  RevLog.setField(p, 1, 'aciklama', 'Pompa eklendi');
+  assert.deepEqual(revTable(p), [['00', '2026-11-10', 'İlk yayın'], ['01', '2026-12-01', 'Pompa eklendi']]);
+  svg = Sheet.sheetSvg(p, d, 0, { brands: {} });
+  assert.ok(svg.includes('>10.11.2026</text>') && svg.includes('>Pompa eklendi</text>'));
+  assert.equal(count(svg, '>01.12.2026</text>'), 2, 'antetteki tarih ile Rev. 01 satırı aynı');
+
+  // Antette tarih değişince son satır da değişir; tablodaki tarih değişince antet de
+  p.tarih = '2026-12-02';
+  RevLog.mirror(p);
+  assert.equal(p.revizyonlar.find((e) => e.rev === '01').tarih, '2026-12-02');
+  RevLog.setField(p, 1, 'tarih', '2026-12-03');
+  assert.equal(p.tarih, '2026-12-03');
+  RevLog.setField(p, 0, 'tarih', '2026-11-09');
+  assert.equal(p.tarih, '2026-12-03', 'eski satırın tarihi kapağı değiştirmez');
+
+  // Antette en yeni dört revizyon görünür
+  RevLog.apply(p, RevLog.plan(p, '05'), '2027-01-01');
+  assert.deepEqual(RevLog.shown(p).map((r) => r.rev), ['02', '03', '04', '05']);
+});
+
+test('revizyon: yükselince eski tarih korunur, atlanan satır boş kalır; düşünce onay istenir ve tarih geri gelir', () => {
+  const p = { rev: '00', tarih: '2026-10-01', hazirlayan: 'Fatih GÜRAL', revizyonlar: [] };
+  let c = RevLog.plan(p, '3');
+  assert.deepEqual([c.ok, c.from, c.to, c.ask], [true, 0, 3, false]);
+  RevLog.apply(p, c, '2026-11-10');
+  assert.deepEqual(revTable(p).map(([rev, tarih]) => [rev, tarih]), [['00', '2026-10-01'], ['01', ''], ['02', ''], ['03', '2026-11-10']]);
+  assert.equal(p.tarih, '2026-11-10');
+
+  const msgs = () => RevLog.problems(p).map((x) => x.msg);
+  assert.ok(msgs().includes('Rev. 01 tarihi girilmemiş') && msgs().includes('Rev. 03 açıklaması boş'));
+  RevLog.setField(p, 1, 'tarih', '2026-09-01');
+  assert.ok(msgs().includes('Rev. 01 tarihi Rev. 00 tarihinden önce'));
+
+  c = RevLog.plan(p, '01');
+  assert.deepEqual(c.removed, ['02', '03']);
+  assert.equal(c.ask, true, 'kayıtlı satır silinmeden önce sorulur');
+  RevLog.apply(p, c);
+  assert.deepEqual([p.rev, p.tarih], ['01', '2026-09-01'], 'kapak tarihi dönülen revizyonun tarihi');
+  assert.deepEqual(p.revizyonlar.map((e) => e.rev), ['00', '01']);
+
+  assert.equal(RevLog.plan(p, 'A').ok, false);
+  assert.equal(RevLog.plan(p, '100').ok, false);
+  assert.equal(RevLog.plan(p, '1').changed, false, 'aynı revizyon');
+  assert.equal(RevLog.plan({ rev: '1' }, '01').changed, true, 'yazım düzeltilir');
+  assert.deepEqual(['0', '00', 'Rev. 01', 'r2', ' 7 ', '', 'B'].map(RevLog.parse), [0, 0, 1, 2, 7, null, null]);
+});
+
+test('revizyon: eski proje açılınca değişmez; Rev. 01 ve boş geçmiş, 00 girilince ilk yayın olur', () => {
+  const p = { rev: '01', tarih: '2026-11-02', hazirlayan: 'Fatih GÜRAL', revizyonlar: [] };
+  const before = JSON.stringify(p);
+  assert.deepEqual(revTable(p), [['00', '', 'İlk yayın'], ['01', '2026-11-02', '']]);
+  Sheet.sheetSvg(p, Model.createDrawing('A'), 0, { brands: {} });
+  Checks.run(Model.createDrawing('A'), null, null, p);
+  assert.equal(JSON.stringify(p), before, 'okumak ve çizmek kaydı değiştirmez');
+
+  const c = RevLog.plan(p, '00');
+  assert.equal(c.ask, false, 'kaydı olmayan satır sorulmadan kalkar');
+  RevLog.apply(p, c, '2026-11-10');
+  assert.deepEqual([p.rev, p.tarih], ['00', '2026-11-02'], 'ilk yayının tarihi kapaktaki tarih');
+  assert.deepEqual(p.revizyonlar, [{ rev: '00', tarih: '2026-11-02', aciklama: '', hazirlayan: 'Fatih GÜRAL' }]);
+
+  // Eski "Revizyon ekle" kayıtları numarasıyla yerini bulur; sayı olmayan kayıt silinmez
+  const old = { rev: '2', tarih: '2026-08-01', hazirlayan: 'F', revizyonlar: [{ rev: '1', aciklama: 'Eski', tarih: '2026-07-01', hazirlayan: 'F' }, { rev: 'X', aciklama: 'tanımsız' }] };
+  assert.equal(RevLog.revText(old), '02');
+  assert.deepEqual(revTable(old), [['00', '', 'İlk yayın'], ['01', '2026-07-01', 'Eski'], ['02', '2026-08-01', '']]);
+  RevLog.setField(old, 0, 'tarih', '2026-06-01');
+  assert.deepEqual(old.revizyonlar.map((e) => e.rev), ['00', '01', '02', 'X']);
+});
+
+test('revizyon: Kontrol sekmesinde uyarı; panel ve kapak Rev. değişikliğini aynı yoldan yapar', () => {
+  const issues = Checks.run(Model.createDrawing('A'), null, null, Object.assign({}, project, { rev: 'A' }));
+  assert.ok(issues.some((i) => i.code === 'revision' && i.msg.includes('sayı değil')));
+  const read = (f) => fsx.readFileSync(pathx.join(__dirname, '..', f), 'utf8');
+  const app = read('app.js');
+  assert.ok(app.includes('async function changeRevision(value)') && /\r?\n    changeRevision,\r?\n/.test(app));
+  assert.ok(app.includes('PidRevisions.record(drawing, change.rev)'), 'yeni revizyonda bulut için çizim saklanır');
+  assert.ok(app.includes('PidRevLog.mirror(editor.project)'));
+  assert.ok(read('panels.js').includes("onField('mRev', 'change', (el) => goTo(el.value))"));
+  assert.ok(read('covers.js').includes('await app.changeRevision(e.target.value)'));
+  const html = fsx.readFileSync(pathx.join(__dirname, '../../cizim.html'), 'utf8');
+  const at = (src) => html.indexOf(`<script src="${src}"></script>`);
+  assert.ok(at('engine/revlog.js') > 0 && at('engine/revlog.js') < at('engine/sheet.js'));
+});

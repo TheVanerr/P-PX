@@ -612,6 +612,13 @@
       return `${PROJECTS_ROOT}/${name}`;
     }
 
+    /** Bugün, yerel saatle (toISOString gece yarısından sonra bir önceki günü verir) */
+    function localToday() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    /** Yeni proje ilk yayındır: Rev. 00, tarihi bugün */
     function defaultMeta(id) {
       const [seriNo, musteri, ...rest] = String(id).split('-');
       return {
@@ -620,8 +627,8 @@
         model: rest.join('-'),
         firma: 'DOLFIN',
         dil: 'tr',
-        rev: '01',
-        tarih: new Date().toISOString().slice(0, 10),
+        rev: '00',
+        tarih: localToday(),
         hazirlayan: 'Fatih GÜRAL',
         kontrol: 'Furkan BIÇAK',
         onay: 'Furkan BIÇAK',

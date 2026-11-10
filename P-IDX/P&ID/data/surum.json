@@ -1,0 +1,12 @@
+{
+  "surum": 1,
+  "tarih": "2026-11-10",
+  "dosyalar": {
+    "P&ID/data/kod.csv": "8e91c41ef2552a2b3f96b7662b346dae703724b9",
+    "P&ID/data/kod-en.csv": "d77d5a5b7d804f7d6dc6a3bd1c72ea43c7cbb9c6",
+    "P&ID/data/kod-de.csv": "a142520bca1fdf269ce6369a6558485b7b0b7ae6",
+    "P&ID/data/guvenlik.csv": "fc4551df50e0cda3605bce4bfa3c2f817a2e7c60",
+    "P&ID/data/safety.csv": "bccfed9b5ea103a7b1585093b0bb0da0712c9d2f",
+    "P&ID/data/safety-de.csv": "30de8e85f57e73800417e4844fe623839dfe58e1"
+  }
+}

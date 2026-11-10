@@ -165,6 +165,8 @@ test('pnömatik proje: oluşturma, P&ID bağlantısı, kaydetme ve listeleme', a
   const read = await store.engine.readProject(created.id);
   assert.equal(read.meta.pidProje, '0626051-DÜNYA-ULT M200 3B');
   assert.equal(read.meta.pidEtiket, true);
+  assert.equal(read.meta.rev, '00', 'yeni proje ilk yayındır');
+  assert.match(read.meta.tarih, /^\d{4}-\d{2}-\d{2}$/);
   assert.equal(read.drawing, null);
   const drawing = { schema: 1, sheets: [{ id: 's', title: 'Pnömatik', size: 'A3', items: [
     { id: 'v', type: 'symbol', symbol: 'v.52bi', x: 0, y: 0, tag: '1V1', coils: [{ tag: '1Y1', pid: 'V31' }, { tag: '1Y2', pid: 'V32' }] },

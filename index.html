@@ -57,6 +57,7 @@
         <div class="actions">
           <button type="button" id="syncNow" hidden>Şimdi eşitle</button>
           <button type="button" id="importFolder">Klasörden aktar</button>
+          <button type="button" id="updateData" title="Kod listesini ve güvenlik kataloğunu seçilen P&amp;PX klasöründeki sürüme getirir. Projelere ve kayıtlara dokunmaz.">Program verilerini güncelle</button>
           <button type="button" id="backup">Yedek indir</button>
           <button type="button" id="restore">Yedekten yükle</button>
           <button type="button" id="showConnect">GitHub deposuna bağla</button>
@@ -64,6 +65,10 @@
           <input type="file" id="restoreFile" accept=".json" hidden>
         </div>
         <div class="result" id="result" role="status"></div>
+        <div class="actions" id="dataOffer" hidden>
+          <button type="button" class="primary" id="dataApply">Güncelle</button>
+          <button type="button" id="dataCancel">Vazgeç</button>
+        </div>
       </div>
     </div>
 
@@ -100,6 +105,8 @@
       const say = (el, text, isError) => {
         el.textContent = text;
         el.className = isError ? 'result err' : 'result';
+        // Yeni sonuç, bekleyen güncelleme sorusunu geçersiz kılar
+        if (el.id === 'result') $('dataOffer').hidden = true;
       };
 
       /* ── Kurulum ── */
@@ -176,6 +183,83 @@
           say(result, s.error || 'Eşitlendi.', !!s.error);
         });
 
+        /* ── Program verileri: kod listesi ve güvenlik kataloğu ── */
+
+        let offeredDir = null;
+        const keepNote = github ? 'Eski sürüm GitHub geçmişinde kalır.' : 'Eski sürüm saklanmaz; gerekirse önce "Yedek indir" ile yedek alın.';
+
+        /** Karşılaştırma depodaki son hâlle yapılır: başka bilgisayar daha yeni sürümü yazmış olabilir */
+        async function syncedFirst() {
+          if (!github) return true;
+          const s = await db.sync();
+          if (s.state === 'ok') return true;
+          say(result, `Depoyla eşitlenemedi, program verileri değişmedi. ${s.error || ''}`.trim(), true);
+          return false;
+        }
+
+        function offer(dir, lines) {
+          say(result, lines.concat(keepNote, 'Güncellensin mi?').join('\n'));
+          offeredDir = dir;
+          $('dataOffer').hidden = false;
+        }
+
+        $('updateData').addEventListener('click', async () => {
+          try {
+            const dir = await window.showDirectoryPicker({ id: 'ppx-import', mode: 'read' });
+            say(result, 'Program verileri karşılaştırılıyor…');
+            if (!(await syncedFirst())) return;
+            const plan = await PpxFs.planProgramData(db, dir);
+            if (!plan.ok) {
+              say(result, plan.error, true);
+              return;
+            }
+            if (!plan.files.length) {
+              // Katalog aynı, yalnız sürüm bilgisi eksik: sorulmadan yazılır
+              if (plan.version && (await PpxFs.applyProgramData(db, plan)).ok) db.sync();
+              say(result, `Kod listesi ve güvenlik kataloğu güncel (sürüm ${plan.to.surum}).`);
+              return;
+            }
+            offer(dir, PpxFs.programDataSummary(plan));
+          } catch (e) {
+            if (e.name !== 'AbortError') say(result, e.message, true);
+          }
+        });
+
+        $('dataApply').addEventListener('click', async () => {
+          const dir = offeredDir;
+          offeredDir = null;
+          if (!dir) return;
+          say(result, 'Güncelleniyor…');
+          try {
+            if (!(await syncedFirst())) return;
+            // Onaydan sonra yeniden karşılaştırılır: arada eşitleme daha yeni sürüm getirmiş olabilir
+            const plan = await PpxFs.planProgramData(db, dir);
+            if (!plan.ok) {
+              say(result, plan.error, true);
+              return;
+            }
+            const res = await PpxFs.applyProgramData(db, plan);
+            if (!res.ok) {
+              say(result, res.error, true);
+              return;
+            }
+            await refresh();
+            const done = res.written
+              ? `${res.written} dosya güncellendi, kod listesi ve güvenlik kataloğu sürüm ${plan.to.surum}. Açık P&ID ve Pnömatik sayfalarını yenileyin.`
+              : `Kod listesi ve güvenlik kataloğu zaten güncel (sürüm ${plan.to.surum}).`;
+            say(result, done);
+            const s = await db.sync();
+            if (s.error) say(result, `${done}\nDepoya henüz gönderilemedi, bu cihazda bekliyor: ${s.error}`, s.state === 'error');
+          } catch (e) {
+            say(result, e.message, true);
+          }
+        });
+
+        $('dataCancel').addEventListener('click', () => {
+          offeredDir = null;
+          say(result, 'Program verileri değişmedi.');
+        });
+
         $('importFolder').addEventListener('click', async () => {
           try {
             const dir = await window.showDirectoryPicker({ id: 'ppx-import', mode: 'read' });
@@ -190,6 +274,9 @@
             say(result, lines.join('\n'));
             await refresh();
             db.sync();
+            // Korunan katalog programdakinden farklıysa güncelleme önerilir; onayda yeniden eşitlenip karşılaştırılır
+            const plan = await PpxFs.planProgramData(db, dir).catch(() => null);
+            if (plan && plan.ok && plan.files.length) offer(dir, lines.concat('', PpxFs.programDataSummary(plan)));
           } catch (e) {
             if (e.name !== 'AbortError') say(result, e.message, true);
           }

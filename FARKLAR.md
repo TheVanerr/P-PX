@@ -24,6 +24,8 @@ Ortak zayıflıklar: otomatik yeniden deneme yoktu, çakışma algılanmıyordu,
 | Pnömatik gruplama | Yoktu | P&ID ile aynı: Ctrl+G / Ctrl+Shift+G, hatlarıyla grup, katı parça gibi taşıma (fare ve ok tuşları), tık grubu, ikinci tık parçayı seçer |
 | Pnömatik belge dili | Yalnız kapaktaki açılır listede | P&ID ile aynı: Kapak ve Açıklama pencerelerinde TR / EN / DE, PDF'te birden çok dil (her dil tam belge), hazır yazılar (BASINÇLI HAVA, EGZOZ, ŞEMA 2, çizim adı) çevrilir |
 | Pnömatik boyut | Yoktu | P&ID ile aynı: Boyut (%), Küçült / Büyüt, [ ve ], aralıklarla ölçekleme (Shift). Bobin ve sensör etiketleri birlikte küçülür, okunur kalsın diye en az %70 boyutta yazılır |
+| Revizyon tablosu | İkisinde de: Rev. ve tablo ayrı girilirdi, kapak tarihi tablodaki tarihten ayrışabilirdi; yeni proje Rev. 01 | İkisinde de tablo Rev.'den oluşur (ortak `engine/revlog.js`, iki kopya aynı kalmalı, test denetler): 00 ilk yayın, kapak tarihi geçerli revizyonun tarihi; yeni proje Rev. 00 |
+| Otomatik açıklamalar | "PLC'ye sinyal verir" gibi PLC'ye bağlı ifadeler | İkisinde de "kontrol ünitesi (PLC/Röle)"; EN "control unit (PLC/relay)", DE "Steuereinheit (SPS/Relais)" |
 
 Pnömatiğe özgü fark: sayfa bağlantıları (`ŞEMA 2`) hava hattını sayfa numarasıyla sürdürür, bu yüzden sıralama, çoğaltma ve silme bu numaraları da günceller. P&ID'de bağlantı yalnız yazıdır, güncelleme gerekmez.
 

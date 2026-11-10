@@ -284,6 +284,8 @@ test('proje: oluşturma, listeleme, kaydetme ve makine bağlantısı', async (t)
   assert.equal(opened.machine.id, 'm1');
   assert.deepEqual(opened.machineCodes, ['PE02', 'PS05']);
   assert.equal(opened.meta.makineId, 'm1');
+  assert.equal(opened.meta.rev, '00', 'yeni proje ilk yayındır');
+  assert.match(opened.meta.tarih, /^\d{4}-\d{2}-\d{2}$/);
 
   const drawing = { schema: 1, sheets: [{ items: [{}, {}] }] };
   const saved = await store.engine.saveProject({ id: res.id, drawing, meta: Object.assign(opened.meta, { rev: '02' }) });

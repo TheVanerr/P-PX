@@ -39,306 +39,306 @@ GE07;2. Yağ Sıyırıcı Getriebemotor;Erzeugt mechanische Antriebsbewegung fü
 GE08;1. Yükleme( Konveyör) Getriebemotor;Erzeugt mechanische Antriebsbewegung für 1. Yükleme( Konveyör) Getriebemotor. Angeschlossen an angetriebenes Aggregat, Positionsrückmeldung und Motorsteuerkreis.
 GE09;2. Yükleme (Konveyör) Getriebemotor;Erzeugt mechanische Antriebsbewegung für 2. Yükleme (Konveyör) Getriebemotor. Angeschlossen an angetriebenes Aggregat, Positionsrückmeldung und Motorsteuerkreis.
 GE10;xxx Getriebemotor;Erzeugt mechanische Antriebsbewegung für xxx Getriebemotor. Angeschlossen an angetriebenes Aggregat, Positionsrückmeldung und Motorsteuerkreis.
-R01;1. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R02;1. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R03;1. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R04;1. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R05;1. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R06;2. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R07;2. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R08;2. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R09;2. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R10;2. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R11;3. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R12;3. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R13;3. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R14;3. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R15;3. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R16;4. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R17;4. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R18;4. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R19;4. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R20;4. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R21;1. Trocknung Heizgruppe;Erzeugt Heizung für 1. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R22;2. Trocknung Heizgruppe;Erzeugt Heizung für 2. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R23;3. Trocknung Heizgruppe;Erzeugt Heizung für 3. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R24;4. Trocknung Heizgruppe;Erzeugt Heizung für 4. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R25;5. Trocknung Heizgruppe;Erzeugt Heizung für 5. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R26;6. Trocknung Heizgruppe;Erzeugt Heizung für 6. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R27;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R28;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R29;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-R30;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und SPS-Wärmeregelkreis.
-TD01;1. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 1. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD02;2. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 2. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD03;3. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 3. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD04;4. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 4. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD05;5. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 5. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD06;6. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 6. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD07;7. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 7. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD08;8. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 8. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD09;9. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 9. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
-TD10;10. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 10. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und SPS-Prozesssteuerung.
+R01;1. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R02;1. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R03;1. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R04;1. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R05;1. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 1. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R06;2. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R07;2. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R08;2. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R09;2. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R10;2. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 2. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R11;3. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R12;3. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R13;3. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R14;3. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R15;3. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 3. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R16;4. Prozesstank 1. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 1. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R17;4. Prozesstank 2. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 2. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R18;4. Prozesstank 3. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 3. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R19;4. Prozesstank 4. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 4. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R20;4. Prozesstank 5. Heizwiderstand;Erzeugt Heizung für 4. Prozesstank 5. Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R21;1. Trocknung Heizgruppe;Erzeugt Heizung für 1. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R22;2. Trocknung Heizgruppe;Erzeugt Heizung für 2. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R23;3. Trocknung Heizgruppe;Erzeugt Heizung für 3. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R24;4. Trocknung Heizgruppe;Erzeugt Heizung für 4. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R25;5. Trocknung Heizgruppe;Erzeugt Heizung für 5. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R26;6. Trocknung Heizgruppe;Erzeugt Heizung für 6. Trocknung Heizgruppe. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R27;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R28;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R29;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+R30;xxx Heizwiderstand;Erzeugt Heizung für xxx Heizwiderstand. Angeschlossen an Temperatursensor, SSR/Schütz und Steuereinheit (SPS/Relais).
+TD01;1. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 1. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD02;2. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 2. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD03;3. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 3. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD04;4. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 4. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD05;5. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 5. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD06;6. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 6. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD07;7. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 7. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD08;8. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 8. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD09;9. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 9. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
+TD10;10. Prozesstank Ultraschall-Generatorsatz;Versorgt den Ultraschall-Reinigungsgenerator für 10. Prozesstank Ultraschall-Generatorsatz. Angeschlossen an Wandler, Prozesstank und Steuereinheit (SPS/Relais).
 L01;Signalleuchte - Warnleuchte;Dient der Signalisierung oder Beleuchtung für Signalleuchte - Warnleuchte. Angeschlossen an Versorgung und Steuerkreis.
 L02;Zelle İçi Aydınlatma Lambası;Dient der Signalisierung oder Beleuchtung für Zelle İçi Aydınlatma Lambası. Angeschlossen an Versorgung und Steuerkreis.
 L03;Pano Lambası;Dient der Signalisierung oder Beleuchtung für Pano Lambası. Angeschlossen an Versorgung und Steuerkreis.
 L04;xxx Lambası;Dient der Signalisierung oder Beleuchtung für xxx Lambası. Angeschlossen an Versorgung und Steuerkreis.
 L05;xxx Lambası;Dient der Signalisierung oder Beleuchtung für xxx Lambası. Angeschlossen an Versorgung und Steuerkreis.
-LS01;1. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS02;1. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS03;1. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS04;2. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS05;2. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS06;2. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS07;3. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS08;3. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS09;3. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS10;4. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS11;4. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS12;4. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS13;Zelle İçi 1. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 1. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS14;Zelle İçi 2. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 2. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS15;Zelle İçi 3. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 3. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS16;Zelle İçi 4. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 4. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS17;Ablauf Hattı 1. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 1. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS18;Ablauf Hattı 2. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 2. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS19;Ablauf Hattı 3. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 3. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS20;Ablauf Hattı 4. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 4. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS21;Vakum Pumpe Tank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für Vakum Pumpe Tank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS22;Vakum Pumpe Tank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für Vakum Pumpe Tank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS23;1. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS24;2. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS25;3. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS26;Sızıntı Tavası Uyarı Füllstandsensor;Überwacht den Flüssigkeitsstand für Sızıntı Tavası Uyarı Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS27;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS28;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS29;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-LS30;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und SPS-Digitaleingang.
-SS01;El Koruma Sensor;Überwacht Sicherheits-/Zugangsstatus für El Koruma Sensor. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS02;Interlock Kilit;Überwacht Sicherheits-/Zugangsstatus für Interlock Kilit. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS03;Işın Bariyeri Safety Sensor;Überwacht Sicherheits-/Zugangsstatus für Işın Bariyeri Safety Sensor. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS04;İnterlock Kilit Sensor;Überwacht Sicherheits-/Zugangsstatus für İnterlock Kilit Sensor. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS05;1. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 1. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS06;2. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 2. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS07;3. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 3. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS08;4. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 4. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS09;5. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 5. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS10;6. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 6. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-SS11;7. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 7. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und SPS-Sicherheitseingang.
-PRS01;Korb Pozisyon 1 Sensor;Erkennt Anlagen-/Teileposition für Korb Pozisyon 1 Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS02;Korb Pozisyon 2 Sensor;Erkennt Anlagen-/Teileposition für Korb Pozisyon 2 Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS03;1. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 1. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS04;2. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 2. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS05;3. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 3. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS06;1. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 1. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS07;2. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 2. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS08;3. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 3. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS09;xxx Prox Sensor;Erkennt Anlagen-/Teileposition für xxx Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-PRS10;xxx Prox Sensor;Erkennt Anlagen-/Teileposition für xxx Prox Sensor. Angeschlossen an Mechanik und SPS-Digitaleingang.
-SWB01;1. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB02;2. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB03;3. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB04;4. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB05;Conta Şişirme Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Conta Şişirme Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB06;Conta Söndürme Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Conta Söndürme Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB07;1. Trocknung Hattı Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Trocknung Hattı Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB08;2. Trocknung Hattı Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Trocknung Hattı Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB09;Zelle Ablauf Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Zelle Ablauf Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB10;Zelle Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Zelle Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB11;Proses Ana Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Proses Ana Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB12;Hat Temizleme Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Hat Temizleme Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB13;By-Pass Hattı Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für By-Pass Hattı Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB14;Ana Yıkama Nozul Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Ana Yıkama Nozul Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB15;Saugung Kollektör Temizleme Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Saugung Kollektör Temizleme Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB16;1. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB17;2. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB18;3. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB19;4. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB20;1. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB21;2. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB22;3. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB23;4. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB24;1. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB25;2. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB26;3. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB27;1. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB28;2. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB29;3. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB30;Arıtma Dönüş Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Arıtma Dönüş Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB31;1. Eşanjör Gidiş Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Eşanjör Gidiş Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB32;1. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB33;2. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB34;3. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB35;Şebeke Suyu ile Durulama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Şebeke Suyu ile Durulama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB36;Korb Alma Kontrol Schaltbox 1;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Korb Alma Kontrol Schaltbox 1. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB37;Korb Alma Kontrol Schaltbox 2;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Korb Alma Kontrol Schaltbox 2. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB38;1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB39;2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB40;1. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB41;2. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB42;1. Proses Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB43;2. Proses Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB44;Hat Temizleme Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Hat Temizleme Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB45;Egzos Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Egzos Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und SPS-Digitaleingang.
-SWB46;1. Tank Magnetventil für automatische Befüllung;Öffnet und schließt die automatische Befüllung des Tanks. Angeschlossen an Versorgungsleitung, Füllstandsensor und SPS-Digitalausgang.
-SWB47;2. Tank Magnetventil für automatische Befüllung;Öffnet und schließt die automatische Befüllung des Tanks. Angeschlossen an Versorgungsleitung, Füllstandsensor und SPS-Digitalausgang.
-SW01;Zelle Deckel Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für Zelle Deckel Açık Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW02;Zelle Deckel Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für Zelle Deckel Kapalı Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW03;1. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 1. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW04;1. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 1. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW05;2. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 2. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW06;2. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 2. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW07;3. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 3. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW08;3. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 3. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW09;4. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 4. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW10;4. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 4. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW11;Korb 1. Pozisyon Schalter;Liefert mechanische Positionsrückmeldung für Korb 1. Pozisyon Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW12;Korb 2. Pozisyon Schalter;Liefert mechanische Positionsrückmeldung für Korb 2. Pozisyon Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW13;1. Flow Schalter;Liefert mechanische Positionsrückmeldung für 1. Flow Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW14;2. Flow Schalter;Liefert mechanische Positionsrückmeldung für 2. Flow Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW15;3. Flow Schalter;Liefert mechanische Positionsrückmeldung für 3. Flow Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW16;4. Flow Schalter;Liefert mechanische Positionsrückmeldung für 4. Flow Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW17;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW18;Zelle Kapağı Kontrol Schalter;Liefert mechanische Positionsrückmeldung für Zelle Kapağı Kontrol Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW19;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-SW20;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und SPS-Digitaleingang.
-PPS01;Ana Zelle Deckel Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Ana Zelle Deckel Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS02;Ana Zelle Deckel Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Ana Zelle Deckel Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS03;1. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS04;1. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS05;1. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS06;1. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS07;2. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS08;2. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS09;2. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS10;2. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS11;Zelle Tahliye Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Zelle Tahliye Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS12;Zelle Tahliye Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Zelle Tahliye Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS13;1. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS14;1. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS15;1. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS16;2. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS17;2. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS18;2. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS19;3. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS20;3. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS21;3. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS22;4. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS23;4. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS24;4. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS25;3. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS26;3. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS27;3. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS28;3. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS29;4. Prozesstank Umlenkzylinder-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Umlenkzylinder-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS30;4. Prozesstank Umlenkzylinder-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Umlenkzylinder-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS31;1. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS32;1. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS33;2. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS34;2. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS35;3. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PPS36;3. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und SPS-Digitaleingang.
-PS05;Giriş Su Basınç Sensor;Misst oder überwacht Prozessdruck für Giriş Su Basınç Sensor. Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS06;Giriş Hava Basıncı Basınç Sensor;Misst oder überwacht Prozessdruck für Giriş Hava Basıncı Basınç Sensor. Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-TC01;1. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 1. Prozesstank Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC02;2. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 2. Prozesstank Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC03;3. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 3. Prozesstank Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC04;4. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 4. Prozesstank Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC05;1. Trocknung Temperaturfühler;Misst Prozesstemperatur für 1. Trocknung Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC06;2. Trocknung Temperaturfühler;Misst Prozesstemperatur für 2. Trocknung Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC07;Zelle İçi Temperaturfühler;Misst Prozesstemperatur für Zelle İçi Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC08;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC09;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-TC10;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an SPS-Analogeingang und Wärmeregelkreis.
-PS01;1. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 1. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS02;2. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 2. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS03;3. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 3. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS04;4. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 4. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS05;Zelle İçi Vakum Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Zelle İçi Vakum Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS06;Giriş Su Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Giriş Su Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS07;Giriş Hava Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Giriş Hava Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS08;1. Druckschalter;Misst oder überwacht Prozessdruck für 1. Druckschalter. Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS09;2. Druckschalter;Misst oder überwacht Prozessdruck für 2. Druckschalter. Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PS10;xxxx Sensor;Misst oder überwacht Prozessdruck für xxxx Sensor. Angeschlossen an Leitung, Pumpe/Ventil und SPS-Eingang.
-PHS01;1. Prozesstank pH Sensor;Misst Prozess-pH für 1. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und SPS-Analogeingang.
-PHS02;2. Prozesstank pH Sensor;Misst Prozess-pH für 2. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und SPS-Analogeingang.
-PHS03;3. Prozesstank pH Sensor;Misst Prozess-pH für 3. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und SPS-Analogeingang.
-PHS04;4. Prozesstank pH Sensor;Misst Prozess-pH für 4. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und SPS-Analogeingang.
-PHS05;Yıkama Hattı pH Sensor;Misst Prozess-pH für Yıkama Hattı pH Sensor. Angeschlossen an Dosierung/Prozesstank und SPS-Analogeingang.
-CS01;1. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 1. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und SPS-Analogeingang.
-CS02;2. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 2. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und SPS-Analogeingang.
-CS03;3. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 3. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und SPS-Analogeingang.
-CS04;4. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 4. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und SPS-Analogeingang.
-CS05;xxxx İletkenlik Sensor;Misst Prozessleitfähigkeit für xxxx İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und SPS-Analogeingang.
-V01;1. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V02;2. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V03;3. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V04;4. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V05;Conta Şişirme Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für Conta Şişirme Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V06;Conta Söndürme Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für Conta Söndürme Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V07;1. Trocknung Hattı Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Trocknung Hattı Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V08;2. Trocknung Hattı Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Trocknung Hattı Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V09;Zelle Ablauf Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Zelle Ablauf Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V10;Zelle Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Zelle Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V11;Proses Ana Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Proses Ana Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V12;Hat Temizleme Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Hat Temizleme Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V13;By-Pass Hattı Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für By-Pass Hattı Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V14;Ana Yıkama Nozzle Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Ana Yıkama Nozzle Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V15;Saugung Kollektör Temizleme Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Saugung Kollektör Temizleme Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V16;1. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V17;2. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V18;3. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V19;4. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V20;1. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V21;2. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V22;3. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V23;4. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V24;1. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V25;2. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V26;3. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V27;1. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V28;2. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V29;3. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V30;Arıtma Dönüş Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für Arıtma Dönüş Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V31;1. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V32;1. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V33;2. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V34;2. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V35;3. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V36;3. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V37;4. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V38;4. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V39;Zelle Boşaltma Pistonu Ventil Aç Ventil'i;Steuert Strömungsführung oder Absperrung für Zelle Boşaltma Pistonu Ventil Aç Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V40;Zelle Boşaltma Pistonu Ventil Kapat Ventil'i;Steuert Strömungsführung oder Absperrung für Zelle Boşaltma Pistonu Ventil Kapat Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V41;Korb Alma Kontrol Ventil 1;Steuert Strömungsführung oder Absperrung für Korb Alma Kontrol Ventil 1. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V42;Korb Alma Kontol Ventil 2;Steuert Strömungsführung oder Absperrung für Korb Alma Kontol Ventil 2. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V43;1. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 1. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V44;2. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 2. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V45;1. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 1. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V46;2. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 2. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V47;Ana Ventil;Steuert Strömungsführung oder Absperrung für Ana Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V48;Deckel Aç Ventil'i;Steuert Strömungsführung oder Absperrung für Deckel Aç Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V49;Deckel Kapat Ventil'i;Steuert Strömungsführung oder Absperrung für Deckel Kapat Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V50;1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V51;2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V52;3. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V53;4. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V54;1. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V55;2. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V56;3. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 3. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V57;4. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 4. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V58;Egzos Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für Egzos Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V59;1. Proses Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Proses Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V60;2. Proses Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Proses Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und SPS-Digitalausgang.
-V61;1. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V62;1. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V63;2. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V64;2. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V65;3. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V66;3. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und SPS-Digitalausgang.
-V67;1. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
-V68;1. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
-V69;2. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
-V70;2. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
-V71;3. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
-V72;3. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und SPS-Digitalausgang.
+LS01;1. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS02;1. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS03;1. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS04;2. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS05;2. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS06;2. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS07;3. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS08;3. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS09;3. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS10;4. Prozesstank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS11;4. Prozesstank Orta Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Orta Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS12;4. Prozesstank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für 4. Prozesstank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS13;Zelle İçi 1. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 1. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS14;Zelle İçi 2. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 2. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS15;Zelle İçi 3. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 3. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS16;Zelle İçi 4. Füllstandsensor;Überwacht den Flüssigkeitsstand für Zelle İçi 4. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS17;Ablauf Hattı 1. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 1. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS18;Ablauf Hattı 2. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 2. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS19;Ablauf Hattı 3. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 3. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS20;Ablauf Hattı 4. Füllstandsensor;Überwacht den Flüssigkeitsstand für Ablauf Hattı 4. Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS21;Vakum Pumpe Tank Üst Füllstandsensor;Überwacht den Flüssigkeitsstand für Vakum Pumpe Tank Üst Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS22;Vakum Pumpe Tank Alt Füllstandsensor;Überwacht den Flüssigkeitsstand für Vakum Pumpe Tank Alt Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS23;1. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 1. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS24;2. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 2. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS25;3. Dosierpumpe Füllstandsensor;Überwacht den Flüssigkeitsstand für 3. Dosierpumpe Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS26;Sızıntı Tavası Uyarı Füllstandsensor;Überwacht den Flüssigkeitsstand für Sızıntı Tavası Uyarı Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS27;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS28;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS29;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+LS30;xxx Füllstandsensor;Überwacht den Flüssigkeitsstand für xxx Füllstandsensor. Angeschlossen an Tank/Leitung, Füll-/Ablaufventile, Pumpenverriegelung und Steuereinheit (SPS/Relais).
+SS01;El Koruma Sensor;Überwacht Sicherheits-/Zugangsstatus für El Koruma Sensor. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS02;Interlock Kilit;Überwacht Sicherheits-/Zugangsstatus für Interlock Kilit. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS03;Işın Bariyeri Safety Sensor;Überwacht Sicherheits-/Zugangsstatus für Işın Bariyeri Safety Sensor. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS04;İnterlock Kilit Sensor;Überwacht Sicherheits-/Zugangsstatus für İnterlock Kilit Sensor. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS05;1. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 1. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS06;2. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 2. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS07;3. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 3. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS08;4. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 4. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS09;5. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 5. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS10;6. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 6. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+SS11;7. KAPAK RFID SENSÖRÜ;Überwacht Sicherheits-/Zugangsstatus für 7. KAPAK RFID SENSÖRÜ. Angeschlossen an Verriegelungskreis und Sicherheitskreis der Steuereinheit (SPS/Relais).
+PRS01;Korb Pozisyon 1 Sensor;Erkennt Anlagen-/Teileposition für Korb Pozisyon 1 Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS02;Korb Pozisyon 2 Sensor;Erkennt Anlagen-/Teileposition für Korb Pozisyon 2 Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS03;1. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 1. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS04;2. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 2. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS05;3. Konveyör Giriş Prox Sensor;Erkennt Anlagen-/Teileposition für 3. Konveyör Giriş Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS06;1. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 1. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS07;2. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 2. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS08;3. Konveyör Çıkış Prox Sensor;Erkennt Anlagen-/Teileposition für 3. Konveyör Çıkış Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS09;xxx Prox Sensor;Erkennt Anlagen-/Teileposition für xxx Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+PRS10;xxx Prox Sensor;Erkennt Anlagen-/Teileposition für xxx Prox Sensor. Angeschlossen an Mechanik und Steuereinheit (SPS/Relais).
+SWB01;1. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB02;2. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB03;3. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB04;4. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Proses Pumpe Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB05;Conta Şişirme Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Conta Şişirme Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB06;Conta Söndürme Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Conta Söndürme Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB07;1. Trocknung Hattı Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Trocknung Hattı Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB08;2. Trocknung Hattı Aktüator Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Trocknung Hattı Aktüator Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB09;Zelle Ablauf Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Zelle Ablauf Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB10;Zelle Saugung Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Zelle Saugung Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB11;Proses Ana Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Proses Ana Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB12;Hat Temizleme Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Hat Temizleme Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB13;By-Pass Hattı Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für By-Pass Hattı Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB14;Ana Yıkama Nozul Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Ana Yıkama Nozul Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB15;Saugung Kollektör Temizleme Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Saugung Kollektör Temizleme Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB16;1. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB17;2. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB18;3. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB19;4. Proses Geri Dönüş Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Proses Geri Dönüş Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB20;1. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB21;2. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB22;3. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB23;4. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 4. Prozesstank Oto. Dolum Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB24;1. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB25;2. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB26;3. Prozesstank Kaskat Stellantrieb Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Prozesstank Kaskat Stellantrieb Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB27;1. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB28;2. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB29;3. Tank Ablauf Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Tank Ablauf Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB30;Arıtma Dönüş Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Arıtma Dönüş Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB31;1. Eşanjör Gidiş Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Eşanjör Gidiş Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB32;1. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB33;2. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB34;3. Tank İçi Yıkama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 3. Tank İçi Yıkama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB35;Şebeke Suyu ile Durulama Aktuatör Ventil Schaltbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Şebeke Suyu ile Durulama Aktuatör Ventil Schaltbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB36;Korb Alma Kontrol Schaltbox 1;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Korb Alma Kontrol Schaltbox 1. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB37;Korb Alma Kontrol Schaltbox 2;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Korb Alma Kontrol Schaltbox 2. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB38;1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB39;2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB40;1. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB41;2. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Zelleden Pumpeya Saugung Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB42;1. Proses Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 1. Proses Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB43;2. Proses Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für 2. Proses Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB44;Hat Temizleme Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Hat Temizleme Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB45;Egzos Hattı Stellantrieb Ventil Switchbox;Erfasst Offen/Geschlossen-Rückmeldung des Feldstellantriebs für Egzos Hattı Stellantrieb Ventil Switchbox. Angeschlossen an Stellventil, Magnetventil und Steuereinheit (SPS/Relais).
+SWB46;1. Tank Magnetventil für automatische Befüllung;Öffnet und schließt die automatische Befüllung des Tanks. Angeschlossen an Versorgungsleitung, Füllstandsensor und Steuereinheit (SPS/Relais).
+SWB47;2. Tank Magnetventil für automatische Befüllung;Öffnet und schließt die automatische Befüllung des Tanks. Angeschlossen an Versorgungsleitung, Füllstandsensor und Steuereinheit (SPS/Relais).
+SW01;Zelle Deckel Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für Zelle Deckel Açık Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW02;Zelle Deckel Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für Zelle Deckel Kapalı Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW03;1. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 1. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW04;1. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 1. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW05;2. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 2. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW06;2. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 2. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW07;3. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 3. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW08;3. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 3. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW09;4. Prozesstank Kapağı Açık Konumda Schalter;Liefert mechanische Positionsrückmeldung für 4. Prozesstank Kapağı Açık Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW10;4. Prozesstank Kapağı Kapalı Konumda Schalter;Liefert mechanische Positionsrückmeldung für 4. Prozesstank Kapağı Kapalı Konumda Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW11;Korb 1. Pozisyon Schalter;Liefert mechanische Positionsrückmeldung für Korb 1. Pozisyon Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW12;Korb 2. Pozisyon Schalter;Liefert mechanische Positionsrückmeldung für Korb 2. Pozisyon Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW13;1. Flow Schalter;Liefert mechanische Positionsrückmeldung für 1. Flow Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW14;2. Flow Schalter;Liefert mechanische Positionsrückmeldung für 2. Flow Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW15;3. Flow Schalter;Liefert mechanische Positionsrückmeldung für 3. Flow Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW16;4. Flow Schalter;Liefert mechanische Positionsrückmeldung für 4. Flow Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW17;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW18;Zelle Kapağı Kontrol Schalter;Liefert mechanische Positionsrückmeldung für Zelle Kapağı Kontrol Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW19;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+SW20;xxx Schalter;Liefert mechanische Positionsrückmeldung für xxx Schalter. Angeschlossen an Aggregat und Steuereinheit (SPS/Relais).
+PPS01;Ana Zelle Deckel Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Ana Zelle Deckel Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS02;Ana Zelle Deckel Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Ana Zelle Deckel Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS03;1. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS04;1. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS05;1. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS06;1. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS07;2. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS08;2. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS09;2. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS10;2. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS11;Zelle Tahliye Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Zelle Tahliye Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS12;Zelle Tahliye Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für Zelle Tahliye Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS13;1. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS14;1. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS15;1. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS16;2. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS17;2. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS18;2. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS19;3. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS20;3. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS21;3. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS22;4. Prozesstank Lift Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS23;4. Prozesstank Lift Pistonu Ara Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Ara Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS24;4. Prozesstank Lift Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Lift Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS25;3. Prozesstank 1. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 1. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS26;3. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 1. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS27;3. Prozesstank 2. Yönlendirme Pistonu Açık Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 2. Yönlendirme Pistonu Açık Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS28;3. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Prozesstank 2. Yönlendirme Pistonu Kapalı Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS29;4. Prozesstank Umlenkzylinder-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Umlenkzylinder-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS30;4. Prozesstank Umlenkzylinder-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 4. Prozesstank Umlenkzylinder-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS31;1. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS32;1. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 1. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS33;2. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS34;2. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 2. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS35;3. Tank Deckel-offen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Tank Deckel-offen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PPS36;3. Tank Deckel-geschlossen-Sensor;Liefert Pneumatikzylinder-Positionsrückmeldung für 3. Tank Deckel-geschlossen-Sensor. Angeschlossen an Zylinderventil, Magnetventil und Steuereinheit (SPS/Relais).
+PS05;Giriş Su Basınç Sensor;Misst oder überwacht Prozessdruck für Giriş Su Basınç Sensor. Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS06;Giriş Hava Basıncı Basınç Sensor;Misst oder überwacht Prozessdruck für Giriş Hava Basıncı Basınç Sensor. Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+TC01;1. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 1. Prozesstank Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC02;2. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 2. Prozesstank Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC03;3. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 3. Prozesstank Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC04;4. Prozesstank Temperaturfühler;Misst Prozesstemperatur für 4. Prozesstank Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC05;1. Trocknung Temperaturfühler;Misst Prozesstemperatur für 1. Trocknung Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC06;2. Trocknung Temperaturfühler;Misst Prozesstemperatur für 2. Trocknung Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC07;Zelle İçi Temperaturfühler;Misst Prozesstemperatur für Zelle İçi Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC08;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC09;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+TC10;xxx Temperaturfühler;Misst Prozesstemperatur für xxx Temperaturfühler. Angeschlossen an Steuereinheit (SPS/Relais) und Wärmeregelkreis.
+PS01;1. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 1. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS02;2. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 2. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS03;3. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 3. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS04;4. Proses Pumpe Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für 4. Proses Pumpe Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS05;Zelle İçi Vakum Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Zelle İçi Vakum Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS06;Giriş Su Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Giriş Su Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS07;Giriş Hava Basınç Sensor ( 4-20 mA);Misst oder überwacht Prozessdruck für Giriş Hava Basınç Sensor ( 4-20 mA). Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS08;1. Druckschalter;Misst oder überwacht Prozessdruck für 1. Druckschalter. Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS09;2. Druckschalter;Misst oder überwacht Prozessdruck für 2. Druckschalter. Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PS10;xxxx Sensor;Misst oder überwacht Prozessdruck für xxxx Sensor. Angeschlossen an Leitung, Pumpe/Ventil und Steuereinheit (SPS/Relais).
+PHS01;1. Prozesstank pH Sensor;Misst Prozess-pH für 1. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und Steuereinheit (SPS/Relais).
+PHS02;2. Prozesstank pH Sensor;Misst Prozess-pH für 2. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und Steuereinheit (SPS/Relais).
+PHS03;3. Prozesstank pH Sensor;Misst Prozess-pH für 3. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und Steuereinheit (SPS/Relais).
+PHS04;4. Prozesstank pH Sensor;Misst Prozess-pH für 4. Prozesstank pH Sensor. Angeschlossen an Dosierung/Prozesstank und Steuereinheit (SPS/Relais).
+PHS05;Yıkama Hattı pH Sensor;Misst Prozess-pH für Yıkama Hattı pH Sensor. Angeschlossen an Dosierung/Prozesstank und Steuereinheit (SPS/Relais).
+CS01;1. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 1. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und Steuereinheit (SPS/Relais).
+CS02;2. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 2. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und Steuereinheit (SPS/Relais).
+CS03;3. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 3. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und Steuereinheit (SPS/Relais).
+CS04;4. Prozesstank İletkenlik Sensor;Misst Prozessleitfähigkeit für 4. Prozesstank İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und Steuereinheit (SPS/Relais).
+CS05;xxxx İletkenlik Sensor;Misst Prozessleitfähigkeit für xxxx İletkenlik Sensor. Angeschlossen an Prozesstank, Dosierleitung und Steuereinheit (SPS/Relais).
+V01;1. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V02;2. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V03;3. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V04;4. Proses Pumpe Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Proses Pumpe Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V05;Conta Şişirme Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für Conta Şişirme Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V06;Conta Söndürme Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für Conta Söndürme Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V07;1. Trocknung Hattı Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Trocknung Hattı Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V08;2. Trocknung Hattı Aktüator Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Trocknung Hattı Aktüator Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V09;Zelle Ablauf Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Zelle Ablauf Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V10;Zelle Saugung Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Zelle Saugung Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V11;Proses Ana Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Proses Ana Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V12;Hat Temizleme Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Hat Temizleme Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V13;By-Pass Hattı Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für By-Pass Hattı Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V14;Ana Yıkama Nozzle Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Ana Yıkama Nozzle Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V15;Saugung Kollektör Temizleme Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für Saugung Kollektör Temizleme Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V16;1. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V17;2. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V18;3. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V19;4. Proses Geri Dönüş Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Proses Geri Dönüş Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V20;1. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V21;2. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V22;3. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V23;4. Prozesstank Oto. Dolum Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Oto. Dolum Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V24;1. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V25;2. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V26;3. Prozesstank Kaskat Stellantrieb Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Kaskat Stellantrieb Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V27;1. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 1. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V28;2. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 2. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V29;3. Tank Ablauf Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für 3. Tank Ablauf Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V30;Arıtma Dönüş Aktuatör Ventil valfi;Steuert Strömungsführung oder Absperrung für Arıtma Dönüş Aktuatör Ventil valfi. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V31;1. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V32;1. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V33;2. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V34;2. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V35;3. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V36;3. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V37;4. Prozesstank Tahliye Ventil Aç Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Tahliye Ventil Aç Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V38;4. Prozesstank Tahliye Ventil Kapat Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstank Tahliye Ventil Kapat Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V39;Zelle Boşaltma Pistonu Ventil Aç Ventil'i;Steuert Strömungsführung oder Absperrung für Zelle Boşaltma Pistonu Ventil Aç Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V40;Zelle Boşaltma Pistonu Ventil Kapat Ventil'i;Steuert Strömungsführung oder Absperrung für Zelle Boşaltma Pistonu Ventil Kapat Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V41;Korb Alma Kontrol Ventil 1;Steuert Strömungsführung oder Absperrung für Korb Alma Kontrol Ventil 1. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V42;Korb Alma Kontol Ventil 2;Steuert Strömungsführung oder Absperrung für Korb Alma Kontol Ventil 2. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V43;1. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 1. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V44;2. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 2. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V45;1. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 1. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V46;2. Process Tankı Deckel Pistonu Ventil;Steuert Strömungsführung oder Absperrung für 2. Process Tankı Deckel Pistonu Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V47;Ana Ventil;Steuert Strömungsführung oder Absperrung für Ana Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V48;Deckel Aç Ventil'i;Steuert Strömungsführung oder Absperrung für Deckel Aç Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V49;Deckel Kapat Ventil'i;Steuert Strömungsführung oder Absperrung für Deckel Kapat Ventil'i. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V50;1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V51;2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V52;3. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 3. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V53;4. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 4. Prozesstankndan Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V54;1. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V55;2. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V56;3. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 3. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V57;4. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 4. Zelleden Pumpeya Saugung Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V58;Egzos Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für Egzos Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V59;1. Proses Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 1. Proses Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V60;2. Proses Hattı Stellantrieb Ventil Ventil;Steuert Strömungsführung oder Absperrung für 2. Proses Hattı Stellantrieb Ventil Ventil. Angeschlossen an Prozessleitung, Stellantrieb/Magnetventil und Steuereinheit (SPS/Relais).
+V61;1. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V62;1. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V63;2. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V64;2. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V65;3. Tank Korb-Hebeventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V66;3. Tank Korb-Senkventil;Gibt den pneumatischen Befehl zum Heben/Senken des Tankkorbs. Angeschlossen an Korbzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V67;1. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V68;1. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V69;2. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V70;2. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V71;3. Tank Deckel-Öffnungsventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).
+V72;3. Tank Deckel-Schließventil;Gibt den pneumatischen Befehl zum Öffnen/Schließen des Tankdeckels. Angeschlossen an Deckelzylinder, Positionssensoren und Steuereinheit (SPS/Relais).

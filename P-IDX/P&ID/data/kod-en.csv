@@ -39,304 +39,304 @@ GE07;2. Oil Scraper Gear Motor;Provides mechanical drive motion for 2. Oil Scrap
 GE08;1. Yükleme( Conveyor) Gear Motor;Provides mechanical drive motion for 1. Yükleme( Conveyor) Gear Motor. Connected to driven assembly, position/limit feedback and motor control circuit.
 GE09;2. Yükleme (Conveyor) Gear Motor;Provides mechanical drive motion for 2. Yükleme (Conveyor) Gear Motor. Connected to driven assembly, position/limit feedback and motor control circuit.
 GE10;xxx Gear Motor;Provides mechanical drive motion for xxx Gear Motor. Connected to driven assembly, position/limit feedback and motor control circuit.
-R01;1. Process Tank 1. Heater;Provides heating for 1. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R02;1. Process Tank 2. Heater;Provides heating for 1. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R03;1. Process Tank 3. Heater;Provides heating for 1. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R04;1. Process Tank 4. Heater;Provides heating for 1. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R05;1. Process Tank 5. Heater;Provides heating for 1. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R06;2. Process Tank 1. Heater;Provides heating for 2. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R07;2. Process Tank 2. Heater;Provides heating for 2. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R08;2. Process Tank 3. Heater;Provides heating for 2. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R09;2. Process Tank 4. Heater;Provides heating for 2. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R10;2. Process Tank 5. Heater;Provides heating for 2. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R11;3. Process Tank 1. Heater;Provides heating for 3. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R12;3. Process Tank 2. Heater;Provides heating for 3. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R13;3. Process Tank 3. Heater;Provides heating for 3. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R14;3. Process Tank 4. Heater;Provides heating for 3. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R15;3. Process Tank 5. Heater;Provides heating for 3. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R16;4. Process Tank 1. Heater;Provides heating for 4. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R17;4. Process Tank 2. Heater;Provides heating for 4. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R18;4. Process Tank 3. Heater;Provides heating for 4. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R19;4. Process Tank 4. Heater;Provides heating for 4. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R20;4. Process Tank 5. Heater;Provides heating for 4. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R21;1. Drying Heater Group;Provides heating for 1. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R22;2. Drying Heater Group;Provides heating for 2. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R23;3. Drying Heater Group;Provides heating for 3. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R24;4. Drying Heater Group;Provides heating for 4. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R25;5. Drying Heater Group;Provides heating for 5. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R26;6. Drying Heater Group;Provides heating for 6. Drying Heater Group. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R27;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R28;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R29;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-R30;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and PLC heat control circuit.
-TD01;1. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 1. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD02;2. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 2. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD03;3. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 3. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD04;4. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 4. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD05;5. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 5. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD06;6. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 6. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD07;7. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 7. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD08;8. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 8. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD09;9. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 9. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-TD10;10. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 10. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and PLC process control circuit.
-L01;Stack Light - Warning Light;Provides visual indication or lighting for Stack Light - Warning Light. Connected to supply and PLC/control circuit.
-L02;Cell Interior Light;Provides visual indication or lighting for Cell Interior Light. Connected to supply and PLC/control circuit.
-L03;Panel Light;Provides visual indication or lighting for Panel Light. Connected to supply and PLC/control circuit.
-L04;xxx Lamp;Provides visual indication or lighting for xxx Lamp. Connected to supply and PLC/control circuit.
-L05;xxx Lamp;Provides visual indication or lighting for xxx Lamp. Connected to supply and PLC/control circuit.
-LS01;1. Process Tank Low Level Sensor;Monitors liquid level for 1. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS02;1. Process Tank Mid Level Sensor;Monitors liquid level for 1. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS03;1. Process Tank High Level Sensor;Monitors liquid level for 1. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS04;2. Process Tank Low Level Sensor;Monitors liquid level for 2. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS05;2. Process Tank Mid Level Sensor;Monitors liquid level for 2. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS06;2. Process Tank High Level Sensor;Monitors liquid level for 2. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS07;3. Process Tank Low Level Sensor;Monitors liquid level for 3. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS08;3. Process Tank Mid Level Sensor;Monitors liquid level for 3. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS09;3. Process Tank High Level Sensor;Monitors liquid level for 3. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS10;4. Process Tank Low Level Sensor;Monitors liquid level for 4. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS11;4. Process Tank Mid Level Sensor;Monitors liquid level for 4. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS12;4. Process Tank High Level Sensor;Monitors liquid level for 4. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS13;Cell İçi 1. Level Sensor;Monitors liquid level for Cell İçi 1. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS14;Cell İçi 2. Level Sensor;Monitors liquid level for Cell İçi 2. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS15;Cell İçi 3. Level Sensor;Monitors liquid level for Cell İçi 3. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS16;Cell İçi 4. Level Sensor;Monitors liquid level for Cell İçi 4. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS17;Drain Hattı 1. Level Sensor;Monitors liquid level for Drain Hattı 1. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS18;Drain Hattı 2. Level Sensor;Monitors liquid level for Drain Hattı 2. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS19;Drain Hattı 3. Level Sensor;Monitors liquid level for Drain Hattı 3. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS20;Drain Hattı 4. Level Sensor;Monitors liquid level for Drain Hattı 4. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS21;Vakum Pump Tank High Level Sensor;Monitors liquid level for Vakum Pump Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS22;Vakum Pump Tank Low Level Sensor;Monitors liquid level for Vakum Pump Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS23;1. Dosing Pump Level Sensor;Monitors liquid level for 1. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS24;2. Dosing Pump Level Sensor;Monitors liquid level for 2. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS25;3. Dosing Pump Level Sensor;Monitors liquid level for 3. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS26;Sızıntı Tavası Uyarı Level Sensor;Monitors liquid level for Sızıntı Tavası Uyarı Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS27;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS28;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS29;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-LS30;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and PLC digital input.
-SS01;Hand Protection Sensor;Monitors safety/access status for Hand Protection Sensor. Connected to interlock circuit and PLC safety input.
-SS02;Interlock Lock;Monitors safety/access status for Interlock Lock. Connected to interlock circuit and PLC safety input.
-SS03;Light Barrier Safety Sensor;Monitors safety/access status for Light Barrier Safety Sensor. Connected to interlock circuit and PLC safety input.
-SS04;Interlock Lock Sensor;Monitors safety/access status for Interlock Lock Sensor. Connected to interlock circuit and PLC safety input.
-SS05;1. LID RFID SENSOR;Monitors safety/access status for 1. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS06;2. LID RFID SENSOR;Monitors safety/access status for 2. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS07;3. LID RFID SENSOR;Monitors safety/access status for 3. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS08;4. LID RFID SENSOR;Monitors safety/access status for 4. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS09;5. LID RFID SENSOR;Monitors safety/access status for 5. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS10;6. LID RFID SENSOR;Monitors safety/access status for 6. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-SS11;7. LID RFID SENSOR;Monitors safety/access status for 7. LID RFID SENSOR. Connected to interlock circuit and PLC safety input.
-PRS01;Basket Position 1 Sensor;Detects equipment/part position for Basket Position 1 Sensor. Connected to mechanical unit and PLC digital input.
-PRS02;Basket Position 2 Sensor;Detects equipment/part position for Basket Position 2 Sensor. Connected to mechanical unit and PLC digital input.
-PRS03;1. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 1. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS04;2. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 2. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS05;3. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 3. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS06;1. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 1. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS07;2. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 2. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS08;3. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 3. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS09;xxx Proximity Sensor;Detects equipment/part position for xxx Proximity Sensor. Connected to mechanical unit and PLC digital input.
-PRS10;xxx Proximity Sensor;Detects equipment/part position for xxx Proximity Sensor. Connected to mechanical unit and PLC digital input.
-SWB01;1. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB02;2. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB03;3. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB04;4. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB05;Conta Şişirme Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for Conta Şişirme Aktüator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB06;Conta Söndürme Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for Conta Söndürme Aktüator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB07;1. Drying Hattı Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Drying Hattı Aktüator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB08;2. Drying Hattı Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Drying Hattı Aktüator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB09;Cell Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Cell Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB10;Cell Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Cell Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB11;Proses Ana Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Proses Ana Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB12;Hat Temizleme Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Hat Temizleme Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB13;By-Pass Hattı Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for By-Pass Hattı Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB14;Ana Wash Nozul Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Ana Wash Nozul Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB15;Suction Kollektör Temizleme Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Suction Kollektör Temizleme Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB16;1. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB17;2. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB18;3. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB19;4. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB20;1. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB21;2. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB22;3. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB23;4. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB24;1. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB25;2. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB26;3. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB27;1. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB28;2. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB29;3. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB30;Arıtma Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Arıtma Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB31;1. Eşanjör Gidiş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Eşanjör Gidiş Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB32;1. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB33;2. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB34;3. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB35;Şebeke Suyu ile Rinse Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Şebeke Suyu ile Rinse Actuator Valve Switch Box. Connected to actuator valve, solenoid and PLC digital input.
-SWB36;Basket Alma Kontrol Switch Box 1;Collects open/closed position feedback from field actuator for Basket Alma Kontrol Switch Box 1. Connected to actuator valve, solenoid and PLC digital input.
-SWB37;Basket Alma Kontrol Switch Box 2;Collects open/closed position feedback from field actuator for Basket Alma Kontrol Switch Box 2. Connected to actuator valve, solenoid and PLC digital input.
-SWB38;1. Process Tankndan Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Process Tankndan Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB39;2. Process Tankndan Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Process Tankndan Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB40;1. Cellden Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Cellden Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB41;2. Cellden Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Cellden Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB42;1. Proses Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Proses Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB43;2. Proses Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Proses Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB44;Hat Temizleme Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for Hat Temizleme Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB45;Egzos Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for Egzos Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and PLC digital input.
-SWB46;1. Tank Automatic Filling Solenoid Valve;Opens and closes the automatic filling flow to the tank. Connected to the supply line, level sensor and PLC digital output.
-SWB47;2. Tank Automatic Filling Solenoid Valve;Opens and closes the automatic filling flow to the tank. Connected to the supply line, level sensor and PLC digital output.
-SW01;Cell Lid Açık Konumda Switch;Provides mechanical position feedback for Cell Lid Açık Konumda Switch. Connected to driven equipment and PLC digital input.
-SW02;Cell Lid Kapalı Konumda Switch;Provides mechanical position feedback for Cell Lid Kapalı Konumda Switch. Connected to driven equipment and PLC digital input.
-SW03;1. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 1. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and PLC digital input.
-SW04;1. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 1. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and PLC digital input.
-SW05;2. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 2. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and PLC digital input.
-SW06;2. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 2. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and PLC digital input.
-SW07;3. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 3. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and PLC digital input.
-SW08;3. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 3. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and PLC digital input.
-SW09;4. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 4. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and PLC digital input.
-SW10;4. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 4. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and PLC digital input.
-SW11;Basket 1. Pozisyon Switch;Provides mechanical position feedback for Basket 1. Pozisyon Switch. Connected to driven equipment and PLC digital input.
-SW12;Basket 2. Pozisyon Switch;Provides mechanical position feedback for Basket 2. Pozisyon Switch. Connected to driven equipment and PLC digital input.
-SW13;1. Flow Switch;Provides mechanical position feedback for 1. Flow Switch. Connected to driven equipment and PLC digital input.
-SW14;2. Flow Switch;Provides mechanical position feedback for 2. Flow Switch. Connected to driven equipment and PLC digital input.
-SW15;3. Flow Switch;Provides mechanical position feedback for 3. Flow Switch. Connected to driven equipment and PLC digital input.
-SW16;4. Flow Switch;Provides mechanical position feedback for 4. Flow Switch. Connected to driven equipment and PLC digital input.
-SW17;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and PLC digital input.
-SW18;Cell Kapağı Kontrol Switch;Provides mechanical position feedback for Cell Kapağı Kontrol Switch. Connected to driven equipment and PLC digital input.
-SW19;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and PLC digital input.
-SW20;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and PLC digital input.
-PPS01;Ana Cell Lid Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for Ana Cell Lid Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS02;Ana Cell Lid Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for Ana Cell Lid Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS03;1. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS04;1. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS05;1. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS06;1. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS07;2. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS08;2. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS09;2. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS10;2. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS11;Cell Discharge Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for Cell Discharge Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS12;Cell Discharge Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for Cell Discharge Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS13;1. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS14;1. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS15;1. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS16;2. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS17;2. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS18;2. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS19;3. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS20;3. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS21;3. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS22;4. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS23;4. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS24;4. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS25;3. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS26;3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS27;3. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS28;3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS29;4. Process Tank Diverter Cylinder Open Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS30;4. Process Tank Diverter Cylinder Closed Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS31;1. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS32;1. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS33;2. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 2. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS34;2. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 2. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS35;3. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 3. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-PPS36;3. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 3. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and PLC digital input.
-TC01;1. Process Tank Temperature Transmitter;Measures process temperature for 1. Process Tank Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC02;2. Process Tank Temperature Transmitter;Measures process temperature for 2. Process Tank Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC03;3. Process Tank Temperature Transmitter;Measures process temperature for 3. Process Tank Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC04;4. Process Tank Temperature Transmitter;Measures process temperature for 4. Process Tank Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC05;1. Drying Temperature Transmitter;Measures process temperature for 1. Drying Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC06;2. Drying Temperature Transmitter;Measures process temperature for 2. Drying Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC07;Cell İçi Temperature Transmitter;Measures process temperature for Cell İçi Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC08;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC09;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-TC10;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to PLC analog input and heat control circuit.
-PS01;1. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 1. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and PLC input circuit.
-PS02;2. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 2. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and PLC input circuit.
-PS03;3. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 3. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and PLC input circuit.
-PS04;4. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 4. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and PLC input circuit.
-PS05;Cell İçi Vakum Sensor ( 4-20 mA);Measures or monitors process pressure for Cell İçi Vakum Sensor ( 4-20 mA). Connected to line, pump/valve and PLC input circuit.
-PS06;Inlet Water Pressure Sensor (4-20 mA);Monitors the supply water line pressure. Connected to the water supply valve, pressure switch and PLC analog input.
-PS07;Inlet Air Pressure Sensor (4-20 mA);Monitors the pneumatic air line pressure. Connected to the air regulator, pressure switch and PLC analog/digital input.
-PS08;1. Pressure Switch;Measures or monitors process pressure for 1. Pressure Switch. Connected to line, pump/valve and PLC input circuit.
-PS09;2. Pressure Switch;Measures or monitors process pressure for 2. Pressure Switch. Connected to line, pump/valve and PLC input circuit.
-PS10;xxxx Sensor;Measures or monitors process pressure for xxxx Sensor. Connected to line, pump/valve and PLC input circuit.
-PHS01;1. Process Tank pH Sensor;Measures process pH for 1. Process Tank pH Sensor. Connected to dosing/process tank and PLC analog input.
-PHS02;2. Process Tank pH Sensor;Measures process pH for 2. Process Tank pH Sensor. Connected to dosing/process tank and PLC analog input.
-PHS03;3. Process Tank pH Sensor;Measures process pH for 3. Process Tank pH Sensor. Connected to dosing/process tank and PLC analog input.
-PHS04;4. Process Tank pH Sensor;Measures process pH for 4. Process Tank pH Sensor. Connected to dosing/process tank and PLC analog input.
-PHS05;Wash Hattı pH Sensor;Measures process pH for Wash Hattı pH Sensor. Connected to dosing/process tank and PLC analog input.
-CS01;1. Process Tank İletkenlik Sensor;Measures process conductivity for 1. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and PLC analog input.
-CS02;2. Process Tank İletkenlik Sensor;Measures process conductivity for 2. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and PLC analog input.
-CS03;3. Process Tank İletkenlik Sensor;Measures process conductivity for 3. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and PLC analog input.
-CS04;4. Process Tank İletkenlik Sensor;Measures process conductivity for 4. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and PLC analog input.
-CS05;xxxx İletkenlik Sensor;Measures process conductivity for xxxx İletkenlik Sensor. Connected to process tank, dosing line and PLC analog input.
-V01;1. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 1. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V02;2. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 2. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V03;3. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 3. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V04;4. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 4. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V05;Conta Şişirme Aktüator Valve valve;Controls flow routing or isolation for Conta Şişirme Aktüator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V06;Conta Söndürme Aktüator Valve valve;Controls flow routing or isolation for Conta Söndürme Aktüator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V07;1. Drying Hattı Aktüator Valve valve;Controls flow routing or isolation for 1. Drying Hattı Aktüator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V08;2. Drying Hattı Aktüator Valve valve;Controls flow routing or isolation for 2. Drying Hattı Aktüator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V09;Cell Drain Actuator Valve valve;Controls flow routing or isolation for Cell Drain Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V10;Cell Suction Actuator Valve valve;Controls flow routing or isolation for Cell Suction Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V11;Proses Ana Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for Proses Ana Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V12;Hat Temizleme Actuator Valve valve;Controls flow routing or isolation for Hat Temizleme Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V13;By-Pass Hattı Actuator Valve valve;Controls flow routing or isolation for By-Pass Hattı Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V14;Ana Wash Nozzle Actuator Valve valve;Controls flow routing or isolation for Ana Wash Nozzle Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V15;Suction Kollektör Temizleme Actuator Valve valve;Controls flow routing or isolation for Suction Kollektör Temizleme Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V16;1. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 1. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V17;2. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 2. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V18;3. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 3. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V19;4. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 4. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V20;1. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 1. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V21;2. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 2. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V22;3. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 3. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V23;4. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 4. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V24;1. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 1. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V25;2. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 2. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V26;3. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 3. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V27;1. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 1. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V28;2. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 2. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V29;3. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 3. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V30;Arıtma Dönüş Actuator Valve valve;Controls flow routing or isolation for Arıtma Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and PLC digital output.
-V31;1. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 1. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V32;1. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 1. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V33;2. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 2. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V34;2. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 2. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V35;3. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 3. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V36;3. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 3. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V37;4. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 4. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V38;4. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 4. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V39;Cell Boşaltma Pistonu Valve Aç Valve;Controls flow routing or isolation for Cell Boşaltma Pistonu Valve Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V40;Cell Boşaltma Pistonu Valve Kapat Valve;Controls flow routing or isolation for Cell Boşaltma Pistonu Valve Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V41;Basket Alma Kontrol Valve 1;Controls flow routing or isolation for Basket Alma Kontrol Valve 1. Connected to process line, actuator/solenoid and PLC digital output.
-V42;Basket Alma Kontol Valve 2;Controls flow routing or isolation for Basket Alma Kontol Valve 2. Connected to process line, actuator/solenoid and PLC digital output.
-V43;1. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 1. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V44;2. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 2. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V45;1. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 1. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V46;2. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 2. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V47;Ana Valve;Controls flow routing or isolation for Ana Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V48;Lid Aç Valve;Controls flow routing or isolation for Lid Aç Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V49;Lid Kapat Valve;Controls flow routing or isolation for Lid Kapat Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V50;1. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 1. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V51;2. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 2. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V52;3. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 3. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V53;4. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 4. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V54;1. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 1. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V55;2. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 2. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V56;3. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 3. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V57;4. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 4. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V58;Egzos Hattı Actuator Valve Valve;Controls flow routing or isolation for Egzos Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V59;1. Proses Hattı Actuator Valve Valve;Controls flow routing or isolation for 1. Proses Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V60;2. Proses Hattı Actuator Valve Valve;Controls flow routing or isolation for 2. Proses Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and PLC digital output.
-V61;1. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V62;1. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V63;2. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V64;2. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V65;3. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V66;3. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and PLC digital output.
-V67;1. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
-V68;1. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
-V69;2. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
-V70;2. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
-V71;3. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
-V72;3. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and PLC digital output.
+R01;1. Process Tank 1. Heater;Provides heating for 1. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R02;1. Process Tank 2. Heater;Provides heating for 1. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R03;1. Process Tank 3. Heater;Provides heating for 1. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R04;1. Process Tank 4. Heater;Provides heating for 1. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R05;1. Process Tank 5. Heater;Provides heating for 1. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R06;2. Process Tank 1. Heater;Provides heating for 2. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R07;2. Process Tank 2. Heater;Provides heating for 2. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R08;2. Process Tank 3. Heater;Provides heating for 2. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R09;2. Process Tank 4. Heater;Provides heating for 2. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R10;2. Process Tank 5. Heater;Provides heating for 2. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R11;3. Process Tank 1. Heater;Provides heating for 3. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R12;3. Process Tank 2. Heater;Provides heating for 3. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R13;3. Process Tank 3. Heater;Provides heating for 3. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R14;3. Process Tank 4. Heater;Provides heating for 3. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R15;3. Process Tank 5. Heater;Provides heating for 3. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R16;4. Process Tank 1. Heater;Provides heating for 4. Process Tank 1. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R17;4. Process Tank 2. Heater;Provides heating for 4. Process Tank 2. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R18;4. Process Tank 3. Heater;Provides heating for 4. Process Tank 3. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R19;4. Process Tank 4. Heater;Provides heating for 4. Process Tank 4. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R20;4. Process Tank 5. Heater;Provides heating for 4. Process Tank 5. Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R21;1. Drying Heater Group;Provides heating for 1. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R22;2. Drying Heater Group;Provides heating for 2. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R23;3. Drying Heater Group;Provides heating for 3. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R24;4. Drying Heater Group;Provides heating for 4. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R25;5. Drying Heater Group;Provides heating for 5. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R26;6. Drying Heater Group;Provides heating for 6. Drying Heater Group. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R27;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R28;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R29;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+R30;xxx Heater;Provides heating for xxx Heater. Connected to temperature sensor, SSR/contactor and control unit (PLC/relay).
+TD01;1. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 1. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD02;2. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 2. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD03;3. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 3. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD04;4. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 4. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD05;5. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 5. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD06;6. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 6. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD07;7. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 7. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD08;8. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 8. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD09;9. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 9. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+TD10;10. Process Tank Ultrasonic Generator Set;Powers ultrasonic cleaning generator set for 10. Process Tank Ultrasonic Generator Set. Connected to transducer, process tank and control unit (PLC/relay).
+L01;Stack Light - Warning Light;Provides visual indication or lighting for Stack Light - Warning Light. Connected to supply and control unit (PLC/relay).
+L02;Cell Interior Light;Provides visual indication or lighting for Cell Interior Light. Connected to supply and control unit (PLC/relay).
+L03;Panel Light;Provides visual indication or lighting for Panel Light. Connected to supply and control unit (PLC/relay).
+L04;xxx Lamp;Provides visual indication or lighting for xxx Lamp. Connected to supply and control unit (PLC/relay).
+L05;xxx Lamp;Provides visual indication or lighting for xxx Lamp. Connected to supply and control unit (PLC/relay).
+LS01;1. Process Tank Low Level Sensor;Monitors liquid level for 1. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS02;1. Process Tank Mid Level Sensor;Monitors liquid level for 1. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS03;1. Process Tank High Level Sensor;Monitors liquid level for 1. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS04;2. Process Tank Low Level Sensor;Monitors liquid level for 2. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS05;2. Process Tank Mid Level Sensor;Monitors liquid level for 2. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS06;2. Process Tank High Level Sensor;Monitors liquid level for 2. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS07;3. Process Tank Low Level Sensor;Monitors liquid level for 3. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS08;3. Process Tank Mid Level Sensor;Monitors liquid level for 3. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS09;3. Process Tank High Level Sensor;Monitors liquid level for 3. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS10;4. Process Tank Low Level Sensor;Monitors liquid level for 4. Process Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS11;4. Process Tank Mid Level Sensor;Monitors liquid level for 4. Process Tank Mid Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS12;4. Process Tank High Level Sensor;Monitors liquid level for 4. Process Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS13;Cell İçi 1. Level Sensor;Monitors liquid level for Cell İçi 1. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS14;Cell İçi 2. Level Sensor;Monitors liquid level for Cell İçi 2. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS15;Cell İçi 3. Level Sensor;Monitors liquid level for Cell İçi 3. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS16;Cell İçi 4. Level Sensor;Monitors liquid level for Cell İçi 4. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS17;Drain Hattı 1. Level Sensor;Monitors liquid level for Drain Hattı 1. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS18;Drain Hattı 2. Level Sensor;Monitors liquid level for Drain Hattı 2. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS19;Drain Hattı 3. Level Sensor;Monitors liquid level for Drain Hattı 3. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS20;Drain Hattı 4. Level Sensor;Monitors liquid level for Drain Hattı 4. Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS21;Vakum Pump Tank High Level Sensor;Monitors liquid level for Vakum Pump Tank High Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS22;Vakum Pump Tank Low Level Sensor;Monitors liquid level for Vakum Pump Tank Low Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS23;1. Dosing Pump Level Sensor;Monitors liquid level for 1. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS24;2. Dosing Pump Level Sensor;Monitors liquid level for 2. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS25;3. Dosing Pump Level Sensor;Monitors liquid level for 3. Dosing Pump Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS26;Sızıntı Tavası Uyarı Level Sensor;Monitors liquid level for Sızıntı Tavası Uyarı Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS27;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS28;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS29;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+LS30;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
+SS01;Hand Protection Sensor;Monitors safety/access status for Hand Protection Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS02;Interlock Lock;Monitors safety/access status for Interlock Lock. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS03;Light Barrier Safety Sensor;Monitors safety/access status for Light Barrier Safety Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS04;Interlock Lock Sensor;Monitors safety/access status for Interlock Lock Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS05;1. LID RFID SENSOR;Monitors safety/access status for 1. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS06;2. LID RFID SENSOR;Monitors safety/access status for 2. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS07;3. LID RFID SENSOR;Monitors safety/access status for 3. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS08;4. LID RFID SENSOR;Monitors safety/access status for 4. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS09;5. LID RFID SENSOR;Monitors safety/access status for 5. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS10;6. LID RFID SENSOR;Monitors safety/access status for 6. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS11;7. LID RFID SENSOR;Monitors safety/access status for 7. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+PRS01;Basket Position 1 Sensor;Detects equipment/part position for Basket Position 1 Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS02;Basket Position 2 Sensor;Detects equipment/part position for Basket Position 2 Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS03;1. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 1. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS04;2. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 2. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS05;3. Conveyor Giriş Proximity Sensor;Detects equipment/part position for 3. Conveyor Giriş Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS06;1. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 1. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS07;2. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 2. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS08;3. Conveyor Çıkış Proximity Sensor;Detects equipment/part position for 3. Conveyor Çıkış Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS09;xxx Proximity Sensor;Detects equipment/part position for xxx Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+PRS10;xxx Proximity Sensor;Detects equipment/part position for xxx Proximity Sensor. Connected to mechanical unit and control unit (PLC/relay).
+SWB01;1. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB02;2. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB03;3. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB04;4. Proses Pump Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Proses Pump Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB05;Conta Şişirme Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for Conta Şişirme Aktüator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB06;Conta Söndürme Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for Conta Söndürme Aktüator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB07;1. Drying Hattı Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Drying Hattı Aktüator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB08;2. Drying Hattı Aktüator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Drying Hattı Aktüator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB09;Cell Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Cell Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB10;Cell Suction Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Cell Suction Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB11;Proses Ana Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Proses Ana Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB12;Hat Temizleme Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Hat Temizleme Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB13;By-Pass Hattı Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for By-Pass Hattı Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB14;Ana Wash Nozul Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Ana Wash Nozul Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB15;Suction Kollektör Temizleme Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Suction Kollektör Temizleme Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB16;1. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB17;2. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB18;3. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB19;4. Proses Geri Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Proses Geri Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB20;1. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB21;2. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB22;3. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB23;4. Process Tank Oto. Dolum Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 4. Process Tank Oto. Dolum Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB24;1. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB25;2. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB26;3. Process Tank Kaskat Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Process Tank Kaskat Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB27;1. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB28;2. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB29;3. Tank Drain Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Tank Drain Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB30;Arıtma Dönüş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Arıtma Dönüş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB31;1. Eşanjör Gidiş Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Eşanjör Gidiş Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB32;1. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 1. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB33;2. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 2. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB34;3. Tank İçi Wash Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for 3. Tank İçi Wash Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB35;Şebeke Suyu ile Rinse Actuator Valve Switch Box;Collects open/closed position feedback from field actuator for Şebeke Suyu ile Rinse Actuator Valve Switch Box. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB36;Basket Alma Kontrol Switch Box 1;Collects open/closed position feedback from field actuator for Basket Alma Kontrol Switch Box 1. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB37;Basket Alma Kontrol Switch Box 2;Collects open/closed position feedback from field actuator for Basket Alma Kontrol Switch Box 2. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB38;1. Process Tankndan Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Process Tankndan Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB39;2. Process Tankndan Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Process Tankndan Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB40;1. Cellden Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Cellden Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB41;2. Cellden Pumpya Suction Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Cellden Pumpya Suction Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB42;1. Proses Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 1. Proses Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB43;2. Proses Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for 2. Proses Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB44;Hat Temizleme Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for Hat Temizleme Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB45;Egzos Hattı Actuator Valve Switchbox;Collects open/closed position feedback from field actuator for Egzos Hattı Actuator Valve Switchbox. Connected to actuator valve, solenoid and control unit (PLC/relay).
+SWB46;1. Tank Automatic Filling Solenoid Valve;Opens and closes the automatic filling flow to the tank. Connected to the supply line, level sensor and control unit (PLC/relay).
+SWB47;2. Tank Automatic Filling Solenoid Valve;Opens and closes the automatic filling flow to the tank. Connected to the supply line, level sensor and control unit (PLC/relay).
+SW01;Cell Lid Açık Konumda Switch;Provides mechanical position feedback for Cell Lid Açık Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW02;Cell Lid Kapalı Konumda Switch;Provides mechanical position feedback for Cell Lid Kapalı Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW03;1. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 1. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW04;1. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 1. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW05;2. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 2. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW06;2. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 2. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW07;3. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 3. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW08;3. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 3. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW09;4. Process Tank Kapağı Açık Konumda Switch;Provides mechanical position feedback for 4. Process Tank Kapağı Açık Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW10;4. Process Tank Kapağı Kapalı Konumda Switch;Provides mechanical position feedback for 4. Process Tank Kapağı Kapalı Konumda Switch. Connected to driven equipment and control unit (PLC/relay).
+SW11;Basket 1. Pozisyon Switch;Provides mechanical position feedback for Basket 1. Pozisyon Switch. Connected to driven equipment and control unit (PLC/relay).
+SW12;Basket 2. Pozisyon Switch;Provides mechanical position feedback for Basket 2. Pozisyon Switch. Connected to driven equipment and control unit (PLC/relay).
+SW13;1. Flow Switch;Provides mechanical position feedback for 1. Flow Switch. Connected to driven equipment and control unit (PLC/relay).
+SW14;2. Flow Switch;Provides mechanical position feedback for 2. Flow Switch. Connected to driven equipment and control unit (PLC/relay).
+SW15;3. Flow Switch;Provides mechanical position feedback for 3. Flow Switch. Connected to driven equipment and control unit (PLC/relay).
+SW16;4. Flow Switch;Provides mechanical position feedback for 4. Flow Switch. Connected to driven equipment and control unit (PLC/relay).
+SW17;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and control unit (PLC/relay).
+SW18;Cell Kapağı Kontrol Switch;Provides mechanical position feedback for Cell Kapağı Kontrol Switch. Connected to driven equipment and control unit (PLC/relay).
+SW19;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and control unit (PLC/relay).
+SW20;xxx Switch;Provides mechanical position feedback for xxx Switch. Connected to driven equipment and control unit (PLC/relay).
+PPS01;Ana Cell Lid Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for Ana Cell Lid Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS02;Ana Cell Lid Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for Ana Cell Lid Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS03;1. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS04;1. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS05;1. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS06;1. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS07;2. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS08;2. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS09;2. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS10;2. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS11;Cell Discharge Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for Cell Discharge Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS12;Cell Discharge Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for Cell Discharge Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS13;1. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS14;1. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS15;1. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 1. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS16;2. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS17;2. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS18;2. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 2. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS19;3. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS20;3. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS21;3. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS22;4. Process Tank Lift Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS23;4. Process Tank Lift Pistonu Ara Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Ara Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS24;4. Process Tank Lift Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Lift Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS25;3. Process Tank 1. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 1. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS26;3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 1. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS27;3. Process Tank 2. Yönlendirme Pistonu Açık Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Açık Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS28;3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor;Provides pneumatic cylinder position feedback for 3. Process Tank 2. Yönlendirme Pistonu Kapalı Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS29;4. Process Tank Diverter Cylinder Open Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Open Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS30;4. Process Tank Diverter Cylinder Closed Sensor;Provides pneumatic cylinder position feedback for 4. Process Tank Diverter Cylinder Closed Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS31;1. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS32;1. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 1. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS33;2. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 2. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS34;2. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 2. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS35;3. Tank Lid Open Sensor;Provides pneumatic cylinder position feedback for 3. Tank Lid Open Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+PPS36;3. Tank Lid Closed Sensor;Provides pneumatic cylinder position feedback for 3. Tank Lid Closed Sensor. Connected to cylinder valve, solenoid and control unit (PLC/relay).
+TC01;1. Process Tank Temperature Transmitter;Measures process temperature for 1. Process Tank Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC02;2. Process Tank Temperature Transmitter;Measures process temperature for 2. Process Tank Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC03;3. Process Tank Temperature Transmitter;Measures process temperature for 3. Process Tank Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC04;4. Process Tank Temperature Transmitter;Measures process temperature for 4. Process Tank Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC05;1. Drying Temperature Transmitter;Measures process temperature for 1. Drying Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC06;2. Drying Temperature Transmitter;Measures process temperature for 2. Drying Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC07;Cell İçi Temperature Transmitter;Measures process temperature for Cell İçi Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC08;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC09;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+TC10;xxx Temperature Transmitter;Measures process temperature for xxx Temperature Transmitter. Connected to control unit (PLC/relay) and heat control circuit.
+PS01;1. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 1. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and control unit (PLC/relay).
+PS02;2. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 2. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and control unit (PLC/relay).
+PS03;3. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 3. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and control unit (PLC/relay).
+PS04;4. Proses Pump Basınç Sensor ( 4-20 mA);Measures or monitors process pressure for 4. Proses Pump Basınç Sensor ( 4-20 mA). Connected to line, pump/valve and control unit (PLC/relay).
+PS05;Cell İçi Vakum Sensor ( 4-20 mA);Measures or monitors process pressure for Cell İçi Vakum Sensor ( 4-20 mA). Connected to line, pump/valve and control unit (PLC/relay).
+PS06;Inlet Water Pressure Sensor (4-20 mA);Monitors the supply water line pressure. Connected to the water supply valve, pressure switch and control unit (PLC/relay).
+PS07;Inlet Air Pressure Sensor (4-20 mA);Monitors the pneumatic air line pressure. Connected to the air regulator, pressure switch and control unit (PLC/relay).
+PS08;1. Pressure Switch;Measures or monitors process pressure for 1. Pressure Switch. Connected to line, pump/valve and control unit (PLC/relay).
+PS09;2. Pressure Switch;Measures or monitors process pressure for 2. Pressure Switch. Connected to line, pump/valve and control unit (PLC/relay).
+PS10;xxxx Sensor;Measures or monitors process pressure for xxxx Sensor. Connected to line, pump/valve and control unit (PLC/relay).
+PHS01;1. Process Tank pH Sensor;Measures process pH for 1. Process Tank pH Sensor. Connected to dosing/process tank and control unit (PLC/relay).
+PHS02;2. Process Tank pH Sensor;Measures process pH for 2. Process Tank pH Sensor. Connected to dosing/process tank and control unit (PLC/relay).
+PHS03;3. Process Tank pH Sensor;Measures process pH for 3. Process Tank pH Sensor. Connected to dosing/process tank and control unit (PLC/relay).
+PHS04;4. Process Tank pH Sensor;Measures process pH for 4. Process Tank pH Sensor. Connected to dosing/process tank and control unit (PLC/relay).
+PHS05;Wash Hattı pH Sensor;Measures process pH for Wash Hattı pH Sensor. Connected to dosing/process tank and control unit (PLC/relay).
+CS01;1. Process Tank İletkenlik Sensor;Measures process conductivity for 1. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and control unit (PLC/relay).
+CS02;2. Process Tank İletkenlik Sensor;Measures process conductivity for 2. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and control unit (PLC/relay).
+CS03;3. Process Tank İletkenlik Sensor;Measures process conductivity for 3. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and control unit (PLC/relay).
+CS04;4. Process Tank İletkenlik Sensor;Measures process conductivity for 4. Process Tank İletkenlik Sensor. Connected to process tank, dosing line and control unit (PLC/relay).
+CS05;xxxx İletkenlik Sensor;Measures process conductivity for xxxx İletkenlik Sensor. Connected to process tank, dosing line and control unit (PLC/relay).
+V01;1. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 1. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V02;2. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 2. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V03;3. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 3. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V04;4. Proses Pump Suction Actuator Valve valve;Controls flow routing or isolation for 4. Proses Pump Suction Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V05;Conta Şişirme Aktüator Valve valve;Controls flow routing or isolation for Conta Şişirme Aktüator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V06;Conta Söndürme Aktüator Valve valve;Controls flow routing or isolation for Conta Söndürme Aktüator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V07;1. Drying Hattı Aktüator Valve valve;Controls flow routing or isolation for 1. Drying Hattı Aktüator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V08;2. Drying Hattı Aktüator Valve valve;Controls flow routing or isolation for 2. Drying Hattı Aktüator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V09;Cell Drain Actuator Valve valve;Controls flow routing or isolation for Cell Drain Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V10;Cell Suction Actuator Valve valve;Controls flow routing or isolation for Cell Suction Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V11;Proses Ana Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for Proses Ana Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V12;Hat Temizleme Actuator Valve valve;Controls flow routing or isolation for Hat Temizleme Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V13;By-Pass Hattı Actuator Valve valve;Controls flow routing or isolation for By-Pass Hattı Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V14;Ana Wash Nozzle Actuator Valve valve;Controls flow routing or isolation for Ana Wash Nozzle Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V15;Suction Kollektör Temizleme Actuator Valve valve;Controls flow routing or isolation for Suction Kollektör Temizleme Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V16;1. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 1. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V17;2. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 2. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V18;3. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 3. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V19;4. Proses Geri Dönüş Actuator Valve valve;Controls flow routing or isolation for 4. Proses Geri Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V20;1. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 1. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V21;2. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 2. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V22;3. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 3. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V23;4. Process Tank Oto. Dolum Actuator Valve valve;Controls flow routing or isolation for 4. Process Tank Oto. Dolum Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V24;1. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 1. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V25;2. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 2. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V26;3. Process Tank Kaskat Actuator Valve valve;Controls flow routing or isolation for 3. Process Tank Kaskat Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V27;1. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 1. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V28;2. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 2. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V29;3. Tank Drain Actuator Valve valve;Controls flow routing or isolation for 3. Tank Drain Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V30;Arıtma Dönüş Actuator Valve valve;Controls flow routing or isolation for Arıtma Dönüş Actuator Valve valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V31;1. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 1. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V32;1. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 1. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V33;2. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 2. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V34;2. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 2. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V35;3. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 3. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V36;3. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 3. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V37;4. Process Tank Discharge Valve Aç Valve;Controls flow routing or isolation for 4. Process Tank Discharge Valve Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V38;4. Process Tank Discharge Valve Kapat Valve;Controls flow routing or isolation for 4. Process Tank Discharge Valve Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V39;Cell Boşaltma Pistonu Valve Aç Valve;Controls flow routing or isolation for Cell Boşaltma Pistonu Valve Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V40;Cell Boşaltma Pistonu Valve Kapat Valve;Controls flow routing or isolation for Cell Boşaltma Pistonu Valve Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V41;Basket Alma Kontrol Valve 1;Controls flow routing or isolation for Basket Alma Kontrol Valve 1. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V42;Basket Alma Kontol Valve 2;Controls flow routing or isolation for Basket Alma Kontol Valve 2. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V43;1. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 1. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V44;2. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 2. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V45;1. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 1. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V46;2. Process Tankı Lid Pistonu Valve;Controls flow routing or isolation for 2. Process Tankı Lid Pistonu Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V47;Ana Valve;Controls flow routing or isolation for Ana Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V48;Lid Aç Valve;Controls flow routing or isolation for Lid Aç Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V49;Lid Kapat Valve;Controls flow routing or isolation for Lid Kapat Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V50;1. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 1. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V51;2. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 2. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V52;3. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 3. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V53;4. Process Tankndan Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 4. Process Tankndan Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V54;1. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 1. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V55;2. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 2. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V56;3. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 3. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V57;4. Cellden Pumpya Suction Actuator Valve Valve;Controls flow routing or isolation for 4. Cellden Pumpya Suction Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V58;Egzos Hattı Actuator Valve Valve;Controls flow routing or isolation for Egzos Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V59;1. Proses Hattı Actuator Valve Valve;Controls flow routing or isolation for 1. Proses Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V60;2. Proses Hattı Actuator Valve Valve;Controls flow routing or isolation for 2. Proses Hattı Actuator Valve Valve. Connected to process line, actuator/solenoid and control unit (PLC/relay).
+V61;1. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V62;1. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V63;2. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V64;2. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V65;3. Tank Basket Raise Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V66;3. Tank Basket Lower Valve;Applies the pneumatic command for raising/lowering the tank basket. Connected to the basket cylinder, position sensors and control unit (PLC/relay).
+V67;1. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).
+V68;1. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).
+V69;2. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).
+V70;2. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).
+V71;3. Tank Lid Open Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).
+V72;3. Tank Lid Close Valve;Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).

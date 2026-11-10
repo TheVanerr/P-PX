@@ -328,3 +328,36 @@ test('belge dili: hazır yazılar çevrilir, kullanıcı yazısı kalır; TR / E
   assert.ok(read('covers.js').includes('data-doc-lang') && read('report.js').includes('PidCovers.langSeg('));
   assert.ok(read('engine.css').includes('.lang-seg button.active'));
 });
+
+/* ─── Revizyon tablosu (P&ID ile aynı kural ve aynı dosya) ── */
+
+test('revizyon tablosu: Rev.\'e göre satır, son satırın tarihi kapak tarihi; P&ID ile aynı revlog.js', () => {
+  const fsx = require('node:fs');
+  const pathx = require('node:path');
+  const RevLog = require('../revlog.js');
+  const p = Object.assign({}, project, { rev: '00', tarih: '2026-11-10', revizyonlar: [] });
+  const d = Model.createDrawing('Pnömatik Devre Şeması');
+  let svg = Sheet.sheetSvg(p, d, 0, { lang: 'tr' });
+  assert.ok(svg.includes('>İlk yayın</text>'));
+  assert.equal(svg.split('>10.11.2026</text>').length - 1, 2, 'antetteki tarih ile ilk yayın satırı aynı');
+
+  RevLog.apply(p, RevLog.plan(p, '01'), '2026-12-01');
+  RevLog.setField(p, 1, 'aciklama', 'Silindir eklendi');
+  svg = Sheet.sheetSvg(p, d, 0, { lang: 'tr' });
+  assert.ok(svg.includes('>10.11.2026</text>') && svg.includes('>Silindir eklendi</text>'));
+  assert.equal(svg.split('>01.12.2026</text>').length - 1, 2);
+  assert.ok(Checks.run(d, new Map(), null, Object.assign({}, p, { rev: '' })).some((i) => i.code === 'revision'));
+
+  const pid = pathx.join(__dirname, '../../../../../P-IDX/P&ID/codes/engine/revlog.js');
+  if (fsx.existsSync(pid)) {
+    const norm = (f) => fsx.readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
+    assert.equal(norm(pathx.join(__dirname, '../revlog.js')), norm(pid), 'iki programda revlog.js aynı olmalı');
+  }
+  const read = (f) => fsx.readFileSync(pathx.join(__dirname, '..', f), 'utf8');
+  assert.ok(/\r?\n    changeRevision,\r?\n/.test(read('app.js')) && read('app.js').includes('PidRevLog.mirror(editor.project)'));
+  assert.ok(read('panels.js').includes("onField('mRev', 'change', (el) => goTo(el.value))"));
+  assert.ok(read('covers.js').includes('await app.changeRevision(e.target.value)'));
+  const html = fsx.readFileSync(pathx.join(__dirname, '../../cizim.html'), 'utf8');
+  const at = (src) => html.indexOf(`<script src="${src}"></script>`);
+  assert.ok(at('engine/revlog.js') > 0 && at('engine/revlog.js') < at('engine/sheet.js'));
+});

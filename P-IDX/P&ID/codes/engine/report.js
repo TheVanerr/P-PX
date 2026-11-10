@@ -328,7 +328,7 @@ const PidReport = (() => {
   function columnHeights(sheet) {
     const g = PidSheet.geometry(sheet);
     const bottom = g.inner.y1 - 5;
-    const revisions = Math.min(4, ((app.editor.project && app.editor.project.revizyonlar) || []).length);
+    const revisions = PidRevLog.shown(app.editor.project).length;
     const reserved = revisions ? (revisions + 1) * 4.5 : 0;
     return [bottom - COL_Y, g.title.y - reserved - 5 - COL_Y];
   }
