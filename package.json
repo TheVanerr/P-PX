@@ -4,7 +4,10 @@
   "private": true,
   "description": "P&PX: P&ID ve pnömatik çizim programları, tek veritabanı. Başlatmak için index.html dosyasını açın.",
   "scripts": {
-    "test": "node --test test/ppx.test.js && npm --prefix P-IDX test && npm --prefix PNOMATIKX test",
-    "veri-surumu": "node P-IDX/tools/veri-surumu.js"
+    "test": "node --test test/ppx.test.js test/pwa.test.js && npm --prefix P-IDX test && npm --prefix PNOMATIKX test",
+    "veri-surumu": "node P-IDX/tools/veri-surumu.js",
+    "yayinla": "node --test test/ppx.test.js test/pwa.test.js && node tools/yayinla.js",
+    "kabuk-yayinla": "node tools/kabuk-yayinla.js",
+    "test:tarayici": "node test/pwa-tarayici.js"
   }
 }

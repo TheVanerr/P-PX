@@ -44,12 +44,12 @@
     } catch { /* gövde JSON değilse durum kodu yeter */ }
     const retryAfter = Number(res.headers.get('retry-after')) || 0;
     const limited = retryAfter > 0 || res.headers.get('x-ratelimit-remaining') === '0' || /rate limit/i.test(detail);
-    if (res.status === 401) return failure('GitHub anahtarı geçersiz ya da süresi dolmuş. Ana ekrandan yenileyin.', { auth: true });
+    if (res.status === 401) return failure('GitHub anahtarı geçersiz ya da süresi dolmuş. Ana ekrandan yenileyin.', { auth: true, status: 401 });
     if ((res.status === 403 || res.status === 429) && limited) {
       return failure('GitHub hız sınırına ulaşıldı. Kayıtlar bu cihazda bekliyor, kendiliğinden gönderilecek.', { retryAfterMs: (retryAfter || 60) * 1000 });
     }
-    if (res.status === 403) return failure('GitHub anahtarının bu depoya yazma izni yok (Contents: Read and write gerekli).', { auth: true });
-    if (res.status === 404) return failure('Depo bulunamadı ya da anahtarın bu depoya erişimi yok.', { auth: true });
+    if (res.status === 403) return failure('GitHub anahtarının bu depoya yazma izni yok (Contents: Read and write gerekli).', { auth: true, status: 403 });
+    if (res.status === 404) return failure('Depo bulunamadı ya da anahtarın bu depoya erişimi yok.', { auth: true, status: 404 });
     if (res.status >= 500) return failure('GitHub şu an yanıt vermiyor. Kayıtlar bu cihazda bekliyor.', { offline: true });
     return failure(`GitHub hatası ${res.status}: ${detail}`, { status: res.status });
   }

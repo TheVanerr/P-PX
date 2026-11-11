@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#14161b">
+  <title>P&amp;PX</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="simge.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    :root { color-scheme: dark; --bg: #14161b; --card: #1b1e25; --line: #2f343e; --text: #e8eaef; --muted: #aab0bc; --red: #d40000; }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 'Segoe UI', system-ui, sans-serif; }
+    main { max-width: 420px; margin: 0 auto; padding: 12vh 16px 48px; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0 0 18px; display: flex; align-items: center; gap: 10px; }
+    h1 img { width: 32px; height: 32px; }
+    [hidden] { display: none !important; }
+    .panel { padding: 18px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--red); border-radius: 8px; }
+    p { margin: 0 0 10px; color: var(--muted); }
+    label { display: block; margin: 12px 0 4px; font-size: 13px; color: var(--muted); }
+    label:first-child { margin-top: 0; }
+    input { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; }
+    input:focus-visible, button:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 1px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    button { font: inherit; color: var(--text); background: #2b3039; border: 1px solid var(--line); border-radius: 6px; padding: 9px 16px; cursor: pointer; }
+    button:hover { background: #363c47; }
+    button.primary { background: var(--red); border-color: var(--red); color: #fff; font-weight: 600; }
+    button.primary:hover { background: #ff0000; }
+    button:disabled { opacity: .6; cursor: default; }
+    .msg { margin-top: 14px; white-space: pre-wrap; font-size: 13px; color: var(--text); }
+    .msg:empty { display: none; }
+    .msg.err { color: #ff8585; }
+    .msg.warn { color: #ffd479; }
+    progress { width: 100%; height: 6px; margin-top: 12px; accent-color: var(--red); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1><img src="simge.svg" alt="">P&amp;PX</h1>
+
+    <div class="panel" id="busy">
+      <p id="busyText">Açılıyor…</p>
+      <progress id="bar" hidden></progress>
+    </div>
+
+    <form class="panel" id="login" hidden autocomplete="off">
+      <label for="repo">Depo</label>
+      <input type="text" id="repo" placeholder="kullanici/depo" spellcheck="false" autocapitalize="off">
+      <label for="token">Erişim anahtarı</label>
+      <input type="password" id="token" spellcheck="false" autocapitalize="off">
+      <div class="actions">
+        <button type="submit" class="primary" id="connect">Bağlan</button>
+      </div>
+      <div class="msg" id="loginMsg" role="status"></div>
+    </form>
+
+    <div class="panel" id="failed" hidden>
+      <div class="msg err" id="failedMsg" role="alert"></div>
+      <div class="actions">
+        <button type="button" class="primary" id="retry">Yeniden dene</button>
+        <button type="button" id="change">Anahtarı değiştir</button>
+      </div>
+    </div>
+
+    <div class="panel" id="unsupported" hidden>
+      <p>Bu tarayıcı desteklenmiyor. Chrome ya da Edge'in güncel sürümüyle açın.</p>
+    </div>
+  </main>
+
+  <script src="ppx-kabuk.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const $ = (id) => document.getElementById(id);
+      const LOGOUT_FLAG = 'ppx_cikis';
+      const views = ['busy', 'login', 'failed', 'unsupported'];
+      const show = (id) => { for (const v of views) $(v).hidden = v !== id; };
+
+      if (!window.isSecureContext || !('serviceWorker' in navigator) || !window.caches || !window.indexedDB) {
+        show('unsupported');
+        return;
+      }
+
+      const scope = new URL('./', location.href).href;
+      const shell = PpxKabuk.createShell({ scope, caches, storage: localStorage, indexedDB });
+      const worker = Promise.race([
+        navigator.serviceWorker.register('sw.js', { scope: './' }).then(() => navigator.serviceWorker.ready),
+        new Promise((resolve, reject) => setTimeout(() => reject(new Error('Tarayıcı çevrimdışı çalışma için hazırlanamadı. Sayfayı yenileyin.')), 20000))
+      ]);
+
+      function busy(text, progress) {
+        show('busy');
+        $('busyText').textContent = text;
+        $('bar').hidden = !progress;
+        if (progress) {
+          $('bar').max = progress.total;
+          $('bar').value = progress.done;
+        }
+      }
+
+      const onProgress = (p) => busy(`Program indiriliyor… ${p.done} / ${p.total}`, p);
+
+      function showLogin(text, cls) {
+        show('login');
+        const { repo } = shell.settings();
+        const fromLink = new URLSearchParams(location.hash.slice(1)).get('depo');
+        if (!$('repo').value) $('repo').value = repo || fromLink || '';
+        $('token').value = '';
+        $('loginMsg').textContent = text || '';
+        $('loginMsg').className = `msg ${cls || (text ? 'err' : '')}`;
+        ($('repo').value ? $('token') : $('repo')).focus();
+      }
+
+      async function open(result) {
+        if (result.state === 'login') return showLogin(result.error);
+        if (result.state === 'error') {
+          show('failed');
+          $('failedMsg').textContent = result.error;
+          return;
+        }
+        busy(result.warning || (result.updated ? 'Program güncellendi, açılıyor…' : 'Açılıyor…'));
+        await worker;
+        // Uyarı (çevrimdışı vb.) okunabilsin diye kısa bekletilir
+        if (result.warning) await new Promise((r) => setTimeout(r, 2500));
+        location.replace(shell.appUrl);
+      }
+
+      const fail = (e) => {
+        show('failed');
+        $('failedMsg').textContent = (e && e.message) || String(e);
+      };
+
+      $('login').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        $('connect').disabled = true;
+        try {
+          busy('Deneniyor…');
+          await open(await shell.login($('repo').value, $('token').value, onProgress));
+        } catch (err) {
+          fail(err);
+        } finally {
+          $('connect').disabled = false;
+        }
+      });
+      $('retry').addEventListener('click', () => shell.start(onProgress).then(open, fail));
+      $('change').addEventListener('click', () => showLogin());
+
+      (async () => {
+        await worker;
+        // Çıkış yalnız programın ana ekranından istenir (bu sekmede işaret bırakır); bağlantıyla tetiklenemez
+        if (sessionStorage.getItem(LOGOUT_FLAG)) {
+          sessionStorage.removeItem(LOGOUT_FLAG);
+          busy('Çıkış yapılıyor…');
+          await shell.logout(() => busy('Çıkış yapılıyor… Açık P&PX sekmelerini kapatın.'));
+          return showLogin('Çıkış yapıldı. Bu cihazda program ve veri kalmadı.', 'warn');
+        }
+        busy('Denetleniyor…');
+        await open(await shell.start(onProgress));
+      })().catch(fail);
+    })();
+  </script>
+</body>
+</html>

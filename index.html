@@ -62,6 +62,7 @@
           <button type="button" id="restore">Yedekten yükle</button>
           <button type="button" id="showConnect">GitHub deposuna bağla</button>
           <button type="button" id="disconnect" hidden>Bağlantıyı kaldır</button>
+          <button type="button" id="install" hidden>Uygulama olarak yükle</button>
           <input type="file" id="restoreFile" accept=".json" hidden>
         </div>
         <div class="result" id="result" role="status"></div>
@@ -132,6 +133,9 @@
         location.reload();
       });
 
+      // Web uygulamasında anahtarsız açılış giriş ekranına döner (ppx-boot.js)
+      if (PpxBoot.locked) return;
+      const pwa = PpxBoot.pwa;
       const settings = PpxBoot.settings();
       if (!settings.mode) {
         $('connect').hidden = false;
@@ -151,10 +155,47 @@
       $('showConnect').textContent = github ? 'Depoyu ya da anahtarı değiştir' : 'GitHub deposuna bağla';
       $('localOnly').hidden = github;
       if (github) $('repo').value = settings.repo;
-      $('disconnect').addEventListener('click', () => {
-        PpxBoot.disconnect();
-        location.reload();
+      $('disconnect').addEventListener('click', async () => {
+        if (!pwa) {
+          PpxBoot.disconnect();
+          location.reload();
+          return;
+        }
+        // Web uygulaması: bağlantı kaldırma yerine çıkış. Önce eşitlenir, gönderilemeyen kayıt varsa sorulur.
+        say($('result'), 'Depoyla eşitleniyor…');
+        const res = await PpxBoot.logout();
+        if (res.ok) return;
+        const why = res.error ? ` (${res.error})` : '';
+        if (!confirm(`${res.pending} dosya depoya gönderilemedi${why}. Çıkarsanız bu değişiklikler kaybolur. Yine de çıkılsın mı?`)) {
+          say($('result'), `Çıkılmadı. ${res.pending} dosya bu cihazda bekliyor; gerekirse "Yedek indir" ile yedek alın.`, true);
+          return;
+        }
+        await PpxBoot.logout({ force: true });
       });
+      const canPick = typeof window.showDirectoryPicker === 'function';
+      $('importFolder').hidden = !canPick;
+      $('updateData').hidden = !canPick && !pwa;
+      if (pwa) {
+        // Web uygulaması: yerel mod yok; çıkış bu cihazdaki program ve veri kopyasını siler
+        $('disconnect').textContent = 'Çıkış yap';
+        $('disconnect').title = 'Bu cihazdaki program ve veri kopyası silinir; depodaki veriler kalır.';
+        $('showConnect').textContent = 'Anahtarı değiştir';
+        $('updateData').title = 'Kod listesini ve güvenlik kataloğunu programın yayınlanan sürümüne getirir. Projelere ve kayıtlara dokunmaz.';
+        let installPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          installPrompt = e;
+          $('install').hidden = false;
+        });
+        window.addEventListener('appinstalled', () => { $('install').hidden = true; });
+        $('install').addEventListener('click', async () => {
+          if (!installPrompt) return;
+          installPrompt.prompt();
+          await installPrompt.userChoice.catch(() => null);
+          installPrompt = null;
+          $('install').hidden = true;
+        });
+      }
 
       (async () => {
         const result = $('result');
@@ -186,6 +227,10 @@
         /* ── Program verileri: kod listesi ve güvenlik kataloğu ── */
 
         let offeredDir = null;
+        // Web uygulamasında kaynak, cihaza indirilen programın kendisidir; klasör seçilmez
+        const programSource = () => (pwa
+          ? Promise.resolve(PpxFs.programFolder(new URL('P-IDX/', location.href).href, 'P&PX programı'))
+          : window.showDirectoryPicker({ id: 'ppx-import', mode: 'read' }));
         const keepNote = github ? 'Eski sürüm GitHub geçmişinde kalır.' : 'Eski sürüm saklanmaz; gerekirse önce "Yedek indir" ile yedek alın.';
 
         /** Karşılaştırma depodaki son hâlle yapılır: başka bilgisayar daha yeni sürümü yazmış olabilir */
@@ -205,7 +250,7 @@
 
         $('updateData').addEventListener('click', async () => {
           try {
-            const dir = await window.showDirectoryPicker({ id: 'ppx-import', mode: 'read' });
+            const dir = await programSource();
             say(result, 'Program verileri karşılaştırılıyor…');
             if (!(await syncedFirst())) return;
             const plan = await PpxFs.planProgramData(db, dir);

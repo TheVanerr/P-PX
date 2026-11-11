@@ -1,6 +1,7 @@
 /* GitHub Git Data API'sinin kullandığımız kısmının sahtesi. Kimlikler gerçek Git algoritmasıyla hesaplanır.
    GitHub'ın belirleyici davranışları korunur: boş depoda 409, ileri olmayan dal güncellemesinde 422,
-   ağaçta olmayan yolu silmede 422, erişim anahtarı yoksa 401. */
+   ağaçta olmayan yolu silmede 422, erişim anahtarı yoksa 401, olmayan dal 404.
+   Veri varsayılan daldadır; publish() başka bir dala (program) doğrudan commit atar. */
 
 const crypto = require('node:crypto');
 
@@ -13,6 +14,8 @@ function createFakeGitHub(options) {
   const trees = new Map();
   const commits = new Map();
   let head = null;
+  // Varsayılan dal dışındaki dallar: ad → commit
+  const branches = new Map();
   const clock = opts.clock || { now: 1800000000000 };
   const stats = { get: 0, post: 0, patch: 0, put: 0, blobGets: 0, commits: 0, uncachedViolations: 0 };
   const hooks = { fail: null, beforeRefUpdate: null, staleRef: null };
@@ -53,7 +56,9 @@ function createFakeGitHub(options) {
     }
     let m;
 
-    if (method === 'GET' && path === '') return json(200, { private: opts.isPrivate, default_branch: opts.branch });
+    if (method === 'GET' && path === '') {
+      return json(200, { full_name: `${opts.owner}/${opts.name}`, private: opts.isPrivate, default_branch: opts.branch });
+    }
 
     if (method === 'GET' && path === `/git/ref/heads/${opts.branch}`) {
       if (hooks.staleRef) {
@@ -63,15 +68,20 @@ function createFakeGitHub(options) {
       }
       return head ? json(200, { object: { sha: head } }) : empty();
     }
+    if (method === 'GET' && (m = path.match(/^\/git\/ref\/heads\/(.+)$/))) {
+      if (!head) return empty();
+      const sha = branches.get(m[1]);
+      return sha ? json(200, { object: { sha } }) : json(404, { message: 'Not Found' });
+    }
     if (method === 'GET' && (m = path.match(/^\/git\/commits\/(\w+)$/))) {
       const c = commits.get(m[1]);
-      return c ? json(200, { sha: m[1], tree: { sha: c.treeSha }, committer: { date: c.date } }) : json(404, { message: 'Not Found' });
+      return c ? json(200, { sha: m[1], message: c.message, tree: { sha: c.treeSha }, committer: { date: c.date } }) : json(404, { message: 'Not Found' });
     }
     if (method === 'GET' && (m = path.match(/^\/git\/trees\/(\w+)$/))) {
       if (query !== 'recursive=1') return json(400, { message: 'recursive bekleniyordu' });
       const t = trees.get(m[1]);
       if (!t) return json(404, { message: 'Not Found' });
-      return json(200, { sha: m[1], truncated: false, tree: [...t.entries()].map(([p, sha]) => ({ path: p, mode: '100644', type: 'blob', sha })) });
+      return json(200, { sha: m[1], truncated: false, tree: [...t.entries()].map(([p, sha]) => ({ path: p, mode: '100644', type: 'blob', sha, size: blobs.get(sha).length })) });
     }
     if (method === 'GET' && (m = path.match(/^\/git\/blobs\/(\w+)$/))) {
       stats.blobGets += 1;
@@ -137,6 +147,15 @@ function createFakeGitHub(options) {
     return json(200, { object: { sha: head } });
   }
 
+  /** Başka bir dala dosyaları tek commit olarak yazar (yayınlama aracının yaptığı gibi): yol → Buffer */
+  function publish(branch, files, message) {
+    const map = new Map([...files].map(([p, buf]) => [p, addBlob(Buffer.from(buf))]));
+    const parent = branches.get(branch);
+    const sha = addCommit(addTree(map), parent ? [parent] : [], message || 'Program');
+    branches.set(branch, sha);
+    return sha;
+  }
+
   async function fetchFn(url, init) {
     const target = url.replace('https://api.github.com', '');
     if (init.method === 'GET' && init.cache !== 'no-store') stats.uncachedViolations += 1;
@@ -154,6 +173,8 @@ function createFakeGitHub(options) {
     id: `${opts.owner}/${opts.name}`,
     token: opts.token,
     headSha: () => head,
+    publish,
+    branchSha: (name) => branches.get(name) || null,
     files: () => (head ? new Map([...trees.get(commits.get(head).treeSha)].map(([p, sha]) => [p, blobs.get(sha)])) : new Map()),
     commitCount: () => stats.commits
   };

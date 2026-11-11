@@ -1,6 +1,8 @@
 /* P&PX açılışı: veritabanı bağlantısı ve iki programa ortak gezinme. host.js'ten önce yüklenir.
    Kurulum yapılmışsa window.__PPX tanımlanır, host.js klasör izni istemeden buradaki kökü kullanır.
-   Yapılmamışsa programlar eskisi gibi klasörle açılır. Sayfalar dosyadan çift tıkla açılır; sunucu gerekmez. */
+   Yapılmamışsa programlar eskisi gibi klasörle açılır. Sayfalar dosyadan çift tıkla açılır; sunucu gerekmez.
+   Web uygulaması (PWA) olarak açılınca program sitenin app/ klasöründen, cihazdaki kopyadan gelir (pwa/ klasörü).
+   Orada yerel mod yoktur: erişim anahtarı yoksa ya da geçersizse giriş ekranına dönülür. */
 
 (function () {
   'use strict';
@@ -9,6 +11,9 @@
   if (window.__PNX_SEED) return;
 
   const SETTINGS_KEY = 'ppx_ayarlar';
+  const LOGOUT_FLAG = 'ppx_cikis';
+  const LOCK_GUARD_KEY = 'ppx_kilit';
+  const LOCK_GUARD_MS = 60 * 1000;
   const FOREGROUND_SYNC_MS = 5 * 60 * 1000;
   const FOCUS_SYNC_GAP_MS = 60 * 1000;
   const FIRST_SYNC_WAIT_MS = 3000;
@@ -16,6 +21,10 @@
   const launcherUrl = new URL('../index.html', ortak).href;
   const pidUrl = new URL('../P-IDX/P%26ID/codes/cizim.html', ortak).href;
   const pnxUrl = new URL('../PNOMATIKX/PNOMATIK/codes/cizim.html', ortak).href;
+  // PWA: sayfayı hizmet çalışanı sunar ve program app/ altındadır; giriş ekranı bir üst klasördür
+  const appRoot = new URL('../', ortak);
+  const pwa = !!(navigator.serviceWorker && navigator.serviceWorker.controller) && /\/app\/$/.test(appRoot.pathname);
+  const shellUrl = pwa ? new URL('../', appRoot).href : null;
 
   let db = null;
   let readyPromise = null;
@@ -31,6 +40,19 @@
 
   function saveSettings(value) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(value));
+  }
+
+  const hasKey = () => {
+    const s = settings();
+    return s.mode === 'github' && !!s.token && !!s.repo;
+  };
+
+  /** Giriş ekranı anahtarı yeniden dener, geçersizse programı cihazdan siler. Döngüye girmesin diye dakikada bir. */
+  function toShell() {
+    const last = Number(sessionStorage.getItem(LOCK_GUARD_KEY) || 0);
+    if (Date.now() - last < LOCK_GUARD_MS) return;
+    sessionStorage.setItem(LOCK_GUARD_KEY, String(Date.now()));
+    location.replace(shellUrl);
   }
 
   const CSS = `
@@ -142,6 +164,8 @@
     db.onStatus((s) => {
       renderChip(s);
       if (s.state === 'ok' && s.changed && s.changed.length) warnChanged(s.changed);
+      // PWA: anahtar geçersizleşti (süresi doldu, silindi). Kaydedilmemiş çizim varsa program çıkışı sorar.
+      if (pwa && s.state === 'error' && s.code === 401) toShell();
     });
     renderChip(db.status());
     await db.refreshPending();
@@ -205,28 +229,70 @@
     }
   }
 
+  /* ─── Web uygulaması (PWA) ──────────────────────────────── */
+
+  /** Uygulama olarak yüklenebilsin: program sayfaları da sitenin bildirimini gösterir */
+  function addAppLinks() {
+    for (const old of document.querySelectorAll('link[rel~="icon"]')) old.remove();
+    const add = (tag, attrs) => {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+      document.head.appendChild(el);
+    };
+    add('link', { rel: 'manifest', href: `${shellUrl}manifest.webmanifest` });
+    add('link', { rel: 'icon', href: `${shellUrl}simge.svg`, type: 'image/svg+xml' });
+    add('meta', { name: 'theme-color', content: '#14161b' });
+  }
+
+  /** Çıkış: önce depoyla eşitlenir. Gönderilemeyen kayıt varsa force olmadan çıkılmaz, çünkü giriş ekranı bu cihazdaki veriyi siler. */
+  async function logout(options) {
+    if (!pwa) return { ok: false, error: 'Çıkış yalnız web uygulamasında' };
+    await api.ready();
+    if (!(options && options.force)) {
+      const s = await db.sync();
+      if (s.pending) return { ok: false, pending: s.pending, error: s.error };
+    }
+    sessionStorage.setItem(LOGOUT_FLAG, '1');
+    location.replace(shellUrl);
+    return { ok: true };
+  }
+
+  // Anahtarsız açılan program sayfası hiçbir şey göstermeden giriş ekranına döner
+  const locked = pwa && !hasKey();
+  if (locked) {
+    document.documentElement.style.visibility = 'hidden';
+    location.replace(shellUrl);
+  }
+
   const api = {
     ready() {
+      if (locked) return new Promise(() => {});
       if (!readyPromise) readyPromise = connect();
       return readyPromise;
     },
     db: () => db,
     settings,
     connectGitHub,
+    pwa,
+    locked,
+    shellUrl,
+    logout,
     useLocal: () => saveSettings({ mode: 'yerel' }),
     /** Anahtar silinir, veriler bu cihazda kalır */
     disconnect: () => saveSettings({ mode: 'yerel' })
   };
   window.PpxBoot = api;
 
-  const active = !!settings().mode;
+  const active = locked || !!settings().mode;
   if (active) {
     window.__PPX = api;
     applyActivePatches();
   }
 
   afterDom(() => {
+    if (locked) return;
     addStyle(active ? CSS + ACTIVE_CSS : CSS);
     addNav();
+    if (pwa) addAppLinks();
   });
 })();

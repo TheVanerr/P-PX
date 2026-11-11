@@ -115,6 +115,8 @@
       pending: 0,
       lastSync: null,
       error: '',
+      // Son hatanın HTTP durum kodu (401: anahtar geçersiz); yoksa 0
+      code: 0,
       changed: []
     };
     let timer = null;
@@ -373,11 +375,11 @@
         try {
           await lock(() => exchange(changed));
           const pending = (await local.all()).filter((r) => r.dirty).length;
-          emit({ state: 'ok', pending, lastSync: now(), error: '', changed });
+          emit({ state: 'ok', pending, lastSync: now(), error: '', code: 0, changed });
           if (pending) schedule();
         } catch (e) {
           await refreshPending();
-          emit({ state: e && e.offline ? 'offline' : 'error', error: (e && e.message) || 'Eşitleme hatası', changed });
+          emit({ state: e && e.offline ? 'offline' : 'error', error: (e && e.message) || 'Eşitleme hatası', code: (e && e.status) || 0, changed });
           schedule(Math.max(RETRY_MS, (e && e.retryAfterMs) || 0));
         }
         return Object.assign({}, status);

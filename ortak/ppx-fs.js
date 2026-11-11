@@ -331,6 +331,62 @@
     }
   }
 
+  /** Web uygulaması: programın kendi katalog dosyaları klasör gibi okunur, klasör seçilmez.
+      baseUrl programdaki P-IDX klasörünün adresidir; yalnız kod listesi, güvenlik kataloğu ve sürüm dosyası görünür. */
+  function programFolder(baseUrl, name, fetchFn) {
+    const get = fetchFn || ((url) => fetch(url, { cache: 'no-store' }));
+    const files = new Set(PROGRAM_DATA.map((f) => f.path).concat(DATA_VERSION_FILE));
+    const dirs = new Set();
+    for (const file of files) {
+      const segs = file.split('/');
+      for (let i = 1; i < segs.length; i += 1) dirs.add(segs.slice(0, i).join('/'));
+    }
+    const join = (a, b) => (a ? `${a}/${b}` : b);
+    const url = (p) => new URL(p.split('/').map(encodeURIComponent).join('/'), baseUrl).href;
+    function fileHandle(path) {
+      return {
+        kind: 'file',
+        name: path.split('/').pop(),
+        async getFile() {
+          const res = await get(url(path));
+          if (!res.ok) throw domError('NotFoundError');
+          return new File([await res.arrayBuffer()], path.split('/').pop());
+        }
+      };
+    }
+    function dirHandle(path) {
+      const self = {
+        kind: 'directory',
+        name: path ? path.split('/').pop() : name,
+        async getDirectoryHandle(child) {
+          const p = join(path, child);
+          if (!dirs.has(p)) throw domError('NotFoundError');
+          return dirHandle(p);
+        },
+        async getFileHandle(child) {
+          const p = join(path, child);
+          if (!files.has(p)) throw domError('NotFoundError');
+          return fileHandle(p);
+        },
+        async *entries() {
+          const prefix = path ? `${path}/` : '';
+          const seen = new Set();
+          for (const p of [...dirs, ...files]) {
+            if (!p.startsWith(prefix)) continue;
+            const child = p.slice(prefix.length).split('/')[0];
+            if (seen.has(child)) continue;
+            seen.add(child);
+            const full = join(path, child);
+            yield [child, dirs.has(full) ? dirHandle(full) : fileHandle(full)];
+          }
+        }
+      };
+      self[Symbol.asyncIterator] = self.entries;
+      return self;
+    }
+    return dirHandle('');
+  }
+
   /** Seçilen program klasöründeki kod listesi ve güvenlik kataloğunu veritabanındakiyle karşılaştırır, hiçbir şey yazmaz.
       Sürüm bilgisi olmayan eski program klasörü ve veritabanındakinden eski sürüm reddedilir.
       seen: plan anında veritabanındaki dosyanın kimliği; uygulamada değişmiş mi diye bakılır. */
@@ -427,6 +483,7 @@
     hasProgramData,
     planProgramData,
     applyProgramData,
+    programFolder,
     programDataSummary,
     dataHash,
     IMPORT_RULES,
