@@ -42,18 +42,17 @@
   /** db: PpxDb */
   function createRoot(db, options) {
     const join = (a, b) => (a ? `${a}/${b}` : b);
+    // Yollar içeriksiz, bellekten okunur; dosya içeriği yalnız getFile'da okunur
+    const rows = () => (db.listPaths ? db.listPaths() : db.list());
 
     async function hasFile(path) {
-      const record = await db.read(path);
-      return !!record && record.kind === 'file';
+      return (await rows()).some((r) => r.path === path && r.kind === 'file');
     }
 
     async function hasDir(path) {
       if (!path) return true;
-      const record = await db.read(path);
-      if (record && record.kind === 'dir') return true;
       const prefix = `${path}/`;
-      return (await db.list()).some((r) => r.path.startsWith(prefix));
+      return (await rows()).some((r) => (r.path === path && r.kind === 'dir') || r.path.startsWith(prefix));
     }
 
     function fileHandle(path) {
@@ -130,7 +129,7 @@
         async *entries() {
           const prefix = path ? `${path}/` : '';
           const seen = new Set();
-          for (const record of await db.list()) {
+          for (const record of await rows()) {
             if (!record.path.startsWith(prefix) || record.path === path) continue;
             const rest = record.path.slice(prefix.length);
             const name = rest.split('/')[0];

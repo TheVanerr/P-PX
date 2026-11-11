@@ -14,6 +14,7 @@ const ROOT = path.join(__dirname, '..');
 const SCOPE = 'https://ben.github.io/P-PX/';
 const PROGRAM = { repo: 'ben/P-PX', branch: 'main' };
 const text = (s) => new TextEncoder().encode(s);
+const str = (b) => new TextDecoder().decode(b);
 
 /* ─── Tarayıcı parçalarının sahteleri ───────────────────── */
 
@@ -344,6 +345,8 @@ test('site: hizmet çalışanının sakladığı her dosya var; sitede program k
   const list = JSON.parse(sw.match(/const SHELL_FILES = (\[[^\]]*\])/)[1].replace(/'/g, '"'));
   for (const file of list) assert.ok(fs.existsSync(path.join(dir, file || 'index.html')), file);
   const manifest = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.webmanifest'), 'utf8'));
+  // Kimlik aynı sitedeki başka uygulamalarla karışmasın: adresin kendisi değil, programa özel ad
+  assert.equal(manifest.id, 'ppx-pid-pnomatik');
   assert.equal(manifest.start_url, './');
   assert.equal(manifest.scope, './');
   for (const icon of manifest.icons) {
@@ -430,4 +433,123 @@ test('web uygulaması: anahtarsız sayfa giriş ekranına döner, yerel mod ve k
   assert.doesNotMatch(shell, /searchParams\.(get|has)\('cikis'\)|location\.search/);
   assert.match(boot, /const LOGOUT_FLAG = 'ppx_cikis';/);
   assert.match(shell, /const LOGOUT_FLAG = 'ppx_cikis';/);
+});
+
+/* ─── Hız: yol listesi bellekte, ilk eşitleme paralel, tek sekme günceller ── */
+
+/** Tarayıcı veritabanından tam okumaları sayar */
+function countingLocal() {
+  const local = PpxDb.memoryLocal();
+  const counts = { all: 0 };
+  const all = local.all;
+  local.all = async () => {
+    counts.all += 1;
+    return all();
+  };
+  return { local, counts };
+}
+
+test('hız: klasör görünümü veritabanını her soruda baştan okumaz, bu sekmedeki yazma hemen görünür', async () => {
+  const { local, counts } = countingLocal();
+  const db = PpxDb.createDb({ local });
+  await db.write('P&ID/projects/A/proje.json', text('{}'));
+  await db.write('P&ID/assets/fonts/buyuk.ttf', new Uint8Array(500000));
+  const root = PpxFs.createRoot(db);
+  const before = counts.all;
+  for (let i = 0; i < 20; i += 1) {
+    const projects = await (await root.getDirectoryHandle('P&ID')).getDirectoryHandle('projects');
+    for await (const entry of projects.entries()) assert.ok(entry);
+  }
+  assert.ok(counts.all - before <= 1, `${counts.all - before} tam okuma`);
+  // Yazma ve silme listeyi hemen değiştirir
+  await db.write('P&ID/projects/B/proje.json', text('{}'));
+  const names = async () => {
+    const out = [];
+    for await (const [name] of (await (await root.getDirectoryHandle('P&ID')).getDirectoryHandle('projects')).entries()) out.push(name);
+    return out.sort();
+  };
+  assert.deepEqual(await names(), ['A', 'B']);
+  await (await (await root.getDirectoryHandle('P&ID')).getDirectoryHandle('projects')).removeEntry('A');
+  assert.deepEqual(await names(), ['B']);
+  await assert.rejects((await root.getDirectoryHandle('P&ID')).getDirectoryHandle('projects').then((d) => d.getDirectoryHandle('A')), { name: 'NotFoundError' });
+});
+
+test('hız: başka sekme aynı veritabanına yazınca bu sekmenin yol listesi yenilenir', async () => {
+  const shared = PpxDb.memoryLocal();
+  const channel = `ppx-deneme-${Date.now()}`;
+  const tabA = PpxDb.createDb({ local: shared, channel });
+  const tabB = PpxDb.createDb({ local: shared, channel });
+  await tabA.write('P&ID/projects/A/proje.json', text('{}'));
+  assert.deepEqual((await tabB.listPaths()).map((r) => r.path), ['P&ID/projects/A/proje.json']);
+  await tabA.write('P&ID/projects/B/proje.json', text('{}'));
+  // Bildirim kısa bir gecikmeyle gider
+  for (let i = 0; i < 50 && (await tabB.listPaths()).length < 2; i += 1) await new Promise((r) => setTimeout(r, 20));
+  assert.equal((await tabB.listPaths()).length, 2);
+});
+
+test('hız: yeni cihazda ilk eşitleme dosyaları birlikte indirir, içerik aynen gelir', async () => {
+  const hub = createFakeGitHub();
+  const writer = PpxDb.createDb({ local: PpxDb.memoryLocal(), remote: PpxGitHub.createRemote({ repo: hub.id, token: hub.token, fetchFn: hub.fetchFn }), flushMs: 3600000 });
+  for (let i = 0; i < 30; i += 1) await writer.write(`P&ID/projects/P${i}/proje.json`, text(`{"no":${i}}`));
+  await writer.write('P&ID/assets/fonts/a.ttf', new Uint8Array(200000).fill(7));
+  await writer.sync();
+  let active = 0;
+  let peak = 0;
+  const slowFetch = async (url, init) => {
+    const isBlob = url.includes('/git/blobs/');
+    if (isBlob) active += 1;
+    peak = Math.max(peak, active);
+    await new Promise((r) => setTimeout(r, 5));
+    try {
+      return await hub.fetchFn(url, init);
+    } finally {
+      if (isBlob) active -= 1;
+    }
+  };
+  const fresh = PpxDb.createDb({ local: PpxDb.memoryLocal(), remote: PpxGitHub.createRemote({ repo: hub.id, token: hub.token, fetchFn: slowFetch }), flushMs: 3600000 });
+  assert.equal((await fresh.sync()).state, 'ok');
+  assert.ok(peak > 1, `aynı anda en çok ${peak} dosya indi`);
+  assert.equal((await fresh.read('P&ID/projects/P7/proje.json')) && str((await fresh.read('P&ID/projects/P7/proje.json')).bytes), '{"no":7}');
+  assert.equal((await fresh.read('P&ID/assets/fonts/a.ttf')).bytes.length, 200000);
+});
+
+test('kabuk: iki sekme aynı anda açılınca yeni sürümü yalnız biri indirir; uygulama programın deposunu cihazdaki kayıttan bilir', async () => {
+  const s = setup();
+  await s.shell.login('ben/ppx-veri', s.data.token);
+  const files = new Map(repoFiles());
+  files.set('ortak/yeni.js', Buffer.from('// iki sekme'));
+  s.code.publish('main', files);
+  let chain = Promise.resolve();
+  const lock = (fn) => {
+    const run = chain.then(fn);
+    chain = run.catch(() => {});
+    return run;
+  };
+  // Uygulamadaki denetim programın deposunu vermez, cihazdaki programınkini kullanır
+  const tab = () => PpxKabuk.createShell({ scope: SCOPE, caches: s.caches, storage: s.storage, fetchFn: (u, i) => (u.includes('/repos/ben/P-PX') ? s.code : s.data).fetchFn(u, i), lock });
+  const blobs = s.code.stats.blobGets;
+  const [a, b] = await Promise.all([tab().start(), tab().start()]);
+  assert.equal(s.code.stats.blobGets - blobs, 1);
+  assert.deepEqual([a.updated, b.updated].sort(), [true, undefined].sort());
+  assert.equal((await serve(s.caches, `${SCOPE}app/ortak/yeni.js`)).status, 200);
+  assert.deepEqual((await s.shell.installed()).source, PROGRAM);
+  // Başarılı denetim zamanı yazılır; uygulama bir sonrakini 5 dakika sonra yapar
+  assert.ok(Number(s.storage.getItem(PpxKabuk.CHECK_KEY)) > 0);
+});
+
+test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekranı önce denetler, yeni sürüm arkada iner', () => {
+  const boot = fs.readFileSync(path.join(ROOT, 'ortak/ppx-boot.js'), 'utf8');
+  const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
+  const kabuk = fs.readFileSync(path.join(ROOT, 'pwa/ppx-kabuk.js'), 'utf8');
+  // Giriş ekranı: program ve anahtar varsa hemen açar, uygulama geri gönderdiyse önce denetler
+  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && \(await shell\.installed\(\)\)\) \{\s*location\.replace\(shell\.appUrl\);/);
+  const recheckKey = (src) => src.match(/const RECHECK_FLAG = '([^']+)'/)[1];
+  assert.equal(recheckKey(boot), recheckKey(shell));
+  assert.match(boot.slice(boot.indexOf('function toShell'), boot.indexOf('function toShell') + 500), /sessionStorage\.setItem\(RECHECK_FLAG, '1'\);\s*location\.replace\(shellUrl\);/);
+  // Uygulama: arka plan denetimi giriş ekranıyla aynı zaman kaydını kullanır, yeni sürümde sayfayı kendiliğinden yenilemez
+  assert.equal(boot.match(/const PROGRAM_CHECK_KEY = '([^']+)'/)[1], kabuk.match(/const CHECK_KEY = '([^']+)'/)[1]);
+  assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);\s*else if \(res\.updated\) showUpdated\(\);/);
+  // Ana ekran ve az önce eşitlenen sayfa eşitlemeyi beklemez
+  assert.match(boot, /else if \(!recent && !window\.PPX_LAUNCHER\) await Promise\.race/);
+  assert.match(boot, /channel: 'ppx-veri'/);
 });

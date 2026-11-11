@@ -13,10 +13,16 @@
   const SETTINGS_KEY = 'ppx_ayarlar';
   const LOGOUT_FLAG = 'ppx_cikis';
   const LOCK_GUARD_KEY = 'ppx_kilit';
+  const RECHECK_FLAG = 'ppx_denetle';
   const LOCK_GUARD_MS = 60 * 1000;
   const FOREGROUND_SYNC_MS = 5 * 60 * 1000;
   const FOCUS_SYNC_GAP_MS = 60 * 1000;
   const FIRST_SYNC_WAIT_MS = 3000;
+  const LAST_SYNC_KEY = 'ppx_son_esitleme';
+  const RECENT_SYNC_MS = 2 * 60 * 1000;
+  // PWA: anahtar ve programın yeni sürümü en çok bu sıklıkla arka planda denetlenir (giriş ekranıyla ortak)
+  const PROGRAM_CHECK_KEY = 'ppx_kabuk_denetim';
+  const PROGRAM_CHECK_MS = 5 * 60 * 1000;
   const ortak = new URL('.', document.currentScript.src);
   const launcherUrl = new URL('../index.html', ortak).href;
   const pidUrl = new URL('../P-IDX/P%26ID/codes/cizim.html', ortak).href;
@@ -52,6 +58,8 @@
     const last = Number(sessionStorage.getItem(LOCK_GUARD_KEY) || 0);
     if (Date.now() - last < LOCK_GUARD_MS) return;
     sessionStorage.setItem(LOCK_GUARD_KEY, String(Date.now()));
+    // Giriş ekranı programı beklemeden açmasın, önce anahtarı denetlesin
+    sessionStorage.setItem(RECHECK_FLAG, '1');
     location.replace(shellUrl);
   }
 
@@ -160,26 +168,30 @@
     const { mode, repo, token } = settings();
     const remote = mode === 'github' ? PpxGitHub.createRemote({ repo, token }) : null;
     const local = PpxDb.indexedDbLocal('ppx-veri');
-    db = PpxDb.createDb({ local, remote, lock: await lockFn() });
+    // Sekmeler aynı veritabanını kullanır; biri yazınca öbürlerinin yol listesi yenilenir
+    db = PpxDb.createDb({ local, remote, lock: await lockFn(), channel: 'ppx-veri' });
     db.onStatus((s) => {
       renderChip(s);
       if (s.state === 'ok' && s.changed && s.changed.length) warnChanged(s.changed);
+      if (s.state === 'ok' && s.lastSync) localStorage.setItem(LAST_SYNC_KEY, String(s.lastSync));
       // PWA: anahtar geçersizleşti (süresi doldu, silindi). Kaydedilmemiş çizim varsa program çıkışı sorar.
       if (pwa && s.state === 'error' && s.code === 401) toShell();
     });
     renderChip(db.status());
     await db.refreshPending();
     if (remote) {
-      // Yerel veri varsa açılış ağa takılmaz; yoksa ilk alma bitmeden gösterilecek bir şey yok
+      // Yerel veri yoksa ilk alma bitmeden gösterilecek bir şey yok. Varsa açılış ağa takılmaz: ana ekran ve az önce
+      // eşitlenmiş sayfa hiç beklemez (eşitleme arkada sürer), öbürleri en çok birkaç saniye bekler.
       const first = db.sync();
-      if (PpxFs.hasProgramData(await db.list())) await Promise.race([first, new Promise((r) => setTimeout(r, FIRST_SYNC_WAIT_MS))]);
-      else await first;
+      const recent = Date.now() - Number(localStorage.getItem(LAST_SYNC_KEY) || 0) < RECENT_SYNC_MS;
+      if (!PpxFs.hasProgramData(await db.listPaths())) await first;
+      else if (!recent && !window.PPX_LAUNCHER) await Promise.race([first, new Promise((r) => setTimeout(r, FIRST_SYNC_WAIT_MS))]);
       watchPage();
     }
     initialSyncDone = true;
 
     // Veri henüz aktarılmamışsa programlar boş açılmasın, ana ekrana dönülür
-    if (!window.PPX_LAUNCHER && !PpxFs.hasProgramData(await db.list())) {
+    if (!window.PPX_LAUNCHER && !PpxFs.hasProgramData(await db.listPaths())) {
       location.replace(launcherUrl);
       return new Promise(() => {});
     }
@@ -244,6 +256,40 @@
     add('meta', { name: 'theme-color', content: '#14161b' });
   }
 
+  function showUpdated() {
+    if (document.getElementById('ppxUpdated')) return;
+    const bar = document.createElement('div');
+    bar.id = 'ppxUpdated';
+    bar.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:950;display:flex;gap:10px;align-items:center;padding:8px 10px 8px 14px;'
+      + 'background:#23272f;color:#e8eaef;border:1px solid #2f343e;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.35);font:13px "Segoe UI",system-ui,sans-serif';
+    bar.textContent = 'Programın yeni sürümü hazır.';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'Yenile';
+    button.style.cssText = 'font:inherit;font-weight:600;color:#fff;background:#d40000;border:0;border-radius:4px;padding:4px 12px;cursor:pointer';
+    button.addEventListener('click', () => location.reload());
+    bar.appendChild(button);
+    document.body.appendChild(bar);
+  }
+
+  /** PWA: giriş ekranı beklemeden uygulamayı açar; anahtar ve yeni sürüm burada, sayfa açıldıktan sonra arka planda denetlenir.
+      Anahtar geçersizse program cihazdan silinir ve giriş ekranına dönülür. Yeni sürüm iner, sayfa kendiliğinden yenilenmez. */
+  function checkProgram() {
+    if (Date.now() - Number(localStorage.getItem(PROGRAM_CHECK_KEY) || 0) < PROGRAM_CHECK_MS) return;
+    localStorage.setItem(PROGRAM_CHECK_KEY, String(Date.now()));
+    const script = document.createElement('script');
+    script.src = `${shellUrl}ppx-kabuk.js`;
+    script.onload = async () => {
+      try {
+        const shell = window.PpxKabuk.createShell({ scope: shellUrl, caches: window.caches, storage: localStorage, indexedDB: window.indexedDB });
+        const res = await shell.start();
+        if (res.state === 'login') location.replace(shellUrl);
+        else if (res.updated) showUpdated();
+      } catch { /* sonraki açılışta yeniden denenir */ }
+    };
+    document.head.appendChild(script);
+  }
+
   /** Çıkış: önce depoyla eşitlenir. Gönderilemeyen kayıt varsa force olmadan çıkılmaz, çünkü giriş ekranı bu cihazdaki veriyi siler. */
   async function logout(options) {
     if (!pwa) return { ok: false, error: 'Çıkış yalnız web uygulamasında' };
@@ -295,6 +341,10 @@
     if (locked) return;
     addStyle(active ? CSS + ACTIVE_CSS : CSS);
     addNav();
-    if (pwa) addAppLinks();
+    if (pwa) {
+      addAppLinks();
+      // Açılışın işini engellemesin diye sayfa yüklendikten biraz sonra
+      setTimeout(checkProgram, 1500);
+    }
   });
 })();

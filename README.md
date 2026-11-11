@@ -25,8 +25,9 @@ Program klasörü olmadan her bilgisayardan kullanmak için `https://thevanerr.g
 Sitede program yoktur, yalnız giriş ekranı vardır:
 
 - Siteyi açan, anahtar olmadan yalnız depo ve anahtar soran boş bir ekran görür. Program, kod listesi ve veriler sitede bulunmaz.
-- Anahtar girilince önce veri deposuna erişimi denetlenir, sonra program bu deponun `main` dalından tarayıcıya iner ve orada saklanır. Projeler, makine kayıtları, testler, araçlar ve belgeler inmez. Sonraki açılışlarda yalnız değişen dosyalar iner.
-- Anahtar geçersizleşirse (süresi doldu, silindi, veri deposu erişimi kaldırıldı) program cihazdan silinir, giriş ekranına dönülür. Gönderilmemiş kayıtlar silinmez; yeni anahtarla girince gider.
+- Anahtar girilince önce veri deposuna erişimi denetlenir, sonra program bu deponun `main` dalından tarayıcıya iner ve orada saklanır. Projeler, makine kayıtları, testler, araçlar ve belgeler inmez. İlk açılış birkaç saniye sürer.
+- Sonraki açılışlar ağı beklemez, program ve veri cihazdan açılır. Anahtar ve yeni sürüm açıldıktan sonra arka planda denetlenir (en çok 5 dakikada bir).
+- Anahtar geçersizleşirse (süresi doldu, silindi, veri deposu erişimi kaldırıldı) bu anlaşılınca program cihazdan silinir, giriş ekranına dönülür. Gönderilmemiş kayıtlar silinmez; yeni anahtarla girince gider.
 - Ana ekrandaki **Çıkış yap** önce depoyla eşitler, sonra bu cihazdaki programı, anahtarı ve veri kopyasını siler. Ortak bilgisayarda işiniz bitince kullanın.
 - Kişiye özel erişim için her kişiye ayrı anahtar verin (GitHub'da birden çok anahtar açılabilir). Bir kişinin erişimini kaldırmak için yalnız onun anahtarını silin.
 - **Program verilerini güncelle** klasör sormaz, indirilen programdaki kod listesini ve güvenlik kataloğunu kullanır.
@@ -34,7 +35,7 @@ Sitede program yoktur, yalnız giriş ekranı vardır:
 
 ### Yayınlama
 
-`main`'e her push yayındır: uygulamayı açanlar bir sonraki açılışta yeni sürümü alır. Push'tan önce `npm test` çalıştırın.
+`main`'e her push yayındır: açık uygulamada yalnız değişen dosyalar arkada iner, sağ altta **Programın yeni sürümü hazır · Yenile** görünür. Sayfa kendiliğinden yenilenmez, çizim yarıda kalmaz. Push'tan önce `npm test` çalıştırın.
 
 Giriş ekranı (`pwa/` klasörü) `pwa/` değişince GitHub Actions ile yeniden yayınlanır (`.github/workflows/pages.yml`). Sitede yalnız bu klasör durur.
 

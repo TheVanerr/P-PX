@@ -183,22 +183,24 @@ async function main() {
     if (msg.sessionId !== sessionId) return;
     if (msg.method === 'Runtime.exceptionThrown') errors.push(msg.params.exceptionDetails.exception?.description || msg.params.exceptionDetails.text);
     if (msg.method === 'Log.entryAdded' && msg.params.entry.level === 'error' && !/404|Failed to load resource|ERR_INTERNET_DISCONNECTED|ERR_CONNECTION/.test(msg.params.entry.text)) errors.push(msg.params.entry.text);
-    if (msg.method === 'Page.javascriptDialogOpening') send('Page.handleJavaScriptDialog', { accept: true });
+    // Sayfa değişirken iptal olan isteğin ya da pencerenin yanıtı reddedilir; önemsizdir
+    const quiet = (method, params) => send(method, params).catch(() => {});
+    if (msg.method === 'Page.javascriptDialogOpening') quiet('Page.handleJavaScriptDialog', { accept: true });
     if (msg.method !== 'Fetch.requestPaused') return;
     const { requestId, request } = msg.params;
     if (apiDown) {
-      send('Fetch.failRequest', { requestId, errorReason: 'InternetDisconnected' });
+      quiet('Fetch.failRequest', { requestId, errorReason: 'InternetDisconnected' });
       return;
     }
     if (request.method === 'OPTIONS') {
-      send('Fetch.fulfillRequest', { requestId, responseCode: 204, responseHeaders: cors });
+      quiet('Fetch.fulfillRequest', { requestId, responseCode: 204, responseHeaders: cors });
       return;
     }
     const target = request.url.replace('https://api.github.com', '');
     const repo = target.startsWith(`/repos/${PROGRAM_REPO}`) ? code : hub;
     const res = await repo.handle(request.method, target, request.postData ? JSON.parse(request.postData) : null, request.headers);
     const headers = cors.concat(Object.entries(res.headers || {}).map(([name, value]) => ({ name, value: String(value) })));
-    send('Fetch.fulfillRequest', { requestId, responseCode: res.status, responseHeaders: headers, body: Buffer.from(JSON.stringify(res.json)).toString('base64') });
+    quiet('Fetch.fulfillRequest', { requestId, responseCode: res.status, responseHeaders: headers, body: Buffer.from(JSON.stringify(res.json)).toString('base64') });
   });
   await send('Page.enable');
   await send('Runtime.enable');
@@ -287,12 +289,18 @@ async function main() {
     site.setOnline(true);
     apiDown = false;
 
-    /* 7. Main'e push edilince yeni sürüm bir sonraki açılışta gelir, yalnız değişen dosya iner */
+    /* 7. Main'e push edilince: uygulama eski sürümle hemen açılır, yeni sürüm arkada iner, "Yenile" ile gelir */
     code.publish('main', repoFiles('surum-2'));
     const blobs = code.stats.blobGets;
+    // Son denetimin üstünden 5 dakika geçmiş gibi
+    await evaluate(`localStorage.removeItem('ppx_kabuk_denetim'); true`);
     await go(base);
-    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
-    check(code.stats.blobGets - blobs === 1, 'main\'e push sonrası yeni sürüm açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && !document.getElementById('surum')`, 'eski sürümle açılış', 30000);
+    check(true, 'açılış yeni sürümü beklemez');
+    await waitFor(`!!document.getElementById('ppxUpdated')`, 'yeni sürüm bildirimi', 30000);
+    await evaluate(`document.querySelector('#ppxUpdated button').click(); true`);
+    await waitFor(`document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
+    check(code.stats.blobGets - blobs === 1,'main\'e push sonrası yeni sürüm açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
 
     /* 8a. Program verilerini güncelle: klasör seçilmez, indirilen programın kataloğu kullanılır */
     await waitFor(`/GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'ana ekran bağlandı', 30000);
@@ -312,8 +320,9 @@ async function main() {
     await evaluate(`document.getElementById('login').requestSubmit(); true`);
     await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && /GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'iptal sonrası yeniden giriş', 30000);
 
-    /* 8. Anahtar iptal edilince program cihazdan silinir */
+    /* 8. Anahtar iptal edilince (bir dakikadan sonra yeniden açılışta) program cihazdan silinir */
     revoke(() => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} }));
+    await evaluate(`sessionStorage.removeItem('ppx_kilit'); true`);
     await go(base);
     await waitFor(`${visible('login')} && /geçersiz/.test(document.getElementById('loginMsg').textContent)`, 'iptalden sonra giriş ekranı', 30000);
     const afterRevoke = await evaluate(`(async () => ({ caches: (await caches.keys()).filter((k) => k.startsWith('ppx-program-')).length,

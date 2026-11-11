@@ -15,6 +15,8 @@
   const SYNC_ATTEMPTS = 4;
   // GitHub saatte en çok 500 içerik isteği kabul eder; büyük aktarmalar birkaç tura bölünür
   const MAX_BLOBS_PER_PUSH = 50;
+  // Depodan alırken aynı anda indirilen dosya sayısı
+  const PARALLEL_BLOBS = 8;
 
   /** Git'in dosya kimliği: aynı içerik her yerde aynı değeri verir, değişen dosya böyle anlaşılır */
   async function gitBlobSha(bytes) {
@@ -104,8 +106,43 @@
   /** Kayıt alanları: dirty = depoya gönderilecek, base = depoda bilinen son hâl (yoksa null).
       remote yoksa yerel modda çalışır; kayıtlar sonradan depoya bağlanınca gönderilmek üzere bekler. */
   function createDb(options) {
-    const { local, remote = null } = options;
+    const { remote = null } = options;
     const now = options.now || Date.now;
+    /* Klasör görünümü (ppx-fs) her soruda bütün kayıtları okursa yazı tipleriyle birlikte megabaytlar yüzlerce kez okunur.
+       Yollar bellekte tutulur: bu sekmede her yazmada, başka sekme yazınca (BroadcastChannel) yeniden okunur.
+       Eşitleme ve içerik okuma her zaman tarayıcı veritabanının kendisinden yapılır. */
+    let index = null;
+    let version = 0;
+    let announce = null;
+    const channel = options.channel && typeof BroadcastChannel === 'function' ? new BroadcastChannel(options.channel) : null;
+    if (channel) {
+      channel.onmessage = () => {
+        version += 1;
+        index = null;
+      };
+      // Node testlerinde kanal süreci açık tutmasın
+      if (channel.unref) channel.unref();
+    }
+    function changed() {
+      version += 1;
+      index = null;
+      if (channel && !announce) {
+        announce = setTimeout(() => {
+          announce = null;
+          channel.postMessage('degisti');
+        }, 50);
+      }
+    }
+    const local = Object.assign({}, options.local, {
+      put: async (record) => {
+        await options.local.put(record);
+        changed();
+      },
+      remove: async (path) => {
+        await options.local.remove(path);
+        changed();
+      }
+    });
     const lock = options.lock || ((fn) => fn());
     const flushMs = options.flushMs === undefined ? DEFAULT_FLUSH_MS : options.flushMs;
     const listeners = new Set();
@@ -126,9 +163,18 @@
       for (const fn of listeners) fn(Object.assign({}, status));
     }
 
+    /** Silinmemiş kayıtların yolu, türü ve gönderilecek mi bilgisi; içerik yok. Arada yazma olursa saklanmaz. */
+    async function paths() {
+      if (index) return index;
+      const at = version;
+      const rows = (await local.all()).map((r) => ({ path: r.path, kind: r.kind, dirty: !!r.dirty }));
+      if (at === version) index = rows;
+      return rows;
+    }
+
     async function refreshPending() {
       if (!remote) return;
-      emit({ pending: (await local.all()).filter((r) => r.dirty).length });
+      emit({ pending: (await paths()).filter((r) => r.dirty).length });
     }
 
     /** Sürekli çizerken de gönderim gecikmesin: bekleyen zamanlayıcı yeni yazmayla ertelenmez */
@@ -198,6 +244,11 @@
       return (await local.all()).filter((r) => r.kind !== 'deleted');
     }
 
+    /** list() gibi, ama içeriksiz ve bellekten: klasör görünümü ve sayımlar için */
+    async function listPaths() {
+      return (await paths()).filter((r) => r.kind !== 'deleted');
+    }
+
     /* ── Depodan alma ── */
 
     /** Başka depoya bağlanılınca buradaki her şey o depoya gönderilmek üzere işaretlenir */
@@ -248,6 +299,19 @@
         await local.put({ path, kind: isDir ? 'dir' : 'file', bytes: isDir ? null : await blob(id), hash: id, at: head.at, dirty: false, base: id });
         changed.push(path);
       };
+
+      // Gelecek dosyalar önce birlikte indirilir: yeni cihazda ilk eşitleme dosya sayısı kadar sıralı istek beklemez
+      const needed = new Set();
+      for (const [path, id] of theirs) {
+        if (id === 'dir') continue;
+        const record = mine.get(path);
+        if (!record || (!record.dirty && (record.kind === 'deleted' ? null : record.hash) !== id)) needed.add(id);
+      }
+      const queue = [...needed];
+      const fetchNext = async () => {
+        while (queue.length) await blob(queue.shift());
+      };
+      await Promise.all(Array.from({ length: Math.min(PARALLEL_BLOBS, queue.length) }, fetchNext));
 
       for (const path of new Set([...theirs.keys(), ...mine.keys()])) {
         const id = theirs.has(path) ? theirs.get(path) : null;
@@ -424,6 +488,7 @@
       mkdir,
       remove,
       list,
+      listPaths,
       sync,
       exportBackup,
       importBackup,

@@ -79,6 +79,8 @@
       'use strict';
       const $ = (id) => document.getElementById(id);
       const LOGOUT_FLAG = 'ppx_cikis';
+      // Uygulama anahtarın geçersiz olduğunu görünce bırakır: program beklemeden açılmaz, önce denetlenir
+      const RECHECK_FLAG = 'ppx_denetle';
       const views = ['busy', 'login', 'failed', 'unsupported'];
       const show = (id) => { for (const v of views) $(v).hidden = v !== id; };
 
@@ -128,7 +130,7 @@
         busy(result.warning || (result.updated ? 'Program güncellendi, açılıyor…' : 'Açılıyor…'));
         await worker;
         // Uyarı (çevrimdışı vb.) okunabilsin diye kısa bekletilir
-        if (result.warning) await new Promise((r) => setTimeout(r, 2500));
+        if (result.warning) await new Promise((r) => setTimeout(r, 1500));
         location.replace(shell.appUrl);
       }
 
@@ -160,6 +162,14 @@
           busy('Çıkış yapılıyor…');
           await shell.logout(() => busy('Çıkış yapılıyor… Açık P&PX sekmelerini kapatın.'));
           return showLogin('Çıkış yapıldı. Bu cihazda program ve veri kalmadı.', 'warn');
+        }
+        // Program bu cihazda ve anahtar var: ağı beklemeden açılır. Anahtar ve yeni sürüm uygulamada arka planda denetlenir;
+        // anahtar geçersizse program orada silinir ve buraya dönülür.
+        const recheck = sessionStorage.getItem(RECHECK_FLAG);
+        sessionStorage.removeItem(RECHECK_FLAG);
+        if (!recheck && shell.hasKey() && (await shell.installed())) {
+          location.replace(shell.appUrl);
+          return;
         }
         busy('Denetleniyor…');
         await open(await shell.start(onProgress));

@@ -34,9 +34,12 @@
   const STATE_KEY = '__durum';
   const PROGRAM_CACHE = 'ppx-program-';
   const APP_DIR = 'app/';
-  const PARALLEL = 6;
+  // GitHub isteği ~0,3 sn sürer; dosyalar bu kadarı aynı anda iner
+  const PARALLEL = 12;
+  // Son denetim zamanı: uygulama (ppx-boot.js) bundan sonraki denetimi arka planda yapar
+  const CHECK_KEY = 'ppx_kabuk_denetim';
   // Çıkışta silinir: programların bu sitede tarayıcıya yazdığı her şey
-  const LOCAL_KEYS = ['pidx_pano', 'pidx_dock', 'pnomatikx_dock', 'pidx_ml_legacy_done', 'ml_kodListesi', 'ml_makineler'];
+  const LOCAL_KEYS = ['pidx_pano', 'pidx_dock', 'pnomatikx_dock', 'pidx_ml_legacy_done', 'ml_kodListesi', 'ml_makineler', 'ppx_son_esitleme', CHECK_KEY];
   const LOCAL_DATABASES = ['ppx-veri', 'pidx-host', 'pnomatikx-host'];
 
   const MIME = {
@@ -223,11 +226,19 @@
 
   /* ─── Kabuk ─────────────────────────────────────────────── */
 
-  /** options: scope (sitenin kök adresi), program ({ repo, branch }), caches, storage (localStorage), fetchFn, indexedDB, api */
+  /** İki sekme aynı anda yeni sürümü indirmesin: biri bitirir, öbürü aynı sürümü bulur */
+  function defaultLock(fn) {
+    if (typeof navigator !== 'undefined' && navigator.locks && navigator.locks.request) return navigator.locks.request('ppx-kabuk', fn);
+    return fn();
+  }
+
+  /** options: scope (sitenin kök adresi), program ({ repo, branch }; yoksa cihazdaki programınki), caches,
+      storage (localStorage), fetchFn, indexedDB, api, lock */
   function createShell(options) {
-    const { scope, caches, storage, program } = options;
+    const { scope, caches, storage } = options;
     const fetchFn = options.fetchFn || ((...args) => fetch(...args));
     const api = options.api || API;
+    const withLock = options.lock || defaultLock;
 
     function settings() {
       try {
@@ -246,7 +257,7 @@
     }
 
     /** Yalnız değişen dosyalar indirilir; bitmeden eski program yerinde kalır, yarım indirme kullanılmaz */
-    async function install(gh, sha, installed, onProgress) {
+    async function install(gh, source, sha, installed, onProgress) {
       const commit = await gh.commit(sha);
       const tree = await gh.tree(commit.tree.sha);
       if (tree.truncated) throw new Error('Program bir seferde okunamayacak kadar büyük');
@@ -300,6 +311,7 @@
         at: commit.committer && commit.committer.date,
         message: String(commit.message || '').split('\n')[0],
         files: Object.fromEntries(files.map((f) => [f.path, f.sha])),
+        source,
         downloaded: progress.downloaded
       };
       await writeState(caches, scope, state);
@@ -316,19 +328,25 @@
       return { state: 'login', error: message };
     }
 
-    /** Her açılışta iki istek: anahtar veri deposuna hâlâ erişiyor mu, programın son commit'i ne.
+    const hasKey = () => {
+      const s = settings();
+      return s.mode === 'github' && !!s.token && !!s.repo;
+    };
+
+    /** Denetim iki istektir: anahtar veri deposuna hâlâ erişiyor mu, programın son commit'i ne.
         Program değişmediyse hiçbir şey inmez. İnternet yoksa cihazdaki program açılır.
         @returns state: ready (program açılabilir) | login (giriş gerekli) | error (açılamaz) */
-    async function start(onProgress) {
+    async function check(onProgress) {
       const s = settings();
-      if (s.mode !== 'github' || !s.token || !s.repo) {
+      if (!hasKey()) {
         await removeProgram(caches, scope);
         return { state: 'login' };
       }
+      const installed = await readState(caches, scope);
+      const program = options.program || (installed && installed.source);
       if (!program) return { state: 'error', error: 'Programın deposu bu adresten anlaşılamadı.' };
       const data = github(s.repo, s.token, fetchFn, api);
       const code = github(program.repo, s.token, fetchFn, api);
-      const installed = await readState(caches, scope);
       const fallback = (message) => (installed
         ? { state: 'ready', program: installed, warning: message }
         : { state: 'error', error: message });
@@ -353,12 +371,18 @@
 
       if (installed && installed.sha === sha) return { state: 'ready', program: installed };
       try {
-        const fresh = await install(code, sha, installed, onProgress);
+        const fresh = await install(code, program, sha, installed, onProgress);
         return { state: 'ready', program: fresh, updated: !!installed };
       } catch (e) {
         if (e.locked) return lock(e.message);
         return fallback(`Programın yeni sürümü indirilemedi: ${e.message}`);
       }
+    }
+
+    async function start(onProgress) {
+      const res = await withLock(() => check(onProgress));
+      if (res.state === 'ready' && !res.warning) storage.setItem(CHECK_KEY, String(Date.now()));
+      return res;
     }
 
     /** Veri deposu özel olmalı (müşteri verisi), anahtar geçerli olmalı. Geçerse ayarlar programla ortak yere yazılır. */
@@ -402,6 +426,7 @@
 
     return {
       settings,
+      hasKey,
       start,
       login,
       logout,
@@ -423,6 +448,7 @@
     gitBlobSha,
     mimeOf,
     SETTINGS_KEY,
+    CHECK_KEY,
     APP_DIR
   };
 });
