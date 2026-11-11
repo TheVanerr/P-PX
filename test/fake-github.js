@@ -1,7 +1,7 @@
 /* GitHub Git Data API'sinin kullandığımız kısmının sahtesi. Kimlikler gerçek Git algoritmasıyla hesaplanır.
    GitHub'ın belirleyici davranışları korunur: boş depoda 409, ileri olmayan dal güncellemesinde 422,
    ağaçta olmayan yolu silmede 422, erişim anahtarı yoksa 401, olmayan dal 404.
-   Veri varsayılan daldadır; publish() başka bir dala (program) doğrudan commit atar. */
+   publish() bir dala doğrudan commit atar (program deposunda main'e push gibi). */
 
 const crypto = require('node:crypto');
 
@@ -147,12 +147,14 @@ function createFakeGitHub(options) {
     return json(200, { object: { sha: head } });
   }
 
-  /** Başka bir dala dosyaları tek commit olarak yazar (yayınlama aracının yaptığı gibi): yol → Buffer */
+  /** Dosyaları bir dala tek commit olarak yazar (git push gibi): yol → Buffer */
   function publish(branch, files, message) {
     const map = new Map([...files].map(([p, buf]) => [p, addBlob(Buffer.from(buf))]));
-    const parent = branches.get(branch);
-    const sha = addCommit(addTree(map), parent ? [parent] : [], message || 'Program');
-    branches.set(branch, sha);
+    const isDefault = branch === opts.branch;
+    const parent = isDefault ? head : branches.get(branch);
+    const sha = addCommit(addTree(map), parent ? [parent] : [], message || 'Push');
+    if (isDefault) head = sha;
+    else branches.set(branch, sha);
     return sha;
   }
 

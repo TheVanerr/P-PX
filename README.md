@@ -20,35 +20,27 @@ Kurulum yapılmamış bir tarayıcıda programlar eskisi gibi klasör izniyle ç
 
 ## Web uygulaması (PWA)
 
-Program klasörü olmadan her bilgisayardan kullanmak için: site adresini Chrome ya da Edge ile açın, depo adını (`kullanici/ppx-veri`) ve erişim anahtarını girin. Adres çubuğundaki **Yükle** simgesiyle ya da ana ekrandaki **Uygulama olarak yükle** ile masaüstü uygulaması olur. İnternet yokken de açılır; kayıtlar cihazda bekler, bağlantı gelince gider.
+Program klasörü olmadan her bilgisayardan kullanmak için `https://thevanerr.github.io/P-PX/` adresini Chrome ya da Edge ile açın, veri deposunu (`TheVanerr/ppx-veri`) ve erişim anahtarını girin. Adres çubuğundaki **Yükle** simgesiyle ya da ana ekrandaki **Uygulama olarak yükle** ile masaüstü uygulaması olur. İnternet yokken de açılır; kayıtlar cihazda bekler, bağlantı gelince gider.
 
 Sitede program yoktur, yalnız giriş ekranı vardır:
 
-- Siteyi açan, anahtar olmadan yalnız depo ve anahtar soran boş bir ekran görür. Program kodu, kod listesi ve veriler sitede bulunmaz.
-- Program, özel veri deposunun `program` dalında durur. Anahtar girilince oradan indirilir ve tarayıcıda saklanır; sonraki açılışlarda yalnız değişen dosyalar iner.
-- Anahtar geçersizleşirse (süresi doldu, silindi, depo erişimi kaldırıldı) bir sonraki açılışta program cihazdan silinir, giriş ekranına dönülür. Gönderilmemiş kayıtlar silinmez; yeni anahtarla girince gider.
+- Siteyi açan, anahtar olmadan yalnız depo ve anahtar soran boş bir ekran görür. Program, kod listesi ve veriler sitede bulunmaz.
+- Anahtar girilince önce veri deposuna erişimi denetlenir, sonra program bu deponun `main` dalından tarayıcıya iner ve orada saklanır. Projeler, makine kayıtları, testler, araçlar ve belgeler inmez. Sonraki açılışlarda yalnız değişen dosyalar iner.
+- Anahtar geçersizleşirse (süresi doldu, silindi, veri deposu erişimi kaldırıldı) program cihazdan silinir, giriş ekranına dönülür. Gönderilmemiş kayıtlar silinmez; yeni anahtarla girince gider.
 - Ana ekrandaki **Çıkış yap** önce depoyla eşitler, sonra bu cihazdaki programı, anahtarı ve veri kopyasını siler. Ortak bilgisayarda işiniz bitince kullanın.
 - Kişiye özel erişim için her kişiye ayrı anahtar verin (GitHub'da birden çok anahtar açılabilir). Bir kişinin erişimini kaldırmak için yalnız onun anahtarını silin.
-- **Program verilerini güncelle** klasör sormaz, yayınlanan programdaki kod listesini ve güvenlik kataloğunu kullanır.
+- **Program verilerini güncelle** klasör sormaz, indirilen programdaki kod listesini ve güvenlik kataloğunu kullanır.
 - Dosyadan açılış (`index.html`'e çift tık) eskisi gibi çalışır.
 
 ### Yayınlama
 
-Program değişince (commit edildikten sonra):
+`main`'e her push yayındır: uygulamayı açanlar bir sonraki açılışta yeni sürümü alır. Push'tan önce `npm test` çalıştırın.
 
-```
-npm run yayinla
-```
+Giriş ekranı (`pwa/` klasörü) `pwa/` değişince GitHub Actions ile yeniden yayınlanır (`.github/workflows/pages.yml`). Sitede yalnız bu klasör durur.
 
-Testleri çalıştırır, sonra son commit'teki program dosyalarını `ppx-veri` deposunun `program` dalına gönderir. Projeler, makine kayıtları, testler, araçlar ve belgeler gönderilmez. Veri ana daldadır, bu dala dokunulmaz. Uygulamayı açanlar bir sonraki açılışta yeni sürümü alır.
+İlk kurulum bir kez yapılır: deponun **Settings → Pages → Build and deployment → Source** ayarında **GitHub Actions** seçin. "Deploy from a branch" seçmeyin; o seçenek deponun tamamını siteye koyar. Yanlışlıkla seçilirse program sayfaları açılmaz, giriş ekranına yönlenir, ancak dosyalar sitede görünür olur.
 
-Giriş ekranı (`pwa/` klasörü) herkese açık ayrı bir depodan GitHub Pages ile yayınlanır. Yalnız `pwa/` değişince gerekir:
-
-```
-npm run kabuk-yayinla
-```
-
-İlk kurulum bir kez yapılır: GitHub'da herkese açık `ppx` deposunu oluşturun, `npm run kabuk-yayinla` deyin, deponun **Settings → Pages** bölümünde kaynak olarak `main` dalını ve `/ (root)` klasörünü seçin. Site `https://kullanici.github.io/ppx/` adresinde açılır. Kabuk commit'leri GitHub'ın gizli e-posta adresiyle atılır.
+Program deposu herkese açık olduğu için anahtarın ayrıca izni gerekmez. Depo yeniden özel yapılırsa GitHub Pages ücretli plan ister ve erişim anahtarına bu depo da eklenmelidir.
 
 Gerçek tarayıcıda deneme (Edge ya da Chrome görünmez açılır, internete bir şey gitmez): `npm run test:tarayici`.
 
@@ -71,7 +63,7 @@ Katalogları programın klasöründe düzenleyin; depoda elle yapılan değişik
 | `P-IDX/`, `PNOMATIKX/` | İki program |
 | `ortak/` | Veritabanı (`ppx-db.js`), GitHub bağlantısı (`ppx-github.js`), klasör görünümü (`ppx-fs.js`), açılış (`ppx-boot.js`) |
 | `pwa/` | Web uygulamasının giriş ekranı (kabuk): sitede yalnız bu durur |
-| `tools/` | Yayınlama: `yayinla.js` (program), `kabuk-yayinla.js` (giriş ekranı) |
+| `.github/workflows/pages.yml` | `pwa/` klasörünü GitHub Pages'e yayınlar |
 | `test/` | Ortak katman ve web uygulaması testleri |
 | `_yedek/` | Birleştirme öncesi PNOMATIKX yedeği |
 | `FARKLAR.md` | İki programın farkları ve kalan işler |

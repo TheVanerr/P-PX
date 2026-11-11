@@ -257,11 +257,13 @@
     return { ok: true };
   }
 
-  // Anahtarsız açılan program sayfası hiçbir şey göstermeden giriş ekranına döner
-  const locked = pwa && !hasKey();
+  // Sitede tek kapı giriş ekranıdır (pwa/). GitHub Pages yanlışlıkla deponun tamamını yayınlarsa program sayfası
+  // doğrudan açılmaz; anahtarsız açılan web uygulaması sayfası da hiçbir şey göstermeden giriş ekranına döner.
+  const exposed = !pwa && /^https?:$/.test(location.protocol) && /\.github\.io$/i.test(location.hostname);
+  const locked = exposed || (pwa && !hasKey());
   if (locked) {
     document.documentElement.style.visibility = 'hidden';
-    location.replace(shellUrl);
+    location.replace(exposed ? new URL('../pwa/', ortak).href : shellUrl);
   }
 
   const api = {

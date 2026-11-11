@@ -6,6 +6,8 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#14161b">
+  <!-- Programın deposu ("kullanici/depo" ya da "kullanici/depo@dal"). Boşsa GitHub Pages adresinden anlaşılır. -->
+  <meta name="ppx-program" content="">
   <title>P&amp;PX</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="simge.svg" type="image/svg+xml">
@@ -86,7 +88,8 @@
       }
 
       const scope = new URL('./', location.href).href;
-      const shell = PpxKabuk.createShell({ scope, caches, storage: localStorage, indexedDB });
+      const program = PpxKabuk.programSource(scope, document.querySelector('meta[name="ppx-program"]').content);
+      const shell = PpxKabuk.createShell({ scope, program, caches, storage: localStorage, indexedDB });
       const worker = Promise.race([
         navigator.serviceWorker.register('sw.js', { scope: './' }).then(() => navigator.serviceWorker.ready),
         new Promise((resolve, reject) => setTimeout(() => reject(new Error('Tarayıcı çevrimdışı çalışma için hazırlanamadı. Sayfayı yenileyin.')), 20000))

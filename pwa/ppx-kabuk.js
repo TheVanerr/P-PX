@@ -1,7 +1,8 @@
-/* P&PX kabuğu. Herkese açık sitede yalnız giriş ekranı ve bu dosya durur; program kodu sitede yoktur.
-   Program, özel veri deposunun "program" dalındadır (npm run yayinla). Erişim anahtarı girilince oradan indirilir,
-   bu cihazın tarayıcısında saklanır (Cache Storage) ve hizmet çalışanı (sw.js) onu app/ altından sunar.
-   Anahtar yoksa, geçersizse ya da depoya erişimi kalmadıysa program cihazdan silinir: site boş bir giriş ekranıdır.
+/* P&PX kabuğu. Sitede yalnız giriş ekranı ve bu dosya durur; program kodu sitede yoktur.
+   Erişim anahtarı girilince önce özel veri deposuna erişimi denetlenir, sonra program kendi deposunun ana dalından
+   (sitenin yayınlandığı depo, main) indirilir, bu cihazın tarayıcısında saklanır (Cache Storage) ve hizmet çalışanı
+   (sw.js) onu app/ altından sunar. Main'e her push yeni sürümdür; sonraki açılışta yalnız değişen dosyalar iner.
+   Anahtar yoksa, geçersizse ya da veri deposuna erişimi kalmadıysa program cihazdan silinir: site boş bir giriş ekranıdır.
    Sayfa da hizmet çalışanı da bu dosyayı kullanır; Node testleri aynı kodu çalıştırır. */
 
 (function (root, factory) {
@@ -11,7 +12,23 @@
   'use strict';
 
   const API = 'https://api.github.com';
-  const PROGRAM_BRANCH = 'program';
+  const DEFAULT_BRANCH = 'main';
+  /* Program deposundan yalnız programın kendisi iner: müşteri verisi, testler, araçlar, belgeler ve bu kabuk inmez */
+  const EXCLUDE = [
+    /^pwa\//,
+    /^_yedek\//,
+    /^\.github\//,
+    /(^|\/)test\//,
+    /(^|\/)tools\//,
+    /(^|\/)node_modules\//,
+    /^P-IDX\/P&ID\/projects\//,
+    /^P-IDX\/ML\//,
+    /^PNOMATIKX\/PNOMATIK\/projects\//,
+    /\.md$/i,
+    /(^|\/)package(-lock)?\.json$/,
+    /(^|\/)\.[^/]*ignore$/,
+    /(^|\/)\.gitattributes$/
+  ];
   const SETTINGS_KEY = 'ppx_ayarlar';
   const STATE_CACHE = 'ppx-kabuk-durum';
   const STATE_KEY = '__durum';
@@ -45,6 +62,7 @@
   };
 
   const mimeOf = (path) => MIME[path.split('.').pop().toLowerCase()] || 'application/octet-stream';
+  const isProgramFile = (path) => !EXCLUDE.some((rule) => rule.test(path));
 
   function failure(message, extra) {
     return Object.assign(new Error(message), extra);
@@ -139,7 +157,7 @@
 
   /* ─── GitHub ────────────────────────────────────────────── */
 
-  /** Hata türleri: locked = anahtar geçersiz ya da erişim yok (program silinir), offline = geçici, notFound = dal yok */
+  /** Hata türleri: locked = anahtar geçersiz ya da izni yok, offline = geçici, notFound = depo yok ya da erişim yok */
   async function explain(res) {
     let detail = '';
     try {
@@ -172,8 +190,9 @@
       return res.json();
     }
     return {
+      repo,
       info: () => get(''),
-      ref: () => get(`/git/ref/heads/${PROGRAM_BRANCH}`),
+      ref: (branch) => get(`/git/ref/heads/${branch}`),
       commit: (sha) => get(`/git/commits/${sha}`),
       tree: (sha) => get(`/git/trees/${sha}?recursive=1`),
       blob: async (sha) => base64ToBytes((await get(`/git/blobs/${sha}`)).content)
@@ -186,11 +205,27 @@
     return /^[\w.-]+\/[\w.-]+$/.test(clean) ? clean : null;
   }
 
+  /** Programın deposu: sayfada yazılıysa o ("kullanici/depo" ya da "kullanici/depo@dal"),
+      yazılı değilse GitHub Pages adresinden: kullanici.github.io/depo/ → kullanici/depo, ana dal main */
+  function programSource(scope, declared) {
+    const text = String(declared || '').trim();
+    if (text) {
+      const [repoText, branch] = text.split('@');
+      const repo = normalizeRepo(repoText);
+      return repo ? { repo, branch: branch || DEFAULT_BRANCH } : null;
+    }
+    const url = new URL(scope);
+    const m = url.hostname.match(/^([^.]+)\.github\.io$/i);
+    if (!m) return null;
+    const first = url.pathname.split('/').filter(Boolean)[0];
+    return { repo: `${m[1]}/${first || `${m[1]}.github.io`}`, branch: DEFAULT_BRANCH };
+  }
+
   /* ─── Kabuk ─────────────────────────────────────────────── */
 
-  /** options: scope (sitenin kök adresi), caches, storage (localStorage), fetchFn, indexedDB, api */
+  /** options: scope (sitenin kök adresi), program ({ repo, branch }), caches, storage (localStorage), fetchFn, indexedDB, api */
   function createShell(options) {
-    const { scope, caches, storage } = options;
+    const { scope, caches, storage, program } = options;
     const fetchFn = options.fetchFn || ((...args) => fetch(...args));
     const api = options.api || API;
 
@@ -215,8 +250,8 @@
       const commit = await gh.commit(sha);
       const tree = await gh.tree(commit.tree.sha);
       if (tree.truncated) throw new Error('Program bir seferde okunamayacak kadar büyük');
-      const files = tree.tree.filter((e) => e.type === 'blob');
-      if (!files.some((f) => f.path === 'index.html')) throw new Error('Program dalında index.html yok; programı yeniden yayınlayın.');
+      const files = tree.tree.filter((e) => e.type === 'blob' && isProgramFile(e.path));
+      if (!files.some((f) => f.path === 'index.html')) throw new Error(`${gh.repo} deposunda index.html yok; bu depo P&PX programı değil.`);
 
       const name = `${PROGRAM_CACHE}${sha}`;
       await caches.delete(name);
@@ -281,7 +316,8 @@
       return { state: 'login', error: message };
     }
 
-    /** Her açılışta: anahtar geçerliyse program güncellenir. Tek istekle anlaşılır, değişiklik yoksa hiçbir şey inmez.
+    /** Her açılışta iki istek: anahtar veri deposuna hâlâ erişiyor mu, programın son commit'i ne.
+        Program değişmediyse hiçbir şey inmez. İnternet yoksa cihazdaki program açılır.
         @returns state: ready (program açılabilir) | login (giriş gerekli) | error (açılamaz) */
     async function start(onProgress) {
       const s = settings();
@@ -289,39 +325,43 @@
         await removeProgram(caches, scope);
         return { state: 'login' };
       }
-      const gh = github(s.repo, s.token, fetchFn, api);
+      if (!program) return { state: 'error', error: 'Programın deposu bu adresten anlaşılamadı.' };
+      const data = github(s.repo, s.token, fetchFn, api);
+      const code = github(program.repo, s.token, fetchFn, api);
       const installed = await readState(caches, scope);
       const fallback = (message) => (installed
         ? { state: 'ready', program: installed, warning: message }
         : { state: 'error', error: message });
 
+      // Kapı: program herkese açık depoda olsa da yalnız veri deposuna erişen anahtar açar
+      try {
+        const info = await data.info();
+        if (!info.private) return lock('Veri deposu herkese açık hâle gelmiş. Müşteri verileri için özel (Private) depo gerekir.');
+      } catch (e) {
+        if (e.locked || e.notFound) return lock(e.message);
+        return fallback(`${e.message} Bu cihazdaki program açılıyor.`);
+      }
+
       let sha;
       try {
-        sha = (await gh.ref()).object.sha;
+        sha = (await code.ref(program.branch)).object.sha;
       } catch (e) {
         if (e.locked) return lock(e.message);
-        if (!e.notFound) return fallback(e.offline ? `${e.message} Bu cihazdaki program açılıyor.` : e.message);
-        // Dal yok mu, depoya erişim mi kalmadı? Depo bilgisi ayırt eder
-        try {
-          await gh.info();
-        } catch (e2) {
-          if (e2.locked || e2.notFound) return lock(e2.message);
-          return fallback(e2.message);
-        }
-        return fallback('Bu depoda yayınlanmış program yok. Programın bulunduğu bilgisayarda "npm run yayinla" çalıştırılmalı.');
+        if (e.notFound) return fallback(`Program deposuna (${program.repo}) erişilemiyor. Depo özelse erişim anahtarına bu depo da eklenmeli.`);
+        return fallback(`${e.message} Bu cihazdaki program açılıyor.`);
       }
 
       if (installed && installed.sha === sha) return { state: 'ready', program: installed };
       try {
-        const program = await install(gh, sha, installed, onProgress);
-        return { state: 'ready', program, updated: !!installed };
+        const fresh = await install(code, sha, installed, onProgress);
+        return { state: 'ready', program: fresh, updated: !!installed };
       } catch (e) {
         if (e.locked) return lock(e.message);
         return fallback(`Programın yeni sürümü indirilemedi: ${e.message}`);
       }
     }
 
-    /** Depo özel olmalı (müşteri verisi), anahtar geçerli olmalı. Geçerse ayarlar programla ortak yere yazılır. */
+    /** Veri deposu özel olmalı (müşteri verisi), anahtar geçerli olmalı. Geçerse ayarlar programla ortak yere yazılır. */
     async function login(repoText, token, onProgress) {
       const repo = normalizeRepo(repoText);
       if (!repo) return { state: 'login', error: 'Depo adı kullanici/depo biçiminde olmalı.' };
@@ -333,8 +373,7 @@
       } catch (e) {
         return { state: 'login', error: e.message };
       }
-      if (!info.private) return { state: 'login', error: 'Bu depo herkese açık. Müşteri verileri için özel (Private) depo gerekir.' };
-      if (info.default_branch === PROGRAM_BRANCH) return { state: 'login', error: `Deponun ana dalı "${PROGRAM_BRANCH}" olamaz; bu dal programa ayrılmıştır.` };
+      if (!info.private) return { state: 'login', error: 'Bu depo herkese açık. Müşteri verileri için özel (Private) depo gerekir; program deposunu değil, veri deposunu girin.' };
       const previous = settings();
       // Aynı depo başka yazımla girilirse veritabanı onu yeni depo sanmasın
       const sameRepo = previous.repo && previous.repo.toLowerCase() === String(info.full_name || repo).toLowerCase();
@@ -379,9 +418,10 @@
     removeProgram,
     readState,
     normalizeRepo,
+    programSource,
+    isProgramFile,
     gitBlobSha,
     mimeOf,
-    PROGRAM_BRANCH,
     SETTINGS_KEY,
     APP_DIR
   };

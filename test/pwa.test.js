@@ -2,17 +2,17 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 const PpxKabuk = require('../pwa/ppx-kabuk.js');
 const PpxDb = require('../ortak/ppx-db.js');
 const PpxFs = require('../ortak/ppx-fs.js');
 const PpxGitHub = require('../ortak/ppx-github.js');
-const yayin = require('../tools/yayin.js');
-const { published } = require('../tools/yayinla.js');
-const { createFakeGitHub } = require('./fake-github.js');
+const { createFakeGitHub, blobSha } = require('./fake-github.js');
 
 const ROOT = path.join(__dirname, '..');
-const SCOPE = 'https://ornek.github.io/ppx/';
+const SCOPE = 'https://ben.github.io/P-PX/';
+const PROGRAM = { repo: 'ben/P-PX', branch: 'main' };
 const text = (s) => new TextEncoder().encode(s);
 
 /* ─── Tarayıcı parçalarının sahteleri ───────────────────── */
@@ -68,34 +68,42 @@ function fakeIndexedDb() {
   };
 }
 
-/** Yayınlanan program: son commit'teki gerçek dosyalar, yayın aracının seçtiği gibi */
-function programFiles() {
-  const files = new Map();
-  for (const entry of yayin.headEntries()) {
-    if (entry.type === 'blob' && published(entry.path)) files.set(entry.path, fs.readFileSync(path.join(ROOT, entry.path)));
-  }
-  return files;
-}
+/* ─── Depolar: özel veri deposu ve herkese açık program deposu (bu depo) ── */
 
-let cachedProgram = null;
-const program = () => (cachedProgram = cachedProgram || programFiles());
+/** Program deposunun main dalı: bu depodaki bütün izlenen dosyalar, müşteri verisi ve testler dahil */
+let cachedRepo = null;
+function repoFiles() {
+  if (!cachedRepo) {
+    cachedRepo = new Map();
+    const list = execFileSync('git', ['ls-files', '-z'], { cwd: ROOT }).toString('utf8').split('\0').filter(Boolean);
+    for (const p of list) {
+      const file = path.join(ROOT, p);
+      if (fs.existsSync(file)) cachedRepo.set(p, fs.readFileSync(file));
+    }
+  }
+  return cachedRepo;
+}
+const programFiles = () => new Map([...repoFiles()].filter(([p]) => PpxKabuk.isProgramFile(p)));
 
 function setup(options) {
-  const hub = createFakeGitHub(Object.assign({ owner: 'ben', name: 'ppx-veri' }, options && options.hub));
-  hub.handle('PUT', '/repos/ben/ppx-veri/contents/README.md', { content: Buffer.from('# veri').toString('base64'), message: 'ilk' }, { Authorization: `Bearer ${hub.token}` });
-  if (!(options && options.noProgram)) hub.publish('program', program());
+  const opts = options || {};
+  const data = createFakeGitHub(Object.assign({ owner: 'ben', name: 'ppx-veri' }, opts.data));
+  data.handle('PUT', '/repos/ben/ppx-veri/contents/README.md', { content: Buffer.from('# veri').toString('base64'), message: 'ilk' }, { Authorization: `Bearer ${data.token}` });
+  const code = createFakeGitHub({ owner: 'ben', name: 'P-PX', isPrivate: false });
+  code.publish('main', repoFiles());
+  const fetchFn = (url, init) => (url.includes('/repos/ben/P-PX') ? code : data).fetchFn(url, init);
   const caches = fakeCaches();
-  const storage = fakeStorage(options && options.storage);
+  const storage = fakeStorage(opts.storage);
   const indexedDB = fakeIndexedDb();
-  const shell = PpxKabuk.createShell({ scope: SCOPE, caches, storage, fetchFn: hub.fetchFn, indexedDB });
-  return { hub, caches, storage, indexedDB, shell };
+  const shell = PpxKabuk.createShell({ scope: SCOPE, program: opts.program || PROGRAM, caches, storage, fetchFn, indexedDB });
+  const both = (fn) => { fn(data); fn(code); };
+  return { data, code, both, caches, storage, indexedDB, shell };
 }
 
 const settingsOf = (storage) => JSON.parse(storage.getItem('ppx_ayarlar') || '{}');
-
-async function serve(caches, url, mode) {
-  return PpxKabuk.serveProgram(caches, SCOPE, { url, mode: mode || 'no-cors' });
-}
+const programCaches = async (caches) => (await caches.keys()).filter((k) => k.startsWith('ppx-program-'));
+const serve = (caches, url, mode) => PpxKabuk.serveProgram(caches, SCOPE, { url, mode: mode || 'no-cors' });
+const fail = (status, message, headers) => () => ({ status, json: { message }, headers: headers || {} });
 
 /* ─── Kapı ──────────────────────────────────────────────── */
 
@@ -109,36 +117,40 @@ test('kabuk: cihazda program yokken app/ altında hiçbir şey sunulmaz, sayfa a
   assert.equal(await script.text(), '');
 });
 
-test('kabuk: geçersiz anahtar, erişimsiz ve herkese açık depo kabul edilmez; hiçbir şey saklanmaz', async () => {
-  const { hub, caches, storage, shell } = setup();
+test('kabuk: geçersiz anahtar, erişimsiz ve herkese açık depo kabul edilmez; hiçbir şey saklanmaz, program inmez', async () => {
+  const { data, code, caches, storage, shell } = setup();
   let res = await shell.login('ben/ppx-veri', 'yanlis');
   assert.equal(res.state, 'login');
   assert.match(res.error, /geçersiz/);
-  res = await shell.login('baskasi/depo', hub.token);
+  res = await shell.login('baskasi/depo', data.token);
   assert.match(res.error, /bulunamadı/);
-  res = await shell.login('depo-adi-yok', hub.token);
+  res = await shell.login('depo-adi-yok', data.token);
   assert.match(res.error, /kullanici\/depo/);
+  // Herkese açık program deposu veri deposu yerine girilirse
+  res = await shell.login('ben/P-PX', data.token);
+  assert.match(res.error, /herkese açık/);
   assert.deepEqual(await caches.keys(), []);
   assert.deepEqual(settingsOf(storage), {});
+  assert.equal(code.stats.blobGets, 0);
 
-  const open = setup({ hub: { isPrivate: false } });
-  res = await open.shell.login('ben/ppx-veri', open.hub.token);
+  const open = setup({ data: { isPrivate: false } });
+  res = await open.shell.login('ben/ppx-veri', open.data.token);
   assert.match(res.error, /herkese açık/);
   assert.deepEqual(settingsOf(open.storage), {});
-  assert.equal(open.hub.stats.blobGets, 0);
 });
 
-test('kabuk: girişte program indirilir; sayfalar, betikler ve logolar doğru türle app/ altından sunulur', async () => {
-  const { hub, caches, storage, shell } = setup();
+test('kabuk: girişte program P-PX main\'den iner; sayfalar, betikler ve logolar doğru türle app/ altından sunulur', async () => {
+  const { data, code, caches, storage, shell } = setup();
   const progress = [];
-  const res = await shell.login('https://github.com/ben/ppx-veri.git', ` ${hub.token} `, (p) => progress.push(p));
+  const res = await shell.login('https://github.com/ben/ppx-veri.git', ` ${data.token} `, (p) => progress.push(p));
   assert.equal(res.state, 'ready', res.error);
   // Anahtar programla ortak yere yazılır; depo adı GitHub'daki yazımıyla
-  assert.deepEqual(settingsOf(storage), { mode: 'github', repo: 'ben/ppx-veri', token: hub.token });
-  const files = program();
+  assert.deepEqual(settingsOf(storage), { mode: 'github', repo: 'ben/ppx-veri', token: data.token });
+  const files = programFiles();
   assert.equal(progress.at(-1).done, files.size);
   // Aynı içerik (iki programdaki yazı tipleri) bir kez iner
-  assert.equal(hub.stats.blobGets, new Set([...files.values()].map((b) => require('./fake-github.js').blobSha(b))).size);
+  assert.equal(code.stats.blobGets, new Set([...files.values()].map(blobSha)).size);
+  assert.equal(data.stats.blobGets, 0);
 
   const pages = ['index.html', 'P-IDX/P&ID/codes/cizim.html', 'PNOMATIKX/PNOMATIK/codes/cizim.html'];
   for (const page of pages) {
@@ -167,68 +179,101 @@ test('kabuk: girişte program indirilir; sayfalar, betikler ve logolar doğru t�
   assert.equal((await serve(caches, `${SCOPE}app/yok.js`)).status, 404);
   assert.equal(PpxKabuk.programPath(SCOPE, `${SCOPE}app/%2e%2e/sw.js`), null);
   assert.equal(PpxKabuk.programPath(SCOPE, `${SCOPE}index.html`), null);
-  assert.equal(PpxKabuk.programPath(SCOPE, 'https://baska.site/ppx/app/index.html'), null);
+  assert.equal(PpxKabuk.programPath(SCOPE, 'https://baska.site/P-PX/app/index.html'), null);
 });
 
-test('kabuk: program değişmediyse açılış tek istektir; yeni yayında yalnız değişen dosya iner, eski sürüm silinir', async () => {
-  const { hub, caches, shell } = setup();
-  await shell.login('ben/ppx-veri', hub.token);
+test('kabuk: program deposundaki müşteri verisi, testler, araçlar, belgeler ve kabuk inmez', async () => {
+  const { data, caches, shell } = setup();
+  await shell.login('ben/ppx-veri', data.token);
+  const all = [...repoFiles().keys()];
+  const skipped = all.filter((p) => !PpxKabuk.isProgramFile(p));
+  for (const p of ['P-IDX/ML/kayitlar/kodlar.json', 'P-IDX/ML/KODListesi.csv', 'test/ppx.test.js', 'pwa/index.html', 'README.md', 'package.json', 'P-IDX/tools/veri-surumu.js', 'P-IDX/P&ID/codes/engine/test/engine.test.js']) {
+    assert.ok(skipped.includes(p), p);
+  }
+  assert.ok(skipped.some((p) => p.startsWith('P-IDX/P&ID/projects/')), 'örnek müşteri projesi');
+  for (const p of skipped) assert.equal((await serve(caches, PpxKabuk.programUrl(SCOPE, p))).status, 404, p);
+  const state = await shell.installed();
+  assert.deepEqual(Object.keys(state.files).sort(), [...programFiles().keys()].sort());
+});
+
+test('kabuk: program değişmediyse açılış iki küçük istektir; main\'e push edilince yalnız değişen dosya iner', async () => {
+  const { data, code, caches, shell } = setup();
+  await shell.login('ben/ppx-veri', data.token);
   const first = await shell.installed();
 
-  const before = Object.assign({}, hub.stats);
+  const before = { data: data.stats.get, code: code.stats.get };
   let res = await shell.start();
   assert.equal(res.state, 'ready');
   assert.equal(res.updated, undefined);
-  assert.equal(hub.stats.get - before.get, 1);
+  assert.equal(data.stats.get - before.data, 1, 'veri deposuna erişim denetimi');
+  assert.equal(code.stats.get - before.code, 1, 'programın son commit\'i');
 
-  const files = new Map(program());
+  const files = new Map(repoFiles());
   files.set('ortak/ppx-boot.js', Buffer.concat([files.get('ortak/ppx-boot.js'), Buffer.from('\n// yeni\n')]));
   files.set('ortak/yeni.js', Buffer.from('// eklendi'));
+  files.set('test/yeni.test.js', Buffer.from('// inmez'));
   files.delete('P-IDX/P&ID/symbols/README.txt');
-  hub.publish('program', files);
-  const blobs = hub.stats.blobGets;
+  code.publish('main', files);
+  const blobs = code.stats.blobGets;
   res = await shell.start();
   assert.equal(res.state, 'ready');
   assert.equal(res.updated, true);
-  assert.equal(hub.stats.blobGets - blobs, 2);
+  assert.equal(code.stats.blobGets - blobs, 2);
   assert.equal(res.program.downloaded, 2);
   assert.notEqual(res.program.cache, first.cache);
-  assert.deepEqual((await caches.keys()).filter((k) => k.startsWith('ppx-program-')), [res.program.cache]);
+  assert.deepEqual(await programCaches(caches), [res.program.cache]);
   assert.match(await (await serve(caches, `${SCOPE}app/ortak/ppx-boot.js`)).text(), /\/\/ yeni/);
   assert.equal((await serve(caches, `${SCOPE}app/ortak/yeni.js`)).status, 200);
   assert.equal((await serve(caches, `${SCOPE}app/P-IDX/P%26ID/symbols/README.txt`)).status, 404);
   assert.equal((await serve(caches, `${SCOPE}app/P-IDX/P%26ID/codes/host.js`)).status, 200);
 });
 
-test('kabuk: anahtar geçersizleşince ya da depoya erişim kalkınca program cihazdan silinir, anahtar unutulur, depo adı kalır', async () => {
-  for (const revoke of [
-    (hub) => { hub.hooks.fail = () => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} }); },
-    (hub) => { hub.hooks.fail = () => ({ status: 404, json: { message: 'Not Found' }, headers: {} }); },
-    (hub) => { hub.hooks.fail = () => ({ status: 403, json: { message: 'Resource not accessible by personal access token' }, headers: {} }); }
-  ]) {
-    const { hub, caches, storage, shell } = setup();
-    await shell.login('ben/ppx-veri', hub.token);
-    revoke(hub);
-    const res = await shell.start();
-    assert.equal(res.state, 'login');
-    assert.ok(res.error);
-    assert.deepEqual((await caches.keys()).filter((k) => k.startsWith('ppx-program-')), []);
-    assert.equal(await shell.installed(), null);
-    assert.deepEqual(settingsOf(storage), { repo: 'ben/ppx-veri' });
-    assert.equal((await serve(caches, `${SCOPE}app/index.html`, 'navigate')).status, 302);
+test('kabuk: anahtar geçersizleşince ya da veri deposuna erişim kalkınca program cihazdan silinir, anahtar unutulur, depo adı kalır', async () => {
+  const cases = [
+    ['anahtar silindi', (s) => s.both((h) => { h.hooks.fail = fail(401, 'Bad credentials'); })],
+    ['veri deposu anahtardan çıkarıldı', (s) => { s.data.hooks.fail = fail(404, 'Not Found'); }],
+    ['izin kaldırıldı', (s) => { s.data.hooks.fail = fail(403, 'Resource not accessible by personal access token'); }]
+  ];
+  for (const [label, revoke] of cases) {
+    const s = setup();
+    await s.shell.login('ben/ppx-veri', s.data.token);
+    revoke(s);
+    const res = await s.shell.start();
+    assert.equal(res.state, 'login', label);
+    assert.ok(res.error, label);
+    assert.deepEqual(await programCaches(s.caches), [], label);
+    assert.equal(await s.shell.installed(), null, label);
+    assert.deepEqual(settingsOf(s.storage), { repo: 'ben/ppx-veri' }, label);
+    assert.equal((await serve(s.caches, `${SCOPE}app/index.html`, 'navigate')).status, 302, label);
     // Anahtar olmadan açılış ağa gitmeden giriş ister
-    const gets = hub.stats.get;
-    assert.equal((await shell.start()).state, 'login');
-    assert.equal(hub.stats.get, gets);
+    const gets = s.data.stats.get + s.code.stats.get;
+    assert.equal((await s.shell.start()).state, 'login', label);
+    assert.equal(s.data.stats.get + s.code.stats.get, gets, label);
   }
 });
 
+test('kabuk: program deposuna erişilemezse (özel yapıldı) cihazdaki program açılır, anahtar korunur', async () => {
+  const { data, code, storage, shell } = setup();
+  await shell.login('ben/ppx-veri', data.token);
+  code.hooks.fail = fail(404, 'Not Found');
+  const res = await shell.start();
+  assert.equal(res.state, 'ready');
+  assert.match(res.warning, /Program deposuna \(ben\/P-PX\) erişilemiyor/);
+  assert.equal(settingsOf(storage).token, data.token);
+
+  const fresh = setup({ storage: { ppx_ayarlar: JSON.stringify({ mode: 'github', repo: 'ben/ppx-veri', token: 'anahtar' }) } });
+  fresh.code.hooks.fail = fail(404, 'Not Found');
+  const first = await fresh.shell.start();
+  assert.equal(first.state, 'error');
+  assert.match(first.error, /erişim anahtarına bu depo da eklenmeli/);
+});
+
 test('kabuk: GitHub hız sınırı ve sunucu hatası programı silmez', async () => {
-  const { hub, caches, shell } = setup();
-  await shell.login('ben/ppx-veri', hub.token);
-  hub.hooks.fail = () => ({ status: 403, json: { message: 'API rate limit exceeded' }, headers: { 'x-ratelimit-remaining': '0' } });
+  const { data, caches, shell } = setup();
+  await shell.login('ben/ppx-veri', data.token);
+  data.hooks.fail = fail(403, 'API rate limit exceeded', { 'x-ratelimit-remaining': '0' });
   assert.equal((await shell.start()).state, 'ready');
-  hub.hooks.fail = () => ({ status: 502, json: { message: 'Bad gateway' }, headers: {} });
+  data.hooks.fail = fail(502, 'Bad gateway');
   const res = await shell.start();
   assert.equal(res.state, 'ready');
   assert.match(res.warning, /yanıt vermiyor/);
@@ -236,58 +281,44 @@ test('kabuk: GitHub hız sınırı ve sunucu hatası programı silmez', async ()
 });
 
 test('kabuk: internet yokken cihazdaki program açılır; ilk açılışta internet gerekir', async () => {
-  const { hub, shell } = setup();
-  await shell.login('ben/ppx-veri', hub.token);
-  hub.hooks.network = true;
-  let res = await shell.start();
+  const s = setup();
+  await s.shell.login('ben/ppx-veri', s.data.token);
+  s.both((h) => { h.hooks.network = true; });
+  let res = await s.shell.start();
   assert.equal(res.state, 'ready');
   assert.match(res.warning, /İnternet/);
 
   const fresh = setup({ storage: { ppx_ayarlar: JSON.stringify({ mode: 'github', repo: 'ben/ppx-veri', token: 'anahtar' }) } });
-  fresh.hub.hooks.network = true;
+  fresh.both((h) => { h.hooks.network = true; });
   res = await fresh.shell.start();
   assert.equal(res.state, 'error');
   assert.match(res.error, /İnternet/);
 });
 
 test('kabuk: bozuk ya da yarım indirme kullanılmaz, eski program yerinde kalır', async () => {
-  const { hub, caches, shell } = setup();
-  await shell.login('ben/ppx-veri', hub.token);
-  const files = new Map(program());
+  const { data, code, caches, shell } = setup();
+  await shell.login('ben/ppx-veri', data.token);
+  const files = new Map(repoFiles());
   files.set('index.html', Buffer.from('<!DOCTYPE html><p>YENI-SURUM</p>'));
-  hub.publish('program', files);
+  code.publish('main', files);
   // GitHub başka içerik döndürürse kimlik tutmaz
-  hub.hooks.fail = (method, p) => (p.startsWith('/git/blobs/')
+  code.hooks.fail = (method, p) => (p.startsWith('/git/blobs/')
     ? { status: 200, json: { content: Buffer.from('bozuk').toString('base64'), encoding: 'base64' }, headers: {} }
     : null);
   const res = await shell.start();
   assert.equal(res.state, 'ready');
   assert.match(res.warning, /indirilemedi/);
   assert.doesNotMatch(await (await serve(caches, `${SCOPE}app/index.html`, 'navigate')).text(), /YENI-SURUM/);
-  assert.equal((await caches.keys()).filter((k) => k.startsWith('ppx-program-')).length, 1);
+  assert.equal((await programCaches(caches)).length, 1);
   // Sonraki açılışta düzgün iner
-  hub.hooks.fail = null;
+  code.hooks.fail = null;
   assert.equal((await shell.start()).updated, true);
   assert.match(await (await serve(caches, `${SCOPE}app/index.html`, 'navigate')).text(), /YENI-SURUM/);
 });
 
-test('kabuk: depoda yayınlanmış program yoksa anlaşılır hata; ana dalı program olan depo kabul edilmez', async () => {
-  const { hub, storage, shell } = setup({ noProgram: true });
-  const res = await shell.login('ben/ppx-veri', hub.token);
-  assert.equal(res.state, 'error');
-  assert.match(res.error, /npm run yayinla/);
-  // Anahtar geçerli, saklanır; program yayınlanınca açılır
-  assert.equal(settingsOf(storage).token, hub.token);
-  hub.publish('program', program());
-  assert.equal((await shell.start()).state, 'ready');
-
-  const wrong = setup({ hub: { branch: 'program' } });
-  assert.match((await wrong.shell.login('ben/ppx-veri', wrong.hub.token)).error, /ana dalı/);
-});
-
 test('kabuk: çıkış programı, anahtarı, programların tarayıcıya yazdıklarını ve veri kopyasını siler', async () => {
-  const { hub, caches, storage, indexedDB, shell } = setup({ storage: { pidx_pano: '[]', pidx_dock: '{}', baska_site: 'kalir' } });
-  await shell.login('ben/ppx-veri', hub.token);
+  const { data, caches, storage, indexedDB, shell } = setup({ storage: { pidx_pano: '[]', pidx_dock: '{}', baska_site: 'kalir' } });
+  await shell.login('ben/ppx-veri', data.token);
   await shell.logout();
   assert.deepEqual(settingsOf(storage), { repo: 'ben/ppx-veri' });
   assert.equal(storage.getItem('pidx_pano'), null);
@@ -298,32 +329,16 @@ test('kabuk: çıkış programı, anahtarı, programların tarayıcıya yazdıkl
   assert.equal((await serve(caches, `${SCOPE}app/index.html`, 'navigate')).status, 302);
 });
 
-/* ─── Yayın ─────────────────────────────────────────────── */
-
-test('yayın: müşteri verisi, testler, araçlar, belgeler ve kabuk yayınlanmaz; her sayfanın yüklediği dosya yayındadır', () => {
-  const files = program();
-  for (const p of files.keys()) {
-    assert.doesNotMatch(p, /^(pwa|tools|test|_yedek)\/|\/test\/|\/tools\/|\/projects\/|^P-IDX\/ML\/|\.md$|package\.json$/, p);
-  }
-  for (const p of ['index.html', 'ortak/ppx-boot.js', 'P-IDX/P&ID/data/kod.csv', 'P-IDX/P&ID/data/surum.json', 'PNOMATIKX/PNOMATIK/assets/logos/dolfin.png']) {
-    assert.ok(files.has(p), p);
-  }
-  for (const page of ['index.html', 'P-IDX/index.html', 'PNOMATIKX/index.html', 'P-IDX/P&ID/codes/cizim.html', 'PNOMATIKX/PNOMATIK/codes/cizim.html']) {
-    const html = files.get(page).toString('utf8');
-    for (const [, ref] of html.matchAll(/(?:src|href)="([^"#:]+\.(?:js|css|png|svg|html))"/g)) {
-      const target = path.posix.normalize(path.posix.join(path.posix.dirname(page), decodeURIComponent(ref)));
-      assert.ok(files.has(target), `${page}: ${ref}`);
-    }
-  }
-  // Başlıktaki logolar betikten adresle yüklenir
-  for (const dir of ['P-IDX/P&ID', 'PNOMATIKX/PNOMATIK']) {
-    for (const [, ref] of files.get(`${dir}/codes/header.js`).toString('utf8').matchAll(/'\.\.\/(assets\/logos\/[^']+)'/g)) {
-      assert.ok(files.has(`${dir}/${ref}`), `${dir}: ${ref}`);
-    }
-  }
+test('kabuk: programın deposu GitHub Pages adresinden anlaşılır, sayfada yazılıysa o kullanılır', () => {
+  assert.deepEqual(PpxKabuk.programSource('https://thevanerr.github.io/P-PX/', ''), { repo: 'thevanerr/P-PX', branch: 'main' });
+  assert.deepEqual(PpxKabuk.programSource('https://ben.github.io/', ''), { repo: 'ben/ben.github.io', branch: 'main' });
+  assert.deepEqual(PpxKabuk.programSource('http://localhost:8080/ppx/', 'ben/P-PX@deneme'), { repo: 'ben/P-PX', branch: 'deneme' });
+  assert.equal(PpxKabuk.programSource('http://localhost:8080/ppx/', ''), null);
 });
 
-test('kabuk dosyaları: hizmet çalışanının sakladığı her dosya var; sitede program kodu ve dış betik yok', () => {
+/* ─── Site ──────────────────────────────────────────────── */
+
+test('site: hizmet çalışanının sakladığı her dosya var; sitede program kodu, depo adı ve dış betik yok', () => {
   const dir = path.join(ROOT, 'pwa');
   const sw = fs.readFileSync(path.join(dir, 'sw.js'), 'utf8');
   const list = JSON.parse(sw.match(/const SHELL_FILES = (\[[^\]]*\])/)[1].replace(/'/g, '"'));
@@ -346,11 +361,20 @@ test('kabuk dosyaları: hizmet çalışanının sakladığı her dosya var; site
   }
 });
 
+test('site: GitHub Pages yalnız pwa/ klasörünü yayınlar, main\'e push edilince', () => {
+  const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
+  assert.match(workflow, /branches: \[main\]/);
+  assert.match(workflow, /uses: actions\/upload-pages-artifact@v\d+\s+with:\s+path: pwa\s/);
+  assert.match(workflow, /uses: actions\/deploy-pages@v\d+/);
+  assert.match(workflow, /pages: write/);
+  assert.doesNotMatch(workflow, /path: \.\s*$/m, 'deponun tamamı yayınlanmamalı');
+});
+
 /* ─── Programın web uygulaması davranışı ────────────────── */
 
 test('web uygulaması: program verilerini güncelle klasör seçmeden indirilen programın kataloğunu kullanır', async () => {
   const fetchFn = async (url) => {
-    const rel = decodeURIComponent(new URL(url).pathname.replace(/^\/ppx\/app\/P-IDX\//, ''));
+    const rel = decodeURIComponent(new URL(url).pathname.replace(/^\/P-PX\/app\/P-IDX\//, ''));
     const file = path.join(ROOT, 'P-IDX', rel);
     return fs.existsSync(file) ? new Response(fs.readFileSync(file)) : new Response('', { status: 404 });
   };
@@ -385,9 +409,11 @@ test('web uygulaması: anahtarsız sayfa giriş ekranına döner, yerel mod ve k
   const boot = fs.readFileSync(path.join(ROOT, 'ortak/ppx-boot.js'), 'utf8');
   // Yalnız hizmet çalışanının app/ altından sunduğu sayfa web uygulamasıdır; dosyadan açılış eskisi gibi çalışır
   assert.match(boot, /const pwa = !!\(navigator\.serviceWorker && navigator\.serviceWorker\.controller\) && \/\\\/app\\\/\$\/\.test\(appRoot\.pathname\);/);
-  assert.match(boot, /const locked = pwa && !hasKey\(\);\s*if \(locked\) \{[\s\S]*?location\.replace\(shellUrl\);/);
+  assert.match(boot, /const locked = exposed \|\| \(pwa && !hasKey\(\)\);\s*if \(locked\) \{[\s\S]*?location\.replace\(exposed \? new URL\('\.\.\/pwa\/', ortak\)\.href : shellUrl\);/);
   assert.match(boot, /if \(locked\) return new Promise\(\(\) => \{\}\);/);
   assert.match(boot, /if \(pwa && s\.state === 'error' && s\.code === 401\) toShell\(\);/);
+  // Pages yanlışlıkla deponun tamamını yayınlarsa program doğrudan açılmaz, giriş ekranına gidilir
+  assert.match(boot, /const exposed = !pwa && \/\^https\?:\$\/\.test\(location\.protocol\) && \/\\\.github\\\.io\$\/i\.test\(location\.hostname\);/);
   const logout = boot.slice(boot.indexOf('async function logout'), boot.indexOf('const locked'));
   assert.ok(logout.indexOf('db.sync()') < logout.indexOf('LOGOUT_FLAG'), 'çıkıştan önce eşitlenmeli');
   assert.match(logout, /if \(s\.pending\) return/);

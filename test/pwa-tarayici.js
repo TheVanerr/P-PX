@@ -1,23 +1,25 @@
 /* Web uygulamasının gerçek tarayıcıda denenmesi: Edge ya da Chrome görünmez açılır, kabuk (pwa/) bu bilgisayardan
    GitHub Pages gibi sunulur, GitHub API'si sahte depoyla karşılanır (tarayıcının geliştirici bağlantısıyla).
    Hiçbir şey internete gitmez. npm test'e dahil değildir: npm run test:tarayici
-   Denenenler: anahtarsız site boş, giriş, iki program, tam yenileme, çevrimdışı açılış, yeni sürüm, anahtar iptali, çıkış. */
+   İki sahte depo: özel veri deposu (ben/ppx-veri) ve herkese açık program deposu (ben/P-PX, bu depodaki dosyalar).
+   Denenenler: anahtarsız site boş, giriş, iki program, müşteri verisi inmez, tam yenileme, çevrimdışı açılış,
+   main'e push sonrası yeni sürüm, anahtar iptali, çıkış. */
 
 const http = require('node:http');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { spawn } = require('node:child_process');
+const { spawn, execFileSync } = require('node:child_process');
 
 const PpxDb = require('../ortak/ppx-db.js');
 const PpxFs = require('../ortak/ppx-fs.js');
 const PpxGitHub = require('../ortak/ppx-github.js');
-const yayin = require('../tools/yayin.js');
-const { published } = require('../tools/yayinla.js');
 const { createFakeGitHub } = require('./fake-github.js');
 
 const ROOT = path.join(__dirname, '..');
 const PWA = path.join(ROOT, 'pwa');
+const SITE = '/P-PX/';
+const PROGRAM_REPO = 'ben/P-PX';
 const BROWSERS = [
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
@@ -35,12 +37,13 @@ function check(ok, label, detail) {
   if (!ok) failures += 1;
 }
 
-/* ─── Sahte GitHub: veri ana dalda, program "program" dalında ── */
+/* ─── Sahte GitHub: veri özel depoda, program bu deponun main dalında ── */
 
-function programFiles(marker) {
+/** Program deposunun main dalı: bu depodaki bütün izlenen dosyalar (müşteri verisi ve testler dahil) */
+function repoFiles(marker) {
   const files = new Map();
-  for (const e of yayin.headEntries()) {
-    if (e.type === 'blob' && published(e.path)) files.set(e.path, fs.readFileSync(path.join(ROOT, e.path)));
+  for (const p of execFileSync('git', ['ls-files', '-z'], { cwd: ROOT }).toString('utf8').split('\0').filter(Boolean)) {
+    if (fs.existsSync(path.join(ROOT, p))) files.set(p, fs.readFileSync(path.join(ROOT, p)));
   }
   if (marker) files.set('index.html', Buffer.from(files.get('index.html').toString('utf8').replace('<h1>P&amp;PX</h1>', `<h1>P&amp;PX <span id="surum">${marker}</span></h1>`)));
   return files;
@@ -61,7 +64,7 @@ async function seedData(hub) {
   for (let i = 0; i < 5 && (await db.sync()).pending; i += 1);
 }
 
-/* ─── GitHub Pages gibi sunucu: /ppx/ altında pwa/, olmayan adreste 404.html ── */
+/* ─── GitHub Pages gibi sunucu: /P-PX/ altında pwa/, olmayan adreste 404.html ── */
 
 function startSite() {
   let online = true;
@@ -72,21 +75,25 @@ function startSite() {
       return;
     }
     const url = new URL(req.url, 'http://localhost');
-    if (url.pathname === '/ppx') {
-      res.writeHead(301, { Location: '/ppx/' });
+    if (url.pathname === SITE.slice(0, -1)) {
+      res.writeHead(301, { Location: SITE });
       res.end();
       return;
     }
-    let rel = url.pathname.startsWith('/ppx/') ? decodeURIComponent(url.pathname.slice(5)) : null;
+    let rel = url.pathname.startsWith(SITE) ? decodeURIComponent(url.pathname.slice(SITE.length)) : null;
     if (rel === '') rel = 'index.html';
     const file = rel && !rel.includes('..') ? path.join(PWA, rel) : null;
     const headers = { 'Cache-Control': 'max-age=600' };
     if (file && fs.existsSync(file) && fs.statSync(file).isFile()) {
       res.writeHead(200, Object.assign(headers, { 'Content-Type': TYPES[file.split('.').pop()] || 'application/octet-stream' }));
-      res.end(fs.readFileSync(file));
+      // Bu bilgisayarın adresi github.io olmadığından program deposu sayfaya yazılır
+      const body = rel === 'index.html'
+        ? fs.readFileSync(file, 'utf8').replace('<meta name="ppx-program" content="">', `<meta name="ppx-program" content="${PROGRAM_REPO}">`)
+        : fs.readFileSync(file);
+      res.end(body);
       return;
     }
-    if (url.pathname.startsWith('/ppx/app/')) stats.appMisses += 1;
+    if (url.pathname.startsWith(`${SITE}app/`)) stats.appMisses += 1;
     res.writeHead(404, Object.assign(headers, { 'Content-Type': TYPES.html }));
     res.end(fs.readFileSync(path.join(PWA, '404.html')));
   });
@@ -151,10 +158,11 @@ function cdp(wsUrl) {
 
 async function main() {
   const hub = createFakeGitHub({ owner: 'ben', name: 'ppx-veri', token: 'gizli-anahtar' });
+  const code = createFakeGitHub({ owner: 'ben', name: 'P-PX', token: 'gizli-anahtar', isPrivate: false });
   await seedData(hub);
-  hub.publish('program', programFiles());
+  code.publish('main', repoFiles());
   const site = await startSite();
-  const base = `http://localhost:${site.port}/ppx/`;
+  const base = `http://localhost:${site.port}${SITE}`;
   const browser = await launchBrowser();
   const client = cdp(browser.ws);
   await client.opened;
@@ -187,7 +195,8 @@ async function main() {
       return;
     }
     const target = request.url.replace('https://api.github.com', '');
-    const res = await hub.handle(request.method, target, request.postData ? JSON.parse(request.postData) : null, request.headers);
+    const repo = target.startsWith(`/repos/${PROGRAM_REPO}`) ? code : hub;
+    const res = await repo.handle(request.method, target, request.postData ? JSON.parse(request.postData) : null, request.headers);
     const headers = cors.concat(Object.entries(res.headers || {}).map(([name, value]) => ({ name, value: String(value) })));
     send('Fetch.fulfillRequest', { requestId, responseCode: res.status, responseHeaders: headers, body: Buffer.from(JSON.stringify(res.json)).toString('base64') });
   });
@@ -235,7 +244,7 @@ async function main() {
 
     /* 3. Giriş: program iner, ana ekran açılır, veri depodan gelir */
     await evaluate(`document.getElementById('token').value = 'gizli-anahtar'; document.getElementById('login').requestSubmit(); true`);
-    await waitFor(`location.pathname.endsWith('/ppx/app/index.html')`, 'ana ekrana geçiş', 30000);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html')`, 'ana ekrana geçiş', 30000);
     await waitFor(`/GitHub deposu: ben\\/ppx-veri/.test(document.getElementById('dbInfo').textContent)`, 'veritabanı bilgisi', 30000);
     const info = await evaluate(`({ pwa: PpxBoot.pwa, db: document.getElementById('dbInfo').textContent, pid: document.getElementById('pidInfo').textContent,
       local: document.getElementById('localOnly').hidden, out: document.getElementById('disconnect').textContent,
@@ -244,6 +253,8 @@ async function main() {
     check(/[1-9]\d* proje/.test(info.pid), 'P&ID projeleri depodan geldi', info.pid);
     check(info.local === true && info.out === 'Çıkış yap', 'yerel mod gizli, "Çıkış yap" var', JSON.stringify(info));
     check(info.manifest, 'ana ekran uygulama bildirimini taşır (yüklenebilir)');
+    const leakedData = await evaluate(`Promise.all(['app/P-IDX/ML/kayitlar/kodlar.json', 'app/test/ppx.test.js', 'app/README.md'].map((u) => fetch(u).then((r) => r.status)))`);
+    check(leakedData.every((s) => s === 404), 'program deposundaki müşteri verisi, testler ve belgeler cihaza inmez', JSON.stringify(leakedData));
 
     /* 4. İki program açılır */
     await evaluate(`document.querySelector('a.app[href*="P-IDX"]').click(); true`);
@@ -268,7 +279,7 @@ async function main() {
     site.setOnline(false);
     apiDown = true;
     await go(base);
-    await waitFor(`location.pathname.endsWith('/ppx/app/index.html') && !!document.getElementById('work') && !document.getElementById('work').hidden`, 'çevrimdışı ana ekran', 30000);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && !!document.getElementById('work') && !document.getElementById('work').hidden`, 'çevrimdışı ana ekran', 30000);
     check(true, 'internet yokken uygulama cihazdan açılır');
     await go(`${base}app/P-IDX/P%26ID/codes/cizim.html`);
     await waitFor(`document.querySelectorAll('#projectList > *').length > 0`, 'çevrimdışı P&ID', 30000);
@@ -276,12 +287,12 @@ async function main() {
     site.setOnline(true);
     apiDown = false;
 
-    /* 7. Yeni sürüm yayınlanınca bir sonraki açılışta gelir, yalnız değişen dosya iner */
-    hub.publish('program', programFiles('surum-2'));
-    const blobs = hub.stats.blobGets;
+    /* 7. Main'e push edilince yeni sürüm bir sonraki açılışta gelir, yalnız değişen dosya iner */
+    code.publish('main', repoFiles('surum-2'));
+    const blobs = code.stats.blobGets;
     await go(base);
-    await waitFor(`location.pathname.endsWith('/ppx/app/index.html') && document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
-    check(hub.stats.blobGets - blobs === 1, 'yeni sürüm açılır, yalnız değişen dosya iner', `${hub.stats.blobGets - blobs} dosya indi`);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
+    check(code.stats.blobGets - blobs === 1, 'main\'e push sonrası yeni sürüm açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
 
     /* 8a. Program verilerini güncelle: klasör seçilmez, indirilen programın kataloğu kullanılır */
     await waitFor(`/GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'ana ekran bağlandı', 30000);
@@ -291,28 +302,29 @@ async function main() {
     check(/güncel \(sürüm \d+\)/.test(dataResult), 'program verilerini güncelle klasör seçmeden çalışır', dataResult);
 
     /* 8b. Uygulama açıkken anahtar iptal edilirse eşitleme giriş ekranına götürür */
-    hub.hooks.fail = () => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} });
+    const revoke = (value) => { hub.hooks.fail = value; code.hooks.fail = value; };
+    revoke(() => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} }));
     await evaluate(`document.getElementById('syncNow').click(); true`);
     await waitFor(`location.href === '${base}' && ${visible('login')}`, 'açık uygulamada iptal', 30000);
     check(true, 'açık uygulamada anahtar geçersizleşince giriş ekranına dönülür');
     await evaluate(`document.getElementById('token').value = 'gizli-anahtar'; true`);
-    hub.hooks.fail = null;
+    revoke(null);
     await evaluate(`document.getElementById('login').requestSubmit(); true`);
-    await waitFor(`location.pathname.endsWith('/ppx/app/index.html') && /GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'iptal sonrası yeniden giriş', 30000);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && /GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'iptal sonrası yeniden giriş', 30000);
 
     /* 8. Anahtar iptal edilince program cihazdan silinir */
-    hub.hooks.fail = () => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} });
+    revoke(() => ({ status: 401, json: { message: 'Bad credentials' }, headers: {} }));
     await go(base);
     await waitFor(`${visible('login')} && /geçersiz/.test(document.getElementById('loginMsg').textContent)`, 'iptalden sonra giriş ekranı', 30000);
     const afterRevoke = await evaluate(`(async () => ({ caches: (await caches.keys()).filter((k) => k.startsWith('ppx-program-')).length,
       app: await fetch('app/ortak/ppx-db.js').then((r) => r.status), settings: localStorage.getItem('ppx_ayarlar') }))()`);
     check(afterRevoke.caches === 0 && afterRevoke.app === 404, 'iptal edilen anahtarla program cihazdan silinir', JSON.stringify(afterRevoke));
     check(!/gizli-anahtar/.test(afterRevoke.settings || ''), 'iptal edilen anahtar unutulur, depo adı kalır', afterRevoke.settings);
-    hub.hooks.fail = null;
+    revoke(null);
 
     /* 9. Yeniden giriş ve çıkış: program, anahtar ve veri kopyası silinir */
     await evaluate(`document.getElementById('token').value = 'gizli-anahtar'; document.getElementById('login').requestSubmit(); true`);
-    await waitFor(`location.pathname.endsWith('/ppx/app/index.html') && /GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'yeniden giriş', 30000);
+    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && /GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'yeniden giriş', 30000);
     await evaluate(`document.getElementById('disconnect').click(); true`);
     await waitFor(`location.href === '${base}' && /Çıkış yapıldı/.test(document.getElementById('loginMsg').textContent)`, 'çıkış', 30000);
     const afterLogout = await evaluate(`(async () => ({ caches: (await caches.keys()).filter((k) => k.startsWith('ppx-program-')).length,
