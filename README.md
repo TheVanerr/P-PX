@@ -22,7 +22,7 @@ Kurulum yapılmamış bir tarayıcıda programlar eskisi gibi klasör izniyle ç
 
 Program klasörü güncellenince (git ile ya da kopyalayarak) çizim motoru ve program içindeki metinler hemen yenilenir. Kod listesi ve güvenlik kataloğu ise depodaki kopyadan okunur ve **Klasörden aktar** var olan dosyanın üzerine yazmaz. Bunları güncellemek için ana ekranda **Program verilerini güncelle** deyip P&PX klasörünü seçin:
 
-- Yalnız `P&ID/data` altındaki kod listesi (`kod.csv`, `kod-en.csv`, `kod-de.csv`), güvenlik kataloğu (`guvenlik.csv`, `safety.csv`, `safety-de.csv`) ve katalog sürümü (`surum.json`) değişir. Projeler, makine kayıtları, ML kod listesi (`kodlar.json`), kod eşleştirme ve ayarlar değişmez.
+- Yalnız `P&ID/data` altındaki kod listesi (`kod.csv`, `kod-en.csv`, `kod-de.csv`), güvenlik kataloğu (`guvenlik.csv`, `safety.csv`, `safety-de.csv`) ve katalog sürümü (`surum.json`) değişir. Projeler, makine kayıtları, ML kod listesi (`kodlar.json`), kod eşleştirme, ayarlar ve Açıklamalar sekmesinde düzenlenen metinler (`aciklamalar.json`) değişmez.
 - Önce depoyla eşitlenir, sonra her dosya için değişecek, eklenecek ve silinecek kodlar gösterilir. Onaydan sonra yazılır; eski sürüm GitHub geçmişinde kalır. Yerel modda geçmiş olmadığından gerekirse önce **Yedek indir** kullanın.
 - Depodaki katalog sürümü seçilen klasördekinden yeniyse (başka bilgisayar daha yeni programla güncellemiş) hiçbir şey yazılmaz. Önce o bilgisayardaki programı güncelleyin.
 - **Klasörden aktar** da sonunda katalogları karşılaştırır, farklıysa aynı soruyu sorar.

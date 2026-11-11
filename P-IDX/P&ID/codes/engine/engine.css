@@ -227,6 +227,30 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .ml-code-text { flex: 1; }
 .ml-code-card { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
 .ml-table-wrap { flex: 1; min-height: 0; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.ds-sections { display: flex; flex-wrap: wrap; gap: 4px; }
+.ds-section { background: transparent; border: 1px solid transparent; border-radius: var(--radius); padding: 5px 10px; color: var(--muted); cursor: pointer; }
+.ds-section:hover { color: var(--text); }
+.ds-section.active { background: var(--dolfin-soft); border-color: var(--dolfin-deep); color: var(--text); font-weight: 600; }
+select.field-input.ds-lang { width: auto; padding-top: 3px; padding-bottom: 3px; }
+.ds-help { margin: 0; color: var(--muted); font-size: 12px; }
+.ds-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.ds-filters .search { flex: 1 1 260px; width: auto; }
+.ds-only { display: flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer; }
+.ds-error { color: #ff8585; font-size: 12.5px; }
+.ds-group { position: sticky; top: 0; z-index: 1; background: var(--panel-2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 6px 10px; }
+.ds-row { display: grid; grid-template-columns: 230px minmax(0, 1fr) 118px; align-items: start; gap: 10px; padding: 7px 10px; border-top: 1px solid var(--line); content-visibility: auto; contain-intrinsic-size: auto 60px; }
+.ds-row.edited { background: var(--dolfin-soft); }
+.ds-code { font-weight: 700; }
+.ds-name { color: var(--muted); font-size: 11.5px; }
+.ds-args { color: var(--muted); font-size: 11px; }
+.ds-fields { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ds-field-label { display: block; color: var(--muted); font-size: 11px; margin-bottom: 2px; }
+textarea.field-input.ds-text { display: block; width: 100%; min-height: 32px; max-height: 220px; field-sizing: content; }
+.ds-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.ds-mark { color: var(--dolfin); font-size: 11px; font-weight: 600; visibility: hidden; }
+.ds-row.edited .ds-mark { visibility: visible; }
+.ds-reset { visibility: hidden; }
+.ds-row.edited .ds-reset { visibility: visible; }
 .ml-table { width: 100%; border-collapse: collapse; }
 .ml-table th { position: sticky; top: 0; z-index: 1; background: var(--panel-2); color: var(--muted); font-size: 11px; font-weight: 600; text-align: left; padding: 7px 10px; }
 .ml-table td { padding: 5px 10px; border-top: 1px solid var(--line); }

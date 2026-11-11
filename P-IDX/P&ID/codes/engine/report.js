@@ -54,6 +54,7 @@ const PidReport = (() => {
       cached = PidLogic.analyze(editor.drawing, {
         catalog: app.catalogMap,
         safety: app.safetyMap,
+        patterns: app.patterns,
         lang: (editor.project && editor.project.dil) || 'tr'
       });
       stale = false;

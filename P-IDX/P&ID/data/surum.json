@@ -1,12 +1,12 @@
 {
-  "surum": 1,
-  "tarih": "2026-11-10",
+  "surum": 2,
+  "tarih": "2026-11-11",
   "dosyalar": {
-    "P&ID/data/kod.csv": "8e91c41ef2552a2b3f96b7662b346dae703724b9",
-    "P&ID/data/kod-en.csv": "d77d5a5b7d804f7d6dc6a3bd1c72ea43c7cbb9c6",
-    "P&ID/data/kod-de.csv": "a142520bca1fdf269ce6369a6558485b7b0b7ae6",
-    "P&ID/data/guvenlik.csv": "fc4551df50e0cda3605bce4bfa3c2f817a2e7c60",
-    "P&ID/data/safety.csv": "bccfed9b5ea103a7b1585093b0bb0da0712c9d2f",
-    "P&ID/data/safety-de.csv": "30de8e85f57e73800417e4844fe623839dfe58e1"
+    "P&ID/data/kod.csv": "5d3a3eddc37d615ba01f34b57f7a55e9fea7b259",
+    "P&ID/data/kod-en.csv": "341dfcef0259e00e0f3105bbedd200a75290009e",
+    "P&ID/data/kod-de.csv": "cf02f1baf02aaf53085cab280e306367eb7e1716",
+    "P&ID/data/guvenlik.csv": "006ccd003d6d0aa5fc39390b87cba0d21c0574c1",
+    "P&ID/data/safety.csv": "792bbcd61b8b4caa7174c36f369a65ce89ed1778",
+    "P&ID/data/safety-de.csv": "2a0d8035826c5ce723c4f13709abd4e6220e587f"
   }
 }

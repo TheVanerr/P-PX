@@ -228,7 +228,7 @@
 
   /* Programla gelen, programların yalnız okuduğu dosyalar. Aktarma var olan dosyayı korur; program güncellenince
      bunlar "Program verilerini güncelle" ile seçilen klasördeki sürüme getirilir. Programda değiştirilen dosyalar
-     (projeler, makine kayıtları, ML kod listesi, kod eşleştirme, ayarlar) burada yoktur, güncellemede değişmez. */
+     (projeler, makine kayıtları, ML kod listesi, kod eşleştirme, ayarlar, elle düzenlenen açıklamalar) burada yoktur, güncellemede değişmez. */
   const PROGRAM_DATA = [
     { path: 'P&ID/data/kod.csv', label: 'Kod listesi TR' },
     { path: 'P&ID/data/kod-en.csv', label: 'Kod listesi EN' },
@@ -416,7 +416,7 @@
       }
       lines.push(`• ${f.label} (${f.path.split('/').pop()}): ${parts.join(', ')}`);
     }
-    lines.push('Projeler, makine kayıtları, ML kod listesi, kod eşleştirme ve ayarlar değişmez.');
+    lines.push('Projeler, makine kayıtları, ML kod listesi, kod eşleştirme, ayarlar ve elle düzenlenen açıklamalar değişmez.');
     return lines;
   }
 

@@ -12,6 +12,7 @@ const PidApp = (() => {
     catalogMap: new Map(),
     catalogLookup: new Map(),
     safetyMap: new Map(),
+    patterns: {},
     coverDesign: PidCovers.DEFAULT_DESIGN,
     pdfOptions: { cover: true, sheets: true, components: true, logic: true, safety: true },
     machine: null,
@@ -57,6 +58,8 @@ const PidApp = (() => {
     $('homeProjects').classList.toggle('hidden', tab !== 'projects');
     $('homeMachines').classList.toggle('hidden', tab !== 'machines');
     $('homeCodes').classList.toggle('hidden', tab !== 'codes');
+    $('homeDescriptions').classList.toggle('hidden', tab !== 'descriptions');
+    if (tab === 'descriptions') PidDescriptions.load();
     $('btnSample').classList.toggle('hidden', tab !== 'projects');
     $('btnNewProject').classList.toggle('hidden', tab !== 'projects');
   }
@@ -985,6 +988,15 @@ const PidApp = (() => {
     }
   }
 
+  /** Güvenlik kataloğu, cümle kalıpları ve kod listesi; Açıklamalar sekmesinde kayıttan sonra yeniden okunur */
+  async function reloadDescriptions() {
+    const [safety, texts] = await Promise.all([PidxHost.readSafetyCatalog(), api().readDescriptions()]);
+    if (safety.ok) state.safetyMap = new Map(safety.entries.map((e) => [e.id.toUpperCase(), e]));
+    if (texts.data) state.patterns = texts.data.kalip;
+    PidReport.invalidate();
+    await reloadCatalog();
+  }
+
   /* ─── Bağlantılar ─────────────────────────────────────── */
 
   function onMetaChange() {
@@ -1203,7 +1215,7 @@ const PidApp = (() => {
     });
     // Tarayıcı kapanırken süren yazmayı beklemez: kaydedilmemiş çizim varsa çıkış sorulur
     window.addEventListener('beforeunload', (e) => {
-      if (!state.dirty && !state.saving) return;
+      if (!state.dirty && !state.saving && !PidDescriptions.dirty) return;
       saveNow();
       e.preventDefault();
       e.returnValue = '';
@@ -1228,12 +1240,13 @@ const PidApp = (() => {
     PidMachines.init(publicApi);
     PidReport.init(publicApi);
     PidCovers.init(publicApi);
+    PidDescriptions.init(publicApi);
     bindUi();
     await PidMachines.load();
-    const [settings, safety] = await Promise.all([api().readSettings(), PidxHost.readSafetyCatalog()]);
+    const settings = await api().readSettings();
     if (settings.ok && PidCovers.isDesign(settings.settings.kapakTasarimi)) state.coverDesign = settings.settings.kapakTasarimi;
-    if (safety.ok) state.safetyMap = new Map(safety.entries.map((e) => [e.id.toUpperCase(), e]));
-    await reloadCatalog();
+    await reloadDescriptions();
+    await PidDescriptions.load();
     state.editor.setTool('select');
     await showHome();
   }
@@ -1244,6 +1257,7 @@ const PidApp = (() => {
     get catalogMap() { return state.catalogMap; },
     get catalogLookup() { return state.catalogLookup; },
     get safetyMap() { return state.safetyMap; },
+    get patterns() { return state.patterns; },
     get coverDesign() { return state.coverDesign; },
     get machine() { return state.machine; },
     get machineCodes() { return state.machineCodes; },
@@ -1278,6 +1292,7 @@ const PidApp = (() => {
     projectFromMachine,
     onMachinesChanged,
     reloadCatalog,
+    reloadDescriptions,
     toggleMachineCode,
     addUsedToMachine,
     usedCodesOutsideMachine,

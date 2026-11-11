@@ -115,9 +115,9 @@ LS28;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to t
 LS29;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
 LS30;xxx Level Sensor;Monitors liquid level for xxx Level Sensor. Connected to tank/line, fill/drain valves, pump interlock and control unit (PLC/relay).
 SS01;Hand Protection Sensor;Monitors safety/access status for Hand Protection Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
-SS02;Interlock Lock;Monitors safety/access status for Interlock Lock. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS02;Interlock Lock;"Monitoring: When the lid is closed and the interlock is engaged, it gives the control unit (PLC/relay) a safe signal; the process cannot start without this signal. Locking: Keeps the lid locked while the process is running; the lid can only be opened after the process is stopped. Connected to the interlock circuit of the control unit (PLC/relay)."
 SS03;Light Barrier Safety Sensor;Monitors safety/access status for Light Barrier Safety Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
-SS04;Interlock Lock Sensor;Monitors safety/access status for Interlock Lock Sensor. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
+SS04;Interlock Lock Sensor;"Monitoring: When the lid is closed and the interlock is engaged, it gives the control unit (PLC/relay) a safe signal; the process cannot start without this signal. Locking: Keeps the lid locked while the process is running; the lid can only be opened after the process is stopped. Connected to the interlock circuit of the control unit (PLC/relay)."
 SS05;1. LID RFID SENSOR;Monitors safety/access status for 1. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
 SS06;2. LID RFID SENSOR;Monitors safety/access status for 2. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).
 SS07;3. LID RFID SENSOR;Monitors safety/access status for 3. LID RFID SENSOR. Connected to interlock circuit and safety circuit of the control unit (PLC/relay).

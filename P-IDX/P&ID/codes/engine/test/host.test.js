@@ -363,6 +363,43 @@ test('ayarlar: dosya yokken boş döner, kayıt diğer ayarları korur, bozuk do
   assert.deepEqual(await store.engine.readSettings(), { ok: true, settings: {} });
 });
 
+test('açıklamalar: düzenleme metinlere uygulanır, programla gelen metin ayrı kalır', async (t) => {
+  const { root, store } = setup(t);
+  const saved = await store.engine.saveDescriptions({
+    bilesen: { pe01: { tr: ' Elle TR ', en: '' }, ZZ01: { tr: 'Yalnız ML metni' } },
+    guvenlik: { LS01: { tr: { logic: 'Elle mantık' } } },
+    kalip: { tr: { 'conditions.lock': 'Kapak kilitlenmeden' } }
+  });
+  assert.equal(saved.ok, true);
+  assert.deepEqual(JSON.parse(read(root, 'P&ID/data/aciklamalar.json')).bilesen.PE01, { tr: 'Elle TR' });
+
+  const { entries } = await store.engine.catalog();
+  const byId = new Map(entries.map((e) => [e.id, e]));
+  assert.equal(byId.get('PE01').description, 'Elle TR');
+  assert.equal(byId.get('PE01').desc.en, 'Description EN');
+  assert.equal(byId.get('ZZ01').desc.tr, 'Yalnız ML metni');
+
+  const safety = await store.readSafetyCatalog();
+  assert.equal(safety.entries[0].tr.logic, 'Elle mantık');
+  assert.equal(safety.entries[0].tr.logicEdited, true);
+  assert.equal(safety.entries[0].en.logicEdited, false);
+
+  const editor = await store.engine.descriptionCatalog();
+  assert.equal(editor.components.find((c) => c.kod === 'PE01').defaults.tr, 'Açıklama TR');
+  assert.equal(editor.safety[0].defaults.tr.logic, 'Susuz; çalışmayı engeller');
+  assert.equal(editor.edits.kalip.tr['conditions.lock'], 'Kapak kilitlenmeden');
+});
+
+test('açıklamalar: bozuk dosya programı durdurmaz ve üzerine yazılmaz', async (t) => {
+  const { root, store } = setup(t);
+  write(root, 'P&ID/data/aciklamalar.json', '{bozuk');
+  const { entries } = await store.engine.catalog();
+  assert.equal(entries.find((e) => e.id === 'PE01').description, 'Açıklama TR');
+  assert.ok((await store.engine.descriptionCatalog()).readError);
+  assert.equal((await store.engine.saveDescriptions({ bilesen: { PE01: { tr: 'x' } } })).ok, false);
+  assert.equal(read(root, 'P&ID/data/aciklamalar.json'), '{bozuk');
+});
+
 test('katalog: çok dilli açıklamalar çizim kataloğuna gelir', async (t) => {
   const { store } = setup(t);
   const { entries } = await store.engine.catalog();

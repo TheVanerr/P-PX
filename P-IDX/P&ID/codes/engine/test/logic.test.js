@@ -49,6 +49,16 @@ function tankScene(connect) {
   return { drawing, s, tank, ls, pump, heater };
 }
 
+/** Interlock kilit (SS02) pompaya sinyalle bağlı */
+function lockScene() {
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const lock = Model.addSymbol(s, 'i.field', 60, 90, { tag: 'SS02' });
+  const pump = Model.addSymbol(s, 'p.centrifugal', 150, 90, { tag: 'PE02' });
+  Model.addLine(s, { node: lock.id, port: 'R' }, { node: pump.id, port: 'M' }, { kind: 'signal' });
+  return drawing;
+}
+
 const run = (drawing, lang) => Logic.analyze(drawing, { catalog: CATALOG, safety: SAFETY, lang: lang || 'tr' });
 
 test('sınıflandırma: ISA harfi, kod serisi ve sembolden tanınır', () => {
@@ -732,4 +742,40 @@ test('dozatron: hatta oturur, motorsuz pasif dozaj ünitesidir, akış cümlesin
   }
   const res = run(drawing);
   assert.ok(res.logic.some((r) => r.group === 'flow' && /kimyasal katar/.test(r.text)), JSON.stringify(res.logic.map((r) => r.text)));
+});
+
+test('düzenlenen kalıp cümleye girer, diğer dillere dokunmaz', () => {
+  const patterns = { tr: { 'conditions.lock': 'Kapak kilitlenmeden', 'reasons.lock': 'Kilit sinyali gelmeden çevrim başlamaz.' } };
+  const options = { catalog: CATALOG, safety: new Map(), patterns };
+  const tr = Logic.analyze(lockScene(), Object.assign({ lang: 'tr' }, options));
+  assert.match(tr.safety[0].logic, /^Kapak kilitlenmeden .*çalışmaz\. Kilit sinyali gelmeden çevrim başlamaz\.$/);
+  assert.ok(tr.logic.some((row) => /^Kapak kilitlenmeden /.test(row.text)));
+  const en = Logic.analyze(lockScene(), Object.assign({ lang: 'en' }, options));
+  assert.match(en.safety[0].logic, /^Until the interlock reports that the door is closed and locked, /);
+  const plain = Logic.analyze(lockScene(), { catalog: CATALOG, lang: 'tr' }).safety[0];
+  assert.equal(plain.fn, 'Kapak interlock kilidi');
+  assert.equal(plain.logic, 'Interlock kapağın kapalı ve kilitli olduğunu bildirmeden PE02 (Yıkama Pompa Motoru) çalışmaz. ' +
+    'Proses sürerken interlock kapağı kilitli tutar; kapak ancak proses durdurulunca açılır.');
+});
+
+test('düzenlenen kalıpta boş kalan yer toplanır, cümle büyük harfle başlar', () => {
+  const patterns = { tr: { 'conditions.lock': '{yer} kapağı kilitlenmeden' } };
+  const res = Logic.analyze(lockScene(), { catalog: CATALOG, lang: 'tr', patterns });
+  assert.match(res.safety[0].logic, /^Kapağı kilitlenmeden /);
+});
+
+test('koda elle yazılan güvenlik metni bağlı sensörde de kullanılır', () => {
+  const safety = new Map([['SS02', { tr: { lockedEquipment: '', logic: 'Elle yazılan metin.', logicEdited: true } }]]);
+  const res = Logic.analyze(lockScene(), { catalog: CATALOG, safety, lang: 'tr' });
+  assert.equal(res.safety[0].connected, true);
+  assert.equal(res.safety[0].logic, 'Elle yazılan metin.');
+  assert.ok(res.safety[0].affected.length, 'etkilenen ekipman çizimden gelmeye devam eder');
+});
+
+test('kalıpların programdaki hâli değer yerleriyle listelenir', () => {
+  const byId = new Map(Logic.patternDefaults('tr').map((p) => [p.id, p]));
+  assert.equal(byId.get('conditions.doorOpen').text, '{yer} kapağı açıkken');
+  assert.equal(byId.get('effects.block').text, '{kosul} {ekipman} çalışmaz.');
+  assert.deepEqual(byId.get('monitor.lock').args, ['sensor', 'yer']);
+  assert.match(byId.get('purposes.lock').text, /^Kapağın kapalı ve kilitli olduğunu bildirir; bu bilgi gelmeden proses başlamaz\./);
 });

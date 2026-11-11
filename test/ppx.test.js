@@ -533,6 +533,7 @@ async function userDb(db) {
   await target.write('P&ID/data/kod.csv', text(OLD_KOD));
   await target.write('P&ID/data/guvenlik.csv', text('KOD;TETİK;KİLİT;MANTIK\nLS01;Alt Seviye;Pompa;PLC durdurur\n'));
   await target.write('P&ID/data/ayarlar.json', text('{"kapakTasarimi":"kose"}'));
+  await target.write('P&ID/data/aciklamalar.json', text('{"bilesen":{"SS02":{"tr":"kullanıcının"}}}'));
   await target.write('P&ID/projects/a/proje.json', text('{"kullanici":true}'));
   await target.write('ML/kayitlar/kodlar.json', text('{"kodlar":[{"kod":"V31","aciklama":"kullanıcının"}]}'));
   await target.write('PNOMATIK/data/eslestirme.csv', text('KOD;DEVRE\nkullanıcının\n'));
@@ -541,7 +542,7 @@ async function userDb(db) {
 
 test('program verileri: yalnız kod listesi ve güvenlik kataloğu güncellenir, kullanıcı verisi korunur', async () => {
   const db = await userDb();
-  const others = ['P&ID/data/ayarlar.json', 'P&ID/projects/a/proje.json', 'ML/kayitlar/kodlar.json', 'PNOMATIK/data/eslestirme.csv'];
+  const others = ['P&ID/data/ayarlar.json', 'P&ID/data/aciklamalar.json', 'P&ID/projects/a/proje.json', 'ML/kayitlar/kodlar.json', 'PNOMATIK/data/eslestirme.csv'];
   const before = new Map();
   for (const p of others) before.set(p, str((await db.read(p)).bytes));
   const folder = await programFolder();
@@ -560,7 +561,7 @@ test('program verileri: yalnız kod listesi ve güvenlik kataloğu güncellenir,
   assert.match(summary, /Kod listesi TR \(kod\.csv\): 1 kodun metni değişecek, 1 kod eklenecek, 1 kod silinecek \(V33\)/);
   assert.match(summary, /Kod listesi EN \(kod-en\.csv\): veritabanında yok, eklenecek/);
   assert.match(summary, /Güvenlik kataloğu TR \(guvenlik\.csv\): 1 kodun metni değişecek/);
-  assert.match(summary, /Projeler, makine kayıtları, ML kod listesi, kod eşleştirme ve ayarlar değişmez/);
+  assert.match(summary, /Projeler, makine kayıtları, ML kod listesi, kod eşleştirme, ayarlar ve elle düzenlenen açıklamalar değişmez/);
   assert.match(str((await db.read('P&ID/data/kod.csv')).bytes), /PLC'ye/, 'karşılaştırma bir şey yazmamalı');
 
   assert.deepEqual(await PpxFs.applyProgramData(db, plan), { ok: true, written: 3 });

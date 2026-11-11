@@ -16,6 +16,7 @@ Klasör hatırlanır, ancak tarayıcı her yeniden açıldığında izin yeniden
 | Projeler | Ana ekran | Proje açar, çizim motorunda P&ID çizer |
 | Makineler | Ana ekran, sekme | Seri no bazında makine kayıtları ve kod seçimi |
 | Kod Listesi | Ana ekran, sekme | Kod ekler, düzenler, CSV alır ve verir |
+| Açıklamalar | Ana ekran, sekme | Bileşen açıklamalarını, güvenlik metinlerini ve otomatik cümleleri dil dil düzenler; `P&ID/data/aciklamalar.json` dosyasına yazar |
 
 Aynı seri nolu proje açıldığında makine kaydı çizime bağlanır. Kodlar sekmesindeki **Taslak çiz** düğmesi makine kaydından taslak kurar: kayıttaki seviye sensörü ve rezistans kodlarına göre su tanklarını, ayrıca yıkama hücresini hazır gruplarıyla yerleştirir, grupta olup kayıtta olmayan parçaları (örneğin kayıtta PE03 yoksa pompası) çıkarır, kalan kodları sayfanın altına dizer. Sayfa gerekirse A2 veya A1 olur; çizim boş değilse taslak yeni sayfaya kurulur. Kodlar panelindeki yıldızla kod ekleyip çıkarabilir, Kontrol sekmesinde kayıt ile çizim arasındaki farkları görebilirsiniz.
 

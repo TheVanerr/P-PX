@@ -34,6 +34,8 @@
   const DRAWING_FILE = 'pid/cizim.json';
   const META_FILE = 'proje.json';
   const SETTINGS_FILE = `${DATA_DIR}/ayarlar.json`;
+  const DESCRIPTIONS_FILE = `${DATA_DIR}/aciklamalar.json`;
+  const LANGS = ['tr', 'en', 'de'];
   const EXPORT_SUFFIX = 'P&ID DIAGRAM';
 
   /* ─── Metin ve ad yardımcıları ────────────────────────── */
@@ -274,6 +276,33 @@
     return [...entries.values()].map((e) => Object.assign(e, { ambiguous: names.get(e.id) || [] }));
   }
 
+  /** aciklamalar.json: yalnız elle değiştirilen metinler; boş olanlar programdaki metne döner */
+  function cleanDescriptions(raw) {
+    const text = (value) => (typeof value === 'string' ? value.trim() : '');
+    const source = raw && typeof raw === 'object' ? raw : {};
+    const out = { bilesen: {}, guvenlik: {}, kalip: {} };
+    for (const [kod, row] of Object.entries(source.bilesen || {})) {
+      const clean = {};
+      for (const lang of LANGS) if (row && text(row[lang])) clean[lang] = text(row[lang]);
+      if (Object.keys(clean).length) out.bilesen[kod.toUpperCase()] = clean;
+    }
+    for (const [kod, row] of Object.entries(source.guvenlik || {})) {
+      const clean = {};
+      for (const lang of LANGS) {
+        const fields = {};
+        for (const field of ['locked', 'logic']) if (row && row[lang] && text(row[lang][field])) fields[field] = text(row[lang][field]);
+        if (Object.keys(fields).length) clean[lang] = fields;
+      }
+      if (Object.keys(clean).length) out.guvenlik[kod.toUpperCase()] = clean;
+    }
+    for (const lang of LANGS) {
+      const clean = {};
+      for (const [id, value] of Object.entries((source.kalip && source.kalip[lang]) || {})) if (text(value)) clean[id] = text(value);
+      if (Object.keys(clean).length) out.kalip[lang] = clean;
+    }
+    return out;
+  }
+
   /* ─── Makine kaydı eşleştirme ─────────────────────────── */
 
   /** Önce projedeki bağlantı, sonra seri no; aynı seri no birden çok kayıtta varsa müşteri ve modele bakılır */
@@ -411,7 +440,28 @@
 
     /* ── Katalog ── */
 
-    async function loadKodCatalog() {
+    /** Okunamayan dosya boş sayılıp üzerine yazılmaz: ok:false ile döner, kayıt reddedilir */
+    async function readDescriptions() {
+      const text = await tryReadText(DESCRIPTIONS_FILE);
+      if (text === null || !text.trim()) return { ok: true, data: cleanDescriptions({}) };
+      try {
+        return { ok: true, data: cleanDescriptions(JSON.parse(text)) };
+      } catch {
+        return { ok: false, error: `${DESCRIPTIONS_FILE} okunamadı, dosya bozuk olabilir`, data: cleanDescriptions({}) };
+      }
+    }
+
+    async function saveDescriptions(input) {
+      const current = await readDescriptions();
+      if (!current.ok) return { ok: false, error: current.error };
+      const data = cleanDescriptions(input);
+      await writeFile(DESCRIPTIONS_FILE, `${JSON.stringify(data, null, 2)}\n`);
+      return { ok: true, data };
+    }
+
+    /** options.raw: elle yapılan düzenlemeler uygulanmadan, programla gelen metinler */
+    async function loadKodCatalog(options) {
+      const edits = options && options.raw ? {} : (await readDescriptions()).data.bilesen;
       const trText = await tryReadText(KOD_CSV.tr);
       if (trText === null) return { ok: false, error: `kod.csv bulunamadı: ${KOD_CSV.tr}` };
       const trRows = parseKodLangCsv(trText);
@@ -425,15 +475,18 @@
         seen.add(tr.kod);
         const en = enMap.get(tr.kod);
         const de = deMap.get(tr.kod);
+        const edit = edits[tr.kod.toUpperCase()] || {};
+        const trDescription = edit.tr || tr.description;
+        const enDescription = edit.en || en?.description || trDescription;
         entries.push({
           id: tr.kod,
           category: deriveCategoryFromKod(tr.kod),
-          tr: { componentId: tr.kod, componentName: tr.name, description: tr.description },
-          en: { componentId: tr.kod, componentName: en?.name || tr.name, description: en?.description || tr.description },
+          tr: { componentId: tr.kod, componentName: tr.name, description: trDescription },
+          en: { componentId: tr.kod, componentName: en?.name || tr.name, description: enDescription },
           de: {
             componentId: tr.kod,
             componentName: de?.name || en?.name || tr.name,
-            description: de?.description || en?.description || tr.description
+            description: edit.de || de?.description || enDescription
           },
           // kod-en.csv / kod-de.csv içinde adı olmayan diller: belgede Türkçe çıkar
           untranslated: [[en, 'en'], [de, 'de']].filter(([row]) => !row || !String(row.name || '').trim()).map(([, lang]) => lang)
@@ -442,7 +495,8 @@
       return { ok: true, entries, path: KOD_CSV.tr };
     }
 
-    async function loadSafetyCatalog() {
+    async function loadSafetyCatalog(options) {
+      const edits = options && options.raw ? {} : (await readDescriptions()).data.guvenlik;
       const trText = await tryReadText(SAFETY_CSV.tr);
       if (trText === null) return { ok: false, error: `guvenlik.csv bulunamadı: ${SAFETY_CSV.tr}` };
       const trRows = parseSafetyLangCsv(trText);
@@ -456,22 +510,25 @@
         seen.add(tr.kod);
         const en = enMap.get(tr.kod);
         const de = deMap.get(tr.kod);
+        const edit = edits[tr.kod.toUpperCase()] || {};
+        const texts = (lang, row, fallback) => {
+          const own = edit[lang] || {};
+          return {
+            interlockId: tr.kod,
+            triggerSensor: row?.trigger || fallback?.triggerSensor || '',
+            lockedEquipment: own.locked || row?.locked || fallback?.lockedEquipment || '',
+            logic: own.logic || row?.logic || fallback?.logic || '',
+            logicEdited: !!own.logic
+          };
+        };
+        const trTexts = texts('tr', tr);
+        const enTexts = texts('en', en, trTexts);
         entries.push({
           id: tr.kod,
           category: deriveCategoryFromKod(tr.kod),
-          tr: { interlockId: tr.kod, triggerSensor: tr.trigger, lockedEquipment: tr.locked, logic: tr.logic },
-          en: {
-            interlockId: tr.kod,
-            triggerSensor: en?.trigger || tr.trigger,
-            lockedEquipment: en?.locked || tr.locked,
-            logic: en?.logic || tr.logic
-          },
-          de: {
-            interlockId: tr.kod,
-            triggerSensor: de?.trigger || en?.trigger || tr.trigger,
-            lockedEquipment: de?.locked || en?.locked || tr.locked,
-            logic: de?.logic || en?.logic || tr.logic
-          }
+          tr: trTexts,
+          en: enTexts,
+          de: texts('de', de, enTexts)
         });
       }
       return { ok: true, entries, path: SAFETY_CSV.tr };
@@ -857,11 +914,41 @@
       return { ok: true, settings: merged };
     }
 
-    async function buildCatalog() {
-      const kod = await loadKodCatalog();
+    async function buildCatalog(options) {
+      const kod = await loadKodCatalog(options);
       const kodRows = kod.ok ? parseCsvContent(await readText(KOD_CSV.tr)).rows : [];
       const { codes } = await readCodes();
-      return mergeCatalog(kod.ok ? kod.entries : [], kodRows, codes);
+      const merged = mergeCatalog(kod.ok ? kod.entries : [], kodRows, codes);
+      if (options && options.raw) return merged;
+      // Yalnız ML listesinde olan kodların katalog metni yoktur; açıklamaları buradan gelir
+      const edits = (await readDescriptions()).data.bilesen;
+      for (const entry of merged) {
+        const edit = edits[entry.id];
+        if (entry.source !== 'ml' || !edit) continue;
+        entry.description = edit.tr || '';
+        entry.desc = { tr: edit.tr || '', en: edit.en || edit.tr || '', de: edit.de || edit.en || edit.tr || '' };
+      }
+      return merged;
+    }
+
+    /** Açıklamalar sekmesi: programla gelen metinler ve kayıtlı düzenlemeler ayrı ayrı */
+    async function descriptionCatalog() {
+      const [components, safety, saved] = await Promise.all([
+        buildCatalog({ raw: true }),
+        loadSafetyCatalog({ raw: true }),
+        readDescriptions()
+      ]);
+      return {
+        ok: true,
+        readError: saved.ok ? '' : saved.error,
+        edits: saved.data,
+        components: components.map((e) => ({ kod: e.id, name: e.name, defaults: e.desc || { tr: '', en: '', de: '' } })),
+        safety: (safety.ok ? safety.entries : []).map((e) => ({
+          kod: e.id.toUpperCase(),
+          name: e.tr.triggerSensor,
+          defaults: Object.fromEntries(LANGS.map((lang) => [lang, { locked: e[lang].lockedEquipment, logic: e[lang].logic }]))
+        }))
+      };
     }
 
     async function asset(rel) {
@@ -901,6 +988,9 @@
         assetBytes,
         readSettings,
         saveSettings,
+        readDescriptions,
+        saveDescriptions,
+        descriptionCatalog,
         // Etiket Excel'inin stil şablonu; yoksa sade biçim kullanılır
         labelTemplate: async () => {
           const file = await tryFile(ETIKET_SABLONU);
@@ -1253,6 +1343,9 @@
     assetBytes: bound((s) => s.engine.assetBytes),
     readSettings: bound((s) => s.engine.readSettings),
     saveSettings: bound((s) => s.engine.saveSettings),
+    readDescriptions: bound((s) => s.engine.readDescriptions),
+    saveDescriptions: bound((s) => s.engine.saveDescriptions),
+    descriptionCatalog: bound((s) => s.engine.descriptionCatalog),
     openFile: bound(() => openFile),
     /** Hazır PDF doğrudan indirilir: yazdırma ya da kayıt penceresi açılmaz */
     exportPdf: bound(() => async (payload) => {

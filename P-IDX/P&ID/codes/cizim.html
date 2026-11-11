@@ -26,6 +26,7 @@
       <button type="button" class="home-tab active" data-home-tab="projects">Projeler</button>
       <button type="button" class="home-tab" data-home-tab="machines">Makineler <span id="machineCount" class="home-count"></span></button>
       <button type="button" class="home-tab" data-home-tab="codes">Kod Listesi <span id="codeCount" class="home-count"></span></button>
+      <button type="button" class="home-tab" data-home-tab="descriptions" title="Bileşen açıklamalarını, güvenlik metinlerini ve otomatik cümleleri düzenler">Açıklamalar <span id="descCount" class="home-count"></span></button>
       <div class="tb-spacer"></div>
       <button type="button" class="home-link home-folder" id="btnFolder" title="Bağlı klasörü değiştir"></button>
     </nav>
@@ -123,6 +124,36 @@
               <tbody id="mlCodeBody"></tbody>
             </table>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="homeDescriptions" class="home-page hidden">
+      <div class="ml-codes-page">
+        <div class="ml-card ml-code-card">
+          <div class="ml-card-head">
+            <nav class="ds-sections">
+              <button type="button" class="ds-section active" data-ds-section="components">Bileşen Açıklamaları <span id="dsCountComponents" class="home-count"></span></button>
+              <button type="button" class="ds-section" data-ds-section="safety">Güvenlik Metinleri <span id="dsCountSafety" class="home-count"></span></button>
+              <button type="button" class="ds-section" data-ds-section="patterns">Otomatik Cümleler <span id="dsCountPatterns" class="home-count"></span></button>
+            </nav>
+            <div class="ml-card-actions">
+              <select id="dsLang" class="field-input ds-lang" title="Her dilin metni ayrı düzenlenir">
+                <option value="tr">Türkçe</option>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+              </select>
+              <button type="button" class="btn btn-sm btn-primary" id="dsSave" disabled>Kaydet</button>
+            </div>
+          </div>
+          <p id="dsHelp" class="ds-help"></p>
+          <div class="ds-filters">
+            <input type="search" id="dsSearch" class="search" placeholder="Kod, ad veya metin ara…">
+            <label class="ds-only"><input type="checkbox" id="dsOnlyEdited"> Yalnız düzenlenenler</label>
+            <span id="dsResult" class="ml-result"></span>
+          </div>
+          <div id="dsError" class="ds-error hidden"></div>
+          <div id="dsList" class="ml-table-wrap"></div>
         </div>
       </div>
     </div>
@@ -282,6 +313,7 @@
   <script src="engine/editor.js"></script>
   <script src="engine/panels.js"></script>
   <script src="engine/machines.js"></script>
+  <script src="engine/descriptions.js"></script>
   <script src="engine/xlsx.js"></script>
   <script src="engine/fieldlist.js"></script>
   <script src="engine/pdf.js"></script>

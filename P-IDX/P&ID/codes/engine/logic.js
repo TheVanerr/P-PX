@@ -42,7 +42,7 @@
         position: () => 'Konum doğrulanmadan',
         hand: () => 'El veya cisim algılandığında',
         curtain: () => 'Işın bariyeri kesildiğinde',
-        lock: () => 'Proses çevrimi sürerken',
+        lock: (loc) => (loc ? `Interlock ${loc} kapağının kapalı ve kilitli olduğunu bildirmeden` : 'Interlock kapağın kapalı ve kilitli olduğunu bildirmeden'),
         rfid: () => 'Kapak RFID doğrulaması bozulduğunda',
         estop: () => 'Acil stop basıldığında',
         overload: () => 'Motor koruması (termik) attığında',
@@ -72,7 +72,7 @@
         doorGuard: 'Operatörün makine çalışırken tehlikeli bölgeye erişmesi önlenir.',
         hand: 'Ezilme riski önlenir.',
         curtain: 'Kapanma bölgesinde ezilme riski önlenir.',
-        lock: 'Çevrim sırasında kapağın açılması önlenir.',
+        lock: 'Proses sürerken interlock kapağı kilitli tutar; kapak ancak proses durdurulunca açılır.',
         rfid: 'Kapak doğrulanmadan çalışma önlenir.',
         estop: 'Makine güvenli duruma geçer.',
         overload: 'Motor aşırı akımdan korunur.',
@@ -84,7 +84,7 @@
         doorGuard: 'Kapak / erişim güvenliği',
         hand: 'El koruma (ezilme önleme)',
         curtain: 'Işın bariyeri koruması',
-        lock: 'Çevrim kilidi',
+        lock: 'Kapak interlock kilidi',
         rfid: 'RFID kapak doğrulama',
         dryRun: 'Kuru çalışma koruması',
         overflow: 'Taşma koruması',
@@ -107,7 +107,7 @@
         position: (s, loc) => `${s}, ${loc} konumunu bildirir.`,
         hand: (s, loc) => `${s}, ${loc} bölgesinde el veya cisim algılar.`,
         curtain: (s, loc) => `${s}, ${loc} bölgesinde ışın kesilmesini algılar.`,
-        lock: (s, loc) => `${s}, proses çevrimi sırasında ${loc} kapağını kilitli tutar.`,
+        lock: (s, loc) => `${s}, ${loc} kapağının kapalı ve kilitli olduğunu bildirir; proses sürerken kapağı kilitli tutar.`,
         rfid: (s, loc) => `${s}, ${loc} kapağının kapalı olduğunu RFID ile doğrular.`,
         generic: (s, loc) => `${s}, ${loc} ile bağlantılıdır.`,
         display: (s, loc) => `${s} değeri ${loc} üzerinde gösterilir.`
@@ -153,7 +153,7 @@
         position: 'Konum geri bildirimi verir.',
         hand: 'Tehlikeli bölgede el veya cisim algılar.',
         curtain: 'Kapanma bölgesinde ışın kesilmesini algılar.',
-        lock: 'Proses çevrimi sırasında kapağı kilitli tutar.',
+        lock: 'Kapağın kapalı ve kilitli olduğunu bildirir; bu bilgi gelmeden proses başlamaz. Proses sürerken kapağı kilitli tutar, kapak proses durunca açılır.',
         rfid: 'Kapağın kapalı olduğunu RFID ile doğrular.',
         estop: 'Makineyi acil durumda güvenli şekilde durdurur.',
         overload: 'Motoru aşırı akıma karşı korur.',
@@ -215,7 +215,7 @@
         position: () => 'Until the position is confirmed',
         hand: () => 'When a hand or object is detected',
         curtain: () => 'When the light curtain is interrupted',
-        lock: () => 'While the process cycle is running',
+        lock: (loc) => (loc ? `Until the interlock reports that the door of ${loc} is closed and locked` : 'Until the interlock reports that the door is closed and locked'),
         rfid: () => 'When the RFID door verification is lost',
         estop: () => 'When the emergency stop is pressed',
         overload: () => 'When the motor protection trips',
@@ -245,7 +245,7 @@
         doorGuard: 'This prevents access to the hazardous area while the machine is running.',
         hand: 'This prevents crushing injuries.',
         curtain: 'This prevents crushing injuries in the closing area.',
-        lock: 'This prevents the door from being opened during the cycle.',
+        lock: 'While the process is running, the interlock keeps the door locked; the door can only be opened after the process is stopped.',
         rfid: 'This prevents operation without door verification.',
         estop: 'The machine goes into a safe state.',
         overload: 'This protects the motor from overcurrent.',
@@ -257,7 +257,7 @@
         doorGuard: 'Door / access guarding',
         hand: 'Hand protection (anti-crush)',
         curtain: 'Light curtain protection',
-        lock: 'Process cycle lock',
+        lock: 'Door interlock',
         rfid: 'RFID door verification',
         dryRun: 'Dry-run protection',
         overflow: 'Overflow protection',
@@ -280,7 +280,7 @@
         position: (s, loc) => `${s} reports the position of ${loc}.`,
         hand: (s, loc) => `${s} detects a hand or object in the area of ${loc}.`,
         curtain: (s, loc) => `${s} detects interruptions of the light curtain at ${loc}.`,
-        lock: (s, loc) => `${s} keeps the door of ${loc} locked during the process cycle.`,
+        lock: (s, loc) => `${s} reports that the door of ${loc} is closed and locked, and keeps it locked while the process is running.`,
         rfid: (s, loc) => `${s} verifies by RFID that the door of ${loc} is closed.`,
         generic: (s, loc) => `${s} is connected to ${loc}.`,
         display: (s, loc) => `The value of ${s} is shown on ${loc}.`
@@ -326,7 +326,7 @@
         position: 'Provides position feedback.',
         hand: 'Detects a hand or object in the hazardous area.',
         curtain: 'Detects interruptions of the light curtain in the closing area.',
-        lock: 'Keeps the door locked during the process cycle.',
+        lock: 'Reports that the door is closed and locked; the process cannot start without this signal. Keeps the door locked while the process is running; the door opens only after the process stops.',
         rfid: 'Verifies by RFID that the door is closed.',
         estop: 'Stops the machine safely in an emergency.',
         overload: 'Protects the motor against overcurrent.',
@@ -388,7 +388,7 @@
         position: () => 'Solange die Position nicht bestätigt ist',
         hand: () => 'Wenn eine Hand oder ein Gegenstand erkannt wird',
         curtain: () => 'Wenn der Lichtvorhang unterbrochen wird',
-        lock: () => 'Während des Prozesszyklus',
+        lock: (loc) => (loc ? `Solange die Verriegelung nicht meldet, dass der Deckel von ${loc} geschlossen und verriegelt ist` : 'Solange die Verriegelung nicht meldet, dass der Deckel geschlossen und verriegelt ist'),
         rfid: () => 'Wenn die RFID-Deckelprüfung ausfällt',
         estop: () => 'Wenn der Not-Halt betätigt wird',
         overload: () => 'Wenn der Motorschutz auslöst',
@@ -418,7 +418,7 @@
         doorGuard: 'Das verhindert den Zugang zum Gefahrenbereich bei laufender Maschine.',
         hand: 'Das verhindert Quetschverletzungen.',
         curtain: 'Das verhindert Quetschverletzungen im Schließbereich.',
-        lock: 'Das verhindert das Öffnen des Deckels während des Zyklus.',
+        lock: 'Während des Prozesses hält die Verriegelung den Deckel verriegelt; der Deckel lässt sich erst nach dem Stoppen des Prozesses öffnen.',
         rfid: 'Das verhindert den Betrieb ohne Deckelprüfung.',
         estop: 'Die Maschine geht in einen sicheren Zustand.',
         overload: 'Das schützt den Motor vor Überstrom.',
@@ -430,7 +430,7 @@
         doorGuard: 'Deckel- / Zugangsüberwachung',
         hand: 'Handschutz (Quetschschutz)',
         curtain: 'Lichtvorhangschutz',
-        lock: 'Prozessverriegelung',
+        lock: 'Deckelverriegelung',
         rfid: 'RFID-Deckelprüfung',
         dryRun: 'Trockenlaufschutz',
         overflow: 'Überlaufschutz',
@@ -453,7 +453,7 @@
         position: (s, loc) => `${s} meldet die Position von ${loc}.`,
         hand: (s, loc) => `${s} erkennt eine Hand oder einen Gegenstand im Bereich von ${loc}.`,
         curtain: (s, loc) => `${s} erkennt Unterbrechungen des Lichtvorhangs an ${loc}.`,
-        lock: (s, loc) => `${s} hält den Deckel von ${loc} während des Prozesszyklus verriegelt.`,
+        lock: (s, loc) => `${s} meldet, dass der Deckel von ${loc} geschlossen und verriegelt ist, und hält ihn während des Prozesses verriegelt.`,
         rfid: (s, loc) => `${s} prüft per RFID, ob der Deckel von ${loc} geschlossen ist.`,
         generic: (s, loc) => `${s} ist mit ${loc} verbunden.`,
         display: (s, loc) => `Der Wert von ${s} wird auf ${loc} angezeigt.`
@@ -500,7 +500,7 @@
         position: 'Liefert eine Positionsrückmeldung.',
         hand: 'Erkennt eine Hand oder einen Gegenstand im Gefahrenbereich.',
         curtain: 'Erkennt Unterbrechungen des Lichtvorhangs im Schließbereich.',
-        lock: 'Hält den Deckel während des Prozesszyklus verriegelt.',
+        lock: 'Meldet, dass der Deckel geschlossen und verriegelt ist; ohne diese Meldung startet der Prozess nicht. Hält den Deckel während des Prozesses verriegelt; er öffnet sich erst nach dem Stoppen des Prozesses.',
         rfid: 'Prüft per RFID, ob der Deckel geschlossen ist.',
         estop: 'Stoppt die Maschine im Notfall sicher.',
         overload: 'Schützt den Motor vor Überstrom.',
@@ -714,10 +714,65 @@
     return `${items.slice(0, -1).join(', ')} ${t.and} ${items[items.length - 1]}`;
   }
 
+  /* Açıklamalar sekmesinde düzenlenebilen cümle kalıpları. {ad} yerine çizimden gelen değer yazılır. */
+  const PATTERN_GROUPS = [
+    { id: 'conditions', args: () => ['yer'] },
+    { id: 'effects', args: (key) => (key === 'control' || key === 'feedback' ? ['sensor', 'ekipman'] : ['kosul', 'ekipman']) },
+    { id: 'reasons', args: () => [] },
+    { id: 'functions', args: () => [] },
+    { id: 'monitor', args: () => ['sensor', 'yer'] },
+    { id: 'purposes', args: () => [] }
+  ];
+
+  /** Düzenleme ekranı için kalıpların programdaki hâli; değerlerin yerinde {ad} durur */
+  function patternDefaults(lang) {
+    const t = TEXT[lang] || TEXT.tr;
+    const out = [];
+    for (const group of PATTERN_GROUPS) {
+      for (const [key, value] of Object.entries(t[group.id])) {
+        const args = group.args(key);
+        const text = typeof value === 'function' ? value(...args.map((a) => `{${a}}`)) : value;
+        out.push({ id: `${group.id}.${key}`, group: group.id, key, args, text });
+      }
+    }
+    return out;
+  }
+
+  /** Değer boşsa (sensör bir tankın içinde değilse) kalan boşluk toplanır, cümle yine büyük harfle başlar */
+  function fillPattern(text, args, values, lang) {
+    const value = (name) => {
+      const i = args.indexOf(name);
+      return i < 0 ? null : String(values[i] == null ? '' : values[i]);
+    };
+    const out = text.replace(/\{(\w+)\}/g, (match, name) => {
+      const v = value(name);
+      return v === null ? match : v;
+    }).replace(/\s{2,}/g, ' ').trim();
+    const first = /^\s*\{(\w+)\}/.exec(text);
+    return first && value(first[1]) === '' ? `${out.charAt(0).toLocaleUpperCase(lang)}${out.slice(1)}` : out;
+  }
+
+  /** patterns: { 'conditions.lock': 'Kapak kilitlenmeden', ... }; yalnız değiştirilen kalıplar */
+  function withPatterns(t, patterns, lang) {
+    if (!patterns || !Object.keys(patterns).length) return t;
+    const out = Object.assign({}, t);
+    for (const group of PATTERN_GROUPS) {
+      const next = Object.assign({}, t[group.id]);
+      for (const [key, value] of Object.entries(t[group.id])) {
+        const text = patterns[`${group.id}.${key}`];
+        if (!text) continue;
+        const args = group.args(key);
+        next[key] = typeof value === 'function' ? (...values) => fillPattern(text, args, values, lang) : text;
+      }
+      out[group.id] = next;
+    }
+    return out;
+  }
+
   function analyze(drawing, options) {
     const opts = options || {};
     const lang = TEXT[opts.lang] ? opts.lang : 'tr';
-    const t = TEXT[lang];
+    const t = withPatterns(TEXT[lang], opts.patterns && opts.patterns[lang], lang);
     const catalog = opts.catalog || new Map();
     const safetyCatalog = opts.safety || new Map();
 
@@ -1095,7 +1150,8 @@
             fn: t.functions[fn],
             trigger: sensor.label,
             affected: unique.map((n) => n.label),
-            logic: bucket.texts.join(' '),
+            // Bu kod için elle yazılan metin, bağlantıdan kurulan cümlenin önüne geçer
+            logic: catalogText && catalogText.logicEdited ? catalogText.logic : bucket.texts.join(' '),
             connected: true,
             optional: bucket.optional,
             sheetId: sensor.sheet.id,
@@ -1341,5 +1397,5 @@
     return { lang, text: t, components, logic: logicRows, safety: safetyRows, hints };
   }
 
-  return { TEXT, analyze, classify, listJoin };
+  return { TEXT, analyze, classify, listJoin, patternDefaults };
 });

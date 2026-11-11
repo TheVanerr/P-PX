@@ -115,9 +115,9 @@ LS28;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. 
 LS29;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve kontrol ünitesine (PLC/Röle) bağlıdır.
 LS30;xxx Seviye Sensörü;Proses tankı veya hattında sıvı seviyesini izler. Dolum/drenaj vanaları, pompa interlock ve kontrol ünitesine (PLC/Röle) bağlıdır.
 SS01;El Koruma Sensörü;Operatör elinin tehlikeli bölgeye girmesini algılar ve proses/hareket interlock sinyali üretir. Kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.
-SS02;Interlock Kilit;"Kapak veya erişim noktası kilit/kapalı konumunu doğrular; güvenli olmayan durumda prosesi kilitleyen sinyal üretir. Kontrol ünitesinin (PLC/Röle) interlock devresine bağlıdır."
+SS02;Interlock Kilit;"İzleme: Kapak kapanıp interlock yerine oturduğunda kontrol ünitesine (PLC/Röle) güvenli bilgisi verir; bu bilgi gelmeden proses başlamaz. Kilit: Proses sürerken kapağı kilitli tutar; kapak ancak proses durdurulunca açılır. Kontrol ünitesinin (PLC/Röle) interlock devresine bağlıdır."
 SS03;Işın Bariyeri Safety Sensörü;Işın bariyeri kirişinin kesilmesini algılar ve acil durdurma/interlock sinyali üretir. Kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.
-SS04;İnterlock Kilit Sensörü;"Kapak veya erişim noktası kilit/kapalı konumunu doğrular; güvenli olmayan durumda prosesi kilitleyen sinyal üretir. Kontrol ünitesinin (PLC/Röle) interlock devresine bağlıdır."
+SS04;İnterlock Kilit Sensörü;"İzleme: Kapak kapanıp interlock yerine oturduğunda kontrol ünitesine (PLC/Röle) güvenli bilgisi verir; bu bilgi gelmeden proses başlamaz. Kilit: Proses sürerken kapağı kilitli tutar; kapak ancak proses durdurulunca açılır. Kontrol ünitesinin (PLC/Röle) interlock devresine bağlıdır."
 SS05;1. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.
 SS06;2. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.
 SS07;3. KAPAK RFID SENSÖRÜ;Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.
