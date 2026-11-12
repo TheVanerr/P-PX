@@ -20,9 +20,10 @@
   const FIRST_SYNC_WAIT_MS = 3000;
   const LAST_SYNC_KEY = 'ppx_son_esitleme';
   const RECENT_SYNC_MS = 2 * 60 * 1000;
-  // PWA: anahtar ve programın yeni sürümü en çok bu sıklıkla arka planda denetlenir (giriş ekranıyla ortak)
+  // PWA: anahtar ve programın yeni sürümü her açılışta ve pencereye dönünce arka planda denetlenir; sayfalar arası
+  // geçişte GitHub'a üst üste gidilmesin diye en çok bu sıklıkla (giriş ekranıyla ortak kayıt)
   const PROGRAM_CHECK_KEY = 'ppx_kabuk_denetim';
-  const PROGRAM_CHECK_MS = 5 * 60 * 1000;
+  const PROGRAM_CHECK_MS = 30 * 1000;
   const ortak = new URL('.', document.currentScript.src);
   const launcherUrl = new URL('../index.html', ortak).href;
   const pidUrl = new URL('../P-IDX/P%26ID/codes/cizim.html', ortak).href;
@@ -284,6 +285,8 @@
         const shell = window.PpxKabuk.createShell({ scope: shellUrl, caches: window.caches, storage: localStorage, indexedDB: window.indexedDB });
         const res = await shell.start();
         if (res.state === 'login') location.replace(shellUrl);
+        // Ana ekranda kaybolacak bir şey yok, hemen yenilenir; programda çizim yarıda kalmasın diye sorulur
+        else if (res.updated && window.PPX_LAUNCHER) location.reload();
         else if (res.updated) showUpdated();
       } catch { /* sonraki açılışta yeniden denenir */ }
     };
@@ -345,6 +348,9 @@
       addAppLinks();
       // Açılışın işini engellemesin diye sayfa yüklendikten biraz sonra
       setTimeout(checkProgram, 1500);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') checkProgram();
+      });
     }
   });
 })();

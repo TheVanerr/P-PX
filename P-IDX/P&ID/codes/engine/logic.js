@@ -608,7 +608,7 @@
     if (id === 's.hand' || (series === 'SS' && num === 1)) return { role: 'sensor', kind: 'hand', purpose: 'hand' };
     if (id === 's.curtain' || (series === 'SS' && num === 3)) return { role: 'sensor', kind: 'curtain', purpose: 'curtain' };
     if (id === 's.lock' || (series === 'SS' && (num === 2 || num === 4))) return { role: 'sensor', kind: 'lock', purpose: 'lock' };
-    if (id === 's.rfid' || series === 'SS') return { role: 'sensor', kind: 'rfid', purpose: 'rfid' };
+    if (id === 's.rfid' || id === 'i.lidRfid' || series === 'SS') return { role: 'sensor', kind: 'rfid', purpose: 'rfid' };
     if (id === 's.estop' || n.includes('acil stop')) return { role: 'sensor', kind: 'estop', purpose: 'estop' };
     if (def.container) {
       const type = def.vesselType || 'boundary';

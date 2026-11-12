@@ -295,12 +295,9 @@ async function main() {
     // Son denetimin üstünden 5 dakika geçmiş gibi
     await evaluate(`localStorage.removeItem('ppx_kabuk_denetim'); true`);
     await go(base);
-    await waitFor(`location.pathname.endsWith('${SITE}app/index.html') && !document.getElementById('surum')`, 'eski sürümle açılış', 30000);
-    check(true, 'açılış yeni sürümü beklemez');
-    await waitFor(`!!document.getElementById('ppxUpdated')`, 'yeni sürüm bildirimi', 30000);
-    await evaluate(`document.querySelector('#ppxUpdated button').click(); true`);
+    // Ana ekranda yeni sürüm arkada iner ve sayfa kendiliğinden yenilenir
     await waitFor(`document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
-    check(code.stats.blobGets - blobs === 1,'main\'e push sonrası yeni sürüm açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
+    check(code.stats.blobGets - blobs === 1, 'main\'e push sonrası yeni sürüm ana ekranda kendiliğinden açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
 
     /* 8a. Program verilerini güncelle: klasör seçilmez, indirilen programın kataloğu kullanılır */
     await waitFor(`/GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'ana ekran bağlandı', 30000);

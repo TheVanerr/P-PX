@@ -764,6 +764,20 @@ test('kurutma hava bıçağı: blower hattına bağlanır, pasif ekipmandır, ü
   }
 });
 
+test('RFID kapak switchi: ZS enstrümanıdır, mantıkta RFID kapak güvenliği sayılır, addan ve koddan önerilir', () => {
+  const def = Sym.get('i.lidRfid');
+  assert.equal(def.cat, 'inst');
+  assert.equal(def.defaultFunc, 'ZS');
+  assert.equal(def.defaultNote, 'RFID');
+  assert.equal(Sym.suggest('SW20', 'RFID Kapak Switchi').symbol, 'i.lidRfid');
+  assert.equal(Sym.suggest('XY03', 'RFID Kapak Switchi').symbol, 'i.lidRfid');
+  assert.equal(Sym.suggest('SW18', 'Kapak Switchi').symbol, 'i.lid');
+  assert.equal(Sym.suggest('SS05', '1. Kapak RFID Sensörü').symbol, 's.rfid');
+  const role = Logic.classify({ tag: 'SW20', func: 'ZS' }, def, null);
+  assert.equal(role.kind, 'rfid');
+  assert.equal(role.role, 'sensor');
+});
+
 test('düzenlenen kalıp cümleye girer, diğer dillere dokunmaz', () => {
   const patterns = { tr: { 'conditions.lock': 'Kapak kilitlenmeden', 'reasons.lock': 'Kilit sinyali gelmeden çevrim başlamaz.' } };
   const options = { catalog: CATALOG, safety: new Map(), patterns };

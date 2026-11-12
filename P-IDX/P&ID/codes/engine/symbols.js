@@ -747,6 +747,11 @@
   typed('i.switch', ['Konum Switchi', 'Position Switch', 'Positionsschalter'], 'ZS', onSwitch(SWITCH_LEVER));
   // Kolun değdiği kalın çizgi kapaktır
   typed('i.lid', ['Kapak Switchi', 'Lid Switch', 'Deckelschalter'], 'ZS', onSwitch(SWITCH_LEVER + P('M-3.5 -10H3', 'stroke-width="0.8"')));
+  /* RFID kapak switchi: kolu yok, temassızdır. Kapaktaki (kalın çizgi) etiket dalgalarla gövdedeki okuyucuya bildirir.
+     Mantıkta RFID kapak güvenliğidir (s.rfid ile aynı). */
+  typed('i.lidRfid', ['RFID Kapak Switchi', 'RFID Lid Switch', 'RFID-Deckelschalter'], 'ZS', Object.assign(onSwitch(
+    P('M-3.5 -10H3.5', 'stroke-width="0.8"') + R(-1.6, -9.6, 3.2, 1.4, SOLID) +
+    P('M-1.6 -7.1Q0 -6.1 1.6 -7.1M-2.8 -6.4Q0 -4.8 2.8 -6.4', THIN)), { defaultNote: 'RFID' }));
   // Basınç şalteri (PS): switch gövdesinin altında diyafram
   typed('i.ps', ['Basınç Şalteri', 'Pressure Switch', 'Druckschalter'], 'PS', Object.assign(onSwitch(P('M0 5.5V7.5') + P('M-3 7.5H3A3 3 0 0 1 -3 7.5Z', WHITE), 10.5), {
     box: [-7.5, -5.5, 7.5, 10.5]
@@ -996,7 +1001,7 @@
     SW: ['i.switch', 'i.lid', 'i.flow'],
     SWB: ['i.switchBox', 'v.solenoidFill', 'v.solenoid'],
     V: ['v.pneumatic', 'n.valve52', 'n.valve32', 'v.solenoid', 'v.pistonValve'],
-    SS: ['s.hand', 's.lock', 's.curtain', 's.rfid'],
+    SS: ['s.hand', 's.lock', 's.curtain', 's.rfid', 'i.lidRfid'],
     B: ['i.button', 's.estop'],
     L: ['i.lamp'],
     T: ['e.thermal'],
@@ -1017,6 +1022,7 @@
     if (n.includes('sicaklik') || n.includes('isi olcer')) return inst('i.temp', 'TE');
     if (n.includes('basinc')) return n.includes('salter') ? inst('i.ps', 'PS') : inst('i.pt', 'PT');
     if (n.includes('prox')) return inst('i.prox', 'ZS');
+    if (n.includes('rfid')) return n.includes('switch') ? inst('i.lidRfid', 'ZS') : { symbol: 's.rfid' };
     if (n.includes('switch')) return inst('i.switch', 'ZS');
     if (n.includes('dozatron') || n.includes('dosatron')) return { symbol: 'p.dosatron' };
     if (n.includes('dozaj')) return { symbol: 'p.dosing' };
@@ -1087,6 +1093,7 @@
       }
       case 'SW':
         if (n.includes('flow')) return inst('FS', 'i.flow');
+        if (n.includes('rfid')) return inst('ZS', 'i.lidRfid');
         return inst(limit(), /kapa[kg]/.test(n) ? 'i.lid' : 'i.switch');
       case 'SWB':
         if (n.includes('solenoid') && n.includes('dolum')) return { symbol: 'v.solenoidFill' };

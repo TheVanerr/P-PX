@@ -548,7 +548,10 @@ test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekr
   assert.match(boot.slice(boot.indexOf('function toShell'), boot.indexOf('function toShell') + 500), /sessionStorage\.setItem\(RECHECK_FLAG, '1'\);\s*location\.replace\(shellUrl\);/);
   // Uygulama: arka plan denetimi giriş ekranıyla aynı zaman kaydını kullanır, yeni sürümde sayfayı kendiliğinden yenilemez
   assert.equal(boot.match(/const PROGRAM_CHECK_KEY = '([^']+)'/)[1], kabuk.match(/const CHECK_KEY = '([^']+)'/)[1]);
-  assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);\s*else if \(res\.updated\) showUpdated\(\);/);
+  assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);[\s\S]{0,200}else if \(res\.updated && window\.PPX_LAUNCHER\) location\.reload\(\);\s*else if \(res\.updated\) showUpdated\(\);/);
+  // Push'tan sonra açılışta hemen denetlenir; yalnız sayfalar arası geçişte GitHub'a üst üste gidilmez
+  assert.match(boot, /const PROGRAM_CHECK_MS = 30 \* 1000;/);
+  assert.match(boot, /visibilityState === 'visible'\) checkProgram\(\)/);
   // Ana ekran ve az önce eşitlenen sayfa eşitlemeyi beklemez
   assert.match(boot, /else if \(!recent && !window\.PPX_LAUNCHER\) await Promise\.race/);
   assert.match(boot, /channel: 'ppx-veri'/);
