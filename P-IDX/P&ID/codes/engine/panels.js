@@ -28,13 +28,21 @@ const PidPanels = (() => {
     return !!series && PidSymbols.seriesOf(def.id).some((s) => PidSymbols.normalize(s) === series);
   }
 
+  /** Arama: her kelime geçmeli, sıra önemsiz ("kurutma bıçağı" → Kurutma Hava Bıçağı). ğ/g ile k aynı sayılır,
+      Türkçe ek ünsüz değişimi bulunsun diye: "bıçak" → bıçağı, "kapak" → kapağı. */
+  function searchMatch(text, query) {
+    const fold = (s) => PidSymbols.normalize(s).replace(/g/g, 'k');
+    const hay = fold(text);
+    return fold(query).split(/\s+/).filter(Boolean).every((word) => hay.includes(word));
+  }
+
   function renderSymbols() {
     const query = PidSymbols.normalize($('symbolSearch').value.trim());
     const list = $('symbolList');
     const html = [];
     for (const cat of PidSymbols.CATEGORIES) {
       const items = PidSymbols.list().filter((d) => d.cat === cat.id &&
-        (!query || matchesSeries(d, query) || PidSymbols.normalize(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`).includes(query)));
+        (!query || matchesSeries(d, query) || searchMatch(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`, query)));
       if (!items.length) continue;
       html.push(`<div class="sym-cat">${esc(cat.name)}</div><div class="sym-grid">`);
       for (const d of items) {

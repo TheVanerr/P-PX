@@ -42,13 +42,21 @@ const PidPanels = (() => {
     return svg;
   }
 
+  /** Arama: her kelime geçmeli, sıra önemsiz ("kurutma bıçağı" → Kurutma Hava Bıçağı). ğ/g ile k aynı sayılır,
+      Türkçe ek ünsüz değişimi bulunsun diye: "bıçak" → bıçağı, "kapak" → kapağı. */
+  function searchMatch(text, query) {
+    const fold = (s) => PidSymbols.normalize(s).replace(/g/g, 'k');
+    const hay = fold(text);
+    return fold(query).split(/\s+/).filter(Boolean).every((word) => hay.includes(word));
+  }
+
   function renderSymbols() {
     const query = PidSymbols.normalize($('symbolSearch').value.trim());
     const list = $('symbolList');
     const html = [];
     // Hazır setler: tek tıkla besleme ve devreleriyle birlikte konur
     if (typeof PnoSets !== 'undefined') {
-      const sets = PnoSets.list().filter((s) => !query || PidSymbols.normalize(`${s.name} ${s.note} hazir set`).includes(query));
+      const sets = PnoSets.list().filter((s) => !query || searchMatch(`${s.name} ${s.note} hazir set`, query));
       if (sets.length) {
         html.push('<div class="sym-cat">Hazır Setler</div><div class="sym-grid">');
         for (const s of sets) {
@@ -59,7 +67,7 @@ const PidPanels = (() => {
     }
     for (const cat of PidSymbols.CATEGORIES) {
       const items = PidSymbols.list().filter((d) => d.cat === cat.id &&
-        (!query || PidSymbols.normalize(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`).includes(query)));
+        (!query || searchMatch(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`, query)));
       if (!items.length) continue;
       html.push(`<div class="sym-cat">${esc(cat.name)}</div><div class="sym-grid">`);
       for (const d of items) {

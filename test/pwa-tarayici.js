@@ -264,6 +264,20 @@ async function main() {
     check(true, 'P&ID programı açılır, projeler listelenir');
     const logo = await evaluate(`(() => { const img = document.querySelector('.home-logo'); return img && img.complete && img.naturalWidth > 0; })()`);
     check(logo, 'P&ID logosu cihazdaki programdan yüklenir');
+    // Sembol paneli: yeni semboller listede, Türkçe aramayla bulunur
+    await evaluate(`document.querySelector('#projectList > *').click(); true`);
+    await waitFor(`!document.getElementById('app').classList.contains('hidden') && document.querySelectorAll('.sym-tile').length > 20`, 'P&ID çizim ekranı', 30000);
+    const tiles = await evaluate(`['e.airKnife', 'i.lidRfid'].map((id) => !!document.querySelector('.sym-tile[data-symbol="' + id + '"]'))`);
+    check(tiles.every(Boolean), 'sembol panelinde Kurutma Hava Bıçağı ve RFID Kapak Switchi var', JSON.stringify(tiles));
+    const found = await evaluate(`(() => {
+      const search = (q) => { const el = document.getElementById('symbolSearch'); el.value = q; el.dispatchEvent(new Event('input')); return !!document.querySelector('.sym-tile[data-symbol="e.airKnife"]'); };
+      const out = ['bıçak', 'kurutma bıçağı', 'hava bicagi', 'air knife'].map(search);
+      search('');
+      return out;
+    })()`);
+    check(found.every(Boolean), 'aramada "bıçak", "kurutma bıçağı" hava bıçağını bulur', JSON.stringify(found));
+    await go(`${base}app/P-IDX/P%26ID/codes/cizim.html`);
+    await waitFor(`document.querySelectorAll('#projectList > *').length > 0`, 'P&ID ana ekranı', 30000);
     await go(`${base}app/PNOMATIKX/PNOMATIK/codes/cizim.html`);
     await waitFor(`!!document.getElementById('home') && !!window.PpxBoot && PpxBoot.pwa && !!document.querySelector('.home-link')`, 'Pnömatik ana ekranı', 30000);
     check(true, 'Pnömatik programı açılır');
