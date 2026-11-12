@@ -32,7 +32,7 @@ const PidDescriptions = (() => {
     conveyor: 'Konveyör', skimmer: 'Yağ sıyırıcı', heater: 'Rezistans', ultrasonic: 'Ultrasonik', valve: 'Otomatik vana',
     cylinder: 'Silindir', tank: 'Tank', cell: 'Hücre', basket: 'Sepet', boundary: 'Ekipman grubu', encoder: 'Enkoder', button: 'Buton',
     interlock: 'Interlock bloğu', plc: 'PLC fonksiyonu', lamp: 'Lamba', manualValve: 'Manuel vana', check: 'Çek valf', regulator: 'Regülatör',
-    filter: 'Filtre', strainer: 'Pislik tutucu', dosatron: 'Dozatron', nozzle: 'Nozul', spray: 'Sprey manifoldu', hx: 'Eşanjör',
+    filter: 'Filtre', strainer: 'Pislik tutucu', dosatron: 'Dozatron', nozzle: 'Nozul', spray: 'Sprey manifoldu', airKnife: 'Hava bıçağı', hx: 'Eşanjör',
     frl: 'Şartlandırıcı', silencer: 'Susturucu', fitting: 'Bağlantı parçası', terminalIn: 'Hat girişi', terminalOut: 'Hat çıkışı',
     offpage: 'Sayfa bağlantısı'
   };

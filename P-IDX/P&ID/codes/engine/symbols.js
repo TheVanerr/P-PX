@@ -451,6 +451,15 @@
     ports: lr(20),
     inline: true
   });
+  /* Kurutma hava bıçağı: blower havası dar hazneden ince bir yarıkla perde hâlinde çıkar, parçadaki suyu sıyırır.
+     Hava üstten (U) ya da uçlardan (L, R) beslenir; kesikli eğik çizgiler hava perdesidir. */
+  const AIR_CURTAIN = [-9, -6, -3, 0, 3, 6, 9].map((x) => P(`M${x} 2.8L${x - 1.6} 7.5`, DASH)).join('');
+  def('e.airKnife', 'equip', ['Kurutma Hava Bıçağı', 'Drying Air Knife', 'Trocknungs-Luftmesser'], {
+    body: P('M0 -3V-5') + R(-12, -3, 24, 3.5, `rx="0.8" ${WHITE}`) + P('M-11 0.5L-9.5 2.4H9.5L11 0.5', WHITE) +
+      P('M-9.5 2.4H9.5', 'stroke-width="0.7"') + AIR_CURTAIN,
+    box: [-12, -5, 12, 7.5],
+    ports: [{ id: 'U', x: 0, y: -5, dir: 'U' }, { id: 'L', x: -12, y: -1.25, dir: 'L' }, { id: 'R', x: 12, y: -1.25, dir: 'R' }]
+  });
   def('e.skimmer', 'equip', ['Yağ Sıyırıcı', 'Oil Skimmer', 'Ölabscheider'], {
     body: R(-8, -5, 16, 10, `rx="1" ${WHITE}`) + C(3, 0, 3) + P('M3 0L5.1 -2.1', THIN) + P('M-6 -2.5H-1M-6 0H-1M-6 2.5H-1', THIN),
     box: [-8, -5, 8, 5],
@@ -1012,6 +1021,7 @@
     if (n.includes('dozatron') || n.includes('dosatron')) return { symbol: 'p.dosatron' };
     if (n.includes('dozaj')) return { symbol: 'p.dosing' };
     if (n.includes('pompa')) return { symbol: 'p.centrifugal' };
+    if (n.includes('hava bicag') || n.includes('air knife')) return { symbol: 'e.airKnife' };
     if (n.includes('blower')) return { symbol: 'f.blower' };
     if (/\bfan/.test(n)) return { symbol: 'f.fan' };
     if (n.includes('reduktor')) return { symbol: 'd.gearmotor' };
@@ -1045,7 +1055,9 @@
         if (n.includes('dozaj')) return { symbol: 'p.dosing' };
         if (n.includes('vakum')) return { symbol: 'p.vacuum' };
         return { symbol: 'p.centrifugal' };
-      case 'FE': return { symbol: n.includes('blower') ? 'f.blower' : 'f.fan' };
+      case 'FE':
+        if (n.includes('hava bicag') || n.includes('air knife')) return { symbol: 'e.airKnife' };
+        return { symbol: n.includes('blower') ? 'f.blower' : 'f.fan' };
       case 'GE': return { symbol: n.includes('siyirici') ? 'e.skimmer' : 'd.gearmotor' };
       case 'VE': return { symbol: 'd.vibration' };
       case 'INV': return { symbol: 'd.vfd' };

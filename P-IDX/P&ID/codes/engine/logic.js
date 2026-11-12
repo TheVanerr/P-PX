@@ -175,6 +175,7 @@
         dosatron: 'Su akışıyla çalışır, elektrik gerektirmez; kimyasalı suya ayarlı oranda katar.',
         nozzle: 'Sıvıyı parçaların üzerine püskürtür.',
         spray: 'Sıvıyı nozullara dağıtır ve parçaların üzerine püskürtür.',
+        airKnife: 'Blower havasını ince bir yarıktan perde hâlinde üfler, parçaların üzerindeki suyu sıyırarak kurutur.',
         hx: 'Akışkanlar arasında ısı transferi sağlar.',
         frl: 'Basınçlı havayı filtreler ve basıncını ayarlar.',
         silencer: 'Hava tahliye gürültüsünü azaltır.',
@@ -348,6 +349,7 @@
         dosatron: 'Driven by the water flow, needs no power; adds chemical to the water at the set ratio.',
         nozzle: 'Sprays the liquid onto the parts.',
         spray: 'Distributes the liquid to the nozzles and sprays it onto the parts.',
+        airKnife: 'Blows the blower air through a narrow slot as an air curtain and dries the parts by stripping off the water.',
         hx: 'Transfers heat between fluids.',
         frl: 'Filters the compressed air and regulates its pressure.',
         silencer: 'Reduces exhaust air noise.',
@@ -522,6 +524,7 @@
         dosatron: 'Vom Wasserdurchfluss angetrieben, ohne Strom; dosiert Chemikalie im eingestellten Verhältnis zu.',
         nozzle: 'Sprüht die Flüssigkeit auf die Teile.',
         spray: 'Verteilt die Flüssigkeit auf die Düsen und sprüht sie auf die Teile.',
+        airKnife: 'Bläst die Gebläseluft als Luftvorhang durch einen schmalen Schlitz und trocknet die Teile, indem es das Wasser abstreift.',
         hx: 'Überträgt Wärme zwischen Medien.',
         frl: 'Filtert die Druckluft und regelt ihren Druck.',
         silencer: 'Verringert das Abluftgeräusch.',
@@ -539,7 +542,7 @@
   const PASSIVE_KINDS = {
     'v.gate': 'manualValve', 'v.ball': 'manualValve', 'v.butterfly': 'manualValve', 'v.globe': 'manualValve', 'v.threeway': 'manualValve',
     'v.check': 'check', 'v.safety': 'safetyValve', 'v.regulator': 'regulator',
-    'e.filter': 'filter', 'e.strainer': 'strainer', 'p.dosatron': 'dosatron', 'e.nozzle': 'nozzle', 'e.spray': 'spray', 'e.hx': 'hx',
+    'e.filter': 'filter', 'e.strainer': 'strainer', 'p.dosatron': 'dosatron', 'e.nozzle': 'nozzle', 'e.spray': 'spray', 'e.airKnife': 'airKnife', 'e.hx': 'hx',
     'n.frl': 'frl', 'n.silencer': 'silencer',
     'l.reducer': 'fitting', 'l.flange': 'fitting', 'l.drain': 'terminalOut', 'l.vent': 'terminalOut',
     'l.inlet': 'terminalIn', 'l.outlet': 'terminalOut', 'l.offpage': 'offpage'

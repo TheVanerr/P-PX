@@ -744,6 +744,26 @@ test('dozatron: hatta oturur, motorsuz pasif dozaj ünitesidir, akış cümlesin
   assert.ok(res.logic.some((r) => r.group === 'flow' && /kimyasal katar/.test(r.text)), JSON.stringify(res.logic.map((r) => r.text)));
 });
 
+test('kurutma hava bıçağı: blower hattına bağlanır, pasif ekipmandır, üç dilde amacı yazılır', () => {
+  const def = Sym.get('e.airKnife');
+  assert.equal(def.cat, 'equip');
+  assert.deepEqual(def.ports.map((p) => p.id).sort(), ['L', 'R', 'U']);
+  assert.equal(Sym.suggest('XY02', 'Kurutma Hava Bıçağı').symbol, 'e.airKnife');
+  assert.equal(Sym.suggest('FE04', 'Hava Bıçağı').symbol, 'e.airKnife');
+  assert.equal(Sym.suggest('FE01', 'Kurutma Blower').symbol, 'f.blower');
+  assert.equal(Logic.classify({ tag: '', func: '' }, def, null).role, 'passive');
+
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const blower = Model.addSymbol(s, 'f.blower', 60, 100, { tag: 'FE01' });
+  const knife = Model.addSymbol(s, 'e.airKnife', 140, 80);
+  Model.addLine(s, { node: blower.id, port: 'R' }, { node: knife.id, port: 'U' }, { kind: 'duct' });
+  for (const lang of ['tr', 'en', 'de']) {
+    const res = run(drawing, lang);
+    assert.ok(res.components.some((c) => c.symbol === 'e.airKnife' && c.purpose), lang);
+  }
+});
+
 test('düzenlenen kalıp cümleye girer, diğer dillere dokunmaz', () => {
   const patterns = { tr: { 'conditions.lock': 'Kapak kilitlenmeden', 'reasons.lock': 'Kilit sinyali gelmeden çevrim başlamaz.' } };
   const options = { catalog: CATALOG, safety: new Map(), patterns };
