@@ -275,22 +275,41 @@
 
   /** PWA: giriş ekranı beklemeden uygulamayı açar; anahtar ve yeni sürüm burada, sayfa açıldıktan sonra arka planda denetlenir.
       Anahtar geçersizse program cihazdan silinir ve giriş ekranına dönülür. Yeni sürüm iner, sayfa kendiliğinden yenilenmez. */
-  function checkProgram() {
-    if (Date.now() - Number(localStorage.getItem(PROGRAM_CHECK_KEY) || 0) < PROGRAM_CHECK_MS) return;
+  let shellPromise = null;
+  /** Giriş ekranının kabuk dosyası (pwa/ppx-kabuk.js) bir kez yüklenir; denetim onunla yapılır */
+  function loadShell() {
+    if (!shellPromise) {
+      shellPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = `${shellUrl}ppx-kabuk.js`;
+        script.onload = () => resolve(window.PpxKabuk.createShell({ scope: shellUrl, caches: window.caches, storage: localStorage, indexedDB: window.indexedDB }));
+        script.onerror = () => {
+          shellPromise = null;
+          reject(new Error('Giriş ekranının dosyası yüklenemedi.'));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return shellPromise;
+  }
+
+  const programListeners = new Set();
+  /** force: süre beklenmeden (ana ekrandaki "Güncellemeleri denetle"). Sonuç dinleyicilere de gider: hata görünür kalır. */
+  async function checkProgram(force) {
+    if (!force && Date.now() - Number(localStorage.getItem(PROGRAM_CHECK_KEY) || 0) < PROGRAM_CHECK_MS) return null;
     localStorage.setItem(PROGRAM_CHECK_KEY, String(Date.now()));
-    const script = document.createElement('script');
-    script.src = `${shellUrl}ppx-kabuk.js`;
-    script.onload = async () => {
-      try {
-        const shell = window.PpxKabuk.createShell({ scope: shellUrl, caches: window.caches, storage: localStorage, indexedDB: window.indexedDB });
-        const res = await shell.start();
-        if (res.state === 'login') location.replace(shellUrl);
-        // Ana ekranda kaybolacak bir şey yok, hemen yenilenir; programda çizim yarıda kalmasın diye sorulur
-        else if (res.updated && window.PPX_LAUNCHER) location.reload();
-        else if (res.updated) showUpdated();
-      } catch { /* sonraki açılışta yeniden denenir */ }
-    };
-    document.head.appendChild(script);
+    let res;
+    try {
+      res = await (await loadShell()).start();
+    } catch (e) {
+      res = { state: 'error', error: e.message };
+    }
+    for (const fn of programListeners) fn(res);
+    if (res.state === 'login') location.replace(shellUrl);
+    // Ana ekranda kaybolacak bir şey yok, hemen yenilenir; programda çizim yarıda kalmasın diye sorulur
+    else if (res.updated && window.PPX_LAUNCHER) location.reload();
+    else if (res.updated) showUpdated();
+    return res;
   }
 
   /** Çıkış: önce depoyla eşitlenir. Gönderilemeyen kayıt varsa force olmadan çıkılmaz, çünkü giriş ekranı bu cihazdaki veriyi siler. */
@@ -328,6 +347,10 @@
     locked,
     shellUrl,
     logout,
+    checkProgram: () => checkProgram(true),
+    /** Cihazdaki programın kaydı: sha, at (commit zamanı), message (commit başlığı) */
+    programInfo: async () => (pwa ? (await loadShell()).installed() : null),
+    onProgramCheck: (fn) => programListeners.add(fn),
     useLocal: () => saveSettings({ mode: 'yerel' }),
     /** Anahtar silinir, veriler bu cihazda kalır */
     disconnect: () => saveSettings({ mode: 'yerel' })
@@ -347,9 +370,9 @@
     if (pwa) {
       addAppLinks();
       // Açılışın işini engellemesin diye sayfa yüklendikten biraz sonra
-      setTimeout(checkProgram, 1500);
+      setTimeout(() => checkProgram(false), 1500);
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') checkProgram();
+        if (document.visibilityState === 'visible') checkProgram(false);
       });
     }
   });

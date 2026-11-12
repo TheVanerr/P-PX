@@ -25,7 +25,8 @@ async function serveShell(event, file) {
   const cache = await caches.open(SHELL_CACHE);
   const key = new URL(file || './', scope).href;
   const cached = await cache.match(key);
-  const network = fetch(event.request)
+  // Tarayıcı önbelleği değil sunucu sorulur (Pages dosyaları 10 dakika önbellekte tutar); değişmediyse yanıt küçüktür
+  const network = fetch(key, { cache: 'no-cache', credentials: 'same-origin' })
     .then(async (res) => {
       // Yönlendirilmiş yanıt sayfa açılışında kullanılamaz, saklanmaz
       if (res.ok && !res.redirected) await cache.put(key, res.clone());

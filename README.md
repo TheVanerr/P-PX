@@ -26,7 +26,7 @@ Sitede program yoktur, yalnız giriş ekranı vardır:
 
 - Siteyi açan, anahtar olmadan yalnız depo ve anahtar soran boş bir ekran görür. Program, kod listesi ve veriler sitede bulunmaz.
 - Anahtar girilince önce veri deposuna erişimi denetlenir, sonra program bu deponun `main` dalından tarayıcıya iner ve orada saklanır. Projeler, makine kayıtları, testler, araçlar ve belgeler inmez. İlk açılış birkaç saniye sürer.
-- Sonraki açılışlar ağı beklemez, program ve veri cihazdan açılır. Anahtar ve yeni sürüm her açılışta ve pencereye dönünce arka planda denetlenir. Yeni sürüm ana ekranda kendiliğinden açılır.
+- Sonraki açılışlar ağı beklemez, program ve veri cihazdan açılır. Anahtar ve yeni sürüm her açılışta ve pencereye dönünce arka planda denetlenir. Yeni sürüm ana ekranda kendiliğinden açılır. Ana ekranda çalışan sürüm yazar (`Program sürümü: …`); **Güncellemeleri denetle** beklemeden bakar, denetim başarısız olursa nedeni orada görünür.
 - Anahtar geçersizleşirse (süresi doldu, silindi, veri deposu erişimi kaldırıldı) bu anlaşılınca program cihazdan silinir, giriş ekranına dönülür. Gönderilmemiş kayıtlar silinmez; yeni anahtarla girince gider.
 - Ana ekrandaki **Çıkış yap** önce depoyla eşitler, sonra bu cihazdaki programı, anahtarı ve veri kopyasını siler. Ortak bilgisayarda işiniz bitince kullanın.
 - Kişiye özel erişim için her kişiye ayrı anahtar verin (GitHub'da birden çok anahtar açılabilir). Bir kişinin erişimini kaldırmak için yalnız onun anahtarını silin.

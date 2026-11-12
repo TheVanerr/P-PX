@@ -93,7 +93,11 @@
       const program = PpxKabuk.programSource(scope, document.querySelector('meta[name="ppx-program"]').content);
       const shell = PpxKabuk.createShell({ scope, program, caches, storage: localStorage, indexedDB });
       const worker = Promise.race([
-        navigator.serviceWorker.register('sw.js', { scope: './' }).then(() => navigator.serviceWorker.ready),
+        // Hizmet çalışanı ve içe aldığı ppx-kabuk.js tarayıcı önbelleğinden değil, siteden denetlenir: yeni giriş ekranı hemen gelir
+        navigator.serviceWorker.register('sw.js', { scope: './', updateViaCache: 'none' }).then((reg) => {
+          reg.update().catch(() => {});
+          return navigator.serviceWorker.ready;
+        }),
         new Promise((resolve, reject) => setTimeout(() => reject(new Error('Tarayıcı çevrimdışı çalışma için hazırlanamadı. Sayfayı yenileyin.')), 20000))
       ]);
 
@@ -167,7 +171,9 @@
         // anahtar geçersizse program orada silinir ve buraya dönülür.
         const recheck = sessionStorage.getItem(RECHECK_FLAG);
         sessionStorage.removeItem(RECHECK_FLAG);
-        if (!recheck && shell.hasKey() && (await shell.installed())) {
+        // Eski giriş ekranının kurduğu programın kaydında depo yazmaz: o cihazlar bir kez tam denetimden geçer, kayıt tamamlanır
+        const installed = await shell.installed();
+        if (!recheck && shell.hasKey() && installed && installed.source) {
           location.replace(shell.appUrl);
           return;
         }

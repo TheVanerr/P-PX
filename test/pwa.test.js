@@ -542,7 +542,7 @@ test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekr
   const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
   const kabuk = fs.readFileSync(path.join(ROOT, 'pwa/ppx-kabuk.js'), 'utf8');
   // Giriş ekranı: program ve anahtar varsa hemen açar, uygulama geri gönderdiyse önce denetler
-  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && \(await shell\.installed\(\)\)\) \{\s*location\.replace\(shell\.appUrl\);/);
+  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl\);/);
   const recheckKey = (src) => src.match(/const RECHECK_FLAG = '([^']+)'/)[1];
   assert.equal(recheckKey(boot), recheckKey(shell));
   assert.match(boot.slice(boot.indexOf('function toShell'), boot.indexOf('function toShell') + 500), /sessionStorage\.setItem\(RECHECK_FLAG, '1'\);\s*location\.replace\(shellUrl\);/);
@@ -551,8 +551,62 @@ test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekr
   assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);[\s\S]{0,200}else if \(res\.updated && window\.PPX_LAUNCHER\) location\.reload\(\);\s*else if \(res\.updated\) showUpdated\(\);/);
   // Push'tan sonra açılışta hemen denetlenir; yalnız sayfalar arası geçişte GitHub'a üst üste gidilmez
   assert.match(boot, /const PROGRAM_CHECK_MS = 30 \* 1000;/);
-  assert.match(boot, /visibilityState === 'visible'\) checkProgram\(\)/);
+  assert.match(boot, /visibilityState === 'visible'\) checkProgram\(false\)/);
   // Ana ekran ve az önce eşitlenen sayfa eşitlemeyi beklemez
   assert.match(boot, /else if \(!recent && !window\.PPX_LAUNCHER\) await Promise\.race/);
   assert.match(boot, /channel: 'ppx-veri'/);
+});
+
+/* ─── Eski giriş ekranıyla kurulmuş cihaz ───────────────── */
+
+/** Eski giriş ekranı kayda programın deposunu (source) yazmıyordu */
+async function dropSource(caches) {
+  const box = await caches.open('ppx-kabuk-durum');
+  const res = await box.match(`${SCOPE}__durum`);
+  const state = await res.json();
+  delete state.source;
+  await box.put(`${SCOPE}__durum`, new Response(JSON.stringify(state)));
+}
+
+test('eski giriş ekranıyla kurulmuş cihaz: uygulama içi denetim depoyu site adresinden bulur, yeni sürümü indirir, kaydı tamamlar', async () => {
+  const s = setup();
+  await s.shell.login('ben/ppx-veri', s.data.token);
+  await dropSource(s.caches);
+  const files = new Map(repoFiles());
+  files.set('ortak/yeni.js', Buffer.from('// eski kayıtlı cihaza da gelir'));
+  s.code.publish('main', files);
+  // Uygulama (ppx-boot.js) kabuğu programın deposunu vermeden kurar
+  const app = PpxKabuk.createShell({ scope: SCOPE, caches: s.caches, storage: s.storage, fetchFn: (u, i) => (u.includes('/repos/ben/P-PX') ? s.code : s.data).fetchFn(u, i) });
+  const res = await app.start();
+  assert.equal(res.state, 'ready', res.error);
+  assert.equal(res.updated, true);
+  assert.equal((await serve(s.caches, `${SCOPE}app/ortak/yeni.js`)).status, 200);
+  assert.deepEqual((await app.installed()).source, { repo: 'ben/P-PX', branch: 'main' });
+});
+
+test('eski kayıtlı cihazda değişiklik yoksa da kayıt tamamlanır; giriş ekranı o cihazı bir kez tam denetimden geçirir', async () => {
+  const s = setup();
+  await s.shell.login('ben/ppx-veri', s.data.token);
+  await dropSource(s.caches);
+  const app = PpxKabuk.createShell({ scope: SCOPE, caches: s.caches, storage: s.storage, fetchFn: (u, i) => (u.includes('/repos/ben/P-PX') ? s.code : s.data).fetchFn(u, i) });
+  const res = await app.start();
+  assert.equal(res.state, 'ready');
+  assert.equal(res.updated, undefined);
+  assert.ok((await app.installed()).source);
+  const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
+  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl\);/);
+});
+
+test('güncelleme zinciri tarayıcı önbelleğine takılmaz; ana ekran sürümü gösterir, denetim hatası görünür', () => {
+  const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
+  const sw = fs.readFileSync(path.join(ROOT, 'pwa/sw.js'), 'utf8');
+  const boot = fs.readFileSync(path.join(ROOT, 'ortak/ppx-boot.js'), 'utf8');
+  const launcher = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  assert.match(shell, /register\('sw\.js', \{ scope: '\.\/', updateViaCache: 'none' \}\)/);
+  assert.match(shell, /reg\.update\(\)/);
+  assert.match(sw, /fetch\(key, \{ cache: 'no-cache', credentials: 'same-origin' \}\)/);
+  assert.match(boot, /for \(const fn of programListeners\) fn\(res\);/);
+  assert.match(launcher, /id="checkUpdate"/);
+  assert.match(launcher, /Program sürümü: \$\{info\.sha\.slice\(0, 7\)\}/);
+  assert.match(launcher, /Program güncellemesi denetlenemedi: /);
 });

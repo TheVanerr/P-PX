@@ -343,13 +343,20 @@
         return { state: 'login' };
       }
       const installed = await readState(caches, scope);
-      const program = options.program || (installed && installed.source);
+      // Programın deposu: sayfada yazılı olan, yoksa cihazdaki programın kaydı, o da yoksa site adresi
+      // (eski giriş ekranı kayda depoyu yazmıyordu; o cihazlar adresten bulur ve kayıt tamamlanır)
+      const program = options.program || (installed && installed.source) || programSource(scope, '');
       if (!program) return { state: 'error', error: 'Programın deposu bu adresten anlaşılamadı.' };
+      if (installed && !installed.source) {
+        installed.source = program;
+        await writeState(caches, scope, installed);
+      }
       const data = github(s.repo, s.token, fetchFn, api);
       const code = github(program.repo, s.token, fetchFn, api);
-      const fallback = (message) => (installed
-        ? { state: 'ready', program: installed, warning: message }
-        : { state: 'error', error: message });
+      // offline: internet yok, GitHub geçici yanıt vermiyor ya da hız sınırı; kendiliğinden düzelir
+      const fallback = (message, offline) => (installed
+        ? { state: 'ready', program: installed, warning: message, offline: !!offline }
+        : { state: 'error', error: message, offline: !!offline });
 
       // Kapı: program herkese açık depoda olsa da yalnız veri deposuna erişen anahtar açar
       try {
@@ -357,7 +364,7 @@
         if (!info.private) return lock('Veri deposu herkese açık hâle gelmiş. Müşteri verileri için özel (Private) depo gerekir.');
       } catch (e) {
         if (e.locked || e.notFound) return lock(e.message);
-        return fallback(`${e.message} Bu cihazdaki program açılıyor.`);
+        return fallback(`${e.message} Bu cihazdaki program açılıyor.`, e.offline);
       }
 
       let sha;
@@ -366,7 +373,7 @@
       } catch (e) {
         if (e.locked) return lock(e.message);
         if (e.notFound) return fallback(`Program deposuna (${program.repo}) erişilemiyor. Depo özelse erişim anahtarına bu depo da eklenmeli.`);
-        return fallback(`${e.message} Bu cihazdaki program açılıyor.`);
+        return fallback(`${e.message} Bu cihazdaki program açılıyor.`, e.offline);
       }
 
       if (installed && installed.sha === sha) return { state: 'ready', program: installed };
@@ -375,7 +382,7 @@
         return { state: 'ready', program: fresh, updated: !!installed };
       } catch (e) {
         if (e.locked) return lock(e.message);
-        return fallback(`Programın yeni sürümü indirilemedi: ${e.message}`);
+        return fallback(`Programın yeni sürümü indirilemedi: ${e.message}`, e.offline);
       }
     }
 

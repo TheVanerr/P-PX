@@ -54,6 +54,7 @@
       <h2>Veritabanı</h2>
       <div class="panel">
         <p id="dbInfo">Bağlanıyor…</p>
+        <p id="programInfo" hidden></p>
         <div class="actions">
           <button type="button" id="syncNow" hidden>Şimdi eşitle</button>
           <button type="button" id="importFolder">Klasörden aktar</button>
@@ -63,6 +64,7 @@
           <button type="button" id="showConnect">GitHub deposuna bağla</button>
           <button type="button" id="disconnect" hidden>Bağlantıyı kaldır</button>
           <button type="button" id="install" hidden>Uygulama olarak yükle</button>
+          <button type="button" id="checkUpdate" hidden title="Programın yeni sürümü var mı, hemen bakar">Güncellemeleri denetle</button>
           <input type="file" id="restoreFile" accept=".json" hidden>
         </div>
         <div class="result" id="result" role="status"></div>
@@ -188,6 +190,29 @@
           $('install').hidden = false;
         });
         window.addEventListener('appinstalled', () => { $('install').hidden = true; });
+
+        /* Çalışan program sürümü ve güncelleme denetimi: arka plandaki denetim hata verirse de burada görünür */
+        const showProgram = async () => {
+          const info = await PpxBoot.programInfo().catch(() => null);
+          $('programInfo').hidden = !info;
+          if (!info) return;
+          const when = info.at ? new Date(info.at).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+          $('programInfo').textContent = `Program sürümü: ${info.sha.slice(0, 7)}${when ? ` · ${when}` : ''}${info.message ? ` · ${info.message}` : ''}`;
+        };
+        showProgram();
+        PpxBoot.onProgramCheck((res) => {
+          showProgram();
+          const problem = res.state === 'error' ? res.error : res.warning && !res.offline ? res.warning : '';
+          if (problem) say($('result'), `Program güncellemesi denetlenemedi: ${problem}`, true);
+        });
+        $('checkUpdate').hidden = false;
+        $('checkUpdate').addEventListener('click', async () => {
+          say($('result'), 'Programın yeni sürümü denetleniyor…');
+          const res = await PpxBoot.checkProgram();
+          if (res.updated) say($('result'), 'Yeni sürüm indirildi, açılıyor…');
+          else if (res.state === 'ready' && !res.warning) say($('result'), 'Program güncel.');
+          else say($('result'), res.warning || res.error || 'Denetlenemedi.', !res.offline);
+        });
         $('install').addEventListener('click', async () => {
           if (!installPrompt) return;
           installPrompt.prompt();

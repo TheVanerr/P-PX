@@ -20,6 +20,8 @@ const ROOT = path.join(__dirname, '..');
 const PWA = path.join(ROOT, 'pwa');
 const SITE = '/P-PX/';
 const PROGRAM_REPO = 'ben/P-PX';
+// Site GitHub Pages adıyla açılır (tarayıcı bu adı bu bilgisayara yönlendirir): program deposu adresten anlaşılır
+const HOST = 'ben.github.io';
 const BROWSERS = [
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
@@ -86,11 +88,7 @@ function startSite() {
     const headers = { 'Cache-Control': 'max-age=600' };
     if (file && fs.existsSync(file) && fs.statSync(file).isFile()) {
       res.writeHead(200, Object.assign(headers, { 'Content-Type': TYPES[file.split('.').pop()] || 'application/octet-stream' }));
-      // Bu bilgisayarın adresi github.io olmadığından program deposu sayfaya yazılır
-      const body = rel === 'index.html'
-        ? fs.readFileSync(file, 'utf8').replace('<meta name="ppx-program" content="">', `<meta name="ppx-program" content="${PROGRAM_REPO}">`)
-        : fs.readFileSync(file);
-      res.end(body);
+      res.end(fs.readFileSync(file));
       return;
     }
     if (url.pathname.startsWith(`${SITE}app/`)) stats.appMisses += 1;
@@ -107,14 +105,15 @@ function startSite() {
 
 /* ─── Tarayıcı ve geliştirici bağlantısı ─────────────────── */
 
-async function launchBrowser() {
+async function launchBrowser(sitePort) {
   const exe = BROWSERS.find((p) => fs.existsSync(p));
   if (!exe) throw new Error('Edge ya da Chrome bulunamadı');
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'ppx-tarayici-'));
   const port = 9300 + Math.floor(Math.random() * 500);
   const proc = spawn(exe, [
     '--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
-    '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-sync', 'about:blank'
+    '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-sync',
+    `--host-resolver-rules=MAP ${HOST} 127.0.0.1`, `--unsafely-treat-insecure-origin-as-secure=http://${HOST}:${sitePort}`, 'about:blank'
   ], { stdio: 'ignore' });
   for (let i = 0; i < 100; i += 1) {
     try {
@@ -162,8 +161,8 @@ async function main() {
   await seedData(hub);
   code.publish('main', repoFiles());
   const site = await startSite();
-  const base = `http://localhost:${site.port}${SITE}`;
-  const browser = await launchBrowser();
+  const base = `http://${HOST}:${site.port}${SITE}`;
+  const browser = await launchBrowser(site.port);
   const client = cdp(browser.ws);
   await client.opened;
 
@@ -255,6 +254,11 @@ async function main() {
     check(/[1-9]\d* proje/.test(info.pid), 'P&ID projeleri depodan geldi', info.pid);
     check(info.local === true && info.out === 'Çıkış yap', 'yerel mod gizli, "Çıkış yap" var', JSON.stringify(info));
     check(info.manifest, 'ana ekran uygulama bildirimini taşır (yüklenebilir)');
+    const version = await waitFor(`(document.getElementById('programInfo').textContent.match(/Program sürümü: ([0-9a-f]{7})/) || [])[1]`, 'program sürümü satırı');
+    check(version === code.headSha().slice(0, 7), 'ana ekran çalışan program sürümünü gösterir', `${version} / ${code.headSha().slice(0, 7)}`);
+    await evaluate(`document.getElementById('checkUpdate').click(); true`);
+    await waitFor(`/Program güncel\\./.test(document.getElementById('result').textContent)`, '"Program güncel."');
+    check(true, '"Güncellemeleri denetle" programın güncel olduğunu söyler');
     const leakedData = await evaluate(`Promise.all(['app/P-IDX/ML/kayitlar/kodlar.json', 'app/test/ppx.test.js', 'app/README.md'].map((u) => fetch(u).then((r) => r.status)))`);
     check(leakedData.every((s) => s === 404), 'program deposundaki müşteri verisi, testler ve belgeler cihaza inmez', JSON.stringify(leakedData));
 
@@ -303,7 +307,10 @@ async function main() {
     site.setOnline(true);
     apiDown = false;
 
-    /* 7. Main'e push edilince: uygulama eski sürümle hemen açılır, yeni sürüm arkada iner, "Yenile" ile gelir */
+    /* 7. Main'e push edilince yeni sürüm ana ekranda kendiliğinden gelir. Cihaz eski giriş ekranıyla kurulmuş gibi:
+       kayıtta programın deposu yok (11 Kasım'da kurulan cihazlar), depo site adresinden bulunmalı */
+    await evaluate(`(async () => { const c = await caches.open('ppx-kabuk-durum'); const k = location.origin + '${SITE}__durum';
+      const st = await (await c.match(k)).json(); delete st.source; await c.put(k, new Response(JSON.stringify(st))); return true; })()`);
     code.publish('main', repoFiles('surum-2'));
     const blobs = code.stats.blobGets;
     // Son denetimin üstünden 5 dakika geçmiş gibi
