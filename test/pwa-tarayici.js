@@ -280,6 +280,35 @@ async function main() {
       return out;
     })()`);
     check(found.every(Boolean), 'aramada "bıçak", "kurutma bıçağı" hava bıçağını bulur', JSON.stringify(found));
+    // Drenaj: sağ panelden tahliye türü ve yazı konumu seçilir, çizimde seçilen yerde görünür
+    const drainUi = await evaluate(`(async () => {
+      const ed = PidApp.editor;
+      ed.startPlacing({ symbol: 'l.drain' });
+      ed.placeAt({ x: 60, y: 235 });
+      const item = ed.selectedItems()[0];
+      const pick = (id, value) => { const el = document.getElementById(id); el.value = value; el.dispatchEvent(new Event('change')); };
+      const fields = { type: !!document.getElementById('fDrainType'), pos: !!document.getElementById('fLabelPos') };
+      pick('fDrainType', 'steam');
+      await new Promise((r) => setTimeout(r, 100));
+      const textOf = () => [...document.querySelectorAll('svg text')].find((t) => t.textContent === 'BUHAR TAHLİYESİ');
+      const below = textOf() && textOf().getBoundingClientRect();
+      pick('fLabelPos', 'right');
+      await new Promise((r) => setTimeout(r, 100));
+      const right = textOf() && textOf().getBoundingClientRect();
+      const body = [...document.querySelectorAll('.hit')].map((h) => h.getBoundingClientRect()).find((b) => Math.abs(b.left + b.width / 2 - (below ? below.left + below.width / 2 : 0)) < 3);
+      return { fields, item: { drainType: item.drainType, labelPos: item.labelPos }, below: !!below, right: !!right,
+        belowUnder: !!(below && body && below.top > body.bottom - 1), rightBeside: !!(right && body && right.left > body.right - 1) };
+    })()`);
+    check(drainUi.fields.type && drainUi.fields.pos && drainUi.item.drainType === 'steam' && drainUi.item.labelPos === 'right',
+      'drenajda "Tahliye türü" ve "Yazı konumu" seçilir, çizime kaydedilir', JSON.stringify(drainUi));
+    check(drainUi.belowUnder && drainUi.rightBeside, 'drenaj yazısı önce altında, "Sağında" seçilince sağında görünür', JSON.stringify(drainUi));
+    if (process.env.PPX_EKRAN) {
+      const shot = await send('Page.captureScreenshot', { format: 'png' });
+      fs.writeFileSync(process.env.PPX_EKRAN, Buffer.from(shot.data, 'base64'));
+    }
+    await evaluate(`PidApp.editor.undo(), PidApp.editor.undo(), PidApp.editor.undo(), true`);
+    // Kayıt bitmeden sayfadan çıkılırsa program (doğru olarak) çıkışı sorar; beklenir
+    await waitFor(`!document.getElementById('saveState').classList.contains('dirty')`, 'çizim kaydı', 20000);
     await go(`${base}app/P-IDX/P%26ID/codes/cizim.html`);
     await waitFor(`document.querySelectorAll('#projectList > *').length > 0`, 'P&ID ana ekranı', 30000);
     await go(`${base}app/PNOMATIKX/PNOMATIK/codes/cizim.html`);

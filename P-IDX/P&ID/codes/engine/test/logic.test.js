@@ -813,3 +813,64 @@ test('kalıpların programdaki hâli değer yerleriyle listelenir', () => {
   assert.deepEqual(byId.get('monitor.lock').args, ['sensor', 'yer']);
   assert.match(byId.get('purposes.lock').text, /^Kapağın kapalı ve kilitli olduğunu bildirir; bu bilgi gelmeden proses başlamaz\./);
 });
+
+test('drenaj: tahliye türü seçilir, yazısı belge dilinde ve seçilen yerde çıkar, bileşen listesine türüyle girer', () => {
+  const Sheet = require('../sheet.js');
+  const def = Sym.get('l.drain');
+  assert.deepEqual(Sym.DRAIN_TYPES.map((t) => t.id), ['drain', 'water', 'steam', 'oil']);
+  const label = (props, lang) => def.labelText(props, lang);
+  assert.equal(label({ drainType: 'water' }, 'tr'), 'SU TAHLİYESİ');
+  assert.equal(label({ drainType: 'steam' }, 'en'), 'STEAM DISCHARGE');
+  assert.equal(label({ drainType: 'oil' }, 'de'), 'ÖLABLASS');
+  assert.equal(label({}, 'tr'), '', 'tür seçilmezse yazı yok (eski çizimler değişmez)');
+  // Etikete yazı girilirse o yazılır; bilinen yazı belge diline çevrilir
+  assert.equal(label({ drainType: 'water', note: 'YAĞ TAHLİYESİ' }, 'en'), 'OIL DRAIN');
+  assert.equal(label({ note: 'Kanal' }, 'de'), 'Kanal');
+
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const tank = Model.addSymbol(s, 'e.tank', 120, 100);
+  const drain = Model.addSymbol(s, 'l.drain', 120, 160, { drainType: 'steam' });
+  Model.addLine(s, { node: tank.id, side: 'B', t: 0.5 }, { node: drain.id, port: 'U' }, { kind: 'process' });
+  const svg = (lang) => Sheet.renderSheetBody({ dil: lang }, drawing, 0, { lang });
+  const at = (text, lang) => {
+    const m = svg(lang).match(new RegExp(`<text x="([\\d.-]+)" y="([\\d.-]+)"[^>]*text-anchor="(\\w+)"[^>]*>${text}</text>`));
+    assert.ok(m, `${text} çizimde yok`);
+    return { x: Number(m[1]), y: Number(m[2]), anchor: m[3] };
+  };
+  const box = Model.boxOf(drain);
+  let p = at('BUHAR TAHLİYESİ', 'tr');
+  assert.ok(p.y > box[3] && p.anchor === 'middle', 'varsayılan: altında');
+  assert.equal(at('DAMPFABLASS', 'de').y, p.y, 'Almanca belgede aynı yerde Almanca');
+  drain.labelPos = 'right';
+  p = at('BUHAR TAHLİYESİ', 'tr');
+  assert.ok(p.x > box[2] && p.anchor === 'start', 'sağında');
+  drain.labelPos = 'left';
+  p = at('BUHAR TAHLİYESİ', 'tr');
+  assert.ok(p.x < box[0] && p.anchor === 'end', 'solunda');
+  drain.labelPos = 'above';
+  p = at('BUHAR TAHLİYESİ', 'tr');
+  // Hat üstten girer: yazı hattın üstüne binmez, borunun yanına yazılır
+  assert.ok(p.y < box[1] + 2 && p.x > drain.x && p.anchor === 'start', 'üstünde, hattın yanında');
+  drain.rot = 180;
+  p = at('BUHAR TAHLİYESİ', 'tr');
+  assert.ok(p.y < Model.boxOf(drain)[1] && p.anchor === 'middle', 'ters çevrilince üst taraf boş: tam üstünde');
+  drain.rot = 0;
+  // Döndürülmüş sembolde de sayfaya göre sağında
+  drain.rot = 90;
+  drain.labelPos = 'right';
+  assert.ok(at('BUHAR TAHLİYESİ', 'tr').x > Model.boxOf(drain)[2]);
+  // Elle sürüklenen yazı kayar
+  drain.tagOffset = [4, 2];
+  assert.equal(at('BUHAR TAHLİYESİ', 'tr').x, Model.boxOf(drain)[2] + 1.5 + 4);
+
+  for (const [lang, name, purpose] of [['tr', 'BUHAR TAHLİYESİ', /Buharı/], ['en', 'STEAM DISCHARGE', /steam/], ['de', 'DAMPFABLASS', /Dampf/]]) {
+    const c = run(drawing, lang).components.find((x) => x.symbol === 'l.drain');
+    assert.ok(c, lang);
+    assert.equal(c.name, name, lang);
+    assert.match(c.purpose, purpose, lang);
+  }
+  // Tür seçilmemiş drenaj eskisi gibi hat çıkışıdır
+  drain.drainType = null;
+  assert.match(run(drawing, 'tr').components.find((x) => x.symbol === 'l.drain').purpose, /çıkış noktasını/);
+});

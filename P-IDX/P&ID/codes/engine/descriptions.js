@@ -33,7 +33,7 @@ const PidDescriptions = (() => {
     cylinder: 'Silindir', tank: 'Tank', cell: 'Hücre', basket: 'Sepet', boundary: 'Ekipman grubu', encoder: 'Enkoder', button: 'Buton',
     interlock: 'Interlock bloğu', plc: 'PLC fonksiyonu', lamp: 'Lamba', manualValve: 'Manuel vana', check: 'Çek valf', regulator: 'Regülatör',
     filter: 'Filtre', strainer: 'Pislik tutucu', dosatron: 'Dozatron', nozzle: 'Nozul', spray: 'Sprey manifoldu', airKnife: 'Hava bıçağı', hx: 'Eşanjör',
-    frl: 'Şartlandırıcı', silencer: 'Susturucu', fitting: 'Bağlantı parçası', terminalIn: 'Hat girişi', terminalOut: 'Hat çıkışı',
+    frl: 'Şartlandırıcı', silencer: 'Susturucu', fitting: 'Bağlantı parçası', terminalIn: 'Hat girişi', terminalOut: 'Hat çıkışı', drainGeneric: 'Drenaj', drainWater: 'Su tahliyesi', drainSteam: 'Buhar tahliyesi', drainOil: 'Yağ tahliyesi',
     offpage: 'Sayfa bağlantısı'
   };
   const ARG_TITLES = { yer: 'tank veya hücre', sensor: 'sensör', ekipman: 'ekipman listesi', kosul: 'koşul' };

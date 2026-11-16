@@ -182,6 +182,10 @@
         fitting: 'Hat bağlantısını sağlar.',
         terminalIn: 'Hattın sisteme giriş noktasını gösterir.',
         terminalOut: 'Hattın sistemden çıkış noktasını gösterir.',
+        drainGeneric: 'Sıvıyı sistemden drenaja tahliye eder.',
+        drainWater: 'Kullanılmış suyu sistemden tahliye eder.',
+        drainSteam: 'Buharı ve buğuyu sistemden dışarı atar.',
+        drainOil: 'Ayrılan yağı sistemden tahliye eder.',
         offpage: 'Hattın başka sayfada devam ettiğini gösterir.'
       }
     },
@@ -356,6 +360,10 @@
         fitting: 'Provides the line connection.',
         terminalIn: 'Marks where the line enters the system.',
         terminalOut: 'Marks where the line leaves the system.',
+        drainGeneric: 'Drains the liquid out of the system.',
+        drainWater: 'Discharges the used water from the system.',
+        drainSteam: 'Discharges steam and vapour from the system.',
+        drainOil: 'Discharges the separated oil from the system.',
         offpage: 'Shows that the line continues on another sheet.'
       }
     },
@@ -531,6 +539,10 @@
         fitting: 'Stellt die Leitungsverbindung her.',
         terminalIn: 'Kennzeichnet den Eintritt der Leitung in das System.',
         terminalOut: 'Kennzeichnet den Austritt der Leitung aus dem System.',
+        drainGeneric: 'Leitet die Flüssigkeit aus dem System ab.',
+        drainWater: 'Leitet das gebrauchte Wasser aus dem System ab.',
+        drainSteam: 'Leitet Dampf und Schwaden aus dem System ab.',
+        drainOil: 'Leitet das abgeschiedene Öl aus dem System ab.',
         offpage: 'Zeigt, dass die Leitung auf einem anderen Blatt weitergeht.'
       }
     }
@@ -547,6 +559,7 @@
     'l.reducer': 'fitting', 'l.flange': 'fitting', 'l.drain': 'terminalOut', 'l.vent': 'terminalOut',
     'l.inlet': 'terminalIn', 'l.outlet': 'terminalOut', 'l.offpage': 'offpage'
   };
+  const DRAIN_PURPOSE = { drain: 'drainGeneric', water: 'drainWater', steam: 'drainSteam', oil: 'drainOil' };
   const ACTUATED_VALVES = new Set(['v.solenoid', 'v.solenoidFill', 'v.pneumatic', 'v.ballPneumatic', 'v.butterflyPneumatic', 'v.motor', 'v.pistonValve', 'n.valve52', 'n.valve32']);
   const ACTUATOR_BY_SYMBOL = {
     'p.centrifugal': 'pump', 'p.dosing': 'pump', 'p.vacuum': 'pump', 'f.fan': 'fan', 'f.blower': 'fan',
@@ -626,6 +639,8 @@
       return { role: 'actuator', kind, purpose };
     }
     if (ACTUATED_VALVES.has(id)) return { role: 'actuator', kind: 'valve', purpose: 'valve' };
+    // Drenajın görevi tahliye türüne göre yazılır; hat zincirinde yine sistemden çıkış noktasıdır
+    if (id === 'l.drain' && DRAIN_PURPOSE[item.drainType]) return { role: 'passive', kind: 'terminalOut', purpose: DRAIN_PURPOSE[item.drainType] };
     if (PASSIVE_KINDS[id]) return { role: 'passive', kind: PASSIVE_KINDS[id], purpose: PASSIVE_KINDS[id] };
     if (id === 'i.hmi') return { role: 'display', kind: 'hmi', purpose: 'display' };
     if (series === 'L' || func === 'XL') return { role: 'display', kind: 'lamp', purpose: 'lamp' };
@@ -799,7 +814,7 @@
         const usesNote = info.role === 'container' || info.kind === 'terminalIn' || info.kind === 'terminalOut' || info.kind === 'offpage';
         const name = entry
           ? (lang === 'tr' ? entry.name : entry[lang] || entry.name)
-          : (usesNote && Sym.localNote(item.note, lang)) || defName;
+          : (usesNote && (def.labelText ? def.labelText(item, lang) : Sym.localNote(item.note, lang))) || defName;
         nodes.set(item.id, Object.assign({
           id: item.id,
           item,

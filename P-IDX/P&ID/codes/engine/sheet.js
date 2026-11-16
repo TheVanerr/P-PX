@@ -244,6 +244,42 @@
     return { x: (box[0] + box[2]) / 2 + dx, y: box[3] + 3.4 + dy, anchor: 'middle' };
   }
 
+  /** Seçilen yerdeki yazı: altında, sağında, solunda, üstünde. Sembol döndürülmüş olsa da sayfaya göredir.
+      Altında seçiliyken kod da yazılıyorsa yazı kodun altına iner. */
+  function labelPlacement(item, tagPos) {
+    const def = Sym.get(item.symbol);
+    const box = Model.boxOf(item);
+    const dx = (item.tagOffset && item.tagOffset[0]) || 0;
+    const dy = (item.tagOffset && item.tagOffset[1]) || 0;
+    const cx = (box[0] + box[2]) / 2 + dx;
+    const cy = (box[1] + box[3]) / 2 + dy;
+    const gap = 1.5;
+    // Seçilen tarafta bağlantı ucu varsa hat oradan girer: yazı hattın üstüne binmesin diye hattın yanına kayar
+    const edge = 0.6;
+    const portOn = (test) => (def.ports || []).map((p) => Model.toWorld(item, p.x, p.y)).find(test);
+    switch (item.labelPos) {
+      case 'right': {
+        const port = portOn((w) => w.x >= box[2] - edge);
+        return { x: box[2] + gap + dx, y: port ? port.y - 1.4 + dy : cy, anchor: 'start', middle: !port };
+      }
+      case 'left': {
+        const port = portOn((w) => w.x <= box[0] + edge);
+        return { x: box[0] - gap + dx, y: port ? port.y - 1.4 + dy : cy, anchor: 'end', middle: !port };
+      }
+      case 'above': {
+        const port = portOn((w) => w.y <= box[1] + edge);
+        return port
+          ? { x: port.x + 1.4 + dx, y: box[1] + 1.2 + dy, anchor: 'start' }
+          : { x: cx, y: box[1] - gap + dy, anchor: 'middle' };
+      }
+      default: {
+        const port = !tagPos && portOn((w) => w.y >= box[3] - edge);
+        if (port) return { x: port.x + 1.4 + dx, y: box[3] + 2.4 + dy, anchor: 'start' };
+        return { x: cx, y: (tagPos ? tagPos.y + 3 : box[3] + 3.2 + dy), anchor: 'middle' };
+      }
+    }
+  }
+
   function renderSymbol(source, ctx) {
     const def = Sym.get(source.symbol);
     if (!def) return '';
@@ -271,6 +307,12 @@
     } else if (def.tag === 'inside' && item.note) {
       const pos = tagPlacement(item, def);
       out += textEl(pos.x, pos.y, item.note, { size: 3, bold: true, anchor: pos.anchor });
+    }
+    // Yeri seçilebilen yazı (drenajın tahliye türü): sürüklenince kodla birlikte kayar
+    const label = def.labelText ? def.labelText(source, ctx.lang) : '';
+    if (label) {
+      const pos = labelPlacement(item, item.tag && def.tag !== 'inside-symbol' ? tagPlacement(item, def) : null);
+      out += `<g data-label="tag">${textEl(pos.x, pos.y, label, { size: 2.5 * k, bold: true, anchor: pos.anchor, middle: pos.middle })}</g>`;
     }
     if (item.note && def.tag === 'below') {
       const pos = tagPlacement(item, def);

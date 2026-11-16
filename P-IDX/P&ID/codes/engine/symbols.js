@@ -614,11 +614,15 @@
     inline: true,
     tag: 'none'
   });
+  /* Drenaj çıkışı: neyin tahliye edildiği seçilir (item.drainType), yazısı belge dilinde ve seçilen yerde
+     (item.labelPos: altında, sağında, solunda, üstünde) çıkar. Etikete yazı girilirse tür adı yerine o yazılır. */
   def('l.drain', 'pipe', ['Drenaj Çıkışı', 'Drain Outlet', 'Ablauf'], {
     body: P('M0 -4V-1') + P('M-3 -1H3L1 2.5H-1Z', WHITE) + P('M-3.5 4.5H3.5M-2.2 5.7H2.2M-1 6.9H1', THIN),
     box: [-3.5, -4, 3.5, 7],
     ports: [{ id: 'U', x: 0, y: -4, dir: 'U' }],
-    tag: 'none'
+    tag: 'none',
+    drainTypes: true,
+    labelText: (it, lang) => localNote(it.note, lang) || drainLabel(it.drainType, lang)
   });
   def('l.vent', 'pipe', ['Hava Tahliye', 'Vent', 'Entlüftung'], {
     body: P('M0 4V-2A2 2 0 0 1 4 -2V0'),
@@ -940,7 +944,28 @@
 
   /* Varsayılan ekipman adları ve bayrak yazıları: belge dili değişince çevrilir.
      Kullanıcının kendi yazdığı ad tabloda yoksa olduğu gibi kalır. */
+  /** Drenajın tahliye ettiği şey; yazı [tr, en, de] */
+  const DRAIN_TYPES = [
+    { id: 'drain', name: 'Drenaj', label: ['DRENAJ', 'DRAIN', 'ABLAUF'] },
+    { id: 'water', name: 'Su tahliyesi', label: ['SU TAHLİYESİ', 'WATER DRAIN', 'WASSERABLASS'] },
+    { id: 'steam', name: 'Buhar tahliyesi', label: ['BUHAR TAHLİYESİ', 'STEAM DISCHARGE', 'DAMPFABLASS'] },
+    { id: 'oil', name: 'Yağ tahliyesi', label: ['YAĞ TAHLİYESİ', 'OIL DRAIN', 'ÖLABLASS'] }
+  ];
+  /** Sembol yazısının yeri: sembole göre, döndürülmüş olsa da sayfada */
+  const LABEL_POSITIONS = [
+    { id: 'below', name: 'Altında' },
+    { id: 'right', name: 'Sağında' },
+    { id: 'left', name: 'Solunda' },
+    { id: 'above', name: 'Üstünde' }
+  ];
+
+  function drainLabel(type, lang) {
+    const found = DRAIN_TYPES.find((t) => t.id === type);
+    return found ? found.label[LANG_INDEX[lang] === undefined ? 0 : LANG_INDEX[lang]] : '';
+  }
+
   const NOTE_I18N = [
+    ...DRAIN_TYPES.map((t) => t.label),
     ['PROSES TANKI', 'PROCESS TANK', 'PROZESSTANK'],
     ['KAPALI TANK', 'CLOSED VESSEL', 'GESCHLOSSENER BEHÄLTER'],
     ['KAPAKLI TANK', 'LIDDED TANK', 'TANK MIT DECKEL'],
@@ -952,7 +977,6 @@
     ['VAKUM HÜCRESİ', 'VACUUM CELL', 'VAKUUMZELLE'],
     ['TÜNEL HÜCRE', 'TUNNEL CELL', 'TUNNELZELLE'],
     ['ŞEBEKE SUYU', 'MAINS WATER', 'NETZWASSER'],
-    ['DRENAJ', 'DRAIN', 'ABLAUF'],
     ['EGZOZ', 'EXHAUST', 'ABLUFT'],
     ['BASINÇLI HAVA', 'COMPRESSED AIR', 'DRUCKLUFT'],
     ['HÜCREYE', 'TO CELL', 'ZUR ZELLE'],
@@ -1163,6 +1187,9 @@
 
   return {
     CATEGORIES,
+    DRAIN_TYPES,
+    LABEL_POSITIONS,
+    drainLabel,
     LINE_KINDS,
     list: () => LIST.filter((d) => !d.hidden),
     all: () => LIST.slice(),

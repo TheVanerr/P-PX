@@ -483,7 +483,10 @@ const PidPanels = (() => {
         ${canSwap ? `<button type="button" class="btn btn-sm" id="fSwap">Önerilen sembole geç: ${esc(PidSymbols.get(suggestion.symbol).name.tr)}</button>` : ''}
       </div>
       ${def.isInstrument ? inp('fFunc', 'ISA harfi', item.func || '', 'placeholder="LSL, ZSO, PT, TE…"') : ''}
-      ${inp('fNote', def.container ? 'Ad' : def.tag === 'none' || def.cat === 'pipe' ? 'Etiket' : 'Not', item.note || '')}
+      ${def.drainTypes ? sel('fDrainType', 'Tahliye türü', [['', 'Seçilmedi (yazı yok)'], ...PidSymbols.DRAIN_TYPES.map((t) => [t.id, t.name])], item.drainType || '') : ''}
+      ${inp('fNote', def.container ? 'Ad' : def.tag === 'none' || def.cat === 'pipe' ? 'Etiket' : 'Not', item.note || '', def.drainTypes ? 'placeholder="Boşsa tahliye türü yazılır"' : '')}
+      ${def.labelText ? `${sel('fLabelPos', 'Yazı konumu', PidSymbols.LABEL_POSITIONS.map((p) => [p.id, p.name]), item.labelPos || 'below')}
+        <div class="field-help">Yazı belge dilinde çıkar (TR / EN / DE). Sürükleyerek de ince ayar yapılabilir.</div>` : ''}
       <div class="field"><label for="fSymbol">Sembol</label><select id="fSymbol" class="field-input">${symbolOptions()}</select></div>
       ${def.resizable ? `<div class="field-row">${inp('fW', 'Genişlik (mm)', item.w, 'type="number" step="2.5" min="10"')}${inp('fH', 'Yükseklik (mm)', item.h, 'type="number" step="2.5" min="10"')}</div>` : ''}
       ${percentField('fScale', 'Boyut (%)', PidModel.selectionPercent([item]), 'Örn: 70')}
@@ -532,6 +535,12 @@ const PidPanels = (() => {
     });
     onField('fFunc', 'change', (el) => app.editor.updateItem(item, { func: el.value.trim().toUpperCase() }));
     onField('fNote', 'change', (el) => app.editor.updateItem(item, { note: el.value }));
+    // Yeni yer seçilince elle sürüklenmiş konum sıfırlanır: yazı tam seçilen yere gelir
+    onField('fDrainType', 'change', (el) => app.editor.updateItem(item, { drainType: el.value || null }));
+    onField('fLabelPos', 'change', (el) => {
+      app.editor.updateItem(item, { labelPos: el.value === 'below' ? null : el.value, tagOffset: null });
+      inspectSymbol(item);
+    });
     onField('fSymbol', 'change', (el) => {
       app.editor.updateItem(item, swapTo(el.value));
       inspectSymbol(item);
