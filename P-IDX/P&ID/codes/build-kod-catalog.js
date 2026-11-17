@@ -156,6 +156,7 @@ const EN_NAME_RULES = [
 ];
 
 const DE_NAME_RULES = [
+  [/El Koruma Sensörü/g, 'Handschutzsensor'],
   [/Tank Otomatik Dolum Solenoid Vanası/g, 'Tank Magnetventil für automatische Befüllung'],
   [/Tank Kapağı Açık Sensörü/g, 'Tank Deckel-offen-Sensor'],
   [/Tank Kapağı Kapalı Sensörü/g, 'Tank Deckel-geschlossen-Sensor'],
@@ -334,6 +335,12 @@ const OVERRIDE_DESCRIPTIONS = {
     en: 'Monitoring: When the lid is closed and the interlock is engaged, it gives the control unit (PLC/relay) a safe signal; the process cannot start without this signal. Locking: Keeps the lid locked while the process is running; the lid can only be opened after the process is stopped. Connected to the interlock circuit of the control unit (PLC/relay).',
     de: 'Überwachung: Ist der Deckel geschlossen und die Verriegelung eingerastet, meldet sie der Steuereinheit (SPS/Relais) einen sicheren Zustand; ohne diese Meldung startet der Prozess nicht. Verriegelung: Hält den Deckel während des laufenden Prozesses verriegelt; der Deckel lässt sich erst nach dem Stoppen des Prozesses öffnen. Angeschlossen an den Verriegelungskreis der Steuereinheit (SPS/Relais).'
   },
+  // El koruma: tehlikeli bölgeye giren el, uzuv ya da cisim hareketi durdurur; insanı ve cismi korur
+  hand: {
+    tr: 'Tehlikeli bölgeye el, başka bir vücut uzvu veya herhangi bir cisim girdiğinde bunu algılar; kontrol ünitesi (PLC/Röle) bu sinyalle tehlikeli bölgedeki hareketi derhal durdurur. Algılanan el veya cisim bölgeden çıkmadan hareket yeniden başlamaz. Böylece operatörü yaralanmaya, bölgedeki cismi hasara karşı korur. Kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.',
+    en: 'Detects a hand, any other body part or any object entering the hazardous zone; on this signal the control unit (PLC/relay) immediately stops the motion in the hazardous zone. The motion does not restart until the detected hand or object has left the zone. This protects the operator from injury and the object in the zone from damage. Connected to the safety circuit of the control unit (PLC/relay).',
+    de: 'Erkennt, wenn eine Hand, ein anderer Körperteil oder ein beliebiger Gegenstand in den Gefahrenbereich gelangt; auf dieses Signal hin stoppt die Steuereinheit (SPS/Relais) die Bewegung im Gefahrenbereich sofort. Die Bewegung startet erst wieder, wenn die erkannte Hand bzw. der erkannte Gegenstand den Bereich verlassen hat. So werden der Bediener vor Verletzungen und der Gegenstand im Bereich vor Beschädigung geschützt. Angeschlossen an den Sicherheitskreis der Steuereinheit (SPS/Relais).'
+  },
   lid: {
     tr: 'Tank kapağının açma/kapatma hareketi için pnömatik komutu uygular. Kapak pistonu, konum sensörleri ve kontrol ünitesine (PLC/Röle) bağlıdır.',
     en: 'Applies the pneumatic command for opening/closing the tank lid. Connected to the lid cylinder, position sensors and control unit (PLC/relay).',
@@ -349,6 +356,7 @@ function overrideDescription(kod, lang) {
   else if (p === 'V' && num >= 61 && num <= 66) key = 'basket';
   else if (p === 'V' && num >= 67 && num <= 72) key = 'lid';
   else if (p === 'SS' && (num === 2 || num === 4)) key = 'interlock';
+  else if (p === 'SS' && num === 1) key = 'hand';
   return key ? OVERRIDE_DESCRIPTIONS[key][lang] : null;
 }
 
@@ -416,7 +424,7 @@ function buildDescriptionTr(kod, name) {
   }
 
   if (p === 'SS') {
-    if (n.includes('el koruma')) return 'Operatör elinin tehlikeli bölgeye girmesini algılar ve proses/hareket interlock sinyali üretir. Kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.';
+    if (n.includes('el koruma')) return OVERRIDE_DESCRIPTIONS.hand.tr;
     if (n.includes('interlock') || n.includes('kilit')) return OVERRIDE_DESCRIPTIONS.interlock.tr;
     if (n.includes('ışın') || n.includes('isın') || n.includes('bariyer')) return 'Işın bariyeri kirişinin kesilmesini algılar ve acil durdurma/interlock sinyali üretir. Kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.';
     if (n.includes('rfid')) return 'Kapak RFID etiketini okuyarak yetkili kapak/konum doğrulaması yapar. Kapak interlock ve kontrol ünitesinin (PLC/Röle) güvenlik devresine bağlıdır.';

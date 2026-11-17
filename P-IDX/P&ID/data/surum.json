@@ -1,10 +1,10 @@
 {
-  "surum": 2,
-  "tarih": "2026-11-11",
+  "surum": 3,
+  "tarih": "2026-11-17",
   "dosyalar": {
-    "P&ID/data/kod.csv": "5d3a3eddc37d615ba01f34b57f7a55e9fea7b259",
-    "P&ID/data/kod-en.csv": "341dfcef0259e00e0f3105bbedd200a75290009e",
-    "P&ID/data/kod-de.csv": "cf02f1baf02aaf53085cab280e306367eb7e1716",
+    "P&ID/data/kod.csv": "fda7952283990db8c4db15bbb492b8f7a0f5a88a",
+    "P&ID/data/kod-en.csv": "30b244efd383b1f4c0eb298c67267f875e41345f",
+    "P&ID/data/kod-de.csv": "5a43bded06ebfbb7dbe3a9918b58f81bf4b6b848",
     "P&ID/data/guvenlik.csv": "006ccd003d6d0aa5fc39390b87cba0d21c0574c1",
     "P&ID/data/safety.csv": "792bbcd61b8b4caa7174c36f369a65ce89ed1778",
     "P&ID/data/safety-de.csv": "2a0d8035826c5ce723c4f13709abd4e6220e587f"
