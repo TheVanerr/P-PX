@@ -748,7 +748,8 @@
       { id: 'D', x: 0, y: bottom || 5.5, dir: 'D' }
     ]
   });
-  typed('i.switch', ['Konum Switchi', 'Position Switch', 'Positionsschalter'], 'ZS', onSwitch(SWITCH_LEVER));
+  typed('i.switch', ['Konum Switchi', 'Position Switch', 'Positionsschalter'], 'ZS',
+    Object.assign(onSwitch(SWITCH_LEVER), { keywords: 'pozisyon limit switch sınır anahtarı Endschalter' }));
   // Kolun değdiği kalın çizgi kapaktır
   typed('i.lid', ['Kapak Switchi', 'Lid Switch', 'Deckelschalter'], 'ZS', onSwitch(SWITCH_LEVER + P('M-3.5 -10H3', 'stroke-width="0.8"')));
   /* RFID kapak switchi: kolu yok, temassızdır. Kapaktaki (kalın çizgi) etiket dalgalarla gövdedeki okuyucuya bildirir.
@@ -795,8 +796,11 @@
   isaPistonSensor('i.zsoIsa', ['Piston Açık Sensörü (ISA, ZSO)', 'Cylinder Open Sensor (ISA, ZSO)', 'Zylindersensor offen (ISA, ZSO)'], 'ZSO', 'i.zso');
   isaPistonSensor('i.zsmIsa', ['Piston Ara Sensörü (ISA, ZSM)', 'Cylinder Mid Sensor (ISA, ZSM)', 'Zylindersensor Mitte (ISA, ZSM)'], 'ZSM', 'i.zsm');
   isaPistonSensor('i.zscIsa', ['Piston Kapalı Sensörü (ISA, ZSC)', 'Cylinder Closed Sensor (ISA, ZSC)', 'Zylindersensor geschlossen (ISA, ZSC)'], 'ZSC', 'i.zsc');
-  // PRS: mermi gövdeli yaklaşım sensörü, önünde algılama alanı
-  typed('i.prox', ['Endüktif Sensör (Prox)', 'Proximity Sensor', 'Näherungsschalter'], 'ZS', {
+  /* PRS: mermi gövdeli proximity (yaklaşım) sensörü, önünde algılama alanı. Temassız konum algılar (endüktif ya da kapasitif);
+     mantıkta konum geri bildirimidir (ZS): piston, vana ya da motora bağlıysa onların konumunu bildirir, başka ekipmana
+     bağlıysa konum doğrulanmadan o ekipman çalışmaz. keywords yalnız sembol aramasında kullanılır. */
+  typed('i.prox', ['Proximity Sensörü', 'Proximity Sensor', 'Näherungsschalter'], 'ZS', {
+    keywords: 'prox endüktif kapasitif yaklaşım pozisyon konum inductive capacitive position Näherungssensor induktiv kapazitiv',
     body: P('M-8 -5.5H4A5.5 5.5 0 0 1 4 5.5H-8Z', WHITE) + P('M10.6 -2.8Q12 0 10.6 2.8M12.4 -3.8Q14.2 0 12.4 3.8', THIN),
     box: [-8, -5.5, 13.5, 5.5],
     ports: [
@@ -1045,7 +1049,9 @@
     if (n.includes('seviye')) return inst('i.level', 'LS');
     if (n.includes('sicaklik') || n.includes('isi olcer')) return inst('i.temp', 'TE');
     if (n.includes('basinc')) return n.includes('salter') ? inst('i.ps', 'PS') : inst('i.pt', 'PT');
-    if (n.includes('prox')) return inst('i.prox', 'ZS');
+    if (/prox|yaklasim|enduktif|kapasitif|induktiv|kapazitiv|inductive|capacitive/.test(n)) return inst('i.prox', 'ZS');
+    // Pozisyon sensörü sahada proximity sensörüdür; piston sensörü yukarıda ayrıldı
+    if (/pozisyon|konum|position/.test(n) && n.includes('sensor')) return inst('i.prox', 'ZS');
     if (n.includes('rfid')) return n.includes('switch') ? inst('i.lidRfid', 'ZS') : { symbol: 's.rfid' };
     if (n.includes('switch')) return inst('i.switch', 'ZS');
     if (n.includes('dozatron') || n.includes('dosatron')) return { symbol: 'p.dosatron' };

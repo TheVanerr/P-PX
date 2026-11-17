@@ -47,7 +47,10 @@ const PidPanels = (() => {
   function searchMatch(text, query) {
     const fold = (s) => PidSymbols.normalize(s).replace(/g/g, 'k');
     const hay = fold(text);
-    return fold(query).split(/\s+/).filter(Boolean).every((word) => hay.includes(word));
+    // Kelime olduğu gibi geçmezse sonundaki ek atılıp denenir: "sensörü" → Sensör, "vanası" → Vana
+    const stem = (word) => word.replace(/(lari|leri|lar|ler|[sny]?[iu])$/, '');
+    return fold(query).split(/\s+/).filter(Boolean)
+      .every((word) => hay.includes(word) || (stem(word).length >= 3 && hay.includes(stem(word))));
   }
 
   function renderSymbols() {

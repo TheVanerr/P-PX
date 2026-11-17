@@ -778,6 +778,42 @@ test('RFID kapak switchi: ZS enstrümanıdır, mantıkta RFID kapak güvenliği 
   assert.equal(role.role, 'sensor');
 });
 
+test('proximity sensörü: ZS enstrümanıdır, pozisyon kontrolünde konum geri bildirimi verir, addan ve koddan önerilir', () => {
+  const def = Sym.get('i.prox');
+  assert.equal(def.cat, 'inst');
+  assert.equal(def.defaultFunc, 'ZS');
+  assert.equal(def.name.tr, 'Proximity Sensörü');
+  assert.match(def.keywords, /pozisyon/);
+  assert.equal(Sym.suggest('PRS01', 'Sepet Pozisyon 1 Sensörü').symbol, 'i.prox');
+  for (const name of ['Proximity Sensörü', 'Endüktif Sensör', 'Kapasitif Yaklaşım Sensörü', 'Sepet Pozisyon Sensörü', 'Konum Sensörü']) {
+    assert.deepEqual(Sym.suggest('XY05', name), { symbol: 'i.prox', func: 'ZS' }, name);
+  }
+  assert.equal(Sym.suggest('XY05', 'Piston Pozisyon Sensörü').symbol, 'i.pistonSensor', 'piston sensörü ayrı kalır');
+  assert.equal(Sym.suggest('XY05', 'Kapasitif Seviye Sensörü').symbol, 'i.level', 'seviye sensörü ayrı kalır');
+  assert.equal(Sym.suggest('XY05', 'Konum Switchi').symbol, 'i.switch');
+  const role = Logic.classify({ tag: 'PRS01', func: 'ZS' }, def, null);
+  assert.equal(role.kind, 'position');
+  assert.equal(role.role, 'sensor');
+
+  // Pistona bağlı proximity onun konumunu bildirir; pompaya bağlı olan konum doğrulanmadan pompayı çalıştırmaz
+  const drawing = Model.createDrawing('Test');
+  const s = drawing.sheets[0];
+  const prox = Model.addSymbol(s, 'i.prox', 60, 90, { tag: 'PRS01', func: 'ZS' });
+  const cyl = Model.addSymbol(s, 'n.cylinder', 150, 90, { tag: 'V01' });
+  const pump = Model.addSymbol(s, 'p.centrifugal', 150, 160, { tag: 'PE02' });
+  Model.addLine(s, { node: prox.id, port: 'R' }, { node: cyl.id, port: Sym.get('n.cylinder').ports[0].id }, { kind: 'signal' });
+  Model.addLine(s, { node: prox.id, port: 'D' }, { node: pump.id, port: 'M' }, { kind: 'signal' });
+  const want = { tr: /PRS01.*konumunu bildirir/, en: /PRS01.*reports the position of/, de: /PRS01.*meldet die Position von/ };
+  for (const lang of ['tr', 'en', 'de']) {
+    const res = run(drawing, lang);
+    const texts = res.logic.map((r) => r.text);
+    assert.ok(texts.some((t) => want[lang].test(t)), `${lang}: ${JSON.stringify(texts)}`);
+    assert.ok(res.components.some((c) => c.symbol === 'i.prox' && c.purpose), lang);
+  }
+  const tr = run(drawing, 'tr').logic.map((r) => r.text);
+  assert.ok(tr.some((t) => /Konum doğrulanmadan.*PE02/.test(t)), JSON.stringify(tr));
+});
+
 test('düzenlenen kalıp cümleye girer, diğer dillere dokunmaz', () => {
   const patterns = { tr: { 'conditions.lock': 'Kapak kilitlenmeden', 'reasons.lock': 'Kilit sinyali gelmeden çevrim başlamaz.' } };
   const options = { catalog: CATALOG, safety: new Map(), patterns };

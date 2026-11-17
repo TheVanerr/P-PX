@@ -29,11 +29,14 @@ const PidPanels = (() => {
   }
 
   /** Arama: her kelime geçmeli, sıra önemsiz ("kurutma bıçağı" → Kurutma Hava Bıçağı). ğ/g ile k aynı sayılır,
-      Türkçe ek ünsüz değişimi bulunsun diye: "bıçak" → bıçağı, "kapak" → kapağı. */
+      Türkçe ek ünsüz değişimi bulunsun diye: "bıçak" → bıçağı, "kapak" → kapağı. Kelime olduğu gibi geçmezse
+      sonundaki ek atılıp denenir: "sensörü" → Sensör, "vanası" → Vana, "sensörleri" → Sensör. */
   function searchMatch(text, query) {
     const fold = (s) => PidSymbols.normalize(s).replace(/g/g, 'k');
     const hay = fold(text);
-    return fold(query).split(/\s+/).filter(Boolean).every((word) => hay.includes(word));
+    const stem = (word) => word.replace(/(lari|leri|lar|ler|[sny]?[iu])$/, '');
+    return fold(query).split(/\s+/).filter(Boolean)
+      .every((word) => hay.includes(word) || (stem(word).length >= 3 && hay.includes(stem(word))));
   }
 
   function renderSymbols() {
@@ -42,7 +45,7 @@ const PidPanels = (() => {
     const html = [];
     for (const cat of PidSymbols.CATEGORIES) {
       const items = PidSymbols.list().filter((d) => d.cat === cat.id &&
-        (!query || matchesSeries(d, query) || searchMatch(`${d.name.tr} ${d.name.en} ${d.name.de} ${cat.name}`, query)));
+        (!query || matchesSeries(d, query) || searchMatch(`${d.name.tr} ${d.name.en} ${d.name.de} ${d.keywords || ''} ${cat.name}`, query)));
       if (!items.length) continue;
       html.push(`<div class="sym-cat">${esc(cat.name)}</div><div class="sym-grid">`);
       for (const d of items) {

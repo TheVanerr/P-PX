@@ -280,6 +280,14 @@ async function main() {
       return out;
     })()`);
     check(found.every(Boolean), 'aramada "bıçak", "kurutma bıçağı" hava bıçağını bulur', JSON.stringify(found));
+    const prox = await evaluate(`(() => {
+      const search = (q) => { const el = document.getElementById('symbolSearch'); el.value = q; el.dispatchEvent(new Event('input')); return !!document.querySelector('.sym-tile[data-symbol="i.prox"]'); };
+      const out = ['proximity sensörü', 'pozisyon sensörü', 'endüktif', 'yaklaşım sensörü', 'PRS'].map(search);
+      const tile = (search(''), document.querySelector('.sym-tile[data-symbol="i.prox"] span'));
+      return { out, name: tile && tile.textContent.trim() };
+    })()`);
+    check(prox.out.every(Boolean) && prox.name === 'Proximity Sensörü',
+      'aramada "proximity sensörü", "pozisyon sensörü" proximity sensörünü bulur', JSON.stringify(prox));
     // Drenaj: sağ panelden tahliye türü ve yazı konumu seçilir, çizimde seçilen yerde görünür
     const drainUi = await evaluate(`(async () => {
       const ed = PidApp.editor;
