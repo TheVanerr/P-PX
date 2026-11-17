@@ -35,7 +35,7 @@ Sitede program yoktur, yalnız giriş ekranı vardır:
 
 ### Yayınlama
 
-`main`'e her push yayındır: açık uygulamada yalnız değişen dosyalar arkada iner, sağ altta **Programın yeni sürümü hazır · Yenile** görünür. Sayfa kendiliğinden yenilenmez, çizim yarıda kalmaz. Push'tan önce `npm test` çalıştırın.
+`main`'e her push yayındır: açık uygulamada yalnız değişen dosyalar arkada iner. Sayfa açıldığından beri hiçbir şeye tıklanmadıysa ya da yazılmadıysa sayfa kendiliğinden yenilenir; yani programın içindeyken de bir kez yenilemek yeni sürümü getirir. Çizime başlanmışsa sayfa yenilenmez, çizim yarıda kalmasın diye sağ altta **Programın yeni sürümü hazır · Yenile** görünür. Push'tan önce `npm test` çalıştırın.
 
 Giriş ekranı (`pwa/` klasörü) `pwa/` değişince GitHub Actions ile yeniden yayınlanır (`.github/workflows/pages.yml`). Sitede yalnız bu klasör durur.
 

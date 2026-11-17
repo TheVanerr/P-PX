@@ -274,7 +274,8 @@
   }
 
   /** PWA: giriş ekranı beklemeden uygulamayı açar; anahtar ve yeni sürüm burada, sayfa açıldıktan sonra arka planda denetlenir.
-      Anahtar geçersizse program cihazdan silinir ve giriş ekranına dönülür. Yeni sürüm iner, sayfa kendiliğinden yenilenmez. */
+      Anahtar geçersizse program cihazdan silinir ve giriş ekranına dönülür. Yeni sürüm iner; sayfa açıldığından beri
+      kullanıcı hiçbir şeye tıklamadıysa ya da yazmadıysa kendiliğinden yenilenir, yoksa "Yenile" sorulur. */
   let shellPromise = null;
   /** Giriş ekranının kabuk dosyası (pwa/ppx-kabuk.js) bir kez yüklenir; denetim onunla yapılır */
   function loadShell() {
@@ -293,6 +294,15 @@
     return shellPromise;
   }
 
+  /* Sayfa açıldığından beri tıklama ya da tuş yoksa yarıda kalan iş de yoktur: yeni sürüm inince sayfa kendiliğinden
+     yenilenir. Böylece programın içindeyken de bir kez yenilemek yeni sürümü getirir; çizim başladıysa sorulur. */
+  let touched = false;
+  if (pwa) {
+    const touch = () => { touched = true; };
+    window.addEventListener('pointerdown', touch, { capture: true, once: true });
+    window.addEventListener('keydown', touch, { capture: true, once: true });
+  }
+
   const programListeners = new Set();
   /** force: süre beklenmeden (ana ekrandaki "Güncellemeleri denetle"). Sonuç dinleyicilere de gider: hata görünür kalır. */
   async function checkProgram(force) {
@@ -306,8 +316,8 @@
     }
     for (const fn of programListeners) fn(res);
     if (res.state === 'login') location.replace(shellUrl);
-    // Ana ekranda kaybolacak bir şey yok, hemen yenilenir; programda çizim yarıda kalmasın diye sorulur
-    else if (res.updated && window.PPX_LAUNCHER) location.reload();
+    // Ana ekranda ve dokunulmamış programda kaybolacak bir şey yok, hemen yenilenir; çizim yarıda kalmasın diye sorulur
+    else if (res.updated && (window.PPX_LAUNCHER || !touched)) location.reload();
     else if (res.updated) showUpdated();
     return res;
   }

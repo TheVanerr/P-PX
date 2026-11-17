@@ -546,9 +546,13 @@ test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekr
   const recheckKey = (src) => src.match(/const RECHECK_FLAG = '([^']+)'/)[1];
   assert.equal(recheckKey(boot), recheckKey(shell));
   assert.match(boot.slice(boot.indexOf('function toShell'), boot.indexOf('function toShell') + 500), /sessionStorage\.setItem\(RECHECK_FLAG, '1'\);\s*location\.replace\(shellUrl\);/);
-  // Uygulama: arka plan denetimi giriş ekranıyla aynı zaman kaydını kullanır, yeni sürümde sayfayı kendiliğinden yenilemez
+  // Uygulama: arka plan denetimi giriş ekranıyla aynı zaman kaydını kullanır. Yeni sürümde ana ekran ve açıldığından beri
+  // dokunulmamış program sayfası kendiliğinden yenilenir; tıklanmış ya da yazılmış sayfada "Yenile" sorulur
   assert.equal(boot.match(/const PROGRAM_CHECK_KEY = '([^']+)'/)[1], kabuk.match(/const CHECK_KEY = '([^']+)'/)[1]);
-  assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);[\s\S]{0,200}else if \(res\.updated && window\.PPX_LAUNCHER\) location\.reload\(\);\s*else if \(res\.updated\) showUpdated\(\);/);
+  assert.match(boot, /if \(res\.state === 'login'\) location\.replace\(shellUrl\);[\s\S]{0,200}else if \(res\.updated && \(window\.PPX_LAUNCHER \|\| !touched\)\) location\.reload\(\);\s*else if \(res\.updated\) showUpdated\(\);/);
+  for (const type of ['pointerdown', 'keydown']) {
+    assert.match(boot, new RegExp(`window\\.addEventListener\\('${type}', touch, \\{ capture: true, once: true \\}\\)`));
+  }
   // Push'tan sonra açılışta hemen denetlenir; yalnız sayfalar arası geçişte GitHub'a üst üste gidilmez
   assert.match(boot, /const PROGRAM_CHECK_MS = 30 \* 1000;/);
   assert.match(boot, /visibilityState === 'visible'\) checkProgram\(false\)/);

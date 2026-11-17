@@ -47,7 +47,12 @@ function repoFiles(marker) {
   for (const p of execFileSync('git', ['ls-files', '-z'], { cwd: ROOT }).toString('utf8').split('\0').filter(Boolean)) {
     if (fs.existsSync(path.join(ROOT, p))) files.set(p, fs.readFileSync(path.join(ROOT, p)));
   }
-  if (marker) files.set('index.html', Buffer.from(files.get('index.html').toString('utf8').replace('<h1>P&amp;PX</h1>', `<h1>P&amp;PX <span id="surum">${marker}</span></h1>`)));
+  if (marker) {
+    files.set('index.html', Buffer.from(files.get('index.html').toString('utf8').replace('<h1>P&amp;PX</h1>', `<h1>P&amp;PX <span id="surum">${marker}</span></h1>`)));
+    // P&ID sayfası da sürümü taşır: programın içindeyken gelen güncelleme denenir
+    const pid = 'P-IDX/P&ID/codes/cizim.html';
+    files.set(pid, Buffer.from(files.get(pid).toString('utf8').replace('</head>', `<meta name="ppx-test-surum" content="${marker}"></head>`)));
+  }
   return files;
 }
 
@@ -355,7 +360,31 @@ async function main() {
     await go(base);
     // Ana ekranda yeni sürüm arkada iner ve sayfa kendiliğinden yenilenir
     await waitFor(`document.getElementById('surum') && document.getElementById('surum').textContent === 'surum-2'`, 'yeni sürüm', 30000);
-    check(code.stats.blobGets - blobs === 1, 'main\'e push sonrası yeni sürüm ana ekranda kendiliğinden açılır, yalnız değişen dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
+    check(code.stats.blobGets - blobs === 2, 'main\'e push sonrası yeni sürüm ana ekranda kendiliğinden açılır, yalnız değişen iki dosya iner', `${code.stats.blobGets - blobs} dosya indi`);
+
+    /* 7b. Programın içindeyken de bir kez yenilemek yeter: dokunulmamış sayfa yeni sürüm inince kendiliğinden yenilenir.
+       Çizime başlanmışsa (tıklama ya da tuş) sayfa yenilenmez, "Yenile" sorulur. */
+    const pidVersion = `(document.querySelector('meta[name="ppx-test-surum"]') || {}).content`;
+    const reloadFresh = async () => {
+      await evaluate(`window.__eskiSayfa = true; localStorage.removeItem('ppx_kabuk_denetim'); true`);
+      await send('Page.reload', {});
+      await waitFor(`!window.__eskiSayfa && !!window.PpxBoot`, 'sayfa yenilendi', 30000);
+    };
+    await go(`${base}app/P-IDX/P%26ID/codes/cizim.html`);
+    await waitFor(`${pidVersion} === 'surum-2' && document.querySelectorAll('#projectList > *').length > 0`, 'P&ID surum-2', 30000);
+    code.publish('main', repoFiles('surum-3'));
+    await reloadFresh();
+    await waitFor(`${pidVersion} === 'surum-3' && document.querySelectorAll('#projectList > *').length > 0`, 'P&ID kendiliğinden surum-3', 30000);
+    check(true, 'P&ID açıkken push edilen sürüm tek yenilemeyle gelir (dokunulmamış sayfa kendiliğinden yenilenir)');
+    code.publish('main', repoFiles('surum-4'));
+    await reloadFresh();
+    await evaluate(`window.dispatchEvent(new PointerEvent('pointerdown')); true`);
+    await waitFor(`!!document.getElementById('ppxUpdated')`, '"Yenile" kutusu', 30000);
+    const stillOld = await evaluate(pidVersion);
+    await evaluate(`document.querySelector('#ppxUpdated button').click(); true`);
+    await waitFor(`${pidVersion} === 'surum-4'`, '"Yenile" ile surum-4', 30000);
+    check(stillOld === 'surum-3', 'çizime başlanmışsa sayfa kendiliğinden yenilenmez, "Yenile" sorulur ve yeni sürümü açar', stillOld);
+    await go(base);
 
     /* 8a. Program verilerini güncelle: klasör seçilmez, indirilen programın kataloğu kullanılır */
     await waitFor(`/GitHub deposu/.test(document.getElementById('dbInfo').textContent)`, 'ana ekran bağlandı', 30000);
