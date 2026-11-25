@@ -1436,6 +1436,9 @@ const PidApp = (() => {
     await PidPidx.load();
     state.editor.setTool('select');
     await showHome();
+    // Doğrudan bağlantı (DOCX Makine sayfası; giriş ekranı ?ac= ile buraya geçer): ?proje=<klasör> o projeyi açar
+    const istenen = new URLSearchParams(location.search).get('proje');
+    if (istenen) await openProject(istenen);
   }
 
   const publicApi = {

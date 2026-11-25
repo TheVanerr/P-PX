@@ -542,7 +542,7 @@ test('web uygulaması: açılış ağı beklemez; geçersiz anahtarda giriş ekr
   const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
   const kabuk = fs.readFileSync(path.join(ROOT, 'pwa/ppx-kabuk.js'), 'utf8');
   // Giriş ekranı: program ve anahtar varsa hemen açar, uygulama geri gönderdiyse önce denetler
-  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl\);/);
+  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl \+ ileri\);/);
   const recheckKey = (src) => src.match(/const RECHECK_FLAG = '([^']+)'/)[1];
   assert.equal(recheckKey(boot), recheckKey(shell));
   assert.match(boot.slice(boot.indexOf('function toShell'), boot.indexOf('function toShell') + 500), /sessionStorage\.setItem\(RECHECK_FLAG, '1'\);\s*location\.replace\(shellUrl\);/);
@@ -598,7 +598,22 @@ test('eski kayıtlı cihazda değişiklik yoksa da kayıt tamamlanır; giriş ek
   assert.equal(res.updated, undefined);
   assert.ok((await app.installed()).source);
   const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
-  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl\);/);
+  assert.match(shell, /if \(!recheck && shell\.hasKey\(\) && installed && installed\.source\) \{\s*location\.replace\(shell\.appUrl \+ ileri\);/);
+});
+
+test('doğrudan bağlantı (DOCX Makine sayfası): giriş ekranı yalnız ac ve proje değerini taşır, program o projeyi açar', () => {
+  const shell = fs.readFileSync(path.join(ROOT, 'pwa/index.html'), 'utf8');
+  // Adres parçasından (#ac=…&proje=…) okunur: giriş ekranı sorguyu hiç okumaz (çıkış işareti testi)
+  assert.match(shell, /const q = new URLSearchParams\(location\.hash\.slice\(1\)\);\s*const o = new URLSearchParams\(\);\s*for \(const k of \['ac', 'proje'\]\)/);
+  assert.equal((shell.match(/location\.replace\(shell\.appUrl \+ ileri\)/g) || []).length, 2);
+  const boot = fs.readFileSync(path.join(ROOT, 'ortak/ppx-boot.js'), 'utf8');
+  assert.match(boot, /const q = new URLSearchParams\(location\.hash\.slice\(1\)\);\s*const hedef = \{ pid: pidUrl, pnomatik: pnxUrl \}\[q\.get\('ac'\)\]/);
+  assert.match(boot, /if \(active && !locked\) \{/);
+  assert.match(boot, /window\.addEventListener\('hashchange', dogrudan\);/);
+  for (const p of ['P-IDX/P&ID/codes/engine/app.js', 'PNOMATIKX/PNOMATIK/codes/engine/app.js']) {
+    const app = fs.readFileSync(path.join(ROOT, p), 'utf8');
+    assert.match(app, /await showHome\(\);\s*\/\/.*\s*const istenen = new URLSearchParams\(location\.search\)\.get\('proje'\);\s*if \(istenen\) await openProject\(istenen\);/, p);
+  }
 });
 
 test('güncelleme zinciri tarayıcı önbelleğine takılmaz; ana ekran sürümü gösterir, denetim hatası görünür', () => {

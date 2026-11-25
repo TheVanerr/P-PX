@@ -82,6 +82,15 @@
       // Uygulama anahtarın geçersiz olduğunu görünce bırakır: program beklemeden açılmaz, önce denetlenir
       const RECHECK_FLAG = 'ppx_denetle';
       const views = ['busy', 'login', 'failed', 'unsupported'];
+      // Doğrudan bağlantı (#ac=pid|pnomatik&proje=<klasör>, DOCX Makine sayfası) programın giriş ekranına taşınır,
+      // o da programa geçer (ortak/ppx-boot.js). Yalnız bu iki değer taşınır; sorgu (?…) okunmaz.
+      const ileri = (() => {
+        const q = new URLSearchParams(location.hash.slice(1));
+        const o = new URLSearchParams();
+        for (const k of ['ac', 'proje']) if (q.get(k)) o.set(k, q.get(k));
+        const s = o.toString();
+        return s ? `#${s}` : '';
+      })();
       const show = (id) => { for (const v of views) $(v).hidden = v !== id; };
 
       if (!window.isSecureContext || !('serviceWorker' in navigator) || !window.caches || !window.indexedDB) {
@@ -135,7 +144,7 @@
         await worker;
         // Uyarı (çevrimdışı vb.) okunabilsin diye kısa bekletilir
         if (result.warning) await new Promise((r) => setTimeout(r, 1500));
-        location.replace(shell.appUrl);
+        location.replace(shell.appUrl + ileri);
       }
 
       const fail = (e) => {
@@ -174,7 +183,7 @@
         // Eski giriş ekranının kurduğu programın kaydında depo yazmaz: o cihazlar bir kez tam denetimden geçer, kayıt tamamlanır
         const installed = await shell.installed();
         if (!recheck && shell.hasKey() && installed && installed.source) {
-          location.replace(shell.appUrl);
+          location.replace(shell.appUrl + ileri);
           return;
         }
         busy('Denetleniyor…');

@@ -18,6 +18,8 @@ GitHub'a bağlanmadan denemek için ekrandaki **Şimdilik yalnız bu bilgisayard
 
 Kurulum yapılmamış bir tarayıcıda programlar eskisi gibi klasör izniyle çalışır. Kurulum yapıldıktan sonra `P-IDX` ve `PNOMATIKX` klasörlerindeki veri dosyaları kullanılmaz, güncel veri depodadır.
 
+Doğrudan bağlantı: giriş ekranı `#ac=pid` ya da `#ac=pnomatik` ile o programa geçer, `&proje=<proje klasörü>` eklenirse program o projeyi açar (program sayfası `?proje=` okur). Web sürümünde de çalışır: PWA giriş ekranı yalnız `ac` ve `proje` değerlerini programın giriş ekranına taşır (sorgu okunmaz). DOCX Makine sayfası belge kartlarında kullanır.
+
 ## Web uygulaması (PWA)
 
 Program klasörü olmadan her bilgisayardan kullanmak için `https://thevanerr.github.io/P-PX/` adresini Chrome ya da Edge ile açın, veri deposunu (`TheVanerr/ppx-veri`) ve erişim anahtarını girin. Adres çubuğundaki **Yükle** simgesiyle ya da ana ekrandaki **Uygulama olarak yükle** ile masaüstü uygulaması olur. İnternet yokken de açılır; kayıtlar cihazda bekler, bağlantı gelince gider.

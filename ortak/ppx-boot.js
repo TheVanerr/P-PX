@@ -373,6 +373,21 @@
     applyActivePatches();
   }
 
+  // Doğrudan bağlantı (DOCX Makine sayfası): giriş ekranının adresi #ac=pid|pnomatik[&proje=<klasör>] ise programa
+  // geçilir (sayfa açıkken adres değişince de); program ?proje= ile o projeyi açar (engine/app.js > boot)
+  if (active && !locked) {
+    const yalin = (u) => u.split(/[?#]/)[0].replace(/index\.html$/, '');
+    const dogrudan = () => {
+      const q = new URLSearchParams(location.hash.slice(1));
+      const hedef = { pid: pidUrl, pnomatik: pnxUrl }[q.get('ac')];
+      if (!hedef || yalin(location.href) !== yalin(launcherUrl)) return;
+      document.documentElement.style.visibility = 'hidden';
+      location.replace(hedef + (q.get('proje') ? `?proje=${encodeURIComponent(q.get('proje'))}` : ''));
+    };
+    dogrudan();
+    window.addEventListener('hashchange', dogrudan);
+  }
+
   afterDom(() => {
     if (locked) return;
     addStyle(active ? CSS + ACTIVE_CSS : CSS);
