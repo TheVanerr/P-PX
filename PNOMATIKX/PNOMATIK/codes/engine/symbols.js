@@ -395,6 +395,43 @@
     flow: { kind: 'pilotCheck', free: 'AB' }
   });
 
+  /* SMC XT34 gibi: pilot kumandalı çek valf + kapalı / açık konumu algılayan anahtar (üstte) */
+  def('f.pilotCheckSw', 'flow', ['Pilot Kumandalı Çek Valf, Konum Anahtarlı (XT34)', 'Pilot-Operated Check Valve with Position Switch (XT34)', 'Entsperrbares Rückschlagventil mit Positionsschalter (XT34)'], {
+    body: R(-4, -2.6, 8, 5.2, WHITE) + P('M-5.5 0H-1.8M1.8 0H5.5') + CHECK_AT(-0.4, 0) + P('M0.65 2.6V0.95', PILOT) + P('M0.65 2.6V4.5') +
+      P('M0 -2.6V-3.6') + R(-2.6, -8.8, 5.2, 5.2, WHITE) + P('M0 -7.8L1.6 -6.2L0 -4.6L-1.6 -6.2Z', THIN),
+    box: [-5.5, -8.8, 5.5, 4.5],
+    ports: [{ id: 'A', x: -5.5, y: 0, dir: 'L' }, { id: 'B', x: 5.5, y: 0, dir: 'R' }, { id: 'X', x: 0.65, y: 4.5, dir: 'D' }],
+    inline: true,
+    role: 'flow',
+    flow: { kind: 'pilotCheck', free: 'AB' }
+  });
+
+  /* Festo VBOC gibi: tek gövdede pilot kumandalı 2/2 tutma valfi (pilotsuz iki yön kapalı), valf konumunu algılayan
+     sensör ve egzoz kısıcı (tek yönlü kısma: silindire serbest, silindirden kısılarak). Akış dikey: 1 valften (alt),
+     2 silindire (üst), 12 pilot (sol; port kimliği X, mantık onu ana akıştan ayırır). */
+  const VBOC_PORTS = [
+    { id: '2', x: 0, y: -17, dir: 'U' },
+    { id: '1', x: 0, y: 15, dir: 'D' },
+    { id: 'X', x: -23, y: -8, dir: 'L' }
+  ];
+  def('v.vboc', 'flow', ['Pilot Kumandalı Tutma Valfi, Konum Algılamalı, Egzoz Kısıcılı (VBOC)', 'Piloted Holding Valve with Position Sensing and Exhaust Flow Control (VBOC)', 'Entsperrbares Halteventil mit Positionsabfrage und Abluftdrossel (VBOC)'], {
+    body: R(-20.5, -15.4, 37, 28.6, CHAIN) +
+      R(-15, -13, 10, 10, WHITE) + R(-5, -13, 10, 10, WHITE) + arrow(-10, -3, -10, -13) + tee(0, -13, 1) + tee(0, -3, -1) +
+      P('M-18.6 -9.8L-15 -8L-18.6 -6.2Z', WHITE) + P('M-18.6 -8H-23', PILOT) + spring(5, 1, -8) +
+      P('M9.1 -8H9.8') + R(9.8, -10.6, 5.2, 5.2, WHITE) + P('M12.4 -9.6L13.8 -8L12.4 -6.4L11 -8Z', THIN) +
+      P('M0 -13V-17M0 -3V1.4M0 6.6V15') + P('M-1.4 1.4Q0.1 4 -1.4 6.6M1.4 1.4Q-0.1 4 1.4 6.6') +
+      P('M-2.4 6.4L2.1 1.7', THIN) + P('M2.7 1L1.4 1.6L2.3 2.5Z', SOLID) +
+      P('M0 0.2H4.4V2.2M4.4 5.6V7.8H0') + P('M3.15 4.2L4.4 5.6L5.65 4.2') + C(4.4, 3.15, 0.95, WHITE) +
+      C(0, 0.2, 0.45, SOLID) + C(0, 7.8, 0.45, SOLID),
+    box: [-23, -17, 16.5, 15],
+    ports: VBOC_PORTS,
+    texts: portNo(VBOC_PORTS).concat([{ x: -21.6, y: -9.5, t: '12', s: 1.6, port: true }]),
+    tag: 'right',
+    inline: true,
+    role: 'flow',
+    flow: { kind: 'pilotCheck' }
+  });
+
   def('f.quickExhaust', 'flow', ['Hızlı Egzoz Valfi', 'Quick Exhaust Valve', 'Schnellentlüftungsventil'], {
     body: R(-3.5, -2.6, 7, 5.2, WHITE) + P('M-5 0H-3.5M3.5 0H5') + C(0, 0, 1.1, WHITE) + P('M-2.2 -1.4L-1.1 0L-2.2 1.4M2.2 -1.4L1.1 0L2.2 1.4', THIN) +
       P('M0 2.6V4') + P('M-1.2 4H1.2L0 5.8Z'),

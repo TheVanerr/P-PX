@@ -142,7 +142,7 @@ test('hazır setler: tek grup, yeni kimlik, kopuk hat yok, semboller tanımlı',
   const Sets = require('../sets.js');
   const Model = require('../model.js');
   const Sym = require('../symbols.js');
-  assert.deepEqual(Sets.list().map((s) => s.name), ['PNO(SMC)', 'PNO(AIR)']);
+  assert.deepEqual(Sets.list().map((s) => s.name), ['PNO(SMC)', 'PNO(AIR)', 'PLd Kapak Paketi (Festo)', 'PLd Kapak Paketi (SMC)']);
   for (const { id } of Sets.list()) {
     const set = Sets.get(id);
     for (const it of set.items) if (it.type === 'symbol') assert.ok(Sym.get(it.symbol), `${id}: ${it.symbol}`);
@@ -167,6 +167,45 @@ test('hazır setler: tek grup, yeni kimlik, kopuk hat yok, semboller tanımlı',
   for (const s of ['v.32manual', 's.fr', 'v.softStart', 'k.pressureSwitch', 'v.32nc', 'v.53exhaust']) assert.ok(smc.some((it) => it.symbol === s), s);
   assert.equal(smc.filter((it) => it.symbol === 'a.cylLock').length, 2);
   assert.equal(smc.filter((it) => it.symbol === 'f.throttle').length, 4);
+});
+
+test('PLd kapak paketleri: aynı devre, iki marka; tutma valfleri pilotla açılır, 0B3 kilit hattını izler, kontrol temiz', () => {
+  const Sets = require('../sets.js');
+  const Model = require('../model.js');
+  const kodlar = (id) => Sets.get(id).items.filter((it) => it.type === 'symbol' && it.tag).map((it) => it.tag).sort();
+  const ortak = ['0B1', '0B3', '0V1', '0V2', '0Z1', '1A1', '1A2', '1V1', '1V10', '1V11', '1V2', '1V7', '1V8', '1V9'];
+  assert.deepEqual(kodlar('pld-festo'), ortak.slice().sort());
+  assert.deepEqual(kodlar('pld-smc'), ortak.concat(['1V3', '1V4', '1V5', '1V6']).sort(), 'SMC: XT34 + AS2201F (1V3–1V6)');
+  const say = (id, sym) => Sets.get(id).items.filter((it) => it.symbol === sym).length;
+  assert.equal(say('pld-festo', 'v.vboc'), 4);
+  assert.equal(say('pld-smc', 'f.pilotCheckSw'), 4);
+  assert.equal(say('pld-smc', 'f.flowCheck'), 4);
+  for (const id of ['pld-festo', 'pld-smc']) {
+    assert.equal(say(id, 'v.53closed'), 1, `${id}: 1V1 5/3 orta konum kapalı`);
+    assert.equal(say(id, 'a.cylLock'), 2, `${id}: yaylı kilitli iki silindir`);
+    const drawing = Model.createDrawing('T');
+    Sets.insert(drawing.sheets[0], id);
+    const r = Logic.analyze(drawing, { catalog: new Map(), lang: 'tr' });
+    const texts = r.logic.map((x) => x.text);
+    assert.ok(texts.some((t) => /1Y4 enerjilenince 1V11/.test(t) && /1V7, 1V8, 1V9 ve 1V10 pilot basıncıyla açılır/.test(t)), texts.join('\n'));
+    assert.ok(texts.some((t) => /1V11 yay ile normal konuma döner/.test(t) && /kapanır, yükü tutar/.test(t)), texts.join('\n'));
+    assert.ok(texts.some((t) => /0B3, 1V2 çıkış hattındaki/.test(t)), '0B3 kilit hattını izler');
+    assert.ok(texts.some((t) => /0B1, besleme hattındaki/.test(t)), '0B1 besleme hattını izler');
+    assert.ok(texts.some((t) => /ana hat 1V1, 1V2 ve 1V11 valflerini besler/.test(t)), texts.join('\n'));
+    assert.ok(texts.some((t) => /1Y3 enerjilenince 1V2/.test(t) && /kilidi açılır/.test(t)));
+    assert.ok(texts.some((t) => /1V1 orta konumda portları kapatır/.test(t)));
+    const fns = r.safety.map((x) => x.fnKey);
+    assert.ok(fns.includes('lineMonitor') && fns.includes('loadHold'), fns.join(','));
+    assert.equal(r.safety.find((x) => x.fnKey === 'lineMonitor').trigger, '0B3');
+    const en = Logic.analyze(drawing, { catalog: new Map(), lang: 'en' }).logic.map((x) => x.text);
+    assert.ok(en.some((t) => /When 1Y4 is energised, 1V11 switches/.test(t)), en.join('\n'));
+    const de = Logic.analyze(drawing, { catalog: new Map(), lang: 'de' }).logic.map((x) => x.text);
+    assert.ok(de.some((t) => /Wird 1Y4 bestromt, schaltet 1V11/.test(t)), de.join('\n'));
+    // Antet eksiksiz verilir; kalan her uyarı devreyle ilgilidir ve olmamalıdır
+    const meta = { seriNo: '1234567', musteri: 'ÖRNEK', model: 'KAPAK', firma: 'DOLFIN', dil: 'tr', rev: '00', tarih: '2026-11-25', hazirlayan: 'Test', kontrol: 'Test', onay: 'Test', revizyonlar: [] };
+    const warn = Checks.run(drawing, new Map(), new Set(), meta).filter((h) => h.level === 'warn');
+    assert.deepEqual(warn, [], `${id}: kontrol uyarısı`);
+  }
 });
 
 test('PNO(SMC) mantığı: 1V1 silindirleri sürer, 1V2 kilidi açar, 0V2 yumuşak başlatma valfidir', () => {

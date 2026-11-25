@@ -58,12 +58,15 @@
         manualShutoff: (valve) => `${valve} ile basınçlı hava elle kesilir.`,
         pressure: (s, where) => `${s}, ${where} hava basıncını izler.`,
         pressureWhere: 'besleme hattındaki',
+        pressureWhereLine: (valve) => `${valve} çıkış hattındaki`,
+        pilotOpen: (coil, valve, holds) => `${coil} enerjilenince ${valve} konum değiştirir; ${holds} pilot basıncıyla açılır, aktüatör hareket edebilir.`,
+        pilotRest: (valve, holds) => `Bobin enerjisi kesilince ${valve} yay ile normal konuma döner ve pilot hattını tahliye eder; ${holds} kapanır, yükü tutar.`,
         noValve: (act) => `${act} bir yön valfine bağlı değil.`,
         signal: (a, b) => `${a} ile ${b} arasında sinyal bağlantısı vardır.`,
         mech: (a, b) => `${a} ile ${b} mekanik olarak bağlıdır.`
       },
       functions: {
-        dump: 'Enerji kesilmesinde hava tahliyesi', isolation: 'Manuel hava kesme', lowPressure: 'Düşük hava basıncı izleme',
+        dump: 'Enerji kesilmesinde hava tahliyesi', isolation: 'Manuel hava kesme', lowPressure: 'Düşük hava basıncı izleme', lineMonitor: 'Hat basıncı izleme',
         failSafe: 'Enerji kesilmesinde güvenli konum', hold: 'Enerji kesilmesinde konum koruma', midStop: 'Ara konumda durdurma',
         speed: 'Hız sınırlama', loadHold: 'Yük tutma', overpressure: 'Aşırı basınç koruması'
       },
@@ -73,6 +76,7 @@
         isolationDump: (valve) => `Bakım ve onarımda ${valve} ile hava elle kesilir ve hat tahliye edilir; valf kilitlenebilir.`,
         isolation: (valve) => `Bakım ve onarımda ${valve} ile hava elle kesilir. Hattaki hava ana valf üzerinden tahliye edilmelidir.`,
         lowPressure: (s) => `${s} besleme basıncını izler; basınç ayar değerinin altına düştüğünde kontrol ünitesi (PLC/Röle) yeni hareket başlatmaz ve makineyi güvenli duruma alır.`,
+        lineMonitor: (s, valve) => `${s}, ${valve} çıkış hattının basıncını izler; basınç valfin konumuyla uyuşmazsa (ör. hat boşalmadıysa) kontrol ünitesi (PLC/Röle) yeni hareket başlatmaz.`,
         failSafe: (parts) => `Bobin enerjisi kesildiğinde valfler yay ile normal konuma döner: ${parts}.`,
         hold: (valves, acts) => `Enerji kesildiğinde ${valves} son konumunu korur; ${acts} kendiliğinden hareket etmez.`,
         midStop: (valve, act) => `${valve} enerjisiz kalınca orta konumda portları kapatır; ${act} bulunduğu konumda durur ve kendiliğinden hareket etmez.`,
@@ -101,6 +105,8 @@
         'f.throttle': 'Akışı iki yönde kısar.',
         'f.check': 'Akışı tek yönde geçirir.',
         'f.pilotCheck': 'Aktüatörü yük altında tutar; pilot sinyaliyle açılır.',
+        'f.pilotCheckSw': 'Aktüatörü yük altında tutar; pilot sinyaliyle açılır, kapalı konumu anahtarla izlenir.',
+        'v.vboc': 'Aktüatörü yük altında tutar; pilot sinyaliyle açılır, konumu sensörle izlenir, egzozu kısarak hızı ayarlar.',
         'f.quickExhaust': 'Aktüatör egzozunu doğrudan atmosfere vererek hareketi hızlandırır.',
         'f.regulator': 'Çıkış basıncını ayarlanan değerde tutar.',
         'f.relief': 'Basınç ayar değerini aşınca havayı tahliye eder.',
@@ -182,12 +188,15 @@
         manualShutoff: (valve) => `Compressed air can be shut off by hand with ${valve}.`,
         pressure: (s, where) => `${s} monitors the air pressure ${where}.`,
         pressureWhere: 'in the supply line',
+        pressureWhereLine: (valve) => `in the output line of ${valve}`,
+        pilotOpen: (coil, valve, holds) => `When ${coil} is energised, ${valve} switches; ${holds} open by pilot pressure and the actuator can move.`,
+        pilotRest: (valve, holds) => `When the solenoid is de-energised, the spring returns ${valve} to its normal position and the pilot line is exhausted; ${holds} close and hold the load.`,
         noValve: (act) => `${act} is not connected to a directional valve.`,
         signal: (a, b) => `There is a signal connection between ${a} and ${b}.`,
         mech: (a, b) => `${a} and ${b} are mechanically linked.`
       },
       functions: {
-        dump: 'Air dump on power loss', isolation: 'Manual air isolation', lowPressure: 'Low air pressure monitoring',
+        dump: 'Air dump on power loss', isolation: 'Manual air isolation', lowPressure: 'Low air pressure monitoring', lineMonitor: 'Line pressure monitoring',
         failSafe: 'Safe position on power loss', hold: 'Position holding on power loss', midStop: 'Stop in intermediate position',
         speed: 'Speed limitation', loadHold: 'Load holding', overpressure: 'Overpressure protection'
       },
@@ -197,6 +206,7 @@
         isolationDump: (valve) => `For maintenance and repair, the air is shut off by hand with ${valve} and the line is exhausted; the valve can be locked.`,
         isolation: (valve) => `For maintenance and repair, the air is shut off by hand with ${valve}. The line must be exhausted through the main valve.`,
         lowPressure: (s) => `${s} monitors the supply pressure; when it falls below the set value, the control unit (PLC/relay) does not start new movements and brings the machine into a safe state.`,
+        lineMonitor: (s, valve) => `${s} monitors the pressure in the output line of ${valve}; if the pressure does not match the valve position (e.g. the line has not been exhausted), the control unit (PLC/relay) does not start new movements.`,
         failSafe: (parts) => `When the solenoids are de-energised, the springs return the valves to their normal position: ${parts}.`,
         hold: (valves, acts) => `When power is lost, ${valves} keep their last position; ${acts} do not move by themselves.`,
         midStop: (valve, act) => `When de-energised, ${valve} closes all ports in the centre position; ${act} stops where it is and does not move by itself.`,
@@ -225,6 +235,8 @@
         'f.throttle': 'Throttles the flow in both directions.',
         'f.check': 'Lets the flow pass in one direction only.',
         'f.pilotCheck': 'Holds the actuator under load; opens by pilot signal.',
+        'f.pilotCheckSw': 'Holds the actuator under load; opens by pilot signal, its closed position is monitored by a switch.',
+        'v.vboc': 'Holds the actuator under load; opens by pilot signal, its position is monitored by a sensor, meters the exhaust to set the speed.',
         'f.quickExhaust': 'Exhausts the actuator directly to atmosphere and speeds up the movement.',
         'f.regulator': 'Keeps the outlet pressure at the set value.',
         'f.relief': 'Exhausts air when the pressure exceeds the set value.',
@@ -306,12 +318,15 @@
         manualShutoff: (valve) => `Mit ${valve} wird die Druckluft von Hand abgesperrt.`,
         pressure: (s, where) => `${s} überwacht den Luftdruck ${where}.`,
         pressureWhere: 'in der Versorgungsleitung',
+        pressureWhereLine: (valve) => `in der Ausgangsleitung von ${valve}`,
+        pilotOpen: (coil, valve, holds) => `Wird ${coil} bestromt, schaltet ${valve}; ${holds} öffnen durch den Steuerdruck, der Antrieb kann sich bewegen.`,
+        pilotRest: (valve, holds) => `Wird die Spule stromlos, stellt die Feder ${valve} in die Grundstellung zurück und die Steuerleitung wird entlüftet; ${holds} schließen und halten die Last.`,
         noValve: (act) => `${act} ist an kein Wegeventil angeschlossen.`,
         signal: (a, b) => `Zwischen ${a} und ${b} besteht eine Signalverbindung.`,
         mech: (a, b) => `${a} und ${b} sind mechanisch verbunden.`
       },
       functions: {
-        dump: 'Entlüftung bei Stromausfall', isolation: 'Manuelles Absperren', lowPressure: 'Überwachung des Luftdrucks',
+        dump: 'Entlüftung bei Stromausfall', isolation: 'Manuelles Absperren', lowPressure: 'Überwachung des Luftdrucks', lineMonitor: 'Überwachung des Leitungsdrucks',
         failSafe: 'Sichere Stellung bei Stromausfall', hold: 'Stellung halten bei Stromausfall', midStop: 'Stopp in Zwischenstellung',
         speed: 'Geschwindigkeitsbegrenzung', loadHold: 'Last halten', overpressure: 'Überdruckschutz'
       },
@@ -321,6 +336,7 @@
         isolationDump: (valve) => `Für Wartung und Reparatur wird die Luft mit ${valve} von Hand abgesperrt und die Leitung entlüftet; das Ventil ist abschließbar.`,
         isolation: (valve) => `Für Wartung und Reparatur wird die Luft mit ${valve} von Hand abgesperrt. Die Leitung muss über das Hauptventil entlüftet werden.`,
         lowPressure: (s) => `${s} überwacht den Versorgungsdruck; fällt er unter den Sollwert, startet die Steuereinheit (SPS/Relais) keine neuen Bewegungen und bringt die Maschine in einen sicheren Zustand.`,
+        lineMonitor: (s, valve) => `${s} überwacht den Druck in der Ausgangsleitung von ${valve}; passt der Druck nicht zur Ventilstellung (z. B. Leitung nicht entlüftet), startet die Steuereinheit (SPS/Relais) keine neuen Bewegungen.`,
         failSafe: (parts) => `Werden die Spulen stromlos, stellen die Federn die Ventile in die Grundstellung zurück: ${parts}.`,
         hold: (valves, acts) => `Bei Stromausfall behalten ${valves} ihre letzte Stellung; ${acts} bewegen sich nicht von selbst.`,
         midStop: (valve, act) => `Stromlos sperrt ${valve} in Mittelstellung alle Anschlüsse; ${act} bleibt stehen und bewegt sich nicht von selbst.`,
@@ -349,6 +365,8 @@
         'f.throttle': 'Drosselt den Durchfluss in beide Richtungen.',
         'f.check': 'Lässt den Durchfluss nur in eine Richtung zu.',
         'f.pilotCheck': 'Hält den Antrieb unter Last; öffnet mit Steuersignal.',
+        'f.pilotCheckSw': 'Hält den Antrieb unter Last; öffnet mit Steuersignal, die geschlossene Stellung wird per Schalter überwacht.',
+        'v.vboc': 'Hält den Antrieb unter Last; öffnet mit Steuersignal, die Stellung wird per Sensor überwacht, drosselt die Abluft zur Geschwindigkeitseinstellung.',
         'f.quickExhaust': 'Entlüftet den Antrieb direkt ins Freie und beschleunigt die Bewegung.',
         'f.regulator': 'Hält den Ausgangsdruck auf dem Sollwert.',
         'f.relief': 'Entlüftet bei Überschreiten des Solldrucks.',
@@ -382,7 +400,7 @@
     }
   };
 
-  const FUNCTION_ORDER = ['dump', 'isolation', 'lowPressure', 'failSafe', 'hold', 'midStop', 'loadHold', 'speed', 'overpressure'];
+  const FUNCTION_ORDER = ['dump', 'isolation', 'lowPressure', 'lineMonitor', 'failSafe', 'hold', 'midStop', 'loadHold', 'speed', 'overpressure'];
 
   function listJoin(items, t) {
     if (items.length <= 1) return items.join('');
@@ -671,6 +689,29 @@
       }
     }
 
+    /* Pilot valfi: çıkışı tutma valflerinin (pilot kumandalı çek valf, VBOC…) pilot portuna (X) giden yön valfi */
+    for (const valve of valves) {
+      const outs = valve.def.ports.map((p) => p.id).filter((id) => !/^[135]$/.test(id));
+      const holds = [];
+      for (const port of outs) {
+        for (const m of graph.others(valve, port)) {
+          if (m.port === 'X' && m.node.def.flow && m.node.def.flow.kind === 'pilotCheck' && !holds.includes(m.node)) holds.push(m.node);
+        }
+      }
+      if (!holds.length) continue;
+      consumers.add(valve.id);
+      holds.sort((a, b) => Link.compareIso(a.short, b.short));
+      const names = listJoin(holds.map((n) => n.short), t);
+      const route = `${valve.short} → ${holds.map((n) => n.short).join(', ')}`;
+      const optional = valve.optional || holds.every((n) => n.optional);
+      const base = { group: 'control', type: t.types.control, optional, sheetId: valve.sheet.id, itemId: valve.id, circuit: circuitOf(valve.short) };
+      if (valve.def.coils) {
+        const coil = ((valve.item.coils || [])[0] || {}).tag || t.coilName(0);
+        logicRows.push(Object.assign({}, base, { route: `${coil} → ${route}`, text: t.s.pilotOpen(coilLabel(valve, 0), valve.short, names) }));
+      }
+      if ((valve.def.valve || {}).rest === 'spring') logicRows.push(Object.assign({}, base, { route, text: t.s.pilotRest(valve.short, names) }));
+    }
+
     /* Sensörler (aktüatöre bağlı) */
     const positionWord = (act, pos) => {
       const kind = (act.def.act || {}).kind;
@@ -744,9 +785,18 @@
       }
     }
     const pressureSensors = [...nodes.values()].filter((n) => n.def.sense === 'pressure' || n.def.sense === 'pressureSwitch');
+    /** Basınç anahtarı besleme dışındaki bir valfin çıkış hattındaysa (ör. kilit hattı) o valf; besleme hattındaysa null */
+    const monitoredValve = (s) => {
+      const port = (s.def.ports[0] || {}).id;
+      if (!port) return null;
+      const m = graph.others(s, port).find((o) => o.node.role === 'directional' && !/^[135]$/.test(o.port) && !mainValves.includes(o.node));
+      return m ? m.node : null;
+    };
     for (const s of pressureSensors) {
+      const line = monitoredValve(s);
       logicRows.push({
-        group: 'monitor', type: t.types.monitor, route: s.short, text: t.s.pressure(withPid(s.short, s.pid), t.s.pressureWhere),
+        group: 'monitor', type: t.types.monitor, route: s.short,
+        text: t.s.pressure(withPid(s.short, s.pid), line ? t.s.pressureWhereLine(line.short) : t.s.pressureWhere),
         optional: s.optional, sheetId: s.sheet.id, itemId: s.id, circuit: circuitOf(s.short)
       });
     }
@@ -797,6 +847,15 @@
       });
     }
     for (const s of pressureSensors) {
+      const line = monitoredValve(s);
+      if (line) {
+        safetyRows.push({
+          fnKey: 'lineMonitor', fn: t.functions.lineMonitor, trigger: withPid(s.short, s.pid),
+          affected: (drivenBy.get(line.id) || allActs).map((a) => a.short),
+          logic: t.safety.lineMonitor(withPid(s.short, s.pid), line.short), connected: true, optional: s.optional, sheetId: s.sheet.id, itemId: s.id
+        });
+        continue;
+      }
       safetyRows.push({
         fnKey: 'lowPressure', fn: t.functions.lowPressure, trigger: withPid(s.short, s.pid), affected: allActs.map((a) => a.short),
         logic: t.safety.lowPressure(withPid(s.short, s.pid)), connected: true, optional: s.optional, sheetId: s.sheet.id, itemId: s.id
